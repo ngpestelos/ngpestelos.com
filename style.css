@@ -44,6 +44,16 @@ h1 {
   margin-bottom: 1rem;
 }
 
+.header-links {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.header-links a {
+  color: var(--accent);
+}
+
 .positioning {
   font-size: 1.05rem;
   line-height: 1.5;
