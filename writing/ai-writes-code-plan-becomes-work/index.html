@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When the AI Writes the Code, the Plan Becomes the Work — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Forty years ago Fred Brooks wrote the line the whole industry has spent the AI era rediscovering. In *[No Silver Bullet](https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf)*, he argued the hard part of…">
+  <meta property="og:title" content="When the AI Writes the Code, the Plan Becomes the Work">
+  <meta property="og:description" content="Forty years ago Fred Brooks wrote the line the whole industry has spent the AI era rediscovering. In *[No Silver Bullet](https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf)*, he argued the hard part of…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/ai-writes-code-plan-becomes-work/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/ai-writes-code-plan-becomes-work/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>When the AI Writes the Code, the Plan Becomes the Work</h1>
+<p class="byline">Published August 11, 2026</p>
+
+
+<p>Forty years ago Fred Brooks wrote the line the whole industry has spent the AI era rediscovering. In <em><a href="https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf">No Silver Bullet</a></em>, he argued the hard part of building software was never the code. It was deciding what to build: the &quot;essential complexity&quot; of specifying a correct, coherent thing, versus the &quot;accidental complexity&quot; of expressing it in a language a machine can run. Brooks predicted tooling would never touch the essential part, because that part is thinking.</p>
+
+<p>For most of software&#x27;s history that prediction stayed abstract: writing the code was still most of the visible work. You typed it, reviewed it line by line, and reading it was how you knew what the system did. Then a model started writing the implementation in minutes, and Brooks&#x27;s distinction stopped being a book-club argument and started showing up in who gets hired. When accidental complexity collapses toward zero, what&#x27;s left is the essential complexity, and that is most of the job that remains.</p>
+
+<h2>The inversion</h2>
+
+<p>Salvatore Sanfilippo, who wrote Redis, <a href="https://antirez.com/news/169">is blunt about it</a>: if you control the ideas, reviewing the generated code line by line is &quot;suboptimal and often pointless.&quot; Capture the ideas in a design document, and let the model regenerate the implementation against it. Mark Essien <a href="https://x.com/markessien/status/2076714143692849209">describes his actual day</a>: hours writing and validating a plan, then twenty minutes of code generation. &quot;The plan is now the coding, not the coding.&quot;</p>
+
+<p>This is the inversion. The plan becomes the authored artifact: the design, the constraints, the acceptance checks, the non-obvious decisions the code can&#x27;t explain to you. The code becomes its compiled output, something you can regenerate and mostly shouldn&#x27;t hand-edit. <a href="https://jnd.org/the-human-side-of-automation/">Don Norman&#x27;s work on automation</a> names the general shape of this: automate what you can, and the human job becomes high-level guidance and collaboration, not a smaller leftover of the old task. The scarce act shifts from producing code to specifying and validating intent. Code review stops asking whether the syntax is right and starts asking whether the design was understood.</p>
+
+<h2>The lesson is not &quot;plan more&quot;</h2>
+
+<p>This is where most takes overshoot, and it&#x27;s worth slowing down.</p>
+
+<p>Bureaucratic specification was friction before AI and it&#x27;s friction now: a forty-page requirements document nobody executes, a design review attended rather than decided. Those are accidental complexity mistaken for the essential kind. Making the plan the artifact does not resurrect Big Design Up Front: the <a href="https://agilemanifesto.org/">Agile Manifesto</a>&#x27;s authors were right that &quot;responding to change&quot; beats &quot;following a plan,&quot; and that critique still applies if the plan reverts to the old comprehensive spec.</p>
+
+<p>What relocates upstream is intent clarity, not ceremony. The distinction is Brooks&#x27;s own: capture the essential decisions (what the thing is for, which constraints are load-bearing, what must be true for it to be correct), and skip the accidental scaffolding a competent agent can infer. In practice that&#x27;s Gojko Adzic&#x27;s <em><a href="https://gojko.net/books/specification-by-example/">Specification by Example</a></em> practice: the spec worth keeping is the one that executes, because if you can&#x27;t run it, no one will keep it current. The healthiest form is thin, closer to an architecture decision record than a requirements binder: a bloated plan decays fast, and a hand-maintained one competes with the code for the attention it was meant to save.</p>
+
+<h2>Where it breaks</h2>
+
+<p>A thesis this clean should make you suspicious, and the honest version has four hard edges.</p>
+
+<p>The first is &quot;nobody needs to read the code.&quot; As an attitude toward regeneration, that&#x27;s fine: you rebuild rather than nurse the implementation. As a literal claim, it&#x27;s dangerous. When <a href="https://arxiv.org/abs/2108.09293">researchers at NYU</a> had GitHub Copilot generate programs across security-relevant scenarios built around high-risk CWEs (including MITRE&#x27;s Top 25) in a 2022 study, roughly forty percent were vulnerable, faithfully reproducing insecure patterns from training data. Unread output ships exploitable defects, and the line-by-line read doesn&#x27;t disappear so much as relocate onto the constraints, the type system, and the test suite. That burden falls on whichever conscientious engineer keeps doing it, until they burn out, and unlogged, it&#x27;s how technical debt accrues.</p>
+
+<p>The second edge is &quot;the plan decides the outcome.&quot; It decides what you <em>meant</em>, not what happens at runtime. Charity Majors&#x27;s <a href="https://x.com/mipsytipsy/status/2031877161821544653">argument against spec-worship</a> holds here: code is never the whole story, since the same code behaves differently across systems and usage patterns, and only telemetry reports that. The plan is the authored artifact for intent; the running system and its observability are the authored artifact for runtime truth, and conflating the two leaves runtime unaccounted for.</p>
+
+<p>The third edge: as <a href="https://x.com/trq212/status/2073100352921215386">Thariq</a> puts it in <em>A Field Guide to Fable</em>, the map you hand an agent only represents the work, and the territory it meets never fully matches. Every gap becomes a guess, and delegating more in a single pass compounds the guesses into drift. A complete authored plan is a fiction; a good one is a live document you rewrite as implementation surfaces what you missed.</p>
+
+<p>The fourth edge is the cost of the plan&#x27;s new authority: a confidently wrong plan builds the wrong thing in twenty minutes, and every downstream agent inherits it unread. The same speed that makes a good plan powerful makes a bad one expensive, which is the real argument for keeping the plan small: not minimalism for its own sake, but so its errors stay cheap to catch.</p>
+
+<h2>What it&#x27;s really about</h2>
+
+<p>None of this undoes the inversion so much as bounds it. &quot;Upstream&quot; means intent, judgment, and the constraints that gate regeneration, not a bigger pile of documents and not away from the running system.</p>
+
+<p>There is also a cost even Sanfilippo&#x27;s own account doesn&#x27;t settle, though he&#x27;s honest enough to flag it: if juniors never read the code, it&#x27;s not obvious how they build the judgment that lets a senior tell essential from accidental complexity. That judgment came from years reading and repairing other people&#x27;s code, and a world that authors plans and regenerates code stays quiet about where its planners come from.</p>
+
+<p>I&#x27;ve written before about how <a href="https://para.ngpcloud.org/cheap-code-expensive-context">cheap code shifts value toward whoever supplies the expensive context</a>. This is the companion claim, one level down: what the human now <em>authors</em> is the intent, the thin, load-bearing statement of what should be true and the constraints that decide whether the output counts, not the code itself. The engineers who pull ahead won&#x27;t be the ones who plan the most, but the ones who can tell essential complexity from accidental and write down only the first.</p>
+
+<p>Brooks would recognize the shape of it. The hard part was always deciding what to build. We finally have a machine fast enough that the deciding is most of the job that remains, and the edges above are the rest.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
