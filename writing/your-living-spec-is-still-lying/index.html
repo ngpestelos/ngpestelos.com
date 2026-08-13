@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Living Spec Is Still Lying — Nestor G Pestelos Jr</title>
+  <meta name="description" content="The fix for spec rot has a nice symmetry. Specs go stale because humans write them once and never touch them again, so make the spec bidirectional: let the agent write back what it learns during implementation, and…">
+  <meta property="og:title" content="Your Living Spec Is Still Lying">
+  <meta property="og:description" content="The fix for spec rot has a nice symmetry. Specs go stale because humans write them once and never touch them again, so make the spec bidirectional: let the agent write back what it learns during implementation, and…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/your-living-spec-is-still-lying/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/your-living-spec-is-still-lying/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Your Living Spec Is Still Lying</h1>
+<p class="byline">Published July 14, 2026</p>
+
+
+<p>The fix for spec rot has a nice symmetry. Specs go stale because humans write them once and never touch them again, so make the spec bidirectional: let the agent write back what it learns during implementation, and the document stays true. <a href="https://x.com/augmentcode/status/2025993446633492725">Augment Code put it cleanly</a>: a spec that isn&#x27;t updated becomes a lie the agent trusts.</p>
+
+<p>That&#x27;s correct, and it&#x27;s the narrowest and most failure-prone of the three things you need, the one this year&#x27;s tooling reaches for first. If it&#x27;s the only one you reach for, your living spec will keep lying to you. It will just lie about different things.</p>
+
+<h2>The problem is real, and older than the agents</h2>
+
+<p>Documentation rots fast in a changing system, and unevenly. Google&#x27;s <a href="https://sre.google/sre-book/accelerating-sre-on-call/">SRE book</a> puts it sharply: stale docs barely hurt the senior engineer, who keeps the system in their head, but they wreck the newcomer, who has no choice but to trust what&#x27;s written. The prescribed fix isn&#x27;t automation. It hands the new hire the most out-of-date sections to overhaul, reviewed by the people who actually know.</p>
+
+<p>Swap &quot;newcomer&quot; for &quot;agent&quot; and it transfers. The agent is the ultimate low-context reader: no memory of last week&#x27;s decision, no hallway conversation, no instinct that the config comment is a year stale. Whatever the spec says, it believes. A missing document makes it guess from the code, which is at least visible and recoverable. A wrong one makes it act on the lie, confidently, with no signal that anything is off.</p>
+
+<h2>Fix one: write-back, and where it fails</h2>
+
+<p>Write-back works for a specific thing: the reasoning the code can&#x27;t hold. When the agent works out why the retry budget is three and not five, that the vendor&#x27;s rate limit collapses above three and an incident last year proved it, that belongs in the document. The value three lives in the code; the reason does not. ADRs are the disciplined version, the thinnest layer of docs that captures the decisions code can&#x27;t communicate.</p>
+
+<p>Two problems. First, an agent can write back garbage, and a confidently wrong update becomes the source of truth every downstream agent trusts. The failure is silent, because the point of the document is that people stop re-deriving it. A write-back loop needs a second thing that reviews the write-back, a cost the tidy version never mentions.</p>
+
+<p>Second, the most influential document in software already argued the opposite. The <a href="https://agilemanifesto.org/">Agile Manifesto</a> watched teams document themselves into irrelevance and concluded: working software over comprehensive documentation. Its answer to rot was less document, not a better-maintained one. If your fix is &quot;write more, more often,&quot; you owe the reader an account of why the canonical answer was &quot;write less.&quot; That account is that Agile was right about prose and wrong to stop there, because one form of specification doesn&#x27;t rot the way prose does.</p>
+
+<h2>Fix two: make the spec executable</h2>
+
+<p>Gojko Adzic&#x27;s <a href="https://gojko.net/books/specification-by-example/"><em>Specification by Example</em></a> supplies the move Agile missed. Express the spec as an executable test and it can&#x27;t silently drift from the code, because the moment it drifts, it fails. The spec and the check are the same artifact; agreement is enforced on every run, not maintained by discipline.</p>
+
+<p>That beats write-back at the one thing write-back is worst at: staying in sync. But it is narrower than &quot;the test is always right.&quot; An agent can write a test that encodes the wrong intent, and it passes, green and lying, exactly like a confidently wrong prose update. Executability doesn&#x27;t make the agent correct; it makes the artifact unable to drift after the fact. So an agent-written test earns the same review a write-back does. What you stop paying for is the slow failure, where document and system diverge over months with nobody watching. The old cost objection, that tests were too expensive to write, has collapsed now that the agent writes them. (That&#x27;s its own essay.)</p>
+
+<p>So where you can encode the intent, make it a test, a type, a contract, and reserve write-back for the residue that resists encoding. One domain inverts, worth naming so the argument doesn&#x27;t overreach: in formal methods the spec is the authority and the code conforms to it. <a href="https://cacm.acm.org/research/how-amazon-web-services-uses-formal-methods/">AWS documented using TLA+ this way</a> back in 2015, on critical systems, spec as trusted source, implementation checked against it. That&#x27;s real, but design-time and narrow. For the everyday case, where the implementation discovers what the design didn&#x27;t know, the direction runs the other way.</p>
+
+<h2>Fix three: the layer no document reaches</h2>
+
+<p>Neither write-back nor executable specs knows what your system actually does in production. <a href="https://thenewstack.io/honeycombs-charity-majors-go-ahead-test-in-production/">Charity Majors</a> has spent years on the observability version of this: you cannot predict where a distributed system will fail, mirroring staging to production is a fool&#x27;s errand, and the only way to know what production does is to watch it run. Point that at specs and the conclusion is unavoidable. A spec captures the developer&#x27;s model at write-time; it cannot anticipate the combinatorial explosion of real load and states no one enumerated, the same explosion no staging environment reproduces. Only observability tells you what happened at 3 a.m., under a traffic spike, with a half-deployed config. And it worsens as AI writes more code faster: more code, more runtime combinations no spec, however live, ever considered.</p>
+
+<h2>Match the mechanism to the layer</h2>
+
+<p>So a spec has layers, and each stays true by a different mechanism:</p>
+
+<ul>
+
+<li><strong>Encodable intent</strong> stays true by being executable. Tests, types, contracts. It can&#x27;t drift without failing.</li>
+
+<li><strong>Non-encodable intent</strong>, the decisions, stays true by write-back into a thin prose layer, reviewed, because the agent can be confidently wrong.</li>
+
+<li><strong>Runtime behavior</strong> stays true by observability, because no document written ahead of time can know it.</li>
+
+</ul>
+
+<p>You don&#x27;t need new tooling to start, just a question. When you reach for the spec, ask what kind of fact it is. A rule you can assert goes in a test. A decision you can only describe goes in the reviewed prose layer. A behavior you can only observe goes on a dashboard.</p>
+
+<p>The mistake worth naming is conflation: expecting write-back to catch a runtime bug, or trusting a prose spec to last as long as a test suite. The living-spec enthusiasm gets one layer right and assumes it covers the other two. A spec is a lie waiting to happen; it always was. Keeping one document perpetually true is a fight you lose slowly, so stop trying. Match each layer to the mechanism that can keep it honest, and don&#x27;t reach for a living document just because it&#x27;s the thing everyone&#x27;s talking about this year.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

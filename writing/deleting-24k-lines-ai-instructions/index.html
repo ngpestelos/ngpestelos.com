@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deleting 24K Lines of AI Instructions — Nestor G Pestelos Jr</title>
+  <meta name="description" content="I applied [Elon Musk&#x27;s Five-Step Algorithm](https://para.ngpcloud.org/2+Resources/Topics/First-Principles+Thinking/The+Five-Step+Algorithm) to 257 Claude Code skills totaling 43,000+ lines. 29 batches later: 56%…">
+  <meta property="og:title" content="Deleting 24K Lines of AI Instructions">
+  <meta property="og:description" content="I applied [Elon Musk&#x27;s Five-Step Algorithm](https://para.ngpcloud.org/2+Resources/Topics/First-Principles+Thinking/The+Five-Step+Algorithm) to 257 Claude Code skills totaling 43,000+ lines. 29 batches later: 56%…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/deleting-24k-lines-ai-instructions/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/deleting-24k-lines-ai-instructions/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Deleting 24K Lines of AI Instructions</h1>
+<p class="byline">Published March 17, 2026</p>
+
+
+<h2>TL;DR</h2>
+
+<p>I applied <a href="https://para.ngpcloud.org/2+Resources/Topics/First-Principles+Thinking/The+Five-Step+Algorithm">Elon Musk&#x27;s Five-Step Algorithm</a> to 257 Claude Code skills totaling 43,000+ lines. 29 batches later: 56% fewer lines, zero skills over 500 lines, no degradation in execution quality.</p>
+
+<h2>The Bloat Problem</h2>
+
+<p>After 2,400+ sessions with Claude Code, I had 257 skills guiding the agent across everything from Rails security patterns to Readwise document synthesis to weekly life reviews. They worked. But they&#x27;d grown organically, each skill accumulating sections every time I hit a new edge case.</p>
+
+<p>The average skill was 167 lines. Some hit 800+. Every time Claude activated a skill, it loaded the entire thing into its context window. A skill with 40 lines of methodology buried under 90 lines of examples, 30 lines of &quot;when to use&quot; documentation, and 15 lines of cross-references was diluting the signal.</p>
+
+<p>I knew this because I&#x27;d built a usage tracker. It showed invocation counts, and the correlation was clear: the longest skills weren&#x27;t the most-used. Many had never been invoked at all.</p>
+
+<h2>The Five-Step Algorithm</h2>
+
+<p>Elon Musk&#x27;s manufacturing optimization framework, adapted:</p>
+
+<ol>
+
+<li><strong>Question every requirement.</strong> Does this section need to exist? Who requested it? (Usually past-me, solving a problem I no longer have.)</li>
+
+<li><strong>Delete.</strong> Remove everything that doesn&#x27;t directly serve the skill&#x27;s trigger scenario. Be aggressive. You can always add it back (you won&#x27;t).</li>
+
+<li><strong>Optimize.</strong> Make what remains more efficient. Tables instead of prose. Merged rules instead of separate sections.</li>
+
+<li><strong>Accelerate.</strong> Make it faster to activate and parse. Shorter frontmatter descriptions, fewer code blocks.</li>
+
+<li><strong>Automate.</strong> Only after steps 1-4. For skills, this means: does the skill now trigger reliably without manual invocation?</li>
+
+</ol>
+
+<p>Most people start at step 3 or 4, optimizing something that shouldn&#x27;t exist.</p>
+
+<h2>What Got Deleted</h2>
+
+<p>After 29 batches (6 skills per batch, read in parallel, write in parallel, commit), clear patterns emerged in what was consistently deletable:</p>
+
+<p><strong>Always delete:</strong></p>
+
+<ul>
+
+<li><code>## When to Use</code> sections. Duplicates the frontmatter description, which is what the agent actually reads for activation.</li>
+
+<li><code>## Purpose</code> blockquotes. Restates the heading in different words.</li>
+
+<li><code>## Key Takeaway</code> sections. Restates the methodology in fewer words. (If your methodology needs a summary, the methodology is too long.)</li>
+
+<li><code>## Integration</code> / <code>## Related Skills</code>. Wiki-links the agent never follows during execution.</li>
+
+<li>Wrong/Right dialogue examples. Verbose &quot;DON&#x27;T do this / DO this&quot; patterns that triple the line count while adding one bit of information.</li>
+
+<li><code>## Quick Decision Tree</code>. Flowcharts that duplicate the methodology steps.</li>
+
+<li><code>## Common Mistakes</code>, when they overlap with the methodology. If step 3 says &quot;always use git mv,&quot; you don&#x27;t need a mistakes section saying &quot;don&#x27;t use mv.&quot;</li>
+
+</ul>
+
+<p><strong>Never delete:</strong></p>
+
+<ul>
+
+<li>Core methodology/workflow steps. This IS the skill.</li>
+
+<li>Code examples in code-heavy skills (security patterns, MCP integration). The code IS the reference.</li>
+
+<li>Decision frameworks and threshold tables. Operational data the agent uses at runtime.</li>
+
+<li>Verification checklists. The agent actually executes these.</li>
+
+</ul>
+
+<p><strong>Judgment calls:</strong></p>
+
+<ul>
+
+<li>Examples: keep one if it clarifies an ambiguous step, delete if it just illustrates something obvious</li>
+
+<li>Principles: merge into key rules if they&#x27;re actionable, delete if they&#x27;re philosophical</li>
+
+<li>Origin/history: condense to one line with a date. Future-me needs the &quot;when&quot; and &quot;why,&quot; not the narrative.</li>
+
+</ul>
+
+<h2>The Results</h2>
+
+<p>| Metric | Before | After | Change | |--------|--------|-------|--------| | Total skills | 257 | 257 | 0 | | Total lines | ~43,000 | ~19,000 | -56% | | Average lines/skill | 167 | 74 | -56% | | Largest skill | 821 lines | 320 lines | -61% | | Skills over 500 lines | 12 | 0 | -100% |</p>
+
+<p>The optimization was not uniform. Code-heavy reference skills (security patterns, macOS MCP integration, AppleScript patterns) got conservative 15-20% reductions. Their code blocks are the value. Methodology-heavy skills (synthesis workflows, audit procedures, career frameworks) got aggressive 60-70% reductions. Their value is in the steps, not the prose around the steps.</p>
+
+<h2>Observations</h2>
+
+<p><strong>The agent doesn&#x27;t need motivation.</strong> Half the deleted content was persuasive writing explaining why a pattern matters, when it applies, what happens if you skip it. Humans need that context. Agents don&#x27;t.</p>
+
+<p><strong>Frontmatter is the actual trigger.</strong> The <code>description</code> field in YAML frontmatter determines whether a skill activates. A 20-line &quot;When to Use&quot; section inside the skill body is invisible to the activation logic. I was writing documentation the agent never read at the decision point that matters.</p>
+
+<p><strong>Tables beat prose for decision logic.</strong> A 12-line paragraph explaining four severity thresholds becomes a 6-line table.</p>
+
+<p>Batch processing prevents preciousness. Six skills in parallel, edit, commit. By batch 22 of 29, you develop a ruthless eye for filler.</p>
+
+<p><strong>The 300-line budget is generous.</strong> The Agent Skills spec recommends under 500 lines. After optimization, my most complex skills sit around 100-130 lines. The constraint I needed was closer to 150.</p>
+
+<h2>Less Skill, Better Execution</h2>
+
+<p><a href="https://github.com/karpathy/autoresearch">Karpathy&#x27;s autoresearch</a> result points the same direction. His single-agent, single-file, single-metric loop outperformed the 8-agent research organization. My 74-line average skill outperforms the 167-line version.</p>
+
+<p>Most of what we write for AI agents is for ourselves. The documentation, the examples, the principles sections. They make <em>us</em> feel like the skill is comprehensive. Delete them first.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

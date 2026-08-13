@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When Your MCP Server Breaks — Nestor G Pestelos Jr</title>
+  <meta name="description" content="*Published January 24, 2026*">
+  <meta property="og:title" content="When Your MCP Server Breaks">
+  <meta property="og:description" content="*Published January 24, 2026*">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/when-your-mcp-server-breaks/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/when-your-mcp-server-breaks/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>When Your MCP Server Breaks</h1>
+
+
+<h1>When Your MCP Server Breaks: Building a 94% Smaller Replacement</h1>
+
+<p><em>Published January 24, 2026</em></p>
+
+<h2>TL;DR</h2>
+
+<p>My Readwise MCP server broke because it assumed a NixOS-specific path that doesn&#x27;t exist on macOS. Instead of debugging the Node.js dependency chain, I built a replacement in Python—646 lines vs 6,749 lines (90% smaller), 8 tools vs 13+ (38% fewer), with ~60% token reduction. The key insight: I already had proven logic in a backfill script. The MCP server became a thin wrapper around battle-tested code. When an integration breaks, sometimes the fastest fix is a focused rebuild using what already works.</p>
+
+<h2>What is MCP?</h2>
+
+<p>MCP (Model Context Protocol) is Anthropic&#x27;s open protocol for connecting AI assistants to external data sources. Think of it like a plugin system: instead of copying data into chat, you install &quot;MCP servers&quot; that let Claude read from APIs directly.</p>
+
+<p>In my setup, Claude can fetch highlights from Readwise, create tasks in Basecamp, or query my Obsidian vault—all without leaving the conversation. Each MCP server exposes &quot;tools&quot; (like <code>readwise_daily_review()</code> or <code>basecamp_create_todo()</code>) that Claude can call.</p>
+
+<p>When an MCP server breaks, Claude loses access to that data source. No daily highlights. No recent tweets. The integration goes dark.</p>
+
+<p>Which is exactly what happened.</p>
+
+<h2>The Breakage</h2>
+
+<pre><code>Failed to reconnect to readwise.</code></pre>
+
+<p>That error appeared after a system update. The <code>readwise-mcp-enhanced</code> Node.js server was trying to run <code>npx</code> at <code>/run/current-system/sw/bin/npx</code>—a path that exists on NixOS but not macOS.</p>
+
+<p>This wasn&#x27;t just a broken tool. It was Claude&#x27;s connection to 1,044 imported documents and daily reading workflows.</p>
+
+<p>I could have debugged the path resolution. Traced through the dependency chain. Filed an issue upstream. Instead, I asked a different question: <strong>what&#x27;s the minimum I need to replace this?</strong></p>
+
+<h2>The Inventory</h2>
+
+<p>Before rebuilding, I inventoried what I already had:</p>
+
+<p><strong>Working infrastructure:</strong></p>
+
+<ul>
+
+<li>A Basecamp MCP server in Python using FastMCP (proof that Python MCPs work fine in my setup)</li>
+
+<li>A <code>readwise-backfill.py</code> script with 400+ lines of battle-tested logic for pagination, deduplication, and state management</li>
+
+<li>1,044 imported documents in my Obsidian vault</li>
+
+<li>A state file tracking synced ranges and import timestamps</li>
+
+</ul>
+
+<p><strong>What the broken server provided:</strong></p>
+
+<ul>
+
+<li>13+ tools, many of which I never used</li>
+
+<li>Daily review fetching</li>
+
+<li>Document import with various filters</li>
+
+<li>Highlight searching</li>
+
+</ul>
+
+<p><strong>What I actually needed:</strong></p>
+
+<ul>
+
+<li>Import recent tweets (my primary use case)</li>
+
+<li>Fetch daily review highlights</li>
+
+<li>Search highlights</li>
+
+<li>Backfill to specific dates</li>
+
+<li>State management for deduplication</li>
+
+</ul>
+
+<p>The gap between &quot;what existed&quot; and &quot;what I needed&quot; was smaller than expected.</p>
+
+<h2>The 38-Minute Rebuild</h2>
+
+<p>The implementation followed a simple pattern: <strong>wrap proven logic in MCP tools</strong>.</p>
+
+<h3>Step 1: Copy What Works</h3>
+
+<p>From <code>readwise-backfill.py</code>, I extracted:</p>
+
+<ul>
+
+<li><code>load_state()</code> / <code>write_state()</code> — State persistence</li>
+
+<li><code>optimize_backfill()</code> — Synced range optimization to skip already-imported content</li>
+
+<li><code>scan_existing_documents()</code> — Filesystem deduplication</li>
+
+<li><code>sanitize_filename()</code> — Safe file naming</li>
+
+<li><code>extract_id_from_url()</code> — ID extraction for deduplication</li>
+
+</ul>
+
+<p>These functions had processed 614+ documents without issues. I didn&#x27;t change them.</p>
+
+<h3>Step 2: Define 8 Essential Tools</h3>
+
+<pre><code>@mcp.tool()
+def readwise_daily_review() -&gt; str:
+    &quot;&quot;&quot;Fetch today&#x27;s highlights and save to Daily Reviews/&quot;&quot;&quot;
+
+@mcp.tool()
+def readwise_import_recent(category: str = &quot;tweet&quot;, limit: int = 20) -&gt; str:
+    &quot;&quot;&quot;Import recent documents since last import&quot;&quot;&quot;
+
+@mcp.tool()
+def readwise_backfill(target_date: str, category: str = &quot;tweet&quot;) -&gt; str:
+    &quot;&quot;&quot;Paginate backward to target date with optimization&quot;&quot;&quot;
+
+@mcp.tool()
+def readwise_book_highlights(title: str = None, book_id: str = None) -&gt; str:
+    &quot;&quot;&quot;Get all highlights from a specific book&quot;&quot;&quot;
+
+@mcp.tool()
+def readwise_search_highlights(query: str, limit: int = 50) -&gt; str:
+    &quot;&quot;&quot;Search highlights by query&quot;&quot;&quot;
+
+@mcp.tool()
+def readwise_state_info() -&gt; str:
+    &quot;&quot;&quot;Show current state: timestamps, synced ranges, document count&quot;&quot;&quot;
+
+@mcp.tool()
+def readwise_init_ranges() -&gt; str:
+    &quot;&quot;&quot;Scan filesystem to build synced_ranges from existing documents&quot;&quot;&quot;
+
+@mcp.tool()
+def readwise_reset_state(clear_ranges: bool = False) -&gt; str:
+    &quot;&quot;&quot;Clear state file for fresh start&quot;&quot;&quot;</code></pre>
+
+<p>Eight tools. Each maps to something I actually do.</p>
+
+<h3>Step 3: Replace curl with requests</h3>
+
+<p>The backfill script used subprocess calls to curl. For the MCP server, I replaced these with Python&#x27;s <code>requests</code> library:</p>
+
+<pre><code>def fetch_reader_documents(updated_after: str = None, category: str = &quot;tweet&quot;) -&gt; dict:
+    &quot;&quot;&quot;Fetch documents from Reader API v3&quot;&quot;&quot;
+    url = &quot;https://readwise.io/api/v3/list/&quot;
+    params = {&quot;category&quot;: category}
+    if updated_after:
+        params[&quot;updatedAfter&quot;] = updated_after
+
+    headers = {&quot;Authorization&quot;: f&quot;Token {READWISE_TOKEN}&quot;}
+    response = requests.get(url, params=params, headers=headers)
+    return response.json()</code></pre>
+
+<p>No subprocess. No shell escaping. Direct HTTP calls.</p>
+
+<h3>Step 4: Update Configuration</h3>
+
+<p>One edit to <code>.mcp.json</code>:</p>
+
+<pre><code>{
+  &quot;readwise&quot;: {
+    &quot;type&quot;: &quot;stdio&quot;,
+    &quot;command&quot;: &quot;/path/to/readwise-mcp-server/.venv/bin/python&quot;,
+    &quot;args&quot;: [&quot;/path/to/src/readwise-mcp-server/server.py&quot;],
+    &quot;env&quot;: {
+      &quot;READWISE_TOKEN&quot;: &quot;${READWISE_TOKEN}&quot;,
+      &quot;VAULT_PATH&quot;: &quot;/path/to/vault&quot;
+    }
+  }
+}</code></pre>
+
+<p>Python path I control. No npx. I still use nix but only for controlling Python dependencies.</p>
+
+<h2>The Numbers</h2>
+
+<p>| Metric | Node.js Original | Python Replacement | |--------|------------------|-------------------| | Lines of code | 6,749 | 646 | | Number of tools | 13+ | 8 | | Dependencies | npm ecosystem | requests, pyyaml, mcp | | Token usage | High (verbose parameters) | ~60% reduction | | Test coverage | Unknown | 40 tests*, all passing |</p>
+
+<p>*Started with 20 tests, expanded to 38 after filename sanitization bugs, then 40 after backfill optimization fix. Each bug discovery added regression tests.</p>
+
+<p>90% smaller. 38% fewer tools. Same functionality for my use cases.</p>
+
+<h2>Why This Worked</h2>
+
+<h3>1. The Logic Was Already Proven</h3>
+
+<p>I didn&#x27;t write new pagination logic. I didn&#x27;t invent new deduplication. I copied functions that had processed hundreds of documents successfully. The MCP layer was just plumbing.</p>
+
+<h3>2. I Knew My Actual Usage</h3>
+
+<p>The original server had tools I never used. By building only what I needed, I avoided complexity. Eight tools covering five use cases.</p>
+
+<h3>3. Python MCP Was Already Working</h3>
+
+<p>Basecamp MCP proved the stack. FastMCP, stdio transport, environment variables: all working. The Readwise server was the same pattern with different API calls.</p>
+
+<h3>4. State Format Was Preserved</h3>
+
+<pre><code>{
+  &quot;last_import_timestamp&quot;: &quot;2026-01-22T04:55:22.529182+00:00&quot;,
+  &quot;synced_ranges&quot;: [
+    {&quot;start&quot;: &quot;2026-01-01T00:00:00Z&quot;, &quot;end&quot;: &quot;2026-01-22T04:55:22Z&quot;}
+  ],
+  &quot;backfill_in_progress&quot;: false
+}</code></pre>
+
+<p>Same state file. The new server read existing state without migration. Continuity preserved.</p>
+
+<h3>5. But Edge Cases Still Surfaced</h3>
+
+<p>The initial rebuild took 38 minutes. Making it production-ready took 28 hours and 3 bug fixes:</p>
+
+<p><strong>Timestamp format bug (Jan 24, 04:36):</strong> Appending <code>Z</code> to <code>.isoformat()</code> output that already included <code>+00:00</code> produced malformed timestamps like <code>2026-01-23T02:16:59+00:00Z</code>. The Readwise API correctly rejected these with 400 Bad Request. Impact: all import operations blocked. Fix: remove the <code>+ &quot;Z&quot;</code> suffix from 6 locations.</p>
+
+<p><strong>Filename sanitization bug (Jan 24, 05:24):</strong> Documents with emoji-only titles (&quot;🍿🍿&quot;) or ellipsis (&quot;…&quot;) created invalid filenames. The qmd indexer requires alphanumeric content and threw &quot;handelize: path has no valid filename content.&quot; Impact: 3 documents failed to import. Fix: fallback to <code>{Category} by {Author} - {Date}.md</code> when title has no alphanumeric characters. Added 13 regression tests.</p>
+
+<p><strong>Backfill optimization bug (Jan 24, 08:48):</strong> When target date was before synced ranges, the optimization logic incorrectly used <code>range.end</code> as <code>updatedAfter</code>, filtering out documents in the gap. Impact: backfill to Aug 2025 only imported 13 docs from Jan 21-23 instead of filling Aug-Nov gap. Fix: return <code>None</code> for <code>updatedAfter</code> when filling gaps, let deduplication handle overlap.</p>
+
+<p>Each bug revealed itself in production use. Each got its own test suite. The test count grew from 20 → 38 → 40 as edge cases surfaced.</p>
+
+<h2>The Pattern</h2>
+
+<p>When an integration breaks:</p>
+
+<ol>
+
+<li><strong>Inventory what you have</strong>: What&#x27;s already working? What logic exists?</li>
+
+<li><strong>Define what you actually need</strong>: Not what the tool provided. What you use.</li>
+
+<li><strong>Wrap proven logic</strong>: Don&#x27;t rewrite. Reuse.</li>
+
+<li><strong>Minimize surface area</strong>: Fewer tools = fewer failure points = lower token costs</li>
+
+</ol>
+
+<p>The Node.js server broke because of a path assumption I didn&#x27;t control. The Python server works because every path is explicit and every dependency is local.</p>
+
+<p>Sometimes the fastest debugging is not debugging at all.</p>
+
+<h2>So What?</h2>
+
+<p>This isn&#x27;t just about Readwise. It&#x27;s about integration ownership in the AI tooling era.</p>
+
+<p><strong>The MCP ecosystem is young.</strong> Servers break. Maintainers disappear. Dependencies shift. The Node.js server I replaced had 13+ tools, but the maintainer is one person maintaining 4+ MCP servers. When it broke, I had three options:</p>
+
+<ol>
+
+<li><strong>Wait for upstream fix</strong>: No timeline, dependency on someone else&#x27;s priorities</li>
+
+<li><strong>Debug the Node.js dependency chain</strong>: High complexity, low control</li>
+
+<li><strong>Rebuild with what I already had</strong>: 38 minutes to working replacement</li>
+
+</ol>
+
+<p>I chose #3 because I&#x27;d already invested in understanding the domain. The backfill script wasn&#x27;t just a utility. It was insurance against integration fragility.</p>
+
+<p><strong>The lesson for AI integrations</strong>: When you depend on an MCP server, you&#x27;re betting on that maintainer&#x27;s availability. Your mitigation is domain understanding and reusable logic. The best time to extract that logic is before the integration breaks.</p>
+
+<h2>The Lesson</h2>
+
+<p>Integration fragility is real. When you depend on tools you don&#x27;t control, breakage is a matter of when, not if.</p>
+
+<p>The mitigation isn&#x27;t avoiding integrations. It&#x27;s knowing your dependencies well enough to rebuild the parts you need. That requires:</p>
+
+<ul>
+
+<li>Understanding what the integration actually does for you</li>
+
+<li>Having proven logic available to reuse</li>
+
+<li>Controlling your environment (paths, dependencies, configuration)</li>
+
+</ul>
+
+<p>My Readwise MCP broke. 38 minutes later, I had a replacement. Not because I&#x27;m fast, but because I&#x27;d already done the hard work in a backfill script that sat in <code>.claude/scripts/</code> waiting to be useful in a different form.</p>
+
+<p>In the MCP ecosystem&#x27;s early days, this pattern matters even more. Servers will break. Maintainers will move on. Your backfill scripts and domain logic are the hedge against that fragility.</p>
+
+<p>The best code to write is code you&#x27;ve already written. The best insurance is understanding you&#x27;ve already earned.</p>
+
+<p><strong>The code:</strong> <a href="https://github.com/ngpestelos/readwise-mcp-server">github.com/ngpestelos/readwise-mcp-server</a></p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

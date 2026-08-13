@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Enter Key Problem — Nestor G Pestelos Jr</title>
+  <meta name="description" content="I&#x27;ve used Claude Code daily for over a year. It runs my knowledge vault, helps me modernize a legacy Rails codebase, and handles routine tasks I used to do manually. It is, genuinely, the most useful tool I&#x27;ve…">
+  <meta property="og:title" content="The Enter Key Problem">
+  <meta property="og:description" content="I&#x27;ve used Claude Code daily for over a year. It runs my knowledge vault, helps me modernize a legacy Rails codebase, and handles routine tasks I used to do manually. It is, genuinely, the most useful tool I&#x27;ve…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/enter-key-problem/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/enter-key-problem/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>The Enter Key Problem</h1>
+<p class="byline">Published March 19, 2026</p>
+
+
+<p>I&#x27;ve used Claude Code daily for over a year. It runs my knowledge vault, helps me modernize a legacy Rails codebase, and handles routine tasks I used to do manually. It is, genuinely, the most useful tool I&#x27;ve adopted in twenty-five years of software development.</p>
+
+<p>It also made me dumber.</p>
+
+<h2>Twenty Commits Deep</h2>
+
+<p>Late last year, I was fixing a complex UI feature in a production Rails application. The feature had coordinate calculations, state management across multiple modes, and edge cases that surfaced one at a time.</p>
+
+<p>Claude Code was generating fixes. Each commit addressed a specific bug. I was reviewing the diffs, approving them, committing. The commits kept climbing. Ten. Fifteen. Twenty.</p>
+
+<p>By the twentieth fix, I had a working feature with passing tests. I also had a codebase section I couldn&#x27;t debug without Claude. I understood the vocabulary. I could not reconstruct the logic from memory.</p>
+
+<p>I had hit enter too many times without building the mental model.</p>
+
+<p>The test suite passed. The feature shipped. And I had accumulated what Simon Willison calls cognitive debt: code that works, that&#x27;s even well-structured, but that nobody fully understands. When a new bug appeared weeks later, I couldn&#x27;t reason about it from first principles. I had to ask Claude to explain my own codebase to me.</p>
+
+<h2>The Unread Notes</h2>
+
+<p>The same pattern showed up in my knowledge system, but quieter.</p>
+
+<p>I run a <a href="https://www.amazon.com/PARA-Method-Simplify-Organize-Digital/dp/B0C2ZR6S6W/ref=sr_1_1?crid=2CAI7ZJMIRKFI&amp;dib=eyJ2IjoiMSJ9.EA8ckcPNbzrHsVksj3OQKdFYMu8e9mM83xTJWPf4rKxUPkfGOvRe2fj7Vpe0dC0q_QQp2pM2ZbHMH-Lz1Zt_m9dzi1_jogsa-wiyh9ushlcBV4acVgTMOp4dSPkqWZwryDURfCKgKidGLEWlIQcEkgDwUFuBdBN0ymtE8QnVkoJ9cevzjhW7jm-eXc-z1TqP6xYY0ZQp2JN5ES5pzeYJWdjMM5CBuaF2f4mZBkTZFpU.qz1bIoavb4rvqkdut7lH_MtGS51gd5YOVGM9dXJ2YEg&amp;dib_tag=se&amp;keywords=para+method&amp;qid=1774175501&amp;sprefix=para+me%2Caps%2C484&amp;sr=8-1">PARA</a> vault with over 500 atomic notes extracted from articles, tweets, and books. Claude Code handles the synthesis: it reads a source document, applies Progressive Summarization, extracts standalone concepts, files them into topic folders, and archives the source. The pipeline is efficient. I can process 50 documents in a single session.</p>
+
+<p>The problem: I stopped reading the notes.</p>
+
+<p>Last month, I was writing about how AI changes what developers need to be good at. I knew I had notes on this. I could picture the topic folder. I could name the concept: &quot;<a href="https://simonwillison.net/2026/Feb/15/cognitive-debt/">cognitive debt</a>.&quot; But when I tried to write the argument from memory, I couldn&#x27;t connect the pieces. I had to open the note, re-read it, and realize I was seeing the content for the second time despite having &quot;synthesized&quot; it weeks earlier.</p>
+
+<p>The synthesis pipeline had done its job. I hadn&#x27;t done mine.</p>
+
+<p>I could find any note, link to it, use the right vocabulary in conversation. But the knowledge existed in my vault, not in my head. I had built a system that captured and organized knowledge faster than I could absorb it. The capture was real. The understanding was not.</p>
+
+<h2>The Same Failure Mode</h2>
+
+<p>Both failures share the same mechanism. Before delegating to AI, ask yourself whether you&#x27;re augmenting your thinking or avoiding it.</p>
+
+<p>Augmentation: using Claude to handle boilerplate while you focus on architecture decisions. Using synthesis to surface connections between notes you&#x27;ve already read and understood. Using AI to accelerate work you could do yourself, slower.</p>
+
+<p>Offloading: accepting a diff without building a mental model of the change. Archiving a synthesized note without reading it. Using AI because the thinking is hard and you&#x27;d rather skip it.</p>
+
+<p>You cross the line when you can no longer do the work without the tool. I crossed it somewhere around commit fifteen.</p>
+
+<h2>What I Do Differently Now</h2>
+
+<p>I have three habits that came from getting burned.</p>
+
+<p><strong>I read the diff out loud.</strong> Not silently. Out loud. If I can&#x27;t explain what the change does in plain language while reading it, I don&#x27;t approve it. Last week this caught a refactor that renamed a method used by three other controllers. I would have hit enter without noticing.</p>
+
+<p><strong>I read my own notes.</strong> <code>/diceroll</code> picks a random atomic note from my vault every morning. I read it. If I can&#x27;t explain the concept without looking, I spend five minutes with it. Two weeks ago it surfaced a note on &quot;allostatic load&quot; I&#x27;d synthesized in February. I couldn&#x27;t define it. Five minutes later, I could. The vault is only useful if the knowledge makes it into my head, not just my file system.</p>
+
+<p><strong>I attempt the thinking first.</strong> Before asking Claude to fix a bug, I spend ten minutes forming a hypothesis. Even a wrong hypothesis forces me to engage with the system&#x27;s logic. Claude&#x27;s fix is better when I&#x27;ve already thought about it, because I can evaluate whether the fix addresses the root cause or just the symptom.</p>
+
+<p>None of these are efficient, and that&#x27;s deliberate.</p>
+
+<h2>The Uncomfortable Truth</h2>
+
+<p>I still use Claude Code every day. I still hit enter hundreds of times per session.</p>
+
+<p>The problem is me, in the moments when convenience overtakes comprehension. When the enter key moves faster than understanding.</p>
+
+<p>I&#x27;m 45. I&#x27;ve been writing software for twenty-five years. The best tool I&#x27;ve ever used is also the one most likely to make me worse at my job, if I let it.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

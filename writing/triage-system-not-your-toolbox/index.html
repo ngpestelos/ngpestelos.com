@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triage the System Not Your Toolbox — Nestor G Pestelos Jr</title>
+  <meta name="description" content="When something is slow, we reach for the tools we already know: `top`, the dashboard, the trace we understand. It feels like investigation. It is closer to hunting for your keys under the streetlight because the…">
+  <meta property="og:title" content="Triage the System Not Your Toolbox">
+  <meta property="og:description" content="When something is slow, we reach for the tools we already know: `top`, the dashboard, the trace we understand. It feels like investigation. It is closer to hunting for your keys under the streetlight because the…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/triage-system-not-your-toolbox/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/triage-system-not-your-toolbox/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Triage the System Not Your Toolbox</h1>
+<p class="byline">Published July 23, 2026</p>
+
+
+<p>When something is slow, we reach for the tools we already know: <code>top</code>, the dashboard, the trace we understand. It feels like investigation. It is closer to hunting for your keys under the streetlight because the light is better there.</p>
+
+<p>Brendan Gregg named that failure the streetlight anti-method in his <a href="https://queue.acm.org/detail.cfm?id=2413037">2012 piece on thinking methodically about performance</a>. The trouble is structural, not lazy. Familiar tools light up a fixed patch of the problem, and whatever they cannot measure stays dark, so you never learn it was there. Learning more tools widens the lit area. It never guarantees the light falls where the problem is.</p>
+
+<p>His fix is a small inversion with a large payoff. Do not start from the tools. Start from the system&#x27;s resources, and ask the same three questions of every one of them.</p>
+
+<h2>The move</h2>
+
+<p>The <a href="https://www.brendangregg.com/usemethod.html">USE Method</a> is one instruction. For every resource, check utilization, saturation, and errors.</p>
+
+<ul>
+
+<li><strong>Utilization</strong>: the fraction of time the resource is busy.</li>
+
+<li><strong>Saturation</strong>: the work that could not be serviced and is queuing behind it.</li>
+
+<li><strong>Errors</strong>: the count of failure events, including the recoverable ones that quietly degrade performance.</li>
+
+</ul>
+
+<p>The power is the iteration order. Instead of running what you know and seeing only what it shows, you generate the same three questions for each resource first, and only then go hunt for instruments to answer them. CPU, memory, disks, network, controllers, buses. Every component gets the same interrogation, so none is skipped because no familiar tool watches it.</p>
+
+<p>The first pass is nearly free, because you already have the tools. Take a service that has gone slow. Is a CPU pegged near 100 percent (utilization)? Is a disk only half busy yet piling an I/O queue behind it (saturation)? Is the NIC logging drops or retransmits (errors)? <code>top</code>, <code>iostat</code>, and <code>ss</code> answer all three without adding a line of instrumentation. Whichever resource lights up is where you start, and the ones that come back clean are ruled out. Ruling out the healthy resources is itself a result: it narrows the search before you have formed a single theory.</p>
+
+<p>Two things fall out of that ordering. The list is complete by construction, because it comes from the system&#x27;s structure and not from your toolset. And the questions you cannot answer become known unknowns instead of invisible ones. A question with no available instrument is still a finding. It converts a blind spot into a documented gap you can decide to build for.</p>
+
+<p>Gregg is careful about what this buys you, and it is worth being equally careful. He calls the method a tool in a larger toolbox: &quot;There are many problem types it doesn&#x27;t solve, which will require other methods and longer time spans.&quot; By his own estimate it &quot;solves about 80% of server issues with 5% of the effort.&quot; That is a triage claim, not a diagnosis one. It answers whether there is a problem and roughly where it lives, and it warns you in the same breath that &quot;the first one you find may be <em>a</em> problem but not <em>the</em> problem.&quot; Reading it as complete diagnosis is where the method gets oversold.</p>
+
+<h2>The evidence is not only computing</h2>
+
+<p>The reason to trust a fixed sweep over ad-hoc recall is that we have measured it, outside software, with lives on the line.</p>
+
+<p>In 2001, Peter Pronovost gave the ICU at Johns Hopkins a five-item checklist for inserting a central line: wash hands, antiseptic, drape, mask and gown, sterile dressing. Nothing on it was new to the doctors. The line-infection rate fell from about eleven percent to near zero. Scaled across Michigan&#x27;s ICUs as the Keystone Initiative and published in the <em>New England Journal of Medicine</em> in 2006, the median line-infection rate fell to zero within three months, a reduction sustained at up to 66 percent across the 18-month study, and the program was credited with roughly 1,500 lives saved. A 2009 NEJM study of the <a href="https://www.nejm.org/doi/abs/10.1056/NEJMsa0810119">WHO Surgical Safety Checklist</a> ran the same play across eight hospitals in eight countries: inpatient complications fell from 11.0 to 7.0 percent, and deaths from 1.5 to 0.8 percent.</p>
+
+<p>None of that came from teaching anyone new medicine. It came from forcing the known steps to happen on every case, which is what enumeration over recall does. The gains showed up in expert hands, not just novice ones, because the failure being fixed was inconsistency, not ignorance. A call center reading occupancy, queue depth, and error rates off its agent pool, or a factory line reading them off each station, is the same move by analogy. The surgical version is the one with measured outcomes.</p>
+
+<h2>Where the sweep stops working</h2>
+
+<p>Here is what the tidy version leaves out, and it matters most if you already know USE.</p>
+
+<p>A complete resource sweep tells you the database is saturated. It does not tell you why, and the &quot;why&quot; does not yield to more enumeration. Google&#x27;s own <a href="https://sre.google/sre-book/effective-troubleshooting/">SRE book, in its chapter on effective troubleshooting</a>, prescribes the opposite shape: hypothesize a cause, test it, and work in decreasing order of likelihood, bisecting the space as you go. That is deliberately not exhaustive. Root-cause work is a search, and searches are pruned by likelihood, not walked end to end. Treating &quot;complete diagnosis&quot; as &quot;enumerate everything&quot; conflates two different phases.</p>
+
+<p>There is a sharper limit. Some failures cannot be enumerated in advance at all. This is the whole argument behind <a href="https://charity.wtf/2020/03/03/observability-is-a-many-splendored-thing/">modern observability</a>. Charity Majors and the Honeycomb school draw a line between monitoring and observability: predefined metrics, dashboards, and golden signals handle the failures you anticipated, the known unknowns. The failures that hurt in a large distributed system are the ones you did not think to ask about, the unknown unknowns. You cannot pre-write the question, so you need to interrogate the system&#x27;s behavior on dimensions you did not plan for.</p>
+
+<p>That reframes the streetlight critique. For a novel, high-cardinality failure, reaching straight for an exploratory tool is not searching where the light is best. It is the correct move, because there is no complete question list to enumerate first. So &quot;questions before tools&quot; holds only for triage. Enumeration owns that layer, hypothesis-testing owns root cause, and exploratory tooling owns the failures no checklist could have named.</p>
+
+<h2>Why we default to the toolbox anyway</h2>
+
+<p>If the triage move is this simple, why is tool-first still the norm?</p>
+
+<p>Part of the answer is the one Goldratt gave about the theory of constraints. Identifying the bottleneck is the easy part; you can often walk the system and see it. The hard part is the ingrained assumptions that stop you acting on what you find. A complete sweep is cheap to describe and expensive to practice, because practicing it means overriding the instinct to reach for the instrument you trust.</p>
+
+<p>The other part is more sympathetic to the instinct. Because pre-enumeration fails for novel failures, engineers who have been burned by rigid checklists learn, correctly, that exploration sometimes wins. The mistake is generalizing that lesson to the triage layer, where enumeration is what you want. Both camps are half right, and they talk past each other because they are describing different layers of the same job.</p>
+
+<p>The discipline is knowing which layer you are on, and the cheap sweep is what tells you. Run it first: completeness is over resources, not over failures, so a system that comes back all-green under load is itself the signal that you are in territory no checklist anticipated.</p>
+
+<p>| The question | The layer | The method | |---|---|---| | Is there a problem, and where? | Triage | Enumerate every resource; don&#x27;t let your toolbox pick the questions | | Why is this specific thing broken? | Root cause | Hypothesize, then prune by likelihood | | A failure no check could have named? | Novel | Stop reaching for the checklist and explore |</p>
+
+<p>The streetlight is only a fallacy when there was a complete list you could have started from and chose not to.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

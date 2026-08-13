@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I Haven&#x27;t Written a Test in a Year — Nestor G Pestelos Jr</title>
+  <meta name="description" content="I haven&#x27;t written a test in a year.">
+  <meta property="og:title" content="I Haven&#x27;t Written a Test in a Year">
+  <meta property="og:description" content="I haven&#x27;t written a test in a year.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/havent-written-a-test-in-a-year/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/havent-written-a-test-in-a-year/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>I Haven&#x27;t Written a Test in a Year</h1>
+<p class="byline">Published July 20, 2026</p>
+
+<p class="series">And My Test Suite Is Better for It</p>
+
+<p>I haven&#x27;t written a test in a year.</p>
+
+<p>For a developer who built an entire philosophy around &quot;Bugs as Missing Test Cases,&quot; this sounds like professional negligence. Like I&#x27;ve abandoned the craft.</p>
+
+<p>The tests exist. I just didn&#x27;t write them.</p>
+
+<h2>What Actually Happened</h2>
+
+<p>AI writes the tests now. I review them.</p>
+
+<p>This isn&#x27;t vibe-testing. I don&#x27;t blindly accept whatever the AI generates because it looks plausible and the green checkmarks feel reassuring. This is a systematic workflow:</p>
+
+<ol>
+
+<li>I implement a feature (or AI does, and I verify)</li>
+
+<li>I describe what the tests should cover</li>
+
+<li>AI generates the test file</li>
+
+<li>I review the generated tests</li>
+
+<li>I run them, verify they test what matters, request changes if needed</li>
+
+<li>Tests get committed</li>
+
+</ol>
+
+<p>Most days this works. But step 4 is where it breaks down more than I&#x27;d like to admit. Sometimes I&#x27;m three reviews deep and realize the AI keeps generating tests that pass but don&#x27;t actually prove anything. They&#x27;re testing the happy path six different ways while ignoring the one boundary condition that caused last month&#x27;s production incident. That&#x27;s when I have to dictate the test structure myself.</p>
+
+<p>The 20-30 minutes I used to spend writing a test file? Now I spend 10 minutes reviewing one. The output is the same. Often better, because AI doesn&#x27;t get bored writing the tedious edge cases.</p>
+
+<p>But the skill has fundamentally changed. I used to write good tests. Now I catch bad tests.</p>
+
+<p>Same outcome. Different process. Different expertise.</p>
+
+<h2>What I Review For</h2>
+
+<p>When AI generates a test file, I&#x27;m checking judgment, not syntax.</p>
+
+<p><strong>Does it test the right thing?</strong> AI tests what it sees. I know what the code is <em>supposed</em> to do, which isn&#x27;t always what it does. The test needs to verify intent, not just current behavior.</p>
+
+<p><strong>Does it catch the edge cases I know about?</strong> I&#x27;ve lived in this codebase for years. I know where the dragons are. If the AI-generated tests don&#x27;t poke at the known failure modes, they&#x27;re not good enough.</p>
+
+<p><strong>Is it testing behavior or implementation?</strong> Bad tests break when you refactor. Good tests break when you break functionality. AI often couples too tightly to implementation details. I push back toward behavior.</p>
+
+<p><strong>Will it break for the wrong reasons?</strong> Date-dependent tests. Order-dependent assertions. Hardcoded values that become false in six months. AI doesn&#x27;t feel the pain of maintaining tests over time. I do.</p>
+
+<p>This review process takes domain knowledge. It takes experience with what breaks. It takes judgment that AI doesn&#x27;t have.</p>
+
+<h3>A Review in Practice</h3>
+
+<p>I asked Claude to generate tests for a service that processes subscription renewals. The first version came back with something like this:</p>
+
+<pre><code>test &quot;processes renewal successfully&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: Time.current + 1.day)
+  result = RenewalService.call(subscription)
+  assert result.success?
+  assert_equal &quot;active&quot;, subscription.reload.status
+end
+
+test &quot;handles expired subscription&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: Time.current - 1.day)
+  result = RenewalService.call(subscription)
+  assert result.success?
+  assert_equal &quot;renewed&quot;, subscription.reload.status
+end</code></pre>
+
+<p>Both tests pass. Both miss the point.</p>
+
+<p>The first test renews a subscription that isn&#x27;t due yet. Why would you renew something that doesn&#x27;t expire for another day? It should either be a no-op or an error. The second test asserts <code>success?</code> for an expired subscription, but the actual business rule is that subscriptions expired for more than 30 days should <em>fail</em> renewal and require manual intervention.</p>
+
+<p>The AI tested the code paths. I know the business rules. After review, the tests looked like this:</p>
+
+<pre><code>test &quot;renews subscription expiring within 7 days&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: 3.days.from_now)
+  result = RenewalService.call(subscription)
+  assert result.success?
+  assert_equal &quot;active&quot;, subscription.reload.status
+  assert subscription.expires_at &gt; 3.days.from_now
+end
+
+test &quot;skips subscription not yet due for renewal&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: 30.days.from_now)
+  result = RenewalService.call(subscription)
+  assert result.skipped?
+end
+
+test &quot;fails renewal for subscription expired over 30 days&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: 45.days.ago)
+  result = RenewalService.call(subscription)
+  refute result.success?
+  assert_includes result.errors, &quot;requires manual review&quot;
+end</code></pre>
+
+<p>Same service. Completely different tests. The difference isn&#x27;t syntax. It&#x27;s knowing that &quot;expired&quot; means different things depending on <em>how long ago</em> it expired.</p>
+
+<p>This is what test review looks like. The AI wrote plausible tests. I caught the ones that would have let real bugs through.</p>
+
+<h2>What I&#x27;ve Gained</h2>
+
+<p><strong>Coverage I wouldn&#x27;t have written.</strong> How many tedious edge cases do you skip because life is short? AI doesn&#x27;t skip. It will generate the boring permutation tests that you technically know you should write but never do. My coverage is higher because AI has more patience than I do. Sometimes it tests something and I think: &quot;Oh. Yeah. That could definitely break.&quot;</p>
+
+<p><strong>Faster iteration on test quality.</strong> &quot;This test is too coupled to implementation. Rewrite it to test behavior.&quot; That sentence takes three seconds to type and gets me a better test faster than rewriting it myself.</p>
+
+<p><strong>More time for test strategy.</strong> What should we test? How should the test suite be organized? What&#x27;s the failure mode we&#x27;re not covering? These strategic questions matter more than the syntax. Offloading the typing lets me think at a higher level.</p>
+
+<h2>What I&#x27;ve Lost</h2>
+
+<p><strong>Muscle memory for test syntax.</strong> I used to type <code>assert_equal</code> without thinking. Now I sometimes pause on the argument order. The syntax has faded because I don&#x27;t practice it.</p>
+
+<p><strong>The design pressure of writing tests first.</strong> Last month I built a service to retry failed payments. I wrote the implementation first, then generated tests. The tests passed. Three days later, I needed to add partial refunds. The test structure fought me. I had to rewrite three tests to accommodate the new flow. If I&#x27;d written tests first, I would have noticed the inflexible design before I built it. That was the moment I realized: TDD isn&#x27;t just about coverage, it&#x27;s about design feedback loops. I&#x27;m not sure I&#x27;ve replaced that loop with anything better.</p>
+
+<p>That retry service taught me something else, too. Something happens when you manually type out test cases. You think of cases you wouldn&#x27;t have thought to ask for. The writing <em>is</em> the thinking. Reviewing someone else&#x27;s tests (even AI-generated ones) doesn&#x27;t trigger the same discovery process.</p>
+
+<p>And if I had to write tests without AI tomorrow, I&#x27;d be slower than I was a year ago. If my internet went down and a critical test needed writing, I&#x27;d need to look up assertion syntax I used to know cold. That dependency is real.</p>
+
+<p><strong>There&#x27;s a more dangerous version of this story: what if I&#x27;m not just losing syntax memory, but losing the ability to even recognize bad tests?</strong> So far, my review skills are sharp. But reviewing is a downstream skill. If I stop writing entirely, does my review quality decay? The muscle you don&#x27;t use eventually can&#x27;t even judge the muscles that do. I don&#x27;t think I&#x27;m there yet. But it&#x27;s the risk I track most carefully.</p>
+
+<h2>The Uncomfortable Truth</h2>
+
+<p><strong>I&#x27;m a worse test-writer than I was a year ago.</strong></p>
+
+<p>If you put me in a room with a whiteboard and asked me to write test cases from scratch, I&#x27;d be rustier than I was in early 2025. The skill has atrophied from disuse.</p>
+
+<p><strong>I&#x27;m a better test-reviewer than I was a year ago.</strong></p>
+
+<p>I&#x27;ve spent a year reading and critiquing AI-generated tests. I know what bad AI tests look like. I know what&#x27;s missing, what&#x27;s over-specified, what will break in six months. My review skills are sharper than ever.</p>
+
+<p><strong>These are different skills.</strong></p>
+
+<p>Writing and reviewing are not the same expertise. The market doesn&#x27;t recognize this yet. Job interviews still ask you to write tests on a whiteboard. They don&#x27;t ask you to review AI-generated tests for quality.</p>
+
+<p>But the job has changed. The interview just hasn&#x27;t caught up.</p>
+
+<h2>The Team Question</h2>
+
+<p>Last month, a junior dev wrote tests for a new API endpoint. I reviewed them and requested five changes. They all passed. Two days later, I realized we needed a sixth test case: a subtle race condition under concurrent load that I&#x27;ve seen break production twice. I wrote that test myself. The junior dev learned the pattern. But they also learned that my AI-generated tests wouldn&#x27;t have caught it either. The asymmetry is teaching them something about my process, and I haven&#x27;t decided if that&#x27;s good or bad.</p>
+
+<p>If we both lost AI access tomorrow, they&#x27;d be better prepared than I am. I&#x27;ve traded that resilience for throughput. That&#x27;s a bet, and I haven&#x27;t fully reckoned with the downside.</p>
+
+<h2>What This Means</h2>
+
+<p>Testing expertise isn&#x27;t obsolete. It&#x27;s transformed.</p>
+
+<p>The knowledge of <em>what</em> to test matters more than ever. Knowing which edge cases break, understanding the domain, recognizing when a test is too fragile. That judgment is exactly what AI lacks. The expertise is the same; the expression is different.</p>
+
+<p><strong>Knowing what to test matters more than knowing how to type it.</strong></p>
+
+<p>I still apply &quot;Bugs as Missing Test Cases&quot; every day, a principle I&#x27;ve followed for over a decade: every production bug reveals a test that should have existed. When something breaks, I still ask: &quot;What test would have caught this before users did?&quot; The philosophy is unchanged. But the hands that write the test are different now.</p>
+
+<p><strong>Quality judgment can&#x27;t be automated (yet).</strong></p>
+
+<p>AI can generate a test that passes. It can&#x27;t generate a test that will still be valuable in two years. It can&#x27;t weigh the maintenance cost against the coverage benefit. It can&#x27;t feel which tests are worth having. That judgment is human.</p>
+
+<p><strong>The skill transfer is real.</strong></p>
+
+<p>A developer who never learned to write tests won&#x27;t be a good test reviewer. You need to have written bad tests to recognize them. The foundation is still required. It&#x27;s just not the daily practice anymore.</p>
+
+<p>This is part of the broader implementor-to-orchestrator shift. The pattern holds for code, for tests, for documentation. The skill is verification and judgment, not production.</p>
+
+<p>I haven&#x27;t written a test in a year. But I&#x27;ve reviewed a thousand of them.</p>
+
+<p>And when I interview for my next job, they&#x27;ll ask me to write tests on a whiteboard. They won&#x27;t ask me to review AI-generated tests for correctness, spot the business logic gaps, or evaluate whether a test suite will survive the next refactor.</p>
+
+<p>The job has changed. The interview hasn&#x27;t. Yet.</p>
+
+<p>I&#x27;ve already chosen my side of that gap. I traded writing muscle for judgment muscle, syntax memory for review sharpness. The test suite is better than it&#x27;s ever been. My hands are rustier than they&#x27;ve ever been. I&#x27;d make the same trade again tomorrow.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

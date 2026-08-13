@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug the System Not the Prompt — Nestor G Pestelos Jr</title>
+  <meta name="description" content="I started asking Claude why it gave me wrong output instead of reprompting. Not as a rhetorical exercise. As a direct question: &quot;Explain step by step what you did to produce that output and what sources you…">
+  <meta property="og:title" content="Debug the System Not the Prompt">
+  <meta property="og:description" content="I started asking Claude why it gave me wrong output instead of reprompting. Not as a rhetorical exercise. As a direct question: &quot;Explain step by step what you did to produce that output and what sources you…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/debug-system-not-prompt/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/debug-system-not-prompt/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Debug the System Not the Prompt</h1>
+<p class="byline">Published March 24, 2026</p>
+
+
+<p>I started asking Claude why it gave me wrong output instead of reprompting. Not as a rhetorical exercise. As a direct question: &quot;Explain step by step what you did to produce that output and what sources you consulted.&quot; Then I&#x27;d ask why it skipped the source I expected it to use. Then why it was possible to skip that source at all.</p>
+
+<p>Three questions. Same chain Toyota&#x27;s production engineers have run since the 1950s. <a href="https://grokipedia.com/page/Five_whys">The Five Whys</a>, the simplest root-cause analysis technique in industrial engineering, turns out to be the most useful debugging tool for AI systems that nobody is using.</p>
+
+<p>Almost every developer I watch treats AI failures as prompting failures. Rephrase, retry, hope. This article is about what happens when you stop doing that.</p>
+
+<h2>The Retry Trap</h2>
+
+<p>The instinct when Claude produces wrong output is to retry with better instructions. This is the equivalent of replacing the blown fuse without asking why it blew.</p>
+
+<p>Retrying treats every failure as a prompting problem. Sometimes it is. But often the failure has nothing to do with your prompt. The model ignored a directive it had access to. It hallucinated a path instead of running another search. It improvised a format from memory instead of reading the specification that was right there in its context.</p>
+
+<p>Retrying with a better prompt fixes none of these. You get different wrong output, or the same wrong output with more confidence. The root cause is still there.</p>
+
+<h2>The Chain</h2>
+
+<p>The technique is simple. When Claude gives you sub-optimal output, you start a chain:</p>
+
+<p><strong>Why #1: &quot;Why did you give me this output?&quot;</strong></p>
+
+<p>Claude will explain its reasoning. You see the logic path, and often the failure point is visible on first read. Maybe it says: &quot;I synthesized from the document&#x27;s title and first paragraph.&quot; Translation: it didn&#x27;t read the full document. Root cause found in one question.</p>
+
+<p><strong>Why #2: &quot;There&#x27;s a specification for this. Why didn&#x27;t you follow it?&quot;</strong></p>
+
+<p>The specification might be a skill file, a README, a style guide, a doc comment. Any documented source of truth the AI had access to. Now the model has to confront the gap between what it did and what it should have done. Common answers:</p>
+
+<ul>
+
+<li>&quot;I didn&#x27;t read the skill file before generating output.&quot; → It skipped a documented step.</li>
+
+<li>&quot;I was following the format from a similar task I did earlier in this conversation.&quot; → It relied on in-context pattern matching instead of the canonical source.</li>
+
+<li>&quot;I wasn&#x27;t aware that skill file existed.&quot; → It didn&#x27;t search for relevant guidance before acting.</li>
+
+</ul>
+
+<p><strong>Why #3: &quot;Why didn&#x27;t you read the skill file first?&quot;</strong></p>
+
+<p>The answer often reveals a process failure:</p>
+
+<ul>
+
+<li>&quot;The conversation didn&#x27;t reference the skill, so I didn&#x27;t know to look for it.&quot; → Your command or workflow doesn&#x27;t link to the skill it depends on.</li>
+
+<li>&quot;I prioritized speed over thoroughness.&quot; → The model made a tradeoff you didn&#x27;t authorize.</li>
+
+<li>&quot;I read a different file that seemed relevant and used that format instead.&quot; → There&#x27;s ambiguity in your documentation that the model resolved wrong.</li>
+
+</ul>
+
+<p>By the third why, you&#x27;re usually past the specific failure and into the system that allowed it.</p>
+
+<h2>A Real Chain</h2>
+
+<p>February 2026. I run <code>/morning</code>, which delegates to <code>/burnout</code> for a check-in assessment. Claude produces a burnout check-in with a 1-5 scale, three dimensions, and no git-based attention analysis.</p>
+
+<p>Every detail wrong. If I&#x27;d retried (&quot;do the burnout check-in again, but correctly&quot;) I&#x27;d get a slightly different wrong output. Instead:</p>
+
+<p><strong>Why did you produce the wrong format?</strong> &quot;I generated the burnout check-in based on my understanding of burnout assessment frameworks.&quot;</p>
+
+<p>**The <code>/burnout</code> command has a specific skill file with the exact scale, dimensions, and methodology. Why didn&#x27;t you read it?** &quot;I didn&#x27;t read the burnout skill file before generating the output. I relied on general knowledge of burnout assessment.&quot;</p>
+
+<p><strong>Why not? The command file references the skill.</strong> &quot;I should have read the command file first, which would have pointed me to the skill file. I jumped straight to generating output without reading the specification.&quot;</p>
+
+<p>Root cause: Claude skipped the read-before-execute step. The root cause was process, not prompting or model capability. The same kind of process problem a junior developer makes when they code from memory instead of reading the spec.</p>
+
+<p>The fix wasn&#x27;t a better prompt. It was a persistent rule in the AI&#x27;s configuration: &quot;When a command delegates to another command or references a skill, READ the target file BEFORE executing.&quot; That rule prevents the entire category of failure, not just this instance.</p>
+
+<p>A fair objection: the model is confabulating its reasoning. It doesn&#x27;t have a real execution trace. When it says &quot;I prioritized speed,&quot; it didn&#x27;t make a speed-vs-thoroughness calculation. It&#x27;s rationalizing after the fact. This is true. But the rationalization points toward the structural gap even when the specific explanation is wrong. The model didn&#x27;t read the file, and the system allowed that. Whether it &quot;chose&quot; not to or simply didn&#x27;t is irrelevant to the fix.</p>
+
+<p>A rubber duck can&#x27;t tell you which file it skipped. The model can. That signal, even filtered through confabulation, points you to the part of your system that needs a guardrail. You&#x27;re debugging the system around the model, not the model itself.</p>
+
+<h2>The Taxonomy of Root Causes</h2>
+
+<p>After enough of these chains, three categories account for nearly every failure I&#x27;ve seen.</p>
+
+<p><strong>Skipped Read.</strong> The model had access to the right information and didn&#x27;t read it. This is the most common failure. The information was there: a skill file, a convention document, a referenced command. The model jumped to output without loading the spec. Stale context is a variant: the model read the right file in a previous conversation and is working from memory instead of a fresh read. Either way, the system allowed the model to skip a read step, and the fix is making that step non-optional.</p>
+
+<p><strong>Priority Conflict.</strong> Two directives compete and the model resolved the conflict silently. Your configuration says &quot;be concise.&quot; Your skill file says &quot;include all five layers.&quot; The model picked concise and dropped layers without telling you. The dangerous part isn&#x27;t the wrong choice. It&#x27;s the silence. You don&#x27;t know a conflict existed until the output is wrong.</p>
+
+<p><strong>Capability Boundary.</strong> The model can&#x27;t do what you asked. It hallucinated a file path because finding the real one required too many searches. It produced a plausible-sounding but wrong answer because the task exceeded its reasoning capacity for that context. This is the only category where retrying is useless, full stop. The fix is structural: break the task into smaller pieces, provide more scaffolding, or do that piece manually.</p>
+
+<p>| Root Cause | Diagnostic Signal | Fix | |---|---|---| | Skipped Read | &quot;I used general knowledge&quot; / &quot;I wasn&#x27;t aware of that file&quot; | Make read steps non-optional before generation | | Priority Conflict | Output silently drops a requirement | Make priorities explicit in documentation | | Capability Boundary | Output is plausible but fabricated | Break the task smaller, or do it manually |</p>
+
+<h2>How to Start</h2>
+
+<p>You don&#x27;t need a configuration system, skill files, or any infrastructure. Next time your AI gives you wrong output, instead of rephrasing your prompt, type:</p>
+
+<p><em>&quot;Before I ask you to try again, explain step by step what you did to produce that output and what sources you consulted.&quot;</em></p>
+
+<p>Then ask why it didn&#x27;t consult the thing you expected it to consult. That&#x27;s it. Two questions. You&#x27;ll either find the root cause or learn something about your own assumptions that&#x27;s worth knowing.</p>
+
+<p>If you keep doing this, three things shift. Your documentation gets better, because every root cause that ends at &quot;ambiguous docs&quot; leads to a specific edit, and each rule has a scar behind it. Your failures get more interesting: the easy ones stop recurring, and what&#x27;s left are the hard problems. And you stop retrying, because you know that most failures aren&#x27;t prompting failures.</p>
+
+<p><a href="https://para.ngpcloud.org/2+Resources/Topics/Software+Craftsmanship/Infrastructure+Mechanical+Sympathy">Mechanical sympathy</a> in daily practice is not an abstract understanding of transformer architecture. It&#x27;s a practitioner&#x27;s catalog of failure modes, built one diagnosis at a time, that lets you predict what the AI will get wrong before it gets it wrong.</p>
+
+<p><a href="https://grokipedia.com/page/Five_whys">The Five Whys</a> didn&#x27;t need modification for AI. The technique was already designed for systems you operate but don&#x27;t fully understand.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

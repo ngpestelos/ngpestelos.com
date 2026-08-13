@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parallelizing SFTP Downloads in Ruby — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A vendor sync job had a 20GB file that took more than a day over single-connection SFTP. A CLI tool called lftp already does parallel downloads over SSH. But wrapping that in a proper Ruby gem with integrity…">
+  <meta property="og:title" content="Parallelizing SFTP Downloads in Ruby">
+  <meta property="og:description" content="A vendor sync job had a 20GB file that took more than a day over single-connection SFTP. A CLI tool called lftp already does parallel downloads over SSH. But wrapping that in a proper Ruby gem with integrity…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/parallelizing-sftp-downloads-ruby/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/parallelizing-sftp-downloads-ruby/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Parallelizing SFTP Downloads in Ruby</h1>
+<p class="byline">Published February 8, 2026</p>
+
+<p class="series">When building the right thing costs the same as building the quick thing</p>
+
+<p>A vendor sync job had a 20GB file that took more than a day over single-connection SFTP. A CLI tool called lftp already does parallel downloads over SSH. But wrapping that in a proper Ruby gem with integrity verification, resume support, and automatic retry? Nobody builds a real library for a file transfer problem.</p>
+
+<p>I built it in an afternoon with an AI coding assistant.</p>
+
+<h2>The Problem</h2>
+
+<p>SFTP runs over a single SSH connection. Ruby&#x27;s <code>net-sftp</code> gem is reliable, but for a 20GB file at 2MB/s, that&#x27;s a hard ceiling: roughly 3 hours. Our connection had more bandwidth available. The protocol just wouldn&#x27;t use it. On bad days the transfer would stall, timeout, and start from zero.</p>
+
+<p>lftp, a command-line transfer program that&#x27;s been around since 1996, already solves this:</p>
+
+<pre><code>lftp -c &quot;
+  open sftp://user:pass@host
+  pget -n 8 /remote/large_file.zip -o /local/large_file.zip
+&quot;</code></pre>
+
+<p><code>pget</code> splits the file into byte ranges and downloads segments over 8 parallel SSH connections. 20GB goes from 1 day to less than 1 hour. It handles resume, retries, and timeouts. The hard part was already solved, just not as a Ruby library.</p>
+
+<h2>From Script to Gem</h2>
+
+<p>In the past, that working lftp command would have stayed a shell script in <code>bin/</code>. It would work. It would be fragile. Nobody would touch it because nobody would want to understand the lftp flag combinations. Here&#x27;s what the gem actually constructs under the hood:</p>
+
+<pre><code>lftp -c &quot;set net:timeout 60; set net:max-retries 15;
+  set net:reconnect-interval-base 10;
+  set sftp:connect-program &#x27;ssh -o StrictHostKeyChecking=no&#x27;;
+  open sftp://user:password@host;
+  pget -n 8 -c /remote/large_file.zip -o /local/large_file.zip&quot;</code></pre>
+
+<p>Timeout tuning, retry configuration, reconnection intervals, SSH options, segment count, resume flags. That&#x27;s the kind of incantation that lives in a script nobody maintains. When the next project needs parallel SFTP, someone writes another script from scratch.</p>
+
+<p>I was using Claude Code for other parts of this codebase. On a whim I described what I wanted: a gem that wraps lftp&#x27;s pget, handles connection options, verifies zip integrity after download, and resumes interrupted transfers. The kind of spec that would normally sit in a backlog for months.</p>
+
+<p>The first working version took an afternoon.</p>
+
+<p>Not because AI wrote perfect code on the first try. It didn&#x27;t. But the iteration cycle collapsed. Describe a feature, get an implementation, test it against a real server, describe what&#x27;s wrong, get a fix. The back-and-forth that normally stretches across days (reading man pages, figuring out which flags interact, handling the dozen ways a subprocess can fail) compressed into a conversation.</p>
+
+<p>The expensive part of building a gem isn&#x27;t any single function. It&#x27;s the accumulated friction of dozens of small decisions.</p>
+
+<p>So the production code ended up looking like this:</p>
+
+<pre><code>ParallelSftp.download(
+  host: ENV[&#x27;SFTP_HOST&#x27;],
+  user: ENV[&#x27;SFTP_USER&#x27;],
+  password: ENV[&#x27;SFTP_PASSWORD&#x27;],
+  remote_path: &#x27;/exports/daily_feed.zip&#x27;,
+  local_path: Rails.root.join(&#x27;tmp&#x27;, &#x27;vendor_daily.zip&#x27;).to_s
+)</code></pre>
+
+<p>One method call. That lftp incantation, the subprocess management, the file verification, all behind a Ruby interface that anyone on the team can read.</p>
+
+<h2>The Features You&#x27;d Normally Skip</h2>
+
+<p>A throwaway script downloads the file. A proper gem handles the things that go wrong.</p>
+
+<p><strong>Zip integrity.</strong> Parallel downloads can corrupt files in a subtle way. lftp reassembles segments, and occasionally the boundaries produce a bad file even though lftp reports success. The gem runs <code>unzip -t</code> after every download. If it fails, it retries at the same segment count (corruption is often transient), then halves the segments (fewer boundaries, less risk), then falls back to a single connection, then gives up.</p>
+
+<p>That degradation strategy is the kind of thing you&#x27;d sketch on a whiteboard and never implement in a script. Maybe two hours of work for an edge case that happens once a month. You&#x27;d skip it. In a gem where the total development cost was an afternoon, there was no reason not to build it right.</p>
+
+<p><strong>Resume.</strong> lftp tracks each segment&#x27;s byte offset in a status file. Kill the process, restart it, and it picks up where it left off. The gem exposes this with <code>resume: true</code>. The only thing that matters: download paths must be deterministic so retries find the partial file instead of starting fresh. With that, your job&#x27;s <code>retry_on</code> and lftp&#x27;s resume work together automatically. A deploy mid-download doesn&#x27;t mean starting over.</p>
+
+<p><strong>Error specificity.</strong> <code>ConnectionError</code>, <code>ZipIntegrityError</code>, <code>DownloadError</code> instead of a generic failure. Monitoring routes alerts appropriately without a catch-all rescue.</p>
+
+<p>Every one of these features exists because the cost of building them dropped low enough that skipping them stopped making sense.</p>
+
+<h2>Results</h2>
+
+<p>Before: a daily sync that started before lunch and maybe finished by end of day. Downloads that failed at 80% meant starting over. Corrupt zips discovered hours later when the import blew up. The whole team knew which day was &quot;vendor sync day&quot; because that was the day things broke.</p>
+
+<p>After: the sync runs in under 40 minutes. Interrupted downloads resume. Corrupt files are caught and retried automatically. The SFTP step became boring, which is exactly what infrastructure should be.</p>
+
+<p>There are cases where this doesn&#x27;t make sense: files under 100MB, non-zip formats that can&#x27;t be verified, servers that restrict concurrent connections. But for the problem that started this, it worked.</p>
+
+<p>lftp&#x27;s pget has existed for years. The integrity strategy is straightforward once you write it down. The insight was that an AI coding assistant collapsed the economics of &quot;doing it right.&quot; The gap between a disposable script and a proper library (tests, edge case handling, integrity verification, automatic retry) used to be days of work. Now it&#x27;s an afternoon.</p>
+
+<p>When building the right thing costs the same as building the quick thing, you build the right thing.</p>
+
+<ul>
+
+<li><strong>GitHub</strong>: <a href="https://github.com/ngpestelos/parallel_sftp">parallel_sftp</a></li>
+
+<li><strong>lftp project</strong>: <a href="https://github.com/lavv17/lftp">github.com/lavv17/lftp</a></li>
+
+</ul>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

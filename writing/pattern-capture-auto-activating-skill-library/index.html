@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pattern Capture - How I Built an Auto-Activating Skill Library — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Work discoveries usually vanish into conversation history or project notes. Pattern capture turns them into permanent, auto-activating expertise through a six-phase workflow: analyze the context, search your existing…">
+  <meta property="og:title" content="Pattern Capture - How I Built an Auto-Activating Skill Library">
+  <meta property="og:description" content="Work discoveries usually vanish into conversation history or project notes. Pattern capture turns them into permanent, auto-activating expertise through a six-phase workflow: analyze the context, search your existing…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/pattern-capture-auto-activating-skill-library/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/pattern-capture-auto-activating-skill-library/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Pattern Capture - How I Built an Auto-Activating Skill Library</h1>
+<p class="byline">Published July 10, 2026</p>
+
+
+<h2>TL;DR</h2>
+
+<p>Work discoveries usually vanish into conversation history or project notes. Pattern capture turns them into permanent, auto-activating expertise through a six-phase workflow: analyze the context, search your existing skills, write the content, integrate it, validate it, refine it. What holds it together is discipline: search before you create so you don&#x27;t duplicate, extend an existing skill instead of spinning up a new one, and connect each skill to the others so the collection compounds instead of sprawling. The result is a library that surfaces the right guidance on its own, the moment the context calls for it.</p>
+
+<h2>The Problem: Ephemeral Insights</h2>
+
+<p>I typed &quot;help me organize these commits&quot; and my tools handed back a method I&#x27;d written months earlier and forgotten I owned. I never went looking for it. That&#x27;s what capturing patterns as skills buys you that notes never do.</p>
+
+<p>It didn&#x27;t used to work that way. You debug something subtle three hours deep, fix it, ship it, and three months later hit the same pattern in another project, solving it from scratch because the original insight is gone.</p>
+
+<p>One case from my own vault: while editing an article I noticed em-dashes were quietly manufacturing run-on sentences, and the fix was to break them into periods or commas depending on the sentence&#x27;s rhythm. That insight could have stayed buried in a conversation log. Instead I folded it into an existing editing skill, so now it surfaces on its own every time I draft an article.</p>
+
+<p>The trap most people fall into is the opposite move: they capture the same insight three times as three narrow skills, an &quot;em-dash-reducer,&quot; a &quot;sentence-rhythm-checker,&quot; an &quot;editorial-style-guide,&quot; each fifteen lines, each overlapping the others. Do that for a year and you have twenty fragments nobody searches, plus the &quot;I know I wrote something about this&quot; feeling that means the knowledge is gone.</p>
+
+<p>When capture is ad-hoc, four things are missing: a repeatable process, a way to catch duplicates, cross-references between skills, and the habit of extending what exists before adding something new.</p>
+
+<h2>What a Skill Actually Is</h2>
+
+<p>If you work with an AI coding agent like Claude Code, a skill is just a markdown file with a little frontmatter at the top: a name, a one-line description, and a set of trigger keywords. The agent reads those descriptions, and when your request matches a skill&#x27;s triggers, it loads that skill&#x27;s instructions on its own. You don&#x27;t go find it; the context pulls it in.</p>
+
+<p>A minimal one looks like this:</p>
+
+<pre><code>---
+name: atomic-commit
+description: Organize changes into small, single-purpose git commits
+triggers: [commit, organize commits, stage changes]
+---
+
+Group related files. One logical change per commit. Write the &quot;why&quot; in the body.</code></pre>
+
+<p>Type &quot;help me organize these commits&quot; and the agent surfaces that guidance without being told where it lives. That auto-loading is the whole payoff, and it&#x27;s also the catch: it&#x27;s tool-specific. If you&#x27;re not using an agent that supports skills, the mechanism won&#x27;t transfer, but the discipline underneath it will. Capture a pattern once, in a form your tools can retrieve on their own, instead of re-deriving it every few months from memory.</p>
+
+<h2>How I Actually Run It</h2>
+
+<p>The whole thing takes fifteen to twenty minutes, and it&#x27;s the same six moves every time.</p>
+
+<p>I start by pulling three things out of the discovery: the anti-pattern and the fix that actually worked, the phrases that should trigger the skill later (something like &quot;organize commits&quot; pointing at my atomic-commit method), and the context I found it in, the date and situation and original problem. That&#x27;s about five minutes.</p>
+
+<p>Then I search before I create, which is the step that matters most:</p>
+
+<pre><code>grep -ri &quot;keyword1\|keyword2&quot; .claude/skills/*/SKILL.md</code></pre>
+
+<p>If I find a match, I extend that skill; if I don&#x27;t, I start a new one. When I kept getting confused about where things belonged in my PARA setup, I searched my existing skills, found one that already covered the area, and added an anti-pattern section to it instead of writing a new file. Most fragmentation gets prevented right here.</p>
+
+<p>Writing the content depends on which way that went. For an update, I add the pattern with its discovery date so the history stays legible:</p>
+
+<pre><code>### Common Mistake: Resources vs Areas (January 2026)
+
+WRONG - &quot;I&#x27;m interested in health, so it goes in Resources/&quot;
+RIGHT - &quot;Am I responsible for maintaining this? Then it&#x27;s an Area/&quot;</code></pre>
+
+<p>For a new skill, I write the whole thing: the core principles that explain why, the method itself, the patterns to follow and the ones to avoid, real examples instead of hypotheticals, and links to the related skills and documents.</p>
+
+<p>That linking is its own move. I connect the skill to the documents, commands, and other skills around it, whether they&#x27;re prerequisites, alternatives, or extensions. An isolated skill barely gets used; wired into its neighbors, it gets pulled in from several directions at once.</p>
+
+<p>Before I call it done, I validate: the frontmatter is valid, the sections are all there, the examples are concrete, the trigger keywords are broad enough to actually fire, and any claim about my own vault carries a citation. Skipping that is how dead skills pile up.</p>
+
+<p>Then I refine in the open, showing what the change does and where it connects and what I&#x27;m unsure about, and getting feedback before I commit it.</p>
+
+<h2>Quality Discipline Over Accumulation</h2>
+
+<p>The workflow only pays off if two disciplines hold.</p>
+
+<p>The first is to enhance before you create. Search first, and when you find an adjacent skill, extend it instead of fragmenting the idea across three mediocre files. One skill with ninety lines of well-organized guidance beats three fifteen-line stubs that each cover a third of the problem and none of it well.</p>
+
+<p>The second is to capture patterns, not incidents. A pattern recurs across contexts and earns the fifteen minutes; a one-time fix doesn&#x27;t. The filter is whether you expect to hit it again.</p>
+
+<p>Hold both lines and the collection changes over time. Early on you&#x27;re creating foundational skills every week. A few months in, you&#x27;re mostly extending what&#x27;s there. Eventually you rarely create at all, and most of what you hit is already covered.</p>
+
+<h2>Real-World Outcome</h2>
+
+<p>The point of all this is auto-activation. Because each skill declares its trigger phrases, the right guidance surfaces without my going to find it: &quot;capture this pattern&quot; pulls up the capture workflow, &quot;organize commits&quot; pulls up the git method, and whatever else I hit pulls up whatever matches. I&#x27;m not searching a filing cabinet; the cabinet hands me the right drawer.</p>
+
+<p>The compounding comes from the connections, not the count. A well-integrated skill might reference a few related skills, a couple of documents, a command, and several trigger scenarios, and every one of those links gets stronger when I improve the skill. Loosely connected skills just pile up in a folder. Densely connected ones get reused, because each is reachable from several others, so expertise carries across projects instead of resetting each time.</p>
+
+<h2>Conclusion</h2>
+
+<p>Pattern capture works because of the discipline around it: search before creating, extend before adding, connect as you go, and validate so each skill earns its keep. Do that and new problems start pulling up the right guidance on their own. That&#x27;s the point where your expertise stops being something you have to remember and becomes something your tools reach for.</p>
+
+<p>The value was never in collecting more patterns. It&#x27;s in building a system where they hold each other up.</p>
+
+<p>If you want to start, run your next worth-keeping discovery through all six moves, and make search-before-create the habit you never skip. The cost is fifteen or twenty minutes a pattern. The payoff is that your best insights stop evaporating.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

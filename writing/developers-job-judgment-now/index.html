@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Developer&#x27;s Job is Judgment Now — Nestor G Pestelos Jr</title>
+  <meta name="description" content="I haven&#x27;t written a test in a year.">
+  <meta property="og:title" content="The Developer&#x27;s Job is Judgment Now">
+  <meta property="og:description" content="I haven&#x27;t written a test in a year.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/developers-job-judgment-now/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/developers-job-judgment-now/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>The Developer&#x27;s Job is Judgment Now</h1>
+<p class="byline">Published February 27, 2026</p>
+
+
+<p>I haven&#x27;t written a test in a year.</p>
+
+<p>For a developer who built an entire philosophy around &quot;Bugs as Missing Test Cases,&quot; this sounds like professional negligence. Like I&#x27;ve abandoned the craft.</p>
+
+<p>The tests exist. I just didn&#x27;t write them.</p>
+
+<h2>What Actually Happened</h2>
+
+<p>AI writes the tests now. I review them.</p>
+
+<p>I describe what the tests should cover, AI generates them, I review and run them. The 20-30 minutes I used to spend writing a test file is now 10 minutes reviewing one. The output is the same. Often better, because AI doesn&#x27;t get bored writing the tedious edge cases. Sometimes it tests something and I think: &quot;Oh. Yeah. That could definitely break.&quot;</p>
+
+<p>But the review is where it breaks down more than I&#x27;d like to admit. Sometimes I&#x27;m three reviews deep and realize the AI keeps generating tests that pass but don&#x27;t actually prove anything. They&#x27;re testing the happy path six different ways while ignoring the one boundary condition that caused last month&#x27;s production incident. That&#x27;s when I have to dictate the test structure myself.</p>
+
+<p>Here&#x27;s what that looks like.</p>
+
+<h2>A Review in Practice</h2>
+
+<p>I asked Claude to generate tests for a service that processes subscription renewals. The first version came back with something like this:</p>
+
+<pre><code>test &quot;processes renewal successfully&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: Time.current + 1.day)
+  result = RenewalService.call(subscription)
+  assert result.success?
+  assert_equal &quot;active&quot;, subscription.reload.status
+end
+
+test &quot;handles expired subscription&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: Time.current - 1.day)
+  result = RenewalService.call(subscription)
+  assert result.success?
+  assert_equal &quot;renewed&quot;, subscription.reload.status
+end</code></pre>
+
+<p>Both tests pass. Both miss the point.</p>
+
+<p>The first test renews a subscription that isn&#x27;t due yet. Why would you renew something that doesn&#x27;t expire for another day? It should either be a no-op or an error. The second test asserts <code>success?</code> for an expired subscription, but the actual business rule is that subscriptions expired for more than 30 days should <em>fail</em> renewal and require manual intervention.</p>
+
+<p>The AI tested the code paths. I know the business rules. After review, the tests looked like this:</p>
+
+<pre><code>test &quot;renews subscription expiring within 7 days&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: 3.days.from_now)
+  result = RenewalService.call(subscription)
+  assert result.success?
+  assert_equal &quot;active&quot;, subscription.reload.status
+  assert subscription.expires_at &gt; 3.days.from_now
+end
+
+test &quot;skips subscription not yet due for renewal&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: 30.days.from_now)
+  result = RenewalService.call(subscription)
+  assert result.skipped?
+end
+
+test &quot;fails renewal for subscription expired over 30 days&quot; do
+  subscription = create(:subscription, status: &quot;active&quot;,
+                        expires_at: 45.days.ago)
+  result = RenewalService.call(subscription)
+  refute result.success?
+  assert_includes result.errors, &quot;requires manual review&quot;
+end</code></pre>
+
+<p>Same service. Completely different tests. The difference isn&#x27;t syntax. It&#x27;s knowing that &quot;expired&quot; means different things depending on <em>how long ago</em> it expired.</p>
+
+<p>That&#x27;s what I review for: not whether the test runs, but whether it tests intent. Does it verify what the code is <em>supposed</em> to do, or just what it does? Does it poke at the failure modes I know about from living in this codebase for years? Will it break when I refactor, or only when I break actual functionality? AI tests what it sees. I know what it&#x27;s supposed to do.</p>
+
+<h2>What I&#x27;ve Lost</h2>
+
+<p>Last month I built a service to retry failed payments. I wrote the implementation first, then generated tests. The tests passed. Three days later, I needed to add partial refunds. The test structure fought me. I had to rewrite three tests to accommodate the new flow. If I&#x27;d written tests first, I would have noticed the inflexible design before I built it.</p>
+
+<p>That was the moment I realized: TDD isn&#x27;t just about coverage, it&#x27;s about design feedback loops. I&#x27;m not sure I&#x27;ve replaced that loop with anything better.</p>
+
+<p>Something happens when you manually type out test cases. You think of cases you wouldn&#x27;t have thought to ask for. The writing <em>is</em> the thinking. Reviewing someone else&#x27;s tests (even AI-generated ones) doesn&#x27;t trigger the same discovery process.</p>
+
+<p><strong>There&#x27;s a more dangerous version of this story: what if I&#x27;m not just losing syntax memory, but losing the ability to even recognize bad tests?</strong> So far, my review skills are sharp. But reviewing is a downstream skill. If I stop writing entirely, does my review quality decay? The muscle you don&#x27;t use eventually can&#x27;t even judge the muscles that do. I don&#x27;t think I&#x27;m there yet. But it&#x27;s the risk I track most carefully.</p>
+
+<h2>The Trade-off</h2>
+
+<p>I haven&#x27;t written a test in a year. But I&#x27;ve reviewed a thousand of them.</p>
+
+<p>And when I interview for my next job, they&#x27;ll ask me to write tests on a whiteboard. They won&#x27;t ask me to review AI-generated tests for correctness, spot the business logic gaps, or evaluate whether a test suite will survive the next refactor.</p>
+
+<p>The job has changed. The interview hasn&#x27;t. Yet.</p>
+
+<p>I&#x27;ve already chosen my side of that gap. I traded writing muscle for judgment muscle, syntax memory for review sharpness. The test suite is better than it&#x27;s ever been. My hands are rustier than they&#x27;ve ever been. I&#x27;d make the same trade again tomorrow.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

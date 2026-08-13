@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bugs That Hide Between Your Agents — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found…">
+  <meta property="og:title" content="The Bugs That Hide Between Your Agents">
+  <meta property="og:description" content="Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>The Bugs That Hide Between Your Agents</h1>
+<p class="byline">Published July 8, 2026</p>
+
+<p class="series">I red-teamed my own agent stack for two days. Everything broken was between components — invisible to any single file, and to me.</p>
+
+<p>Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found something broken and running.</p>
+
+<p>A safety hook silently disabled: the pre-commit guards I relied on weren&#x27;t firing, because the pointer that turns them on was never set. Two repositories wedged for weeks behind a stale lock, their sync logs printing &quot;OK&quot; the whole time. Injection paths where fetched text reached write authority unchecked. None of it was theoretical. It was live, in production, on the day I looked.</p>
+
+<h2>The four classes</h2>
+
+<p>The findings fell into four:</p>
+
+<ol>
+
+<li><strong>Untrusted content treated as instructions</strong> — fetched text reaching a component that acts on it.</li>
+
+<li><strong>Unfalsifiable success</strong> — a step reporting &quot;done&quot; with no evidence behind it.</li>
+
+<li><strong>Producer-consumer contract drift</strong> — two components disagreeing about a shared contract. <code>DONE</code> meant &quot;merged and verified&quot; to the skill that produced it and &quot;PR opened&quot; to the skill that consumed it.</li>
+
+<li><strong>Incomplete state machines</strong> — states with no way out, termination guards that can&#x27;t be evaluated from saved state.</li>
+
+</ol>
+
+<p>Was this just my messy stack? I checked whether anyone had studied it at scale.</p>
+
+<h2>Checked at scale</h2>
+
+<p>They had. <a href="https://arxiv.org/abs/2503.13657">MAST</a> (Cemri et al., 2026) built a failure taxonomy from 1,600-plus traces across seven multi-agent frameworks and landed on three categories: system design, inter-agent misalignment, and task verification. The mapping to my four classes is mine, not the paper&#x27;s, and their subject is coordination between agents where mine is one orchestrator&#x27;s plumbing. But the shapes converge. Their misalignment category includes an agent whose stated reasoning doesn&#x27;t match its action, contract drift by another name; their verification failures look like my unfalsifiable success; their system-design failures, especially mishandled termination, look like my dead state machines. Only my first class, untrusted input treated as instructions, falls outside their map; injection enters from outside the agent set, not from the coordination between agents. Other people&#x27;s stacks fail in the same shapes, and most of those shapes live between components, where no one is watching.</p>
+
+<p>So the mess isn&#x27;t mine alone; it&#x27;s the shape of the thing.</p>
+
+<h2>No single file is wrong</h2>
+
+<p>That&#x27;s what these defects share, and it&#x27;s why the usual tools miss them. Prevention, type checkers, single-diff review all work by finding the file that&#x27;s wrong. Contract drift lives in the gap between two files that are each internally fine. Each side is right about its own <code>DONE</code>. They just never agreed, and the disagreement isn&#x27;t written down anywhere.</p>
+
+<p>No one owns the seam between components, so nothing watches it. Each skill passes its own tests, and no test exists for the pipeline they form.</p>
+
+<h2>You can&#x27;t review your own work</h2>
+
+<p>The reflex fix is &quot;review your own infrastructure.&quot; That&#x27;s half wrong, and the wrong half matters. You can&#x27;t reliably review your own work, for a reason that&#x27;s cognitive, not moral: inattentional blindness — the gorilla-suit experiment, <a href="https://doi.org/10.1068/p281059">Simons and Chabris, 1999</a> — means a mind locked on a task misses what a fresh one catches. You read what your code is meant to say, not what it says. A reader with different priors sees different things, not more.</p>
+
+<p>My defects surfaced not because I inspected my own plumbing but because I spawned independent reviewers with no memory of why I&#x27;d written what I had. The working ingredient is manufactured independence, not ownership. &quot;Review your own infrastructure&quot; gets the credit backwards.</p>
+
+<h2>Both sides of the contract</h2>
+
+<p>One move did more than the rest, and it repeats: for every contract between two components, give one reviewer both sides at once — the producer&#x27;s file and the consumer&#x27;s — and tell it to trust neither. The <code>DONE</code>-means-two-things bug was invisible to any reviewer that saw one skill. It took a reader holding both definitions at once to notice they didn&#x27;t match. There&#x27;s no single file to catch it in; a two-sided reviewer is the cheapest thing that can.</p>
+
+<p>The smaller move: trust the running state, not the documentation. Mine described a guard that was right in intent and disabled in fact.</p>
+
+<h2>Investment or avoidance</h2>
+
+<p>Now the part I trust least. I keep telling myself the missing piece isn&#x27;t infrastructure but the customer conversations I keep putting off. I&#x27;d capped myself: no new meta-systems. Yet here&#x27;s a two-day sweep of my own plumbing — meta-system work by any honest definition.</p>
+
+<p>So which was it? The honest answer isn&#x27;t clean. I didn&#x27;t build a system; I checked whether the ones I&#x27;d committed to were doing what I&#x27;d promised, and several weren&#x27;t. A disabled safety hook isn&#x27;t a new project. It&#x27;s a promise I broke without noticing. That defense holds. But those two days could have gone to the conversations, and no bug buys that time back. I can name the cost but not erase it.</p>
+
+<p>The bugs are live in your stack too, in whatever plumbing you&#x27;ve stopped watching. If your review tooling is file-scoped, and most of it is, nothing you run will surface them: these bugs live between the files. So hand a stranger both sides of one contract and tell them to trust neither. It costs an afternoon. Then ask yourself the same question I did.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

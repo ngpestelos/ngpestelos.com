@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a Second Brain with Claude Code - The Setup — Nestor G Pestelos Jr</title>
+  <meta name="description" content="You built the [Second Brain](https://www.buildingasecondbrain.com/). You have the Obsidian vault, the [PARA](https://www.buildingasecondbrain.com/para) folders, the [Readwise ](https://readwise.io)…">
+  <meta property="og:title" content="Building a Second Brain with Claude Code - The Setup">
+  <meta property="og:description" content="You built the [Second Brain](https://www.buildingasecondbrain.com/). You have the Obsidian vault, the [PARA](https://www.buildingasecondbrain.com/para) folders, the [Readwise ](https://readwise.io)…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/basb-claude-code-setup/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/basb-claude-code-setup/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Building a Second Brain with Claude Code - The Setup</h1>
+<p class="byline">Published March 19, 2026</p>
+
+<p class="series">Building a Second Brain with Claude Code: The Setup</p>
+
+<p>You built the <a href="https://www.buildingasecondbrain.com/">Second Brain</a>. You have the Obsidian vault, the <a href="https://www.buildingasecondbrain.com/para">PARA</a> folders, the <a href="https://readwise.io">Readwise </a> <a href="https://github.com/ngpestelos/readwise-mcp">integration</a>. You captured hundreds of notes. Maybe thousands.</p>
+
+<p>Last week I needed a framework I&#x27;d captured three months ago. I knew I&#x27;d saved it. I spent twenty minutes searching folder by folder before giving up. It was in a Readwise import I&#x27;d never organized.</p>
+
+<p>CODE says: Capture, Organize, Distill, Express. But doing all four, manually, every time, across every piece of knowledge that enters your system? That&#x27;s where most vaults die. Not from lack of capture. From lack of follow-through.</p>
+
+<p>I stopped doing it manually. Claude Code, Anthropic&#x27;s CLI tool for working with Claude, is designed for software projects. I repurpose it as the runtime for my knowledge system. It reads my vault, writes to my vault, searches files, moves documents between PARA folders, and commits changes to git, all from the terminal with full access to every file.</p>
+
+<p>The difference from chat-based AI: Claude Code starts every session already knowing your project because it reads a file called <code>CLAUDE.md</code> at the root of your directory.</p>
+
+<h2>CLAUDE.md: How You Configure It</h2>
+
+<p><code>CLAUDE.md</code> is a markdown file that Claude Code loads automatically at the start of every session. In software projects, developers use it to describe their codebase. I use it to describe my knowledge system.</p>
+
+<p>Mine teaches Claude:</p>
+
+<ul>
+
+<li><strong>Structure</strong>: Where things go. Journal entries route to <code>1 Areas/Self/</code>. Readwise imports land in <code>2 Resources/Readwise/Documents/</code>. Atomic notes live in <code>2 Resources/Topics/[Topic Name]/</code>. Synthesized sources get archived to <code>3 Archives/</code>.</li>
+
+<li><strong>Standards</strong>: Every factual claim about vault content must reference specific files with paths. Uncertainty gets labeled: Inference, Speculation, Unverified. I call this the Reality Filter. It keeps AI outputs grounded in what actually exists in the vault.</li>
+
+<li><strong>Preferences</strong>: Be direct. Skip pleasantries. Correct me when I&#x27;m wrong. No emojis unless I ask.</li>
+
+<li><strong>Workflow rules</strong>: Never overwrite original documents without permission. Read referenced commands before executing them. Check existing resources before creating new ones.</li>
+
+</ul>
+
+<p>I don&#x27;t repeat myself across sessions. Claude already knows my PARA structure, my family context, my professional background, my verification standards. Instead of prompting an AI each time, you configure a persistent system once and refine it as you go.</p>
+
+<h2>Skills and Commands: Patterns That Compound</h2>
+
+<p>Two concepts make this system scale.</p>
+
+<p><strong>Commands</strong> are slash-invoked workflows. Type <code>/journal spouse</code> and the entry routes to the Spouse area with a timestamp. Type <code>/synthesize</code> and Claude runs a multi-step pipeline: scan a source document, apply Progressive Summarization, extract atomic notes, route them to topic folders, archive the source. Type <code>/morning</code> and it orchestrates your entire morning routine: Readwise import, daily briefing, burnout check-in, orientation.</p>
+
+<p>Each one encodes a workflow I used to do manually.</p>
+
+<p><strong>Skills</strong> are reusable knowledge that Claude activates automatically when relevant. When I&#x27;m writing a Progressive Summary, the <code>progressive-summarization-technique</code> skill loads the exact layer format. When I&#x27;m placing a new document, the <code>resource-placement-rule</code> skill enforces where unsynthesized content goes versus synthesized atomic notes. When I&#x27;m organizing files, the <code>archive-topic-organizer</code> skill handles the methodology.</p>
+
+<p>Each one captures a pattern I discovered, debugged, and refined through use. A skill I wrote in January for handling Unicode filenames in Readwise imports still saves me from bugs every week.</p>
+
+<p>Every change is version-controlled through git. I can see exactly what Claude modified, revert mistakes, and track the evolution of my vault over time. This morning&#x27;s session produced 11 commits.</p>
+
+<h2>Try It</h2>
+
+<p>I published a starter repo with a minimal <code>CLAUDE.md</code>, three commands, and a PARA folder structure: <a href="https://github.com/ngpestelos/para-starter">para-starter on GitHub</a>. Clone it, open Claude Code, and type <code>/journal</code> to see how it works.</p>
+
+<h2>The Cost</h2>
+
+<p>The skills and commands represent months of daily use. The first week, the system is just a fancy terminal. By month three, it handles most routine knowledge work without custom instructions.</p>
+
+<p>I spent two weeks in January debugging a synthesis workflow that kept archiving source documents to the wrong folder. The bug was a path mismatch between how the scan script listed files and how the archive script moved them. Fixing it meant adding a verification step that checks the destination exists before moving. The two weeks felt like wasted effort while I was in them. That skill now runs correctly on every synthesis, hundreds of times since January.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

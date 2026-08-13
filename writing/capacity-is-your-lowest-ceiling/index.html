@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capacity Is Your Lowest Ceiling — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Ask an engineering team how much more traffic their service can take, and the answer usually comes back as a resource number. CPU is at forty percent, so there is room. Memory looks fine. The database is quiet.">
+  <meta property="og:title" content="Capacity Is Your Lowest Ceiling">
+  <meta property="og:description" content="Ask an engineering team how much more traffic their service can take, and the answer usually comes back as a resource number. CPU is at forty percent, so there is room. Memory looks fine. The database is quiet.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/capacity-is-your-lowest-ceiling/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/capacity-is-your-lowest-ceiling/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Capacity Is Your Lowest Ceiling</h1>
+<p class="byline">Published July 11, 2026</p>
+
+
+<p>Ask an engineering team how much more traffic their service can take, and the answer usually comes back as a resource number. CPU is at forty percent, so there is room. Memory looks fine. The database is quiet.</p>
+
+<p>John Allspaw, who ran Flickr&#x27;s infrastructure and wrote <em>The Art of Capacity Planning</em>, documents both ways that answer fails: photo servers hitting intolerable time-to-serve while every gauge stayed healthy, and the reverse, a disk filling quietly until a service that looked fine at breakfast is down by lunch.</p>
+
+<p>Both failures have the same root: the resource number says nothing about whether the service is keeping its promises.</p>
+
+<h2>One driver, three ceilings</h2>
+
+<p>Google&#x27;s SRE book names <a href="https://sre.google/sre-book/monitoring-distributed-systems/">four golden signals</a> for any user-facing system: latency, traffic, errors, saturation. They are not equals for capacity planning: traffic is the driver you forecast; the other three are ceilings.</p>
+
+<ul>
+
+<li><strong>Latency</strong> breaks when response time crosses the SLO you promised.</li>
+
+<li><strong>Errors</strong> break when the failure rate burns past the error budget.</li>
+
+<li><strong>Saturation</strong> breaks when a resource crosses its red line: queue length and wait time, per Brendan Gregg&#x27;s <a href="https://www.brendangregg.com/usemethod.html">USE method</a>, not percent busy. For cliff-type resources like disk fill it is the only warning you get.</li>
+
+</ul>
+
+<p>Capacity is the lowest traffic level at which any of the three gives way; the distance between current traffic and that point is the real headroom.</p>
+
+<p>The number arrives with a label, and the label is the useful half. Saturation breaking first names the resource to expand. Latency or errors breaking first means more hardware may buy nothing; the problem lives in the architecture or the promise itself. Even then the label buys a narrower search, not the fix: Allspaw&#x27;s example is slow pages that trace to page construction, which no capacity purchase repairs.</p>
+
+<p>The set has a blind side: these are the best four, not the only things that break. A downstream dependency&#x27;s quota can give way first and read as false headroom; off-axis promises need their own red lines.</p>
+
+<h2>You cannot calculate it</h2>
+
+<p>No break point comes from a spec sheet; ceilings are found by driving real load.</p>
+
+<ul>
+
+<li><strong>Allspaw</strong>, <em>The Art of Capacity Planning</em>: red lines are observed, not derived; Flickr confirmed them by pulling servers from the live pool so the rest absorbed more production traffic.</li>
+
+<li><strong>Michael Nygard</strong>, <em>Release It!</em>: the true capacity proof is the seasonal production peak, which brings a changed request mix, not just more volume.</li>
+
+<li><strong>Google&#x27;s SRE book</strong>: services go nonlinear near overload; you cannot trend a healthy curve into the saturation zone.</li>
+
+<li><strong>Roberto Vitillo</strong>, <em>Understanding Distributed Systems</em>: at saturation, raw throughput lies. Count goodput, the requests that both succeed and return in time.</li>
+
+</ul>
+
+<h2>Two boundaries the definition has to respect</h2>
+
+<p>Before writing this down I went looking for the strongest evidence against it. Two findings survive, plus a smaller qualifier.</p>
+
+<p>First, a break point only exists in the stable regime. Research on <a href="https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-bronson.pdf">metastable failures</a> (Bronson et al., HotOS &#x27;21; <a href="https://www.usenix.org/system/files/osdi22-huang-lexiang.pdf">OSDI &#x27;22</a>) shows a temporary trigger can drop a system into a self-sustaining degraded state: retries multiply load, caches run cold, and it stays broken at traffic it handled the day before. In the <a href="https://aws.amazon.com/message/101925/">October 2025 AWS incident</a>, EC2 kept failing roughly eleven hours after its DynamoDB trigger was fixed. A smooth-ramp ceiling is an upper bound, valid only while no feedback loop is in play.</p>
+
+<p>Second, the latency break point is optimistic if you measure it the default way. Gil Tene&#x27;s <a href="http://highscalability.com/blog/2015/10/5/your-load-generator-is-probably-lying-to-you-take-the-red-pi.html">coordinated omission</a>: closed-loop load generators wait for each response before sending the next, so just when the system slows down they sample it less. A p99 only means something if the generator is open-loop or measures against intended send times.</p>
+
+<p>The smaller qualifier: under autoscaling you measure one scaling unit&#x27;s ceiling; the service limit becomes the control loop&#x27;s reaction time and cost.</p>
+
+<h2>The loop</h2>
+
+<ol>
+
+<li>Fix the red lines first: the latency SLO, the error budget, the per-resource saturation lines.</li>
+
+<li>Drive real load, or shift live traffic, and record each ceiling signal as a function of traffic, holding the request mix constant.</li>
+
+<li>Find each break point. Take the last stable crossing; warmup transients understate the ceiling.</li>
+
+<li>Take the minimum, and name the signal that set it.</li>
+
+<li>Report headroom against forecast traffic, with the label. Re-measure after every meaningful change; adding capacity moves the bottleneck.</li>
+
+</ol>
+
+<p>Step 1 needs no tooling: write the red lines down. A team that cannot state them meets them for the first time during an incident.</p>
+
+<h2>Where this leaves me</h2>
+
+<p>Everything above comes from reading, not from an incident: four operations books read against each other, plus the two papers that pushed back hardest. I have not yet load-tested a service and come away with three break points and the name of the one that bound. Until that happens, this definition is a claim waiting for its first real test.</p>
+
+<p>The reading did change what I ask for. A capacity answer now has to name the latency SLO, the error budget, the resource red lines, and the traffic level where one of them was last seen to break. If no one can say, finding out is the first piece of capacity work.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

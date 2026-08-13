@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Governing Delegation - Using Architecture to Stop AI Scope Creep — Nestor G Pestelos Jr</title>
+  <meta name="description" content="You asked for a small change and got a 12-file feature. You reverted it, burned 30 minutes, and now you hesitate before delegating anything.">
+  <meta property="og:title" content="Governing Delegation - Using Architecture to Stop AI Scope Creep">
+  <meta property="og:description" content="You asked for a small change and got a 12-file feature. You reverted it, burned 30 minutes, and now you hesitate before delegating anything.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/governing-delegation-scope-creep/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/governing-delegation-scope-creep/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Governing Delegation - Using Architecture to Stop AI Scope Creep</h1>
+<p class="byline">Published July 3, 2026</p>
+
+
+<p>You asked for a small change and got a 12-file feature. You reverted it, burned 30 minutes, and now you hesitate before delegating anything.</p>
+
+<p>I&#x27;ve lived the canonical version of this. In February 2026 I handed Claude a 388-line product design proposal, five features across two phases, and said &quot;implement the following plan,&quot; meaning <em>save the plan as a markdown document</em>. Claude created 12 files, wired up routes, and wrote tests for all five features before I caught it. Full revert, session wasted. Of everything in my usage history, that is still the friction point I remember most ([[Scope Misinterpretation as Trust Boundary]]). The same engine that commits a real fix in one pass will commit an unwanted feature just as fast.</p>
+
+<p>Most developers respond by writing longer prompts. It doesn&#x27;t help. Scope ambiguity is an architecture problem, and you can&#x27;t prompt your way out of architecture.</p>
+
+<h2>The Delegation Paradox</h2>
+
+<p>The more capable the agent, the more an ambiguous instruction costs you. A weak assistant that misreads you wastes a reply. A strong one builds and commits a massive multi-file change you never requested.</p>
+
+<p>These numbers are my own workspace telemetry, not a published benchmark. Across 7,494 sessions my tool calls run 117K Bash, 83K Read, 54K Edit ([[Delegation-Heavy Automation Pattern]]). That&#x27;s automation. I issue terse, goal-oriented commands and expect end-to-end execution, and I&#x27;m not giving that up.</p>
+
+<p>Inside that volume sits a small, concentrated cost: 22 user-rejected actions, roughly 0.3% of the total, counting only the sessions where I explicitly stopped and rolled back an action ([[Plan-First Workflow Gates]]). Each one is an interrupt-rollback-redo cycle: revert, re-explain, re-run. One of those undoes trust the other 99.7% earned. That 0.3% measures something narrower than task success, though. Only about 38% of my goals were fully achieved, and most of that shortfall never triggers a rollback at all. It&#x27;s sessions that ran out of token budget, got finished by hand, or drifted off-goal quietly. The friction is systematic. The single biggest drain was Claude jumping to implementation when I wanted strategic thinking.</p>
+
+<p>So I stopped trying to write better prompts and changed the environment the agent runs in.</p>
+
+<h2>Three Layers of Architecture</h2>
+
+<p>The patterns that hold up sort into three layers: gates before execution, boundaries during, verification after.</p>
+
+<p><strong>Specification gates.</strong> The plan-first gate is the one to start with. The agent produces a complete plan as conversation output and waits for an explicit &quot;go ahead&quot; before it changes a file. It can&#x27;t quietly start editing while I think it&#x27;s still drafting ([[Plan-First Workflow Gates]]). Mine lives in CLAUDE.md: &quot;When the user asks for strategy, analysis, or planning: STOP and deliver the plan FIRST.&quot; That&#x27;s not a prompt I retype every session. It&#x27;s a standing instruction the agent reads automatically, every time, until I change it. That persistence is the difference between prompting and architecture. A TodoWrite list does the same job: you both see the steps before execution starts.</p>
+
+<p>The stronger version makes the agent carry the ambiguity. Interview-first specification has it ask instead of guess ([[Interview-First Specification Pattern]]). It runs a structured interview over scope, constraints, and edge cases, compiles the answers into a spec file, and builds against the spec instead of a vague prompt. When something goes sideways, the spec is the artifact you audit.</p>
+
+<p><strong>Execution boundaries.</strong> Once execution starts, the repository is the control surface ([[Repository as Agent Control Surface]]). Risk policies, verification gates, lint rules, and auto-fix pipelines decide what the agent can and can&#x27;t do. This flips the usual relationship: instead of writing code inside the repo&#x27;s constraints, you write the constraints.</p>
+
+<p>Don&#x27;t make them brittle. An agent that hits a wall and just stops teaches you to route around the wall. Self-healing git workflows handle half of that: the agent runs linters itself, fixes formatting, separates &quot;error in files I touched&quot; from &quot;pre-existing mess,&quot; and escalates out loud instead of reaching for <code>--no-verify</code>, which skips every gate in its path ([[Self-Healing Git Workflow]]). The other half is the permission layer. Claude Code&#x27;s auto mode runs a classifier over every tool call and lets the agent argue with its own safety layer: when blocked, it proposes alternatives and only interrupts the human once the acceptable paths run out ([[Safety-Velocity Middle Layer Pattern]]). It beats a binary allow/deny list because the agent keeps moving without a human in the loop on every call.</p>
+
+<p><strong>Post-execution verification.</strong> Documentation-as-verification closes the loop: after implementation, the agent updates the docs, then checks the docs against the code. A gap means either the implementation is incomplete or the docs have drifted ([[Documentation-as-Verification Loop]]). The same trick works on any generated artifact. A persistent validator script encodes your quality rules and the agent iterates until it passes, so quality control stops depending on me catching things by eye ([[Test-Driven Document Quality]]).</p>
+
+<h2>Compounding Through Feedback</h2>
+
+<p>Static gates catch repeat mistakes. The next step is gates that update themselves.</p>
+
+<p>Compound engineering is a loop: plan, work, assess, compound ([[Compound Engineering Method]]). The last step is what separates it from a retrospective. You encode each session&#x27;s lessons into machine-readable artifacts (CLAUDE.md rules, skills, commands) that the agent reads next time. My rule that &quot;implement a plan&quot; defaults to <em>saving the document</em> exists because of that specific afternoon. That mistake can&#x27;t recur, because the rule is in CLAUDE.md and the agent reads it every session.</p>
+
+<p>The mechanized version runs at two speeds: hooks for real-time feedback inside a session, skills for periodic audits across sessions ([[Hook-and-Skill Self-Improvement Architecture]]). What matters there is trigger accuracy, not hint content. A hook that fires on the wrong task type burns more tokens than no hook at all.</p>
+
+<p>The extensibility model has three parts. Skills are model-invoked, so the agent activates a quality protocol on its own from context. Commands are user-invoked workflows. Hooks deliver real-time feedback ([[Model-Invoked vs User-Invoked Skills Architecture]]). Skills matter most here: a skill enforces verification without me remembering to ask. So day-100 automation is sharper than day-1, even on the same model.</p>
+
+<h2>Beyond Code</h2>
+
+<p>If this sounds like it only matters inside software repositories, look at the actual workload. My 57K messages across those sessions, about 7.6 a session, are mostly not coding. They&#x27;re knowledge work: vault synthesis, document analysis, research ([[Code Agent as General Agent Pattern]]). The core capabilities don&#x27;t care what domain you point them at: file access, a shell, a way to run code and check the result. It&#x27;s a general agent with system access, and &quot;coding&quot; is just one thing I point it at.</p>
+
+<p>The technique that carries it across is reframing the problem as code generation ([[Problem Reframing as Code Generation]]). Instead of asking for the answer, ask for code that produces the answer, then run it. A script fails loudly when it&#x27;s wrong, so the agent iterates against the actual output instead of my judgment. Parse a financial statement, or cluster themes across a stack of documents. The output is checkable and you keep the script.</p>
+
+<p>The same governance applies outside code. Skill chaining turns a multi-step workflow into an artifact instead of tribal knowledge; each step feeds the next, and an improvement reaches every run at once ([[Skill Chaining for Workflow Automation]]). My vault commit pipeline is governed like my code: plan gates, validator scripts, pre-commit hooks, explicit escalation. I run the same pipeline across Claude Code and a fleet of customized autonomous agent profiles. The gates live in the repos and the config, not in any agent&#x27;s prompt, so I can swap agents and the rules stay put.</p>
+
+<h2>Is This Overkill?</h2>
+
+<p>If you delegate to an agent a few times a week, you don&#x27;t need any of this. Reread the prompt, catch the drift yourself, move on. The math changes at volume. At 7,494 sessions, catching drift by eye stops scaling long before the agent does, and every rule you write once keeps paying out on every session after it. The threshold isn&#x27;t a fixed number of sessions. It&#x27;s the point where you notice you&#x27;re giving the same correction for the third time. That&#x27;s the signal to write it down instead of repeating it.</p>
+
+<h2>Where to Start This Week</h2>
+
+<p>None of this requires new tooling to start. Before you build anything, try the zero-setup version. The next time you delegate something ambiguous, add one sentence to your prompt: &quot;Show me your plan before you touch any files, and wait for me to say go ahead.&quot; No config file, no skill, nothing to install. If that sentence changes the outcome even once, the numbered list below is the same rule made permanent instead of retyped every session.</p>
+
+<p>Adopt in this order. Each layer makes the next one cheaper.</p>
+
+<ol>
+
+<li>Plan-first gate. Add the rule to your CLAUDE.md today: strategy and analysis requests get a plan as conversation output, and nothing touches a file before you approve it ([[Plan-First Workflow Gates]]). One paragraph, immediate effect.</li>
+
+<li>Interview-first for anything you can&#x27;t specify tersely. Make the agent interview you and write the spec before it implements ([[Interview-First Specification Pattern]]).</li>
+
+<li>Move your standards out of your head and into the repo: lint rules, risk policies, pre-commit hooks ([[Repository as Agent Control Surface]]).</li>
+
+<li>Add the verification loops: a docs-vs-code check, and a validator script for generated artifacts ([[Documentation-as-Verification Loop]], [[Test-Driven Document Quality]]).</li>
+
+<li>End each session by asking what rule, skill, or hook would have caught today&#x27;s friction, then write it where the agent will read it ([[Compound Engineering Method]]).</li>
+
+</ol>
+
+<p>Each of the 22 rejections is a gate I hadn&#x27;t built yet. I&#x27;ve built most of them now, and a gate only has to be built once.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&#x27;Tell Me What&#x27;s Wrong With It&#x27; Isn&#x27;t a Review — Nestor G Pestelos Jr</title>
+  <meta name="description" content="The adversarial-review prompt most people use is one sentence. Review this plan and tell me what&#x27;s wrong with it. I wrote that sentence too. The version I run now is a 170-line file, and every line exists because the…">
+  <meta property="og:title" content="&#x27;Tell Me What&#x27;s Wrong With It&#x27; Isn&#x27;t a Review">
+  <meta property="og:description" content="The adversarial-review prompt most people use is one sentence. Review this plan and tell me what&#x27;s wrong with it. I wrote that sentence too. The version I run now is a 170-line file, and every line exists because the…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/tell-me-whats-wrong-with-it-isnt-review/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/tell-me-whats-wrong-with-it-isnt-review/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>&#x27;Tell Me What&#x27;s Wrong With It&#x27; Isn&#x27;t a Review</h1>
+<p class="byline">Published July 13, 2026</p>
+
+
+<p>The adversarial-review prompt most people use is one sentence. Review this plan and tell me what&#x27;s wrong with it. I wrote that sentence too. The version I run now is a 170-line file, and every line exists because the sentence failed in some specific way.</p>
+
+<p>The starting insight is real: sycophancy dies when you assign the AI a hostile role whose only job is to find the cracks. It is not enough. A hostile role with no output contract, no independence rule, and no stop condition degrades back into vibes. What follows is a dissection: each part, and what breaks without it. Even &quot;review what, exactly&quot; gets four specified cases; the unattended one, inside a loop with nobody to ask, must not block and must not invent: pick the most salient candidate, state the assumption, proceed.</p>
+
+<h2>Who reviews decides more than how</h2>
+
+<p>First, an independence check, on a blunt premise: &quot;Self-review is the <strong>weakest</strong> review mode: you cannot reliably attack a target you just authored.&quot;</p>
+
+<p>A two-row routing table: low stakes, reversible, not self-authored gets one inline pass; high stakes, drafted this session, or self-strategy gets parallel read-only reviewers, so the critique is not the author&#x27;s. Either route is declared in one line so the user can override it; a routine diff takes the first row, done. The bet: who is reviewing matters more than what model is reviewing.</p>
+
+<p>An agent that cannot spawn reviewers degrades loudly instead: sequential passes, no reuse of prior conclusions, and the flag <code>[reduced independence: sequential self-review, no parallel reviewers]</code>.</p>
+
+<h2>Verify before you criticize</h2>
+
+<p>Every finding rests on a checked fact, file and line for code, source of truth for everything else: &quot;A finding built on an imagined line is itself the bug.&quot; Then coverage honesty: a partial review never issues a clean verdict; the report states what was inspected and what was not.</p>
+
+<h2>Ten lenses, and the rules around them</h2>
+
+<p>The middle is ten lenses: goal, assumptions, failure modes, gaps, reversibility, verification, simpler alternative, evidence, second-order effects, security. The list is the least transferable part; the rules around it carry the weight. Unfalsifiable is the highest-value finding: a failure you cannot detect is worse than one that fails visibly. The simpler-alternative lens asks about necessity, not correctness; sometimes the best finding is &quot;delete this.&quot; Twelve recurring defect classes ride along for agent-infrastructure targets; they are the story of a separate piece, &quot;<a href="https://para.ngpcloud.org/the-bugs-that-hide-between-your-agents">The Bugs That Hide Between Your Agents</a>.&quot;</p>
+
+<h2>Findings as a wire format</h2>
+
+<p>The output is a contract; every field exists to make a silent failure loud. A VERDICT line; a <code>Lenses applied:</code> line that makes a silent skip visible; the load-bearing assumptions the reviewer extracts; findings ranked Blocker, Major, Minor, Nit. Every finding names a concrete failure scenario: &quot;&#x27;This might be fragile&#x27; is not a finding; &#x27;if <code>orders</code> is empty, line 42 divides by zero&#x27; is.&quot;</p>
+
+<p>Severity maps to verdict mechanically, first match wins. Any Blocker: REWORK. One un-accepted Major: PROCEED WITH CHANGES. Otherwise: PROCEED. One rule looks pedantic until you automate: <code>PROCEED</code> is a prefix of <code>PROCEED WITH CHANGES</code>, so any consumer parsing the verdict must match the full value, never a substring.</p>
+
+<p>Two calibration rules close it: lead with what the target gets right (&quot;a pure attack piece loses calibration and credibility&quot;); a clean pass says so plainly.</p>
+
+<h2>Manufacturing independence</h2>
+
+<p>Parallel Mode, the high-stakes route, has five requirements, each with a failure behind it.</p>
+
+<p>Reviewers are read-only agents of the right type: the analytical planner, never the search agent, which &quot;doesn&#x27;t review or audit&quot; by design; its output looks like a report and critiques nothing. Every reviewer gets the target; a spawned agent shares no context, and lenses without a target review nothing. Reviewers get distinct lens clusters so they do not converge: different priors, qualitatively different coverage. Fourth, reviewers launch in one message, models rotated where possible. Fifth, a target with a producer or consumer gets one reviewer holding both sides&#x27; files, trusting neither: &quot;Contract drift is structurally invisible to single-file review.&quot;</p>
+
+<p>What comes back is not trusted either: every sub-agent finding stays <code>[Agent Report — Unverified]</code> until the orchestrator confirms the fact itself. A reviewer that dies or returns prose leaves its whole cluster UNREVIEWED: &quot;Do not silently synthesize around the gap — a false <code>PROCEED</code> is worse than a slow one.&quot;</p>
+
+<h2>How the loop ends</h2>
+
+<p>Unattended, an outer loop re-invokes the review; the model reads <code>VERDICT:</code> and decides. Stop on PROCEED.</p>
+
+<p>Termination hides in one definition: only the user can accept a Major, and accepted ones live in an <code>Accepted (won&#x27;t fix):</code> ledger carried between passes; without it, an intended-unfixed Major reappears every pass and the loop never converges. A finding that survives three passes unchanged and un-accepted stops the loop and escalates: &quot;the disagreement is the signal, not a bug to grind on.&quot;</p>
+
+<p>One honest note: the ledger and the guard are the only load-bearing rules with no origin story. Everything else was written after a failure; these were written ahead of one, and they stay suspect until a loop makes them earn their lines.</p>
+
+<h2>The author never closes the loop</h2>
+
+<p>Fixes happen outside the read-only review, and they are the loop&#x27;s most dangerous ground. The file&#x27;s own origin note records a four-pass convergence where three of four second-pass Majors were defects introduced by the first pass&#x27;s fixes.</p>
+
+<p>Necessity comes before hardening: a 460-line skill that had never run was deleted rather than repaired, &quot;the highest-value outcome of that pass.&quot; And the author never declares victory: &quot;A fix commit is a checkpoint, not completion.&quot; Fixed is claimed by a clean delta pass from a reviewer: the verifier&#x27;s sign-off is the actual definition of done, at diff scale.</p>
+
+<h2>The front door</h2>
+
+<p>The last section maps out: seven specialist skills keyed by recognition cues, strategic frameworks one way, security audits to a dedicated engine. The file deliberately carries the generic trigger phrases so it surfaces as the default.</p>
+
+<p>How each line earned its place, and keeps it, is the story of a companion piece, &quot;Your Review Checklist Has Never Been Reviewed.&quot; This one claims the anatomy: one working system, dissected so you can take the parts that fit your stack. Half of them fit a one-chat-window stack: the output contract, the failure-scenario bar, and the verify-first rule need no agents at all.</p>
+
+<p>The one-sentence review prompt is not wrong. It is where this file started, and every line after it is a failure mode somebody already paid for.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
