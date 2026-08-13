@@ -234,7 +234,11 @@ a:hover {
   display: inline-block;
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
-  color: var(--muted);
+  color: var(--accent);
+}
+
+.back a {
+  color: var(--accent);
 }
 
 .article footer.meta {
