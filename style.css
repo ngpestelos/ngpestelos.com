@@ -293,7 +293,7 @@ a:hover {
 }
 
 /* Infinite Scrolling styles */
-.js-enabled #writing ul li.hidden {
+.js-scroll-enabled #writing ul li.hidden {
   display: none;
 }
 
