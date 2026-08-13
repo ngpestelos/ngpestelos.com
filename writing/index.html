@@ -16,7 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <link rel="stylesheet" href="/style.css?v=20260814a">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -85,5 +85,71 @@
   <footer style="max-width:680px;margin:0 auto;padding:2rem 0 1rem;font-size:0.85rem;color:#888;">
     <a href="/privacy.html" style="color:#888;">Privacy Policy</a>
   </footer>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.querySelector("#writing");
+      if (!container) return;
+      
+      const list = container.querySelector("ul");
+      if (!list) return;
+      
+      const items = Array.from(list.querySelectorAll("li"));
+      if (items.length <= 15) return;
+      
+      document.body.classList.add("js-enabled");
+      
+      let currentIndex = 0;
+      const batchSize = 15;
+      
+      const loader = document.createElement("div");
+      loader.className = "loading-indicator";
+      loader.innerHTML = `
+        <div class="dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      `;
+      container.appendChild(loader);
+      
+      function showNextBatch() {
+        const nextIndex = Math.min(currentIndex + batchSize, items.length);
+        const batch = items.slice(currentIndex, nextIndex);
+        
+        batch.forEach((item, index) => {
+          item.classList.add("visible");
+          setTimeout(() => {
+            item.classList.add("animate-in");
+          }, index * 40);
+        });
+        
+        currentIndex = nextIndex;
+        
+        if (currentIndex >= items.length) {
+          observer.disconnect();
+          loader.remove();
+        }
+      }
+      
+      const observer = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          loader.classList.add("active");
+          setTimeout(() => {
+            showNextBatch();
+            loader.classList.remove("active");
+          }, 350);
+        }
+      }, {
+        rootMargin: "100px"
+      });
+      
+      showNextBatch();
+      
+      if (currentIndex < items.length) {
+        observer.observe(loader);
+      }
+    });
+  </script>
 </body>
 </html>
