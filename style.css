@@ -108,6 +108,7 @@ main:not(.article) ul {
 main:not(.article) li {
   padding: 0.4rem 0;
   font-size: 0.95rem;
+  overflow-wrap: break-word;
 }
 
 main:not(.article) li::before {
@@ -229,7 +230,7 @@ a:hover {
   overflow-wrap: anywhere;
 }
 
-.article .back {
+.back {
   display: inline-block;
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
