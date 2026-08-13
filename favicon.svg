@@ -1,9 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="N">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#06353b"/>
-      <stop offset="58%" stop-color="#0e6f76"/>
-      <stop offset="100%" stop-color="#1bb0b4"/>
+      <stop offset="0%" stop-color="#121212"/>
+      <stop offset="100%" stop-color="#1c2838"/>
     </linearGradient>
     <clipPath id="above-horizon">
       <path d="M0 0H64V43Q32 35 0 43Z"/>
@@ -11,8 +10,8 @@
   </defs>
   <rect width="64" height="64" fill="url(#sky)"/>
   <path d="M0 43Q32 35 64 43V64H0Z" fill="#111"/>
-  <path d="M0 43Q32 35 64 43" fill="none" stroke="#e7f3f3" stroke-width="1.75"/>
-  <g fill="#f3f6f5" clip-path="url(#above-horizon)">
+  <path d="M0 43Q32 35 64 43" fill="none" stroke="#6cb4ee" stroke-width="1.75"/>
+  <g fill="#6cb4ee" clip-path="url(#above-horizon)">
     <rect x="13" y="11" width="8.5" height="34"/>
     <rect x="11" y="11" width="12.5" height="4"/>
     <rect x="11" y="41" width="12.5" height="4"/>
