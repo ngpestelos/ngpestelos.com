@@ -103,8 +103,11 @@
       loader.textContent = "Loading more...";
       list.after(loader);
       
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
+      function checkAndLoad() {
+        if (currentIndex >= items.length) return;
+        
+        const rect = loader.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 200) {
           const nextIndex = Math.min(currentIndex + 15, items.length);
           items.slice(currentIndex, nextIndex).forEach(item => item.classList.remove("hidden"));
           currentIndex = nextIndex;
@@ -112,7 +115,16 @@
           if (currentIndex >= items.length) {
             observer.disconnect();
             loader.remove();
+            return;
           }
+          
+          requestAnimationFrame(checkAndLoad);
+        }
+      }
+      
+      const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          checkAndLoad();
         }
       }, {
         rootMargin: "200px"
