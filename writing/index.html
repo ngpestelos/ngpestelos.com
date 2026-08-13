@@ -103,6 +103,8 @@
       loader.textContent = "Loading more...";
       list.after(loader);
       
+      let observer;
+
       function checkAndLoad(force = false) {
         if (currentIndex >= items.length) return;
         
@@ -113,7 +115,7 @@
           currentIndex = nextIndex;
           
           if (currentIndex >= items.length) {
-            observer.disconnect();
+            if (observer) observer.disconnect();
             loader.remove();
             return;
           }
@@ -122,15 +124,17 @@
         }
       }
       
-      const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          checkAndLoad(true);
-        }
-      }, {
-        rootMargin: "200px"
-      });
-      
-      observer.observe(loader);
+      setTimeout(() => {
+        observer = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            checkAndLoad(true);
+          }
+        }, {
+          rootMargin: "200px"
+        });
+        
+        observer.observe(loader);
+      }, 0);
     });
   </script>
 </body>
