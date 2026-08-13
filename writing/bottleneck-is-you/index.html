@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bottleneck Is You — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Around the 300th note, I started seeing a pattern I wasn&#x27;t looking for. I&#x27;ve been collecting notes on AI and software development for over a year. People from different companies and different decades of experience…">
+  <meta property="og:title" content="The Bottleneck Is You">
+  <meta property="og:description" content="Around the 300th note, I started seeing a pattern I wasn&#x27;t looking for. I&#x27;ve been collecting notes on AI and software development for over a year. People from different companies and different decades of experience…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/bottleneck-is-you/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/bottleneck-is-you/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>The Bottleneck Is You</h1>
+<p class="byline">Published July 19, 2026</p>
+
+
+<p>Around the 300th note, I started seeing a pattern I wasn&#x27;t looking for. I&#x27;ve been collecting notes on AI and software development for over a year. People from different companies and different decades of experience are describing the same structural change.</p>
+
+<h2>What They&#x27;re Saying</h2>
+
+<p>Marc Brooker, Distinguished Engineer at AWS, in February 2026: the cost of turning written business logic into code has approached almost nothing. Connecting services and libraries is also nearly free.</p>
+
+<p>Ryan Dahl, who created Node.js and Deno: humans will stop writing code by hand. Software engineering value shifts from execution to architectural thinking.</p>
+
+<p>Chamath Palihapitiya: good software doesn&#x27;t start in an IDE. The specification is the product. Code is its runtime expression.</p>
+
+<p>These three don&#x27;t work together. They weren&#x27;t responding to each other. But strip the context and the claim is identical: the hard part of software used to be writing the code, and that has stopped being true.</p>
+
+<h2>What Replaces It</h2>
+
+<p>If writing code is cheap, what&#x27;s expensive? The answer depends on how far upstream you look.</p>
+
+<p>Nate Berkopec spent years on Ruby performance. He noticed QA shifting from whether the code works to whether it should have been built at all, and whether it feels right. When AI generates code that runs, the question changes. You stop asking whether it&#x27;s correct and start asking whether it&#x27;s worth having.</p>
+
+<p>Uncle Bob Martin put it more bluntly: you cannot be ignorant of the system&#x27;s structure. Someone has to hold the architectural map. Delegate the code, hold on to the vision.</p>
+
+<p>Chamath&#x27;s point extends further than the tweet takes it. If the specification is the product, then everything downstream of the specification is labor. AI does labor. The specification requires judgment about what matters, and that judgment is upstream of the code AI writes.</p>
+
+<p>Jensen Huang, at NVIDIA, observed that software engineering was the pinnacle of technical intelligence and became the first job AI targets. What remains is the anticipatory work: sensing problems before they exist, connecting patterns nobody asked about.</p>
+
+<p>None of them is describing a prompting trick. They&#x27;re describing where the work went: to the decisions that happen before you open a terminal.</p>
+
+<h2>The Taste Thread</h2>
+
+<p>One specific word keeps showing up across these notes: taste.</p>
+
+<p>Obie Fernandez, reflecting on 10,000 hours of Rails: all those hours trained judgment and taste, not typing speed. AI writes the code, and Fernandez&#x27;s bet is that it still can&#x27;t judge whether that code is worth shipping. Hold that claim. I&#x27;m going to come back and test it.</p>
+
+<p>Chayenne Zhao, on the output side: the prize in AI-assisted coding isn&#x27;t speed. It&#x27;s distinguishing between 30 lines of AI-generated fluff and the 5-line kernel that actually solves the problem. Without that, developers aren&#x27;t augmented so much as accelerated, generating technical debt faster than before.</p>
+
+<p>Amy Tam, on why AI can&#x27;t learn taste from training data: taste is socially constructed and continuously evolving, legible only through participation. You absorb it from a community of practice, and you can&#x27;t scrape it. It is learnable, but through reps and membership, not instruction.</p>
+
+<h2>Why More Intelligence Doesn&#x27;t Help</h2>
+
+<p>Dario Amodei wrote a long essay last year about what powerful AI could achieve. He identified several categories of bottleneck that more intelligence can&#x27;t power through. Map them onto software and three of them fit exactly.</p>
+
+<p>Missing data. AI doesn&#x27;t catch the bug that only surfaces under concurrent load during peak hours. Operational patterns aren&#x27;t in the codebase.</p>
+
+<p>Human behavior. AI generates a technically correct schema with naming conventions that will confuse every developer who reads it in six months. Naming is a social agreement, not a logical derivation.</p>
+
+<p>Irreducible complexity. AI can&#x27;t tell you whether to build feature A or feature B. The answer depends on the market, the team, the timing, and factors that interact in ways no model simulates.</p>
+
+<p>More intelligence finds faster paths through those bottlenecks without removing them. And the bottlenecks that remain in software are the ones that sit in the judgment layer.</p>
+
+<p>When I first read Amodei&#x27;s essay, I thought it was about biology. Then I realized it described every sprint planning meeting I&#x27;ve sat through.</p>
+
+<h2>The List</h2>
+
+<p>It helps to see them together.</p>
+
+<ul>
+
+<li>Implementation cost has collapsed (Brooker, AWS)</li>
+
+<li>Humans will stop writing code by hand (Dahl, Node.js/Deno)</li>
+
+<li>The specification is the product (Palihapitiya)</li>
+
+<li>QA becomes taste assurance (Berkopec)</li>
+
+<li>Architectural vision can&#x27;t be delegated (Martin)</li>
+
+<li>10,000 hours trained judgment, not typing (Fernandez)</li>
+
+<li>Without taste, AI makes developers worse (Zhao)</li>
+
+<li>Taste requires lived participation (Tam)</li>
+
+<li>Technical intelligence is table stakes (Huang, NVIDIA)</li>
+
+<li>Intelligence has structural limits (Amodei, Anthropic)</li>
+
+</ul>
+
+<p>Ten people. Builders, investors, a lab CEO, spread across different companies and different decades of experience. Not one of them is talking about prompting.</p>
+
+<h2>The Convergence Problem</h2>
+
+<p>Ten people agreeing should make me suspicious, not confident. I&#x27;ve written about echo chambers. A chorus can be a feedback loop instead of a signal, and most of these voices are tweets and blog posts, not evidence. So before I trust the pattern, I should look for the strongest case against it. There is one, and it&#x27;s older than any of these takes.</p>
+
+<p>For seventy years, psychologists have found that simple statistical rules predict outcomes at least as well as, and usually better than, trained expert judgment. Meehl showed it in 1954. A meta-analysis of 136 studies confirmed it in 2000. Give an expert and a formula the same inputs and ask who reoffends or which candidate will perform, and the formula wins or ties almost every time. The expert&#x27;s weakness is inconsistency: shown the same case twice, they often disagree with themselves.</p>
+
+<p>That should worry anyone claiming judgment is safe, because a lot of what these practitioners call judgment is prediction. Will this scale, will this hold up, is this good enough to ship. Prediction under noise is exactly where humans lose to arithmetic. And it&#x27;s already happening in review. In controlled evaluations, a language model judges response quality at about the agreement level two humans reach with each other; on code specifically, AI reviewers now catch mechanical defects at rates comparable to human ones. So this is where I have to let go of Fernandez&#x27;s claim. The quality-judgment layer, the one Berkopec and Zhao are pointing at, is the layer AI is closing first.</p>
+
+<p>That judge is a derivative, though. It&#x27;s trained on human preferences, so it approximates our taste without originating any of its own. It removes the human from the loop without replacing what the human had. And even the premise underneath the whole chorus is shakier than the chorus admits: a controlled trial found experienced developers were 19% slower with AI on code they knew well, while believing they were faster. Implementation cost collapsed for the median task, not for every task.</p>
+
+<p>So the honest claim is narrower than the chorus makes it sound. The judgment that stays human isn&#x27;t the predictive kind. It&#x27;s the generative kind: not &quot;is this good enough&quot; but &quot;is this worth building at all.&quot; Brooker&#x27;s own framing points here. The decisions that matter are driven by the needs of the business and the problem, and those aren&#x27;t decisions the model can make, because nobody has labeled what a specific company should do next quarter. That layer isn&#x27;t safe because humans predict better. It&#x27;s safe because the question has no training set. Yet.</p>
+
+<p>Here&#x27;s the test I use now. If a judgment call could be scored against a known outcome, assume it&#x27;s on its way to being automated. If nobody could label the right answer in advance, it&#x27;s yours a while longer.</p>
+
+<p>A year ago I wrote about not writing tests anymore. I thought the story was about testing. The testing was just the first place the shift showed up.</p>
+
+<p>Every few weeks now, another practitioner writes about this from their own angle, like they just discovered it.</p>
+
+<p>They didn&#x27;t discover anything. They ran into a bottleneck that was always there, invisible only because implementation was standing in front of it. And it isn&#x27;t all of judgment. The predictive part, AI is already taking, and it will keep taking it. What&#x27;s left is the generative part: knowing what&#x27;s worth building at all.</p>
+
+<h2>Sources</h2>
+
+<p>The claims this rests on, for anyone who wants to check them:</p>
+
+<ul>
+
+<li><a href="https://brooker.co.za/blog/2026/02/07/you-are-here.html">Marc Brooker, &quot;You Are Here&quot; (Feb 2026)</a></li>
+
+<li><a href="https://www.darioamodei.com/essay/machines-of-loving-grace">Dario Amodei, &quot;Machines of Loving Grace&quot; (2024)</a></li>
+
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/10752360/">Grove et al., &quot;Clinical Versus Mechanical Prediction: A Meta-Analysis&quot; (2000)</a></li>
+
+<li><a href="https://arxiv.org/abs/2306.05685">LLM-as-judge on response quality: Zheng et al., &quot;Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena&quot; (2023)</a></li>
+
+<li>AI code review matching human reviewers on defect detection: DORA 2025 State of AI-assisted Software Development report, and controlled bug-detection benchmarks (chatbots comparable to, not yet surpassing, human reviewers)</li>
+
+<li><a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">Experienced developers slower with AI on familiar code: METR (2025) randomized trial</a></li>
+
+<li><a href="https://x.com/chamath/status/2026705629562417254">Chamath Palihapitiya on specification-as-product</a></li>
+
+<li><a href="https://x.com/unclebobmartin/status/2026744255084114229">Robert C. Martin on holding the architectural map</a></li>
+
+<li><a href="https://x.com/obie/status/2007906508412006641">Obie Fernandez on 10,000 hours training judgment</a></li>
+
+</ul>
+
+<p>Additional observations (Dahl, Berkopec, Zhao, Tam, Huang) are drawn from public posts and talks, February–March 2026.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
