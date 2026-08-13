@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Scanner That Feeds the Pipeline — Nestor G Pestelos Jr</title>
+  <meta name="description" content="I maintain more repos than I can check by hand. A small system called portfolio-ops watches all of them, runs one deterministic scan, and turns whatever it finds into one of three narrow requests. The pipeline from…">
+  <meta property="og:title" content="The Scanner That Feeds the Pipeline">
+  <meta property="og:description" content="I maintain more repos than I can check by hand. A small system called portfolio-ops watches all of them, runs one deterministic scan, and turns whatever it finds into one of three narrow requests. The pipeline from…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/scanner-that-feeds-pipeline/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/scanner-that-feeds-pipeline/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>The Scanner That Feeds the Pipeline</h1>
+<p class="byline">Published August 13, 2026</p>
+
+<p class="series">Part two of a three-part set on how I work with agents day to day. Part one: <a href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">Nine Security Issues, Zero Lines I Wrote</a>. Part three: The Ledger That Stayed Empty.</p>
+
+<h2>TL;DR</h2>
+
+<p>I maintain more repos than I can check by hand. A small system called portfolio-ops watches all of them, runs one deterministic scan, and turns whatever it finds into one of three narrow requests. The pipeline from <a href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">the other piece</a> only ever handles one of those three: turning a specific issue into a specific PR.</p>
+
+<p>Deciding what&#x27;s worth fixing and actually fixing it turned out to need two separate systems.</p>
+
+<h2>The Problem Underneath the Pipeline</h2>
+
+<p>The pipeline from the other piece is good at one thing: given a specific GitHub issue on a specific repo, turn it into a reviewed, correct pull request without me touching the keyboard. It has no opinion about <em>which</em> issue, or <em>which</em> repo.</p>
+
+<p>Somebody still has to notice a security review went stale, a dependency PR has sat for three weeks, or an old pull request to somebody else&#x27;s repo went dead because they emptied the repository and nothing told me. That somebody was me, doing it badly, because checking ten repos by hand is the first task that gets skipped when the week gets busy.</p>
+
+<p>Portfolio-ops is the somebody. It&#x27;s a catalog file listing every repo I actually care about, tagged by tier (CLI tool, org hub, public site). A script walks that list, plus a separate global query for pull requests I&#x27;ve opened against repos outside it, and reports only what needs a decision.</p>
+
+<p>None of this replaces Dependabot or GitHub&#x27;s Security tab. Neither tracks a PR I&#x27;ve opened against someone else&#x27;s repo, and neither watches for a scanner failing to see its own output. Dependabot&#x27;s own pull requests still show up in the scan, though, routed through the same triage as everything else.</p>
+
+<h2>One Scan, Three Kinds of Decision</h2>
+
+<p>The scan is boring on purpose. It runs the same deterministic pass every time, not an agent improvising a check, so &quot;no findings&quot; always means the same thing. It looks for open pull requests sitting on each repo, security issues past SLA, whether a repo&#x27;s CI actually runs a vulnerability scan, and pull requests I&#x27;ve personally opened against other people&#x27;s repos, since those don&#x27;t show up in any catalog I own.</p>
+
+<p>Whatever it finds gets triaged into exactly one of three requests. The runbook is explicit. These are the only three shapes a request can take.</p>
+
+<ul>
+
+<li><strong>Work an issue into a PR.</strong> Hand it to the full pipeline, respect the cap of two running at once, get back a merge-ready pull request.</li>
+
+<li><strong>Clear a slice of stuck pull requests.</strong> Existing PRs, mine or Dependabot&#x27;s, get pushed through review in small batches, capped at three per session, until there&#x27;s a clean merge list.</li>
+
+<li><strong>Investigate a repo from scratch.</strong> No fix attempt, just a written security pass that ends in either filed findings or an explicit &quot;clean, here&#x27;s how I checked.&quot;</li>
+
+</ul>
+
+<p>Everything portfolio-ops does routes through one of those three. It never freelances a fourth, and it doesn&#x27;t touch code. It only decides what gets <em>asked for</em>.</p>
+
+<h2>Two Things the Scan Caught</h2>
+
+<ul>
+
+<li><strong>The 102-day pull request.</strong> The scan flagged a pull request I&#x27;d opened against someone else&#x27;s repo 102 days ago. The directory my PR targeted had been emptied out, nothing left to merge into. The fix was closing the PR with an explanation. I hadn&#x27;t looked at that PR since I opened it. The scan is the only reason it got closed instead of sitting open indefinitely.</li>
+
+<li><strong>The scanner&#x27;s blind spot in its own output.</strong> Security-pass issues get filed with a <code>sec:</code> title prefix. The scan&#x27;s own SLA check matched on issue <em>labels</em>, not that prefix, so the scanner couldn&#x27;t see its own output: <a href="https://github.com/ph-commons/nowshowing-pp-cli/issues/6">the nine issues feeding the pipeline</a> were briefly invisible to the system meant to track them. Fixed by adding a title-prefix check the SLA scan never had. The SLA check now matches on the <code>sec:</code> prefix as well as the label.</li>
+
+</ul>
+
+<h2>The Guardrails</h2>
+
+<p>Both systems will run more work in parallel than I want reviewed at once. Without caps, nothing stops an agent from kicking off nine pipeline runs simultaneously, and nine PRs landing together is nine PRs I have to read carefully in one sitting. The caps, two pipeline runs at a time, three PRs per review pass, one repo per investigation, exist to pace how much unreviewed output I&#x27;ll have in flight.</p>
+
+<p>One rule stayed non-negotiable. The catalog that tracks repos and the ledger that tracks my commitments to other people never touch. Nothing in portfolio state becomes a promise to a person. That boundary keeps the ledger honest, because everything in it is something a person is actually owed.</p>
+
+<p>Portfolio-ops found the nine issues and put them in front of me. The pipeline did the fixing, catching real bugs along the way. The scan doesn&#x27;t write code; the pipeline doesn&#x27;t decide what&#x27;s worth its attention. I sit at both ends: deciding what gets triaged, pressing merge on what comes back clean.</p>
+    <footer class="meta">
+      <a href="https://www.linkedin.com/pulse/scanner-feeds-pipeline-nestor-pestelos-pksgc">LinkedIn</a>
+      &middot;
+      <a href="https://x.com/ngpestelos/status/2087731821182398810">X</a>
+      &middot;
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
