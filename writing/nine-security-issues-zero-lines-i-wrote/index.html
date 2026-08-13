@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nine Security Issues, Zero Lines I Wrote — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Nine open findings from a security audit on a Go CLI tool. I assigned each issue to an autonomous background agent. I wrote zero lines of code.">
+  <meta property="og:title" content="Nine Security Issues, Zero Lines I Wrote">
+  <meta property="og:description" content="Nine open findings from a security audit on a Go CLI tool. I assigned each issue to an autonomous background agent. I wrote zero lines of code.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">
+  <link rel="stylesheet" href="/style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <a class="back" href="/">Nestor G Pestelos Jr</a>
+    <h1>Nine Security Issues, Zero Lines I Wrote</h1>
+<p class="byline">Published August 12, 2026</p>
+
+<hr>
+
+<p class="series"><em>Part one of a three-part set on how I work with agents day to day. Part two: <a href="https://para.ngpcloud.org/scanner-that-feeds-pipeline">The Scanner That Feeds the Pipeline</a>. Part three: The Ledger That Stayed Empty.</em></p>
+
+<hr>
+
+<h2>TL;DR</h2>
+
+<p>Nine open findings from a security audit on a Go CLI tool. I assigned each issue to an autonomous background agent running a full plan-to-PR pipeline. I wrote zero lines of code. I merged all nine pull requests in one afternoon.</p>
+
+<p>The review gates caught real, subtle flaws before merge. One agent coordination deadlock taught me how to structure nested agent loops.</p>
+
+<hr>
+
+<h2>The Hand-off</h2>
+
+<p>An agent-run security audit on <a href="https://github.com/ph-commons/nowshowing-pp-cli/issues/6"><code>nowshowing-pp-cli</code></a>, a Go command-line tool, turned up ten issues — how that audit itself got dispatched is Part 2&#x27;s story. One was already fixed before I started; the nine still open are what follows: four High, four Medium, and one Low severity. Two were documentation gaps; seven were logic and network security vulnerabilities.</p>
+
+<p>In a traditional workflow, this backlog sits. You fix the high-severity items and let the medium items age.</p>
+
+<p>Instead of manual triage, I handed all nine issues to an automated workflow called <code>change-pipeline</code>.</p>
+
+<p>Each issue ran through seven strict phases:</p>
+
+<ol>
+<li>Generate an implementation plan.</li>
+<li>Adversarial red-team review of the plan.</li>
+<li>Isolate the environment in a dedicated <code>git worktree</code>.</li>
+<li>Write code and tests.</li>
+<li>Static code review.</li>
+<li>Security and vulnerability review.</li>
+<li>Open a pull request and verify the final diff.</li>
+</ol>
+
+<p>The typical failure mode with AI pipelines is babysitting. You prompt, wait, inspect the output, tweak the code, and prompt again. That is just typing with extra latency.</p>
+
+<p>Here, each background agent received a self-contained brief: the issue description, the repository style guide, worktree naming rules, and strict guardrails. Each agent ran the entire seven-phase lifecycle independently, spawning its own nested review agents along the way.</p>
+
+<p>I set a concurrency limit of two active pipelines at a time. The dispatching session touched zero application code.</p>
+
+<hr>
+
+<h2>The Reviews Were Not Decoration</h2>
+
+<p>If an agent review gate only rubber-stamps output, it is useless. The adversarial review gates repeatedly rejected early drafts and caught genuine flaws:</p>
+
+<ul>
+<li><strong>TOCTOU DNS Rebinding:</strong> A bind-address fix required five red-team rounds on the <em>plan alone</em>. The first draft validated the IP address once, then re-resolved the hostname when the process bound to the socket. An attacker with DNS control could swap the record between check and bind. The reviewer forced a redesign that pinned the resolved IP address before binding.</li>
+<li><strong>SSRF Denylist Bypass:</strong> A webhook-hardening patch passed initial code review. The security reviewer flagged that IPv4-mapped IPv6 addresses (<code>::ffff:127.0.0.1</code>) bypassed the hostname denylist. The agent patched the parser and re-verified.</li>
+<li><strong>Scheme Downgrade:</strong> A URL redirect check validated the destination host against an allowlist, but ignored the protocol scheme. A separate, independent review layer run after the pipeline finished caught that a redirect from <code>https://trusted.com</code> to <code>http://trusted.com</code> passed the filter.</li>
+<li><strong>Brittle Diagnostics:</strong> A shell diagnostic script would have failed silently under its own <code>set -e</code> flag during test error states — caught during plan red-teaming before any code was written.</li>
+</ul>
+
+<p>These were subtle logic bugs, not syntax errors — the kind that slip straight past single-pass generation.</p>
+
+<hr>
+
+<h2>Where the System Deadlocked</h2>
+
+<p>Autonomous delegation works until agent communication breaks down.</p>
+
+<p>During one run, a parent agent spawned a nested sub-agent to review a revised plan. When the sub-agent finished, it attempted to return its verdict to <code>&quot;general-purpose&quot;</code> — the agent <em>type</em>, not a valid conversation address.</p>
+
+<p>The message dropped into the void. The parent agent sat idle, waiting indefinitely for a verdict that would never arrive.</p>
+
+<p>I caught the hang only because I was actively polling the run&#x27;s status — nothing surfaced on its own. I relayed the verdict to the parent agent by hand.</p>
+
+<p>The failure forced a structural fix. Inner agent loops must be synchronous and blocking. When an agent spawns a review sub-agent, it must wait for a direct return value. Only the top-level orchestration job should run asynchronously in the background. I codified this rule into the shared pipeline documentation immediately.</p>
+
+<hr>
+
+<h2>The Boundary That Held</h2>
+
+<p>Across nine issues, the agents held full authority to branch, write, test, critique, and open pull requests. None of them had authority to merge.</p>
+
+<p>Every agent report concluded with the same boundary. No merge action was taken, and the PR awaited human review — the pipeline agents would not even mark their own branches merge-ready, deferring that call to a separate review loop.</p>
+
+<p>That boundary is where engineering judgment belongs. For well-specified audit and maintenance backlogs, writing code is no longer the bottleneck. The real discipline of agentic software engineering lies in:</p>
+
+<ol>
+<li>Designing adversarial verification gates that catch non-obvious logic flaws.</li>
+<li>Hardening agent orchestration topology against deadlocks and lost messages.</li>
+<li>Holding the merge gate as the final human checkpoint.</li>
+</ol>
+
+<p>A backlog that would have consumed a week was cleared in an afternoon. I spent the time reviewing diffs, verifying CI runs, and reading review verdicts instead of writing boilerplate.</p>
+    <footer class="meta">
+      <a href="https://www.linkedin.com/pulse/nine-security-issues-zero-lines-i-wrote-nestor-pestelos-7gdpc">LinkedIn</a>
+      &middot;
+      <a href="https://x.com/ngpestelos/status/2087371904218980448">X</a>
+      &middot;
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
