@@ -231,6 +231,39 @@ a:hover {
   word-break: break-word;
 }
 
+.article pre {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.9rem 1rem;
+  margin: 0 0 1rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  line-height: 1.45;
+}
+
+.article pre code {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+  font-size: 0.86em;
+}
+
 .article a {
   overflow-wrap: anywhere;
 }
@@ -287,8 +320,17 @@ a:hover {
     padding-left: 1.25rem;
   }
 
-  .article code {
+  .article code,
+  .article pre code {
     font-size: 0.8em;
+  }
+
+  .article pre {
+    padding: 0.75rem 0.8rem;
+    font-size: 0.95em;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .article .series,
