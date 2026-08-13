@@ -17,6 +17,8 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 body {
@@ -25,7 +27,6 @@ body {
   color: var(--fg);
   line-height: 1.6;
   padding: 2rem 1.5rem;
-  overflow-x: hidden;
 }
 
 main {

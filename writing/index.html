@@ -16,7 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260814b">
+  <link rel="stylesheet" href="/style.css?v=20260814d">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -89,47 +89,78 @@
     document.addEventListener("DOMContentLoaded", () => {
       const list = document.querySelector("#writing ul");
       if (!list) return;
-      
+
       const items = Array.from(list.querySelectorAll("li"));
-      const initialSize = 10;
-      const batchSize = 10;
-      
+      const initialSize = 15;
+      const batchSize = 15;
       if (items.length <= initialSize) return;
-      
+
       document.body.classList.add("js-scroll-enabled");
-      
       let currentIndex = initialSize;
-      items.slice(currentIndex).forEach(item => item.classList.add("hidden"));
-      
+      items.slice(currentIndex).forEach((item) => item.classList.add("hidden"));
+
       const loader = document.createElement("div");
       loader.className = "loading-indicator";
       loader.textContent = "Loading more...";
       list.after(loader);
-      
-      function checkScroll() {
-        if (currentIndex >= items.length) return;
-        
-        const rect = loader.getBoundingClientRect();
-        if (rect.top < window.innerHeight + 50) {
-          const nextIndex = Math.min(currentIndex + batchSize, items.length);
-          items.slice(currentIndex, nextIndex).forEach(item => item.classList.remove("hidden"));
-          currentIndex = nextIndex;
-          
-          if (currentIndex >= items.length) {
-            window.removeEventListener("scroll", checkScroll);
-            window.removeEventListener("resize", checkScroll);
-            loader.remove();
-            return;
-          }
-          
-          setTimeout(checkScroll, 50);
-        }
+
+      const scrollEl = () => document.scrollingElement || document.documentElement;
+
+      function nearBottom() {
+        const el = scrollEl();
+        const view = el.clientHeight || window.innerHeight;
+        const remaining = el.scrollHeight - (el.scrollTop + view);
+        const loaderTop = loader.getBoundingClientRect().top;
+        return remaining < 240 || loaderTop < view + 240;
       }
-      
-      window.addEventListener("scroll", checkScroll);
-      window.addEventListener("resize", checkScroll);
-      
-      checkScroll();
+
+      function reveal() {
+        const next = Math.min(currentIndex + batchSize, items.length);
+        items.slice(currentIndex, next).forEach((item) => item.classList.remove("hidden"));
+        currentIndex = next;
+      }
+
+      function finish() {
+        window.removeEventListener("scroll", onScroll);
+        document.removeEventListener("scroll", onScroll);
+        scrollEl().removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+        if (observer) observer.disconnect();
+        loader.remove();
+      }
+
+      function fill() {
+        let guard = 0;
+        while (currentIndex < items.length && nearBottom() && guard < 20) {
+          reveal();
+          guard += 1;
+        }
+        if (currentIndex >= items.length) finish();
+      }
+
+      function onScroll() {
+        fill();
+      }
+
+      let observer = null;
+      if ("IntersectionObserver" in window) {
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) fill();
+          },
+          { root: null, rootMargin: "240px 0px", threshold: 0 }
+        );
+        observer.observe(loader);
+      }
+
+      const opts = { passive: true };
+      window.addEventListener("scroll", onScroll, opts);
+      document.addEventListener("scroll", onScroll, opts);
+      scrollEl().addEventListener("scroll", onScroll, opts);
+      window.addEventListener("resize", onScroll);
+
+      fill();
+      requestAnimationFrame(fill);
     });
   </script>
 </body>
