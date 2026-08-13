@@ -10,7 +10,7 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">
   <link rel="canonical" href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style.css?v=20260813">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,19 +25,13 @@
     <h1>Nine Security Issues, Zero Lines I Wrote</h1>
 <p class="byline">Published August 12, 2026</p>
 
-<hr>
-
-<p class="series"><em>Part one of a three-part set on how I work with agents day to day. Part two: <a href="https://para.ngpcloud.org/scanner-that-feeds-pipeline">The Scanner That Feeds the Pipeline</a>. Part three: The Ledger That Stayed Empty.</em></p>
-
-<hr>
+<p class="series">Part one of a three-part set on how I work with agents day to day. Part two: <a href="https://para.ngpcloud.org/scanner-that-feeds-pipeline">The Scanner That Feeds the Pipeline</a>. Part three: The Ledger That Stayed Empty.</p>
 
 <h2>TL;DR</h2>
 
 <p>Nine open findings from a security audit on a Go CLI tool. I assigned each issue to an autonomous background agent running a full plan-to-PR pipeline. I wrote zero lines of code. I merged all nine pull requests in one afternoon.</p>
 
 <p>The review gates caught real, subtle flaws before merge. One agent coordination deadlock taught me how to structure nested agent loops.</p>
-
-<hr>
 
 <h2>The Hand-off</h2>
 
@@ -65,8 +59,6 @@
 
 <p>I set a concurrency limit of two active pipelines at a time. The dispatching session touched zero application code.</p>
 
-<hr>
-
 <h2>The Reviews Were Not Decoration</h2>
 
 <p>If an agent review gate only rubber-stamps output, it is useless. The adversarial review gates repeatedly rejected early drafts and caught genuine flaws:</p>
@@ -80,8 +72,6 @@
 
 <p>These were subtle logic bugs, not syntax errors — the kind that slip straight past single-pass generation.</p>
 
-<hr>
-
 <h2>Where the System Deadlocked</h2>
 
 <p>Autonomous delegation works until agent communication breaks down.</p>
@@ -93,8 +83,6 @@
 <p>I caught the hang only because I was actively polling the run&#x27;s status — nothing surfaced on its own. I relayed the verdict to the parent agent by hand.</p>
 
 <p>The failure forced a structural fix. Inner agent loops must be synchronous and blocking. When an agent spawns a review sub-agent, it must wait for a direct return value. Only the top-level orchestration job should run asynchronously in the background. I codified this rule into the shared pipeline documentation immediately.</p>
-
-<hr>
 
 <h2>The Boundary That Held</h2>
 
