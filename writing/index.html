@@ -103,38 +103,30 @@
       loader.textContent = "Loading more...";
       list.after(loader);
       
-      let observer;
-
-      function checkAndLoad(force = false) {
+      function checkScroll() {
         if (currentIndex >= items.length) return;
         
         const rect = loader.getBoundingClientRect();
-        if (force || rect.top < window.innerHeight + 220) {
+        if (rect.top < window.innerHeight + 250) {
           const nextIndex = Math.min(currentIndex + 15, items.length);
           items.slice(currentIndex, nextIndex).forEach(item => item.classList.remove("hidden"));
           currentIndex = nextIndex;
           
           if (currentIndex >= items.length) {
-            if (observer) observer.disconnect();
+            window.removeEventListener("scroll", checkScroll);
+            window.removeEventListener("resize", checkScroll);
             loader.remove();
             return;
           }
           
-          requestAnimationFrame(() => checkAndLoad(false));
+          setTimeout(checkScroll, 50);
         }
       }
       
-      setTimeout(() => {
-        observer = new IntersectionObserver((entries) => {
-          if (entries[0].isIntersecting) {
-            checkAndLoad(true);
-          }
-        }, {
-          rootMargin: "200px"
-        });
-        
-        observer.observe(loader);
-      }, 0);
+      window.addEventListener("scroll", checkScroll);
+      window.addEventListener("resize", checkScroll);
+      
+      checkScroll();
     });
   </script>
 </body>
