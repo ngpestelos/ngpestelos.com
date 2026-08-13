@@ -1,23 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="N">
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-label="N">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#121212"/>
-      <stop offset="100%" stop-color="#1c2838"/>
-    </linearGradient>
-    <clipPath id="above-horizon">
-      <path d="M0 0H64V43Q32 35 0 43Z"/>
+    <clipPath id="above">
+      <path d="M0 0H32V24.2Q16 20.4 0 24.2Z"/>
     </clipPath>
   </defs>
-  <rect width="64" height="64" fill="url(#sky)"/>
-  <path d="M0 43Q32 35 64 43V64H0Z" fill="#111"/>
-  <path d="M0 43Q32 35 64 43" fill="none" stroke="#6cb4ee" stroke-width="1.75"/>
-  <g fill="#6cb4ee" clip-path="url(#above-horizon)">
-    <rect x="13" y="11" width="8.5" height="34"/>
-    <rect x="11" y="11" width="12.5" height="4"/>
-    <rect x="11" y="41" width="12.5" height="4"/>
-    <rect x="42.5" y="11" width="8.5" height="34"/>
-    <rect x="40.5" y="11" width="12.5" height="4"/>
-    <rect x="40.5" y="41" width="12.5" height="4"/>
-    <polygon points="21.5,15 21.5,24.5 51,45 51,35.5"/>
+  <rect width="32" height="32" fill="#1c2838"/>
+  <path d="M0 24.2Q16 20.4 32 24.2V32H0Z" fill="#111"/>
+  <path d="M0 24.2Q16 20.4 32 24.2" fill="none" stroke="#6cb4ee" stroke-width="1.2"/>
+  <g fill="#6cb4ee" clip-path="url(#above)">
+    <rect x="4" y="3" width="5.2" height="22"/>
+    <rect x="3" y="3" width="7.2" height="2.6"/>
+    <rect x="22.8" y="3" width="5.2" height="22"/>
+    <rect x="21.8" y="3" width="7.2" height="2.6"/>
+    <polygon points="9.2,5.4 9.2,11.2 27.8,25 27.8,19.2"/>
   </g>
 </svg>
