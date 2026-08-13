@@ -103,11 +103,11 @@
       loader.textContent = "Loading more...";
       list.after(loader);
       
-      function checkAndLoad() {
+      function checkAndLoad(force = false) {
         if (currentIndex >= items.length) return;
         
         const rect = loader.getBoundingClientRect();
-        if (rect.top < window.innerHeight + 200) {
+        if (force || rect.top < window.innerHeight + 220) {
           const nextIndex = Math.min(currentIndex + 15, items.length);
           items.slice(currentIndex, nextIndex).forEach(item => item.classList.remove("hidden"));
           currentIndex = nextIndex;
@@ -118,13 +118,13 @@
             return;
           }
           
-          requestAnimationFrame(checkAndLoad);
+          requestAnimationFrame(() => checkAndLoad(false));
         }
       }
       
       const observer = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          checkAndLoad();
+          checkAndLoad(true);
         }
       }, {
         rootMargin: "200px"
