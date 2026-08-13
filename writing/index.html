@@ -91,11 +91,14 @@
       if (!list) return;
       
       const items = Array.from(list.querySelectorAll("li"));
-      if (items.length <= 15) return;
+      const initialSize = 10;
+      const batchSize = 10;
+      
+      if (items.length <= initialSize) return;
       
       document.body.classList.add("js-scroll-enabled");
       
-      let currentIndex = 15;
+      let currentIndex = initialSize;
       items.slice(currentIndex).forEach(item => item.classList.add("hidden"));
       
       const loader = document.createElement("div");
@@ -107,8 +110,8 @@
         if (currentIndex >= items.length) return;
         
         const rect = loader.getBoundingClientRect();
-        if (rect.top < window.innerHeight + 250) {
-          const nextIndex = Math.min(currentIndex + 15, items.length);
+        if (rect.top < window.innerHeight + 50) {
+          const nextIndex = Math.min(currentIndex + batchSize, items.length);
           items.slice(currentIndex, nextIndex).forEach(item => item.classList.remove("hidden"));
           currentIndex = nextIndex;
           
