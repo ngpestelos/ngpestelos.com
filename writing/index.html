@@ -87,10 +87,7 @@
   </footer>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const container = document.querySelector("#writing");
-      if (!container) return;
-      
-      const list = container.querySelector("ul");
+      const list = document.querySelector("#writing ul");
       if (!list) return;
       
       const items = Array.from(list.querySelectorAll("li"));
@@ -98,57 +95,30 @@
       
       document.body.classList.add("js-enabled");
       
-      let currentIndex = 0;
-      const batchSize = 15;
+      let currentIndex = 15;
+      items.slice(currentIndex).forEach(item => item.classList.add("hidden"));
       
       const loader = document.createElement("div");
       loader.className = "loading-indicator";
-      loader.innerHTML = `
-        <div class="dots">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-      `;
-      container.appendChild(loader);
-      
-      function showNextBatch() {
-        const nextIndex = Math.min(currentIndex + batchSize, items.length);
-        const batch = items.slice(currentIndex, nextIndex);
-        
-        batch.forEach((item, index) => {
-          item.classList.add("visible");
-          setTimeout(() => {
-            item.classList.add("animate-in");
-          }, index * 40);
-        });
-        
-        currentIndex = nextIndex;
-        
-        if (currentIndex >= items.length) {
-          observer.disconnect();
-          loader.remove();
-        }
-      }
+      loader.textContent = "Loading more...";
+      list.after(loader);
       
       const observer = new IntersectionObserver((entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting) {
-          loader.classList.add("active");
-          setTimeout(() => {
-            showNextBatch();
-            loader.classList.remove("active");
-          }, 350);
+        if (entries[0].isIntersecting) {
+          const nextIndex = Math.min(currentIndex + 15, items.length);
+          items.slice(currentIndex, nextIndex).forEach(item => item.classList.remove("hidden"));
+          currentIndex = nextIndex;
+          
+          if (currentIndex >= items.length) {
+            observer.disconnect();
+            loader.remove();
+          }
         }
       }, {
-        rootMargin: "100px"
+        rootMargin: "200px"
       });
       
-      showNextBatch();
-      
-      if (currentIndex < items.length) {
-        observer.observe(loader);
-      }
+      observer.observe(loader);
     });
   </script>
 </body>
