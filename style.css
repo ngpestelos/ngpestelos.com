@@ -230,15 +230,19 @@ a:hover {
   overflow-wrap: anywhere;
 }
 
-.back {
+.back,
+.article p.back {
   display: inline-block;
   margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
   color: var(--accent);
 }
 
-.back a {
+.back a,
+.article p.back a {
   color: var(--accent);
+  font-size: inherit;
 }
 
 .article footer.meta {
