@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Didn&#x27;t Get Dumber. The Chat Got Contaminated — Nestor G Pestelos Jr</title>
+  <meta name="description" content="I have been living in long coding-agent sessions again. The kind of debug that needs a lot of context: many files, history in the thread, a problem that does not fit a five-minute prompt. Early turns feel sharp.…">
+  <meta property="og:title" content="The Agent Didn&#x27;t Get Dumber. The Chat Got Contaminated">
+  <meta property="og:description" content="I have been living in long coding-agent sessions again. The kind of debug that needs a lot of context: many files, history in the thread, a problem that does not fit a five-minute prompt. Early turns feel sharp.…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/agent-didnt-get-dumber-chat-got-contaminated/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/agent-didnt-get-dumber-chat-got-contaminated/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>The Agent Didn&#x27;t Get Dumber. The Chat Got Contaminated</h1>
+<p class="byline">Published July 31, 2026</p>
+
+
+<p>I have been living in long coding-agent sessions again. The kind of debug that needs a lot of context: many files, history in the thread, a problem that does not fit a five-minute prompt. Early turns feel sharp. Later turns go soft in a specific way. The agent is wrong with confidence, and once in a while it will admit the information it already gave you was misleading. That admission does not arrive free. It arrives after something outside the chat narrative forces a check: a path:line claim that fails, a red-team pass, a reality-filter habit that refuses bare assertion.</p>
+
+<p>The session contaminates. Mid-thread facts drop. Early wrong assumptions stay loaded as ground truth. The model reconstructs from a partial record and defends the reconstruction when you push. You are arguing with a story.</p>
+
+<p>The comfortable diagnosis is that the model got tired, or that the context window filled up, or that you need a better prompt. Those are incomplete. What failed first is that the conversation became the agent&#x27;s false ground truth. When you challenged it, the challenge threatened the session narrative, so the model protected the narrative instead of re-reading the tree.</p>
+
+<p>Unstructured long continuous chat means one thread, chat as the working memory, no hard mission boundary. It is not a claim that all long-running agent work fails. Harnessed multi-hour runs with feature lists, progress files, evaluator agents, and fresh contexts can ship real systems. Anthropic&#x27;s engineering posts on long-running agents are blunt that <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">compaction alone is not enough</a> and that long work needs durable artifacts and handoffs (<a href="https://www.anthropic.com/engineering/harness-design-long-running-apps">harness design for long-running applications</a>). The problem is the marathon chat where the thread is still treated as the source of truth.</p>
+
+<h2>What the measurements actually say</h2>
+
+<p>Two research lines set the floor under &quot;just use more context.&quot;</p>
+
+<p>Liu and coauthors, in <a href="https://arxiv.org/abs/2307.03172"><em>Lost in the Middle</em></a> (TACL 2024), showed that long-context models use their windows non-uniformly. On multi-document QA and key-value retrieval, performance is best when the relevant material is at the beginning or the end, and worse when it sits in the middle. A longer window does not erase the shape.</p>
+
+<p>Chroma&#x27;s <a href="https://research.trychroma.com/context-rot"><em>Context Rot</em></a> report (2025) evaluated a large set of frontier models and found performance growing unreliable as input length grows, even on tasks that are easy at short lengths. A large advertised window is not a guarantee of uniform reasoning across it. Accuracy can fall well before the window is full.</p>
+
+<p>Those findings are about retrieval, position, and length, not about human-agent arguments. Extending them to &quot;misleading advice and debate&quot; is inference. If the model already reasons worse as the middle of a long context fills with debris, a coding thread that treats that debris as authority is a bad place to look for truth. The lab measurements explain why re-reading a file beats re-arguing a summary. They do not prove the social half of the spiral by themselves.</p>
+
+<h2>Why debate makes it worse</h2>
+
+<p>Once a wrong theory is in the chat, the session has a story. Your correction attacks that story. What you get in practice is coherence-preserving prose. The old frame absorbs the fix, invents B on still-wrong C, and sounds confident. More rebuttals only grow the thread and bury the middle of the context in noise.</p>
+
+<p>Rule: do not debate. Name the one claim. Re-read with a quote or a command just run. True or false only. Two hedges and the session is contaminated; hand off. Rebuttals train the model to persuade. Re-ground with a quote or a command just run.</p>
+
+<p>I do not wait for a confession. Path and line, or a command just run. Red-team the plan so the authoring session is not its own judge. Fresh eyes catch what the producer cannot.</p>
+
+<h2>Compaction is not the cure</h2>
+
+<p>When the window is full, compaction (manual or automatic) is a real tool. It frees room for later turns. Anthropic&#x27;s own material still treats compaction as a first-class strategy for long conversations (<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">context engineering for AI agents</a>).</p>
+
+<p>It is the wrong tool when the story is already wrong. Compaction summarizes. Summaries keep narrative shape and drop path:line detail. A wrong root cause can survive as the compact abstract while the evidence that would kill it is gone. In extreme cases, early constraints encoded only as natural language in the thread can vanish without an error signal. The session continues under a different rule set than you think you still have.</p>
+
+<p>Compact when the window is full. Restart when the story is wrong.</p>
+
+<p>Compact helps a healthy mission that needs space. Restart (or investigate-only freeze) is for tripwires: the agent contradicts a file you just saw, reintroduces a rejected fix, persuades without quotes, or forces the same constraint for the third time. Act on the first tripwire instead of the third hour of argument.</p>
+
+<h2>What to do instead</h2>
+
+<p>One mission per session: one bug, one feature slice, one doc class. Prefer a plan on disk over a plan that only lives in chat. When the window would force a choice, point a fresh session at the plan file rather than nursing the contaminated thread. The plan is the checkpoint that survives reset.</p>
+
+<p>For claims about the codebase, require path and line or a command just re-run. Anything else is unverified. Freeze implement mode when confused: read and test, do not redesign mid-spiral.</p>
+
+<p>After multi-file work, do not let the authoring session grade itself. Cold verification is the cheap way around self-review blindness.</p>
+
+<p>Handoff into a new chat should be short and boring:</p>
+
+<pre><code>Goal:
+Done so far (paths only):
+Open unknowns (label Unverified):
+Do NOT assume: &lt;false paths already killed&gt;
+Verify by reading: &lt;files&gt;</code></pre>
+
+<p>You do not need a special model. Refuse to treat chat as a durable truth layer. The same discipline works with any agent that accepts a paste: re-read and restart.</p>
+
+<h2>Continuity pressure is real</h2>
+
+<p>People stay in the bad session because continuity feels expensive to break. You already spent tokens. The agent &quot;almost has it.&quot; Shipping wants one more turn. Agent marathons also tax your attention. Constant switching between agent output and your own judgment shreds deep work. Short missions can feel slower than one heroic thread even when they are the only way to stay honest.</p>
+
+<p>Kill the thread when the story is wrong. Put the HOW into skills and files so the next session does not relearn from a contaminated diary. Spend human attention on verification rather than rebuttal.</p>
+
+<h2>What this is not</h2>
+
+<p>This is not &quot;context is expensive&quot; as a career thesis. I have written that piece already (<em>Cheap Code, Expensive Context</em>): when code gets cheap, context and judgment move to the center of the job. This essay is narrower. Inside a single agent chat, the session narrative can become a fake context layer that both of you treat as real. Prefer short missions, re-read over debate, disk over chat, and restart when the story is wrong.</p>
+
+<p>Harnessed long runs with durable artifacts can work. Compaction can free tokens. Larger windows help until they do not. None of that rescues a marathon where the only source of truth is a contaminated conversation.</p>
+
+<h3>Sources</h3>
+
+<ul>
+
+<li>Liu et al., <em>Lost in the Middle</em>, TACL 2024: https://arxiv.org/abs/2307.03172</li>
+
+<li>Hong, Troynikov &amp; Huber, <em>Context Rot</em>, Chroma Research, 2025: https://research.trychroma.com/context-rot</li>
+
+<li>Anthropic: <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">Effective harnesses for long-running agents</a>; <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps">Harness design for long-running applications</a>; <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a></li>
+
+<li>Author observation (2026): extended agent sessions on complicated long-context debug; agent admitted misleading information; caught via reality-filter and red-team skills</li>
+
+</ul>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
