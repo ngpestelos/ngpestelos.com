@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheap Code, Expensive Context — Nestor G Pestelos Jr</title>
+  <meta name="description" content="The loudest version of the 2026 story is that engineers are finished. Anyone with customer context and a chat window can ship the software that used to require a team, so the org chart inverts and the people who can…">
+  <meta property="og:title" content="Cheap Code, Expensive Context">
+  <meta property="og:description" content="The loudest version of the 2026 story is that engineers are finished. Anyone with customer context and a chat window can ship the software that used to require a team, so the org chart inverts and the people who can…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/cheap-code-expensive-context/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/cheap-code-expensive-context/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260813d">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Cheap Code, Expensive Context</h1>
+<p class="byline">Published July 12, 2026</p>
+
+
+<p>The loudest version of the 2026 story is that engineers are finished. Anyone with customer context and a chat window can ship the software that used to require a team, so the org chart inverts and the people who can code fastest lose their leverage. Amjad Masad at Replit has a name for the winners: the &quot;generalist automator,&quot; the non-engineer closest to the customer who builds, ships, and gets promoted past the engineering gate that used to block them.</p>
+
+<p>The direction is right. The framing is wrong in a way that matters, because it points people at the wrong thing to become.</p>
+
+<h2>The axis is coding, not engineering</h2>
+
+<p>What AI drives toward zero is the cost of turning a specification into working code. That is one specific skill, and it is not the same skill as knowing what to specify. When the price of writing code collapses, the bottleneck does not disappear. It moves upstream to whoever can sense the right problem, hold the customer&#x27;s context, and judge what is worth building at all.</p>
+
+<p>So the value axis is not engineer versus generalist. It is coding versus context. The person who loses leverage is the pure-syntax coder, the one whose whole contribution was translating a clear ticket into a correct diff. The person who gains it is whoever supplies the context that the ticket used to hide.</p>
+
+<p>That reframe changes who should be worried, and it is not who the headline says.</p>
+
+<h2>An engineer can take the context seat</h2>
+
+<p>Marc Andreessen makes the counterpoint: AI does not eliminate the programmer, it moves the programmer from writing code to directing it. Power tools did not end carpentry. They changed which part of carpentry was scarce.</p>
+
+<p>It&#x27;s worth asking where these voices sit. Andreessen is a16z, and the bullish case also came through a16z, which relayed Masad, the CEO of a company it backs (<a href="https://x.com/a16z/status/2030327789589790789">a16z, 2026</a>). One firm is amplifying both sides. That is a reason for caution, not a verdict.</p>
+
+<p>The context-seat claim survives the caution. An engineer who moves toward architecture and problem definition holds the context seat as well as any generalist, and usually holds it longer, because the bottleneck re-forms one level up, as the architectural fluency the generalist never built. Robert Martin makes the same point: AI frees you from writing syntax, not from designing systems. A team shipping features that no one on it can read is not winning. It is running up a bill that falls due the first time something has to change. That is still a prediction, but a hard one to dismiss.</p>
+
+<h2>The shift is real, and it is bounded</h2>
+
+<p>Here is the boundary the triumphant version skips. The abundance is real and close to total on greenfield work, the prototype, the internal tool, the long-tail app that never justified a team. It is thin to negative on the mature systems engineers already own.</p>
+
+<p>A randomized trial from METR is the sharpest evidence. Experienced open-source developers working on their own mature codebases, with early-2025 tools, were nineteen percent slower with AI than without, while believing they were twenty percent faster (<a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">METR, 2025</a>). Two things follow from that gap. The developers most certain AI sped them up were measurably wrong, so the claim that AI has collapsed the bottleneck everywhere is worth less than it sounds. And whatever speedup is real is not showing up in the systems that have to survive.</p>
+
+<p>There is a second boundary the story skips, and it is the economy. The whole &quot;ship first, ration never&quot; regime assumes cheap capital. When money tightens, the person who asks whether something is worth building before it gets built stops looking like friction and starts looking like prudence, and the gate AI just dissolved gets rebuilt by the CFO. The shift is real, but it rides a cycle.</p>
+
+<p>So the honest shape is a handoff. AI hands the generalist a strong v1. It hands the engineer who repositions everything that has to keep running after.</p>
+
+<h2>We have run this experiment before</h2>
+
+<p>The claim that ordinary business users would build software and route around the engineers is not new. It traces at least to James Martin&#x27;s 1982 book <em>Application Development Without Programmers</em>, through 4GL, CASE tools, RAD, and the low-code and no-code waves since. Gartner has projected citizen developers outnumbering professional developers by roughly four to one (<a href="https://venturebeat.com/business/gartner-citizen-developers-will-soon-outnumber-professional-coders-4-to-1">VentureBeat, 2021</a>). The pattern across every wave has been the same, and it is not that the tools failed. They succeeded, and they augmented rather than replaced. Citizen developers built the long tail; professionals moved up into platforms, governance, and the systems that could not be allowed to break.</p>
+
+<p>AI is a much larger version of that wave. The base rate still says augmentation, and the burden is on anyone claiming this time ends in replacement to say what is different, rather than assuming it.</p>
+
+<h2>What to actually do about it</h2>
+
+<p>If the axis is coding versus context, the move is to get on the context side. That is the same whether you started as an engineer or not.</p>
+
+<p>For the engineer, it means treating syntax as the commodity it now is, and spending your hours on what AI cannot supply: what the system should be, where it breaks, what is worth building. The risk is not that a generalist out-ships you. It is staying the person whose value was the typing.</p>
+
+<p>For the generalist, it means not mistaking the v1 for the whole job. Shipping got easy the moment it stopped being expensive. The skills that decide whether the thing survives real users and real scale are still the boring ones: validating the problem, judging the architecture, and knowing which of the hundred things you could build is the one that matters.</p>
+
+<p>The engineers who lose the next few years are the ones who defend syntax. The generalists who lose are the ones who mistake a working prototype for a durable position. Everyone else is in the same business, holding context better than the next person, and that business just stopped being about who could code.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
