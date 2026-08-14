@@ -16,7 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260814f">
+  <link rel="stylesheet" href="/style.css?v=20260814g">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -33,7 +33,7 @@
 
 <p class="series">When building the right thing costs the same as building the quick thing</p>
 
-<p><strong>TL;DR:</strong> An AI coding assistant built a proper Ruby gem — wrapping lftp with integrity checks, resume, and retry — in an afternoon instead of days. When the right thing costs the same as the quick thing, build the right thing.</p>
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>An AI coding assistant built a proper Ruby gem — wrapping lftp with integrity checks, resume, and retry — in an afternoon instead of days. When the right thing costs the same as the quick thing, build the right thing.</p></div>
 
 <p>A vendor sync job had a 20GB file that took more than a day over single-connection SFTP. A CLI tool called lftp already does parallel downloads over SSH. But wrapping that in a proper Ruby gem with integrity verification, resume support, and automatic retry? Nobody builds a real library for a file transfer problem.</p>
 

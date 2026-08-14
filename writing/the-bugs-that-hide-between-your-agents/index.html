@@ -16,7 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260814f">
+  <link rel="stylesheet" href="/style.css?v=20260814g">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -33,7 +33,7 @@
 
 <p class="series">I red-teamed my own agent stack for two days. Everything broken was between components — invisible to any single file, and to me.</p>
 
-<p><strong>TL;DR:</strong> A two-day adversarial review of my own agent infrastructure found every real defect lived between components — contract drift, unfalsifiable success, injection — invisible to file-scoped review. The fix: reviewers who hold both sides of a contract and trust neither.</p>
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>A two-day adversarial review of my own agent infrastructure found every real defect lived between components — contract drift, unfalsifiable success, injection — invisible to file-scoped review. The fix: reviewers who hold both sides of a contract and trust neither.</p></div>
 
 <p>Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found something broken and running.</p>
 
