@@ -16,7 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260814f">
+  <link rel="stylesheet" href="/style.css?v=20260814g">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -92,76 +92,87 @@
       if (!list) return;
 
       const items = Array.from(list.querySelectorAll("li"));
-      const initialSize = 15;
-      const batchSize = 15;
-      if (items.length <= initialSize) return;
+      const pageSize = 15;
+      const pageCount = Math.ceil(items.length / pageSize);
+      if (pageCount <= 1) return;
 
-      document.body.classList.add("js-scroll-enabled");
-      let currentIndex = initialSize;
-      items.slice(currentIndex).forEach((item) => item.classList.add("hidden"));
+      document.body.classList.add("js-paged");
 
-      const loader = document.createElement("div");
-      loader.className = "loading-indicator";
-      loader.textContent = "Loading more...";
-      list.after(loader);
+      const pager = document.createElement("nav");
+      pager.className = "pager";
+      pager.setAttribute("aria-label", "Writing pages");
+      list.after(pager);
 
-      const scrollEl = () => document.scrollingElement || document.documentElement;
-
-      function nearBottom() {
-        const el = scrollEl();
-        const view = el.clientHeight || window.innerHeight;
-        const remaining = el.scrollHeight - (el.scrollTop + view);
-        const loaderTop = loader.getBoundingClientRect().top;
-        return remaining < 240 || loaderTop < view + 240;
+      function pageFromUrl() {
+        const raw = new URLSearchParams(window.location.search).get("page");
+        const n = parseInt(raw, 10);
+        if (!n || n < 1) return 1;
+        return Math.min(n, pageCount);
       }
 
-      function reveal() {
-        const next = Math.min(currentIndex + batchSize, items.length);
-        items.slice(currentIndex, next).forEach((item) => item.classList.remove("hidden"));
-        currentIndex = next;
+      function hrefFor(page) {
+        return page <= 1 ? "/writing/" : "/writing/?page=" + page;
       }
 
-      function finish() {
-        window.removeEventListener("scroll", onScroll);
-        document.removeEventListener("scroll", onScroll);
-        scrollEl().removeEventListener("scroll", onScroll);
-        window.removeEventListener("resize", onScroll);
-        if (observer) observer.disconnect();
-        loader.remove();
-      }
+      function render(page) {
+        const start = (page - 1) * pageSize;
+        const end = start + pageSize;
+        items.forEach((item, i) => {
+          item.classList.toggle("hidden", i < start || i >= end);
+        });
 
-      function fill() {
-        let guard = 0;
-        while (currentIndex < items.length && nearBottom() && guard < 20) {
-          reveal();
-          guard += 1;
+        pager.replaceChildren();
+
+        const prev = document.createElement(page > 1 ? "a" : "span");
+        prev.textContent = "Previous";
+        if (page > 1) prev.href = hrefFor(page - 1);
+        else prev.setAttribute("aria-disabled", "true");
+        pager.appendChild(prev);
+
+        for (let n = 1; n <= pageCount; n += 1) {
+          if (n === page) {
+            const current = document.createElement("span");
+            current.textContent = String(n);
+            current.setAttribute("aria-current", "page");
+            pager.appendChild(current);
+          } else {
+            const link = document.createElement("a");
+            link.href = hrefFor(n);
+            link.textContent = String(n);
+            pager.appendChild(link);
+          }
         }
-        if (currentIndex >= items.length) finish();
+
+        const next = document.createElement(page < pageCount ? "a" : "span");
+        next.textContent = "Next";
+        if (page < pageCount) next.href = hrefFor(page + 1);
+        else next.setAttribute("aria-disabled", "true");
+        pager.appendChild(next);
       }
 
-      function onScroll() {
-        fill();
+      pager.addEventListener("click", (event) => {
+        const link = event.target.closest("a");
+        if (!link || !pager.contains(link)) return;
+        event.preventDefault();
+        const nextPage = pageFromHref(link.getAttribute("href"));
+        history.pushState({ page: nextPage }, "", hrefFor(nextPage));
+        render(nextPage);
+        window.scrollTo(0, 0);
+      });
+
+      function pageFromHref(href) {
+        try {
+          const url = new URL(href, window.location.origin);
+          const n = parseInt(url.searchParams.get("page"), 10);
+          if (!n || n < 1) return 1;
+          return Math.min(n, pageCount);
+        } catch (err) {
+          return 1;
+        }
       }
 
-      let observer = null;
-      if ("IntersectionObserver" in window) {
-        observer = new IntersectionObserver(
-          (entries) => {
-            if (entries.some((entry) => entry.isIntersecting)) fill();
-          },
-          { root: null, rootMargin: "240px 0px", threshold: 0 }
-        );
-        observer.observe(loader);
-      }
-
-      const opts = { passive: true };
-      window.addEventListener("scroll", onScroll, opts);
-      document.addEventListener("scroll", onScroll, opts);
-      scrollEl().addEventListener("scroll", onScroll, opts);
-      window.addEventListener("resize", onScroll);
-
-      fill();
-      requestAnimationFrame(fill);
+      window.addEventListener("popstate", () => render(pageFromUrl()));
+      render(pageFromUrl());
     });
   </script>
 </body>

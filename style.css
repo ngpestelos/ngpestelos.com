@@ -339,15 +339,25 @@ a:hover {
   }
 }
 
-/* Infinite Scrolling styles */
-.js-scroll-enabled #writing ul li.hidden {
+.js-paged #writing ul li.hidden {
   display: none;
 }
 
-.loading-indicator {
-  text-align: center;
-  padding: 1.5rem 0;
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.85rem;
+  margin: 1.25rem 0 0;
+  font-size: 1.05rem;
+}
+
+.pager [aria-current="page"] {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.pager [aria-disabled="true"] {
   color: var(--muted);
-  font-size: 0.95rem;
 }
 
