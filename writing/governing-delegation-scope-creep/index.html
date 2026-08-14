@@ -32,6 +32,8 @@
 <p class="byline">Published July 3, 2026</p>
 
 
+<p><strong>TL;DR:</strong> AI scope creep isn&#x27;t a prompting problem — it&#x27;s architecture. Fix it with plan-first gates, execution boundaries in the repo, and post-execution verification, encoded as durable rules the agent reads every session instead of repeated prompt tweaks.</p>
+
 <p>You asked for a small change and got a 12-file feature. You reverted it, burned 30 minutes, and now you hesitate before delegating anything.</p>
 
 <p>I&#x27;ve lived the canonical version of this. In February 2026 I handed Claude a 388-line product design proposal, five features across two phases, and said &quot;implement the following plan,&quot; meaning <em>save the plan as a markdown document</em>. Claude created 12 files, wired up routes, and wrote tests for all five features before I caught it. Full revert, session wasted. Of everything in my usage history, that is still the friction point I remember most ([[Scope Misinterpretation as Trust Boundary]]). The same engine that commits a real fix in one pass will commit an unwanted feature just as fast.</p>
