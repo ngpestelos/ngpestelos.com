@@ -46,7 +46,7 @@
 
 <h2>No defect, no rule</h2>
 
-<p>The skill grew from 131 lines to 170 in five days, across 14 commits. Growth like that is usually bloat. What keeps it honest is the slot rule: no rule enters the file without a live defect that opened the slot, and the origin stays stamped in the text. The two-sided contract-reviewer requirement cites the sweep where a Blocker &quot;lived <em>between</em> two skills,&quot; told in <a href="https://para.ngpcloud.org/the-bugs-that-hide-between-your-agents">The Bugs That Hide Between Your Agents</a>. The author-side fix phase exists because 3 of 4 second-pass Majors were defects introduced by the first pass&#x27;s own fixes. The defect-class catalog grew from 4 classes to 12 the same way, each batch stamped with the sweep that produced it. The seed observation, from <a href="https://para.ngpcloud.org/red-teaming-your-own-agent-infrastructure-finds-live-defects">Red-Teaming Your Own Agent Infrastructure Finds Live Defects</a>: prose about infrastructure drifts from the infrastructure itself.</p>
+<p>The skill grew from 131 lines to 170 in five days, across 14 commits. Growth like that is usually bloat. What keeps it honest is the slot rule: no rule enters the file without a live defect that opened the slot, and the origin stays stamped in the text. The two-sided contract-reviewer requirement cites the sweep where a Blocker &quot;lived <em>between</em> two skills,&quot; told in <a href="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/">The Bugs That Hide Between Your Agents</a>. The author-side fix phase exists because 3 of 4 second-pass Majors were defects introduced by the first pass&#x27;s own fixes. The defect-class catalog grew from 4 classes to 12 the same way, each batch stamped with the sweep that produced it. The seed observation, from Red-Teaming Your Own Agent Infrastructure Finds Live Defects: prose about infrastructure drifts from the infrastructure itself.</p>
 
 <h2>Does the rule transfer?</h2>
 
@@ -78,11 +78,11 @@
 
 <p>Building round 5&#x27;s answer-stripped snapshot exposed a defect in the skill under test: a stale &quot;transfer unverified&quot; parenthetical beside its own &quot;VERIFIED same day&quot; note. The internal-contradiction class the skill teaches was living in the skill itself. Fixed before the round ran.</p>
 
-<p><a href="https://para.ngpcloud.org/self-updating-spec-as-living-document">Self Updating Spec as Living Document</a> argues static specs become lies. I would push it further: even a self-updating spec lies between updates. The harness was positioned to catch it.</p>
+<p>Self Updating Spec as Living Document argues static specs become lies. I would push it further: even a self-updating spec lies between updates. The harness was positioned to catch it.</p>
 
 <h2>Living instrument, immutable verifier</h2>
 
-<p><a href="https://para.ngpcloud.org/evaluator-immutability-prevents-agents-grading-own-work">Evaluator Immutability Prevents Autonomous Agents From Grading Their Own Work</a> holds that any self-improving loop needs a verifier the loop cannot rewrite. A skill that went through a dozen versions in five days looks like a violation. It is the opposite. The skill is not the verifier; it is the subject. The verdicts come from outside: pinned snapshots it cannot edit, separate-pass ground truth, blind scoring, controls it does not know about.</p>
+<p>Evaluator Immutability Prevents Autonomous Agents From Grading Their Own Work holds that any self-improving loop needs a verifier the loop cannot rewrite. A skill that went through a dozen versions in five days looks like a violation. It is the opposite. The skill is not the verifier; it is the subject. The verdicts come from outside: pinned snapshots it cannot edit, separate-pass ground truth, blind scoring, controls it does not know about.</p>
 
 <p>The discipline reduces to two gates per edit. A live defect opens the slot. A transfer verdict, VERIFIED, PENDING, or FAILED, decides what stays and in what words. I cannot tell you the loop reduced my defect rate; no before-and-after measurement exists. What I can tell you is which of my rules fire on cheap tiers, which are pending a real test case, and which one failed and why.</p>
 
