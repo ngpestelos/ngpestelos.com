@@ -191,6 +191,10 @@ a:hover {
   line-height: 1.6;
 }
 
+.article .tldr p + p {
+  margin-top: 0.75rem;
+}
+
 .article h2 {
   text-transform: none;
   letter-spacing: -0.01em;

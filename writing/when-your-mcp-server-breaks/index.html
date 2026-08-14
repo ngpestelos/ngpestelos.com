@@ -16,7 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260814g">
+  <link rel="stylesheet" href="/style.css?v=20260814h">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -35,9 +35,9 @@
 
 <p><em>Published January 24, 2026</em></p>
 
-<h2>TL;DR</h2>
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>My Readwise MCP server broke because it assumed a NixOS-specific path that doesn&#x27;t exist on macOS. Instead of debugging the Node.js dependency chain, I built a replacement in Python—646 lines vs 6,749 lines (90% smaller), 8 tools vs 13+ (38% fewer), with ~60% token reduction. The key insight: I already had proven logic in a backfill script. The MCP server became a thin wrapper around battle-tested code. When an integration breaks, sometimes the fastest fix is a focused rebuild using what already works.</p></div>
 
-<p>My Readwise MCP server broke because it assumed a NixOS-specific path that doesn&#x27;t exist on macOS. Instead of debugging the Node.js dependency chain, I built a replacement in Python—646 lines vs 6,749 lines (90% smaller), 8 tools vs 13+ (38% fewer), with ~60% token reduction. The key insight: I already had proven logic in a backfill script. The MCP server became a thin wrapper around battle-tested code. When an integration breaks, sometimes the fastest fix is a focused rebuild using what already works.</p>
+<hr>
 
 <h2>What is MCP?</h2>
 

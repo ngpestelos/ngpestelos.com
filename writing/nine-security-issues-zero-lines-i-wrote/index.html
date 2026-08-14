@@ -16,7 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260814g">
+  <link rel="stylesheet" href="/style.css?v=20260814h">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -33,11 +33,9 @@
 
 <p class="series">Part one of a three-part set on how I work with agents day to day. Part two: <a href="https://ngpestelos.com/writing/scanner-that-feeds-pipeline/">The Scanner That Feeds the Pipeline</a>. Part three: The Ledger That Stayed Empty.</p>
 
-<h2>TL;DR</h2>
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>Nine open findings from a security audit on a Go CLI tool. I assigned each issue to an autonomous background agent running a full plan-to-PR pipeline. I wrote zero lines of code. I merged all nine pull requests in one afternoon.</p><p>The review gates caught real, subtle flaws before merge. One agent coordination deadlock taught me how to structure nested agent loops.</p></div>
 
-<p>Nine open findings from a security audit on a Go CLI tool. I assigned each issue to an autonomous background agent running a full plan-to-PR pipeline. I wrote zero lines of code. I merged all nine pull requests in one afternoon.</p>
-
-<p>The review gates caught real, subtle flaws before merge. One agent coordination deadlock taught me how to structure nested agent loops.</p>
+<hr>
 
 <h2>The Hand-off</h2>
 

@@ -16,7 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260814g">
+  <link rel="stylesheet" href="/style.css?v=20260814h">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -33,11 +33,9 @@
 
 <p class="series">Part two of a three-part set on how I work with agents day to day. Part one: <a href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">Nine Security Issues, Zero Lines I Wrote</a>. Part three: The Ledger That Stayed Empty.</p>
 
-<h2>TL;DR</h2>
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>I maintain more repos than I can check by hand. A small system called portfolio-ops watches all of them, runs one deterministic scan, and turns whatever it finds into one of three narrow requests. The pipeline from <a href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">the other piece</a> only ever handles one of those three: turning a specific issue into a specific PR.</p><p>Deciding what&#x27;s worth fixing and actually fixing it turned out to need two separate systems.</p></div>
 
-<p>I maintain more repos than I can check by hand. A small system called portfolio-ops watches all of them, runs one deterministic scan, and turns whatever it finds into one of three narrow requests. The pipeline from <a href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/">the other piece</a> only ever handles one of those three: turning a specific issue into a specific PR.</p>
-
-<p>Deciding what&#x27;s worth fixing and actually fixing it turned out to need two separate systems.</p>
+<hr>
 
 <h2>The Problem Underneath the Pipeline</h2>
 
