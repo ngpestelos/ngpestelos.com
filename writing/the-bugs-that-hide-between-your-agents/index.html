@@ -33,6 +33,8 @@
 
 <p class="series">I red-teamed my own agent stack for two days. Everything broken was between components — invisible to any single file, and to me.</p>
 
+<p><strong>TL;DR:</strong> A two-day adversarial review of my own agent infrastructure found every real defect lived between components — contract drift, unfalsifiable success, injection — invisible to file-scoped review. The fix: reviewers who hold both sides of a contract and trust neither.</p>
+
 <p>Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found something broken and running.</p>
 
 <p>A safety hook silently disabled: the pre-commit guards I relied on weren&#x27;t firing, because the pointer that turns them on was never set. Two repositories wedged for weeks behind a stale lock, their sync logs printing &quot;OK&quot; the whole time. Injection paths where fetched text reached write authority unchecked. None of it was theoretical. It was live, in production, on the day I looked.</p>
