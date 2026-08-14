@@ -32,6 +32,10 @@
 <p class="byline">Published July 23, 2026</p>
 
 
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>Don&#x27;t troubleshoot with the tools you already know — that&#x27;s hunting under the streetlight. Apply utilization/saturation/errors to every resource first. It&#x27;s a triage layer only; root cause needs hypothesis-testing, novel failures need exploration.</p></div>
+
+<hr>
+
 <p>When something is slow, we reach for the tools we already know: <code>top</code>, the dashboard, the trace we understand. It feels like investigation. It is closer to hunting for your keys under the streetlight because the light is better there.</p>
 
 <p>Brendan Gregg named that failure the streetlight anti-method in his <a href="https://queue.acm.org/detail.cfm?id=2413037">2012 piece on thinking methodically about performance</a>. The trouble is structural, not lazy. Familiar tools light up a fixed patch of the problem, and whatever they cannot measure stays dark, so you never learn it was there. Learning more tools widens the lit area. It never guarantees the light falls where the problem is.</p>

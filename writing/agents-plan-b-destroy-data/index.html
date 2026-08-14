@@ -31,6 +31,10 @@
     <h1>Your Agent&#x27;s Plan B Will Destroy Your Data</h1>
 
 
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>An AI agent&#x27;s locally-rational escalation — <code>git stash --include-untracked</code> to unblock a pull — permanently destroyed 24 untracked files. A written rule wasn&#x27;t enough; only a PreToolUse hook that mechanically blocks the command actually prevents it.</p></div>
+
+<hr>
+
 <p>Twenty-four files disappeared from my working tree on a Tuesday afternoon. No error message. No warning. I&#x27;d asked Claude Code to commit some changes, and five git commands later, three days of conversation backups were gone forever.</p>
 
 <p>The root cause wasn&#x27;t a bug. It was an AI agent making a reasonable-sounding but catastrophically wrong decision under routine conditions. This is how it happened and what I built to prevent it.</p>

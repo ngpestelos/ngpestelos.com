@@ -32,6 +32,10 @@
 <p class="byline">Published July 14, 2026</p>
 
 
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>Write-back alone won&#x27;t stop your spec from lying — it&#x27;s the narrowest of three fixes. Encodable intent stays true via executable tests, decisions via reviewed write-back, runtime behavior via observability. Match the mechanism to the layer.</p></div>
+
+<hr>
+
 <p>The fix for spec rot has a nice symmetry. Specs go stale because humans write them once and never touch them again, so make the spec bidirectional: let the agent write back what it learns during implementation, and the document stays true. <a href="https://x.com/augmentcode/status/2025993446633492725">Augment Code put it cleanly</a>: a spec that isn&#x27;t updated becomes a lie the agent trusts.</p>
 
 <p>That&#x27;s correct, and it&#x27;s the narrowest and most failure-prone of the three things you need, the one this year&#x27;s tooling reaches for first. If it&#x27;s the only one you reach for, your living spec will keep lying to you. It will just lie about different things.</p>
