@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Metric You&#x27;re Watching Already Happened Upstream — Nestor G Pestelos Jr</title>
+  <meta name="description" content="The number you&#x27;re staring at almost always already happened elsewhere or earlier. It rarely has one clean cause. Fix a real contributor instead of reacting to the metric, and expect that fix to expire too.">
+  <meta property="og:title" content="The Metric You&#x27;re Watching Already Happened Upstream">
+  <meta property="og:description" content="The number you&#x27;re staring at almost always already happened elsewhere or earlier. It rarely has one clean cause. Fix a real contributor instead of reacting to the metric, and expect that fix to expire too.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/metric-already-happened-upstream/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/metric-already-happened-upstream/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260814h">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>The Metric You&#x27;re Watching Already Happened Upstream</h1>
+<p class="byline">Published August 15, 2026</p>
+
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>The number you're staring at almost always already happened elsewhere or earlier. It rarely has one clean cause. Fix a real contributor instead of reacting to the metric, and expect that fix to expire too.</p></div>
+
+<hr>
+
+<p>Twenty minutes into a Black Friday outage, the dashboards read &quot;high&quot; latency. That drastically understated what was happening. Requests were timing out, so their true latency was effectively infinite. A metric that only counts completed requests can&#x27;t see one that never finishes. Michael Nygard, writing up the incident in <a href="https://pragprog.com/titles/mnee2/release-it-second-edition/">Release It!</a>, put the trap plainly: &quot;Response time is always a lagging indicator. You can only measure the response time on requests that are done.&quot; The average looked stressed but nominal. The system was failing, and the metric everyone was watching was structurally incapable of showing it, because the requests doing the most damage were the ones that never finished long enough to be counted.</p>
+
+<p>I went through my notes gathering every case I had of this shape, then ran a session actively trying to find what would break it. The pattern holds far outside operations:</p>
+
+<ul>
+
+<li><strong>Justin Skycak</strong> flips a career cliché: passion follows competence. Chase passion first and you mistake the readout for the cause, because passion shows up after sustained effort.</li>
+
+<li><strong>Aakash Gupta</strong> runs six founder cases through the same test; the cleanest pair is about money. Fired with his reputation intact, Sam Altman had an offer within 48 hours. Reputation gone, Sam Bankman-Fried couldn&#x27;t raise a dollar after FTX collapsed. Investors are pricing what a founder will do next, and once the belief in &quot;next&quot; collapses, the current balance stops mattering.</li>
+
+<li><strong>An operator writing as staysaasy</strong> makes the management version: how often a team fights fires is a lagging readout of planning quality, not bad luck.</li>
+
+<li><strong>Victor Andres Manhit&#x27;s</strong> data on Philippine legislation shows the same lag in public opinion, and it runs both directions. An early bad approval number isn&#x27;t proof an initiative failed, and a later good one isn&#x27;t proof it worked, since perception can lag the real condition either way.</li>
+
+<li><strong>Tibo</strong>, who runs a SaaS portfolio at $1M MRR, traces most churn to signup and the first onboarding session, months before the &quot;price&quot; reason customers give when they cancel.</li>
+
+</ul>
+
+<p><a href="https://en.wikipedia.org/wiki/Cybernetics:_Or_Control_and_Communication_in_the_Animal_and_the_Machine">Norbert Wiener</a> formalized the general idea in 1948: feedback is how a system adjusts future conduct by past performance. When that feedback arrives too late, the correction arrives too late with it, which is exactly Nygard&#x27;s dashboard. Shortening the loop is the fix: watch something further upstream that&#x27;s happening right now, before the delay has a chance to hide the failure again.</p>
+
+<p>Two problems survived when I tried to break this.</p>
+
+<p>First, there is rarely one clean cause to find. Richard Cook&#x27;s <a href="https://how.complexsystems.fail/">How Complex Systems Fail</a> makes the point bluntly: &quot;Post-accident attribution to a &#x27;root cause&#x27; is fundamentally wrong... there is no isolated &#x27;cause&#x27; of an accident.&quot; Real failures need multiple contributors acting together, not one traceable cause. &quot;Reputation caused the funding&quot; or &quot;onboarding caused the churn&quot; names one real contributor among several. Name a contributor. Don&#x27;t call it the cause.</p>
+
+<p>Second, whatever you start watching upstream instead has the same problem waiting for it. <a href="https://en.wikipedia.org/wiki/Goodhart%27s_law">Goodhart&#x27;s Law</a>, from 1975: any regularity you turn into a target stops behaving like a regularity. Watch account health scores the way you used to watch the cancellation number, and eventually someone learns to fake the score instead of fixing the account. The upstream signal is not a permanent fix. It&#x27;s a fix with an expiration date, and the expiration date is the moment someone starts managing to it on purpose.</p>
+
+<p>What changes, in practice:</p>
+
+<ul>
+
+<li>Name what the number in front of you finished measuring, and how long ago.</li>
+
+<li>Ask what&#x27;s happening right now, further upstream, that you could watch instead: a health score before the cancel button, or a confidence level tracked against outcomes before the forecast fails.</li>
+
+<li>Plan to rotate that upstream signal before it turns into the next thing people learn to game.</li>
+
+</ul>
+
+<p>The number told you about the past. The upstream signal only buys you a warning, and only for as long as nobody&#x27;s optimizing for it yet.</p>
+
+<p>Nygard&#x27;s own prescription for the trap: supplement the average with percentiles and completion counts, the numbers that show a stuck request instead of hiding it. Build a way to see the failure the lagging number was built to miss.</p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
