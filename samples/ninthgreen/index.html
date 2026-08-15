@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ninthgreen readiness read — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Sample Rails readiness read for a case-study club-booking app. Not a client engagement.">
+  <meta name="robots" content="noindex">
+  <meta property="og:title" content="Ninthgreen readiness read">
+  <meta property="og:description" content="Sample Rails readiness read. Case-study tree. Not a client.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/samples/ninthgreen/">
+  <link rel="canonical" href="https://ngpestelos.com/samples/ninthgreen/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260814h">
+  <style>
+    .sample-banner {
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      padding: 0.85rem 1rem;
+      margin: 0 0 1.25rem;
+      font-size: 0.95rem;
+    }
+    .article table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .article th, .article td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.4rem 0.5rem 0.4rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .article h2 { margin: 2rem 0 0.75rem; font-size: 1.25rem; }
+    .article h3 { margin: 1.4rem 0 0.5rem; font-size: 1.05rem; }
+    .article p, .article li { margin-bottom: 0.75rem; }
+    .article ul { padding-left: 1.2rem; }
+    .sev { font-variant: small-caps; letter-spacing: 0.04em; color: var(--muted); }
+    @media print {
+      body { background: #fff; color: #111; }
+      .sample-banner { border-color: #999; }
+    }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="sample-banner"><strong>Sample readiness read.</strong> Case-study tree. Not a client. Not an at-bat.</p>
+    <h1>Ninthgreen</h1>
+    <p class="byline">Rails 5.0.7.2 / Ruby 2.6.6 club-booking estate. One repo. SHA 6b4d2a5. 15 August 2026. Nestor Pestelos.</p>
+
+    <h2>Executive summary</h2>
+    <p>Members book classes, groups, dining, tee times, and events. The app still boots. The stack is past official support. Join, book, and mail go through a background worker. Cross-site request forgery protection is commented out.</p>
+    <p><strong>Fix first</strong></p>
+    <ul>
+      <li>Turn request-forgery protection back on.</li>
+      <li>Run the job worker next to the web process. Join and book enqueue mail.</li>
+      <li>Keep the current Ruby and Rails pins. Do not mass-upgrade the lockfile.</li>
+    </ul>
+    <p><strong>Leave</strong></p>
+    <ul>
+      <li>The leftover seed after the demo users.</li>
+      <li>Old skin classes on events, tee times, and group show.</li>
+      <li>Club timezone hardcoded to one zone.</li>
+    </ul>
+    <p>Decision: pin-and-run. A version climb is a later fixed-scope modernization sprint, not this week.</p>
+
+    <h2>Scope and method</h2>
+    <p>One primary repository at SHA <code>6b4d2a5</code>. Read-only. Local compose, not staging. No production traffic. Case-study intake, not a client questionnaire.</p>
+    <table>
+      <thead>
+        <tr><th>Area</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Architecture</td><td>Reviewed. One app. Person STI. None above Low.</td></tr>
+        <tr><td>Test trust</td><td>Reviewed. Estate integration tests exist. Full suite not re-run. None above Low this pass.</td></tr>
+        <tr><td>Hot paths</td><td>Reviewed. Clinic book, dining reserve, group join enqueue jobs. See High: worker.</td></tr>
+        <tr><td>Dependency health</td><td>Reviewed. Ruby 2.6.6 / Rails 5.0.7.2. High: past support.</td></tr>
+        <tr><td>Error handling</td><td>Reviewed. High: forgery protection off.</td></tr>
+        <tr><td>Deploy basics</td><td>Reviewed. Procfile web + worker. Worker is load-bearing.</td></tr>
+      </tbody>
+    </table>
+    <p>Out of scope: penetration test, compliance certificate, a second service, ongoing monitoring. Member and tax-roll dumps in the tree were not used as evidence.</p>
+
+    <h2>Findings</h2>
+
+    <h3><span class="sev">High</span> — request-forgery protection is off</h3>
+    <p><code>app/controllers/application_controller.rb</code> comments out <code>protect_from_forgery</code>. A TODO says to put it back.</p>
+    <p>Impact: book, join, and reserve posts have no Rails CSRF check.</p>
+    <p>Fix direction: restore <code>protect_from_forgery with: :exception</code>. Recheck the mobile calendar exceptions in <code>app/controllers/calendar/app_controller.rb</code>.</p>
+
+    <h3><span class="sev">High</span> — join, book, and mail need the job worker</h3>
+    <p><code>config/application.rb</code> sets the Active Job adapter to Sidekiq. Creating a group membership calls <code>deliver_later</code>. Clinic book and dining reserve do the same.</p>
+    <p>Impact: without Redis and a worker process, join and book can error or drop mail.</p>
+    <p>Fix direction: run the <code>worker</code> process from <code>Procfile</code> next to <code>web</code>. Do not create memberships in seed without skipping that callback.</p>
+
+    <h3><span class="sev">High</span> — runtime is past official support</h3>
+    <p>Ruby 2.6.6 (<code>Gemfile</code>, <code>.ruby-version</code>). Rails 5.0.7.2 (<code>Gemfile.lock</code>).</p>
+    <p>Impact: no official security patches. That is age, not a counted advisory list.</p>
+    <p>Fix direction: stay pinned until a planned climb. Do not treat lockfile noise as a product upgrade.</p>
+
+    <h3><span class="sev">Medium</span> — leftover seed after the demo block</h3>
+    <p><code>db/seeds.rb</code> creates demo users, then more people and groups. Adding members fires the join callback.</p>
+    <p>Impact: a full <code>db:seed</code> is not a safe one-shot.</p>
+    <p>Fix direction: keep a narrow demo path. Do not run the rest.</p>
+
+    <h3><span class="sev">Medium</span> — old skin classes on later surfaces</h3>
+    <p><code>app/views/events/index.html.erb</code> and the tee-time and group-show templates still use the old class set.</p>
+    <p>Impact: those pages look broken if the old CSS engine is gone.</p>
+    <p>Fix direction: restyle when a buyer cares. Not this week's operability.</p>
+
+    <h3><span class="sev">Low</span> — club timezone is one hard-coded zone</h3>
+    <p><code>TimezoneMonitor#club_time_zone</code> returns a single zone. Clinics, tee times, and several jobs repeat that string.</p>
+    <p>Impact: an operator in another zone sees the wrong calendar day.</p>
+    <p>Fix direction: one config value. Leave until geography changes.</p>
+
+    <h2>Roadmap</h2>
+    <ol>
+      <li><strong>This week (S).</strong> Restore CSRF. Run web and worker. Keep demo seed only.</li>
+      <li><strong>Before any Rails minor (M).</strong> Run the estate test pack. List gems that block 5.1.</li>
+      <li><strong>Later sprint (L).</strong> Ruby, then Rails. Not a lockfile sweep.</li>
+      <li><strong>Do not.</strong> Mass-upgrade gems. Restore the old CSS engine. Publish this tree.</li>
+    </ol>
+
+    <h2>Assumptions and limits</h2>
+    <ul>
+      <li>Local compose. Not their staging.</li>
+      <li>No production traffic.</li>
+      <li>Security here is posture and dependency age, not a pentest and not an advisory count.</li>
+      <li>In-tree member and tax-roll files were not opened as evidence.</li>
+      <li>The club name on this page is fictional.</li>
+    </ul>
+  </main>
+</body>
+</html>
