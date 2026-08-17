@@ -249,6 +249,50 @@ a:hover {
   display: inline;
 }
 
+.article .table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 0 0 1.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.article table {
+  width: 100%;
+  min-width: 36rem;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.article th,
+.article td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.6rem 0.85rem 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.article th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid #444;
+  padding-top: 0.15rem;
+  padding-bottom: 0.5rem;
+}
+
+.article th:first-child,
+.article td:first-child {
+  width: 28%;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.article tbody tr:last-child td {
+  border-bottom: none;
+}
+
 .article hr {
   border: none;
   border-top: 1px solid var(--border);
@@ -371,6 +415,15 @@ a:hover {
   .article .series,
   .article .byline {
     font-size: 0.9rem;
+  }
+
+  .article table {
+    font-size: 0.86rem;
+  }
+
+  .article th,
+  .article td {
+    padding: 0.5rem 0.7rem 0.5rem 0;
   }
 }
 
