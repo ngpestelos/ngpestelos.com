@@ -66,6 +66,12 @@ h1 {
   line-height: 1.5;
 }
 
+.next-step {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin-top: 0.85rem;
+}
+
 /* Landing chrome — never apply to essay pages */
 main:not(.article) h2 {
   font-size: 1.1rem;
