@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payments Glossary — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Word list for the rest of this series. Each heading is a stable address on this site. InstaPay is not RTGS. A card authorization is not a transfer.">
+  <meta property="og:title" content="Payments Glossary">
+  <meta property="og:description" content="Word list for the rest of this series. Each heading is a stable address on this site. InstaPay is not RTGS. A card authorization is not a transfer.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/payments-glossary/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/payments-glossary/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260814h">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>Payments Glossary</h1>
+<p class="byline">Published August 18, 2026</p>
+
+<p class="series">InstaPay is not RTGS. A card authorization is not a transfer.</p>
+
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>Word list for the rest of this series. Each heading is a stable address on this site. InstaPay is not RTGS. A card authorization is not a transfer.</p></div>
+
+<hr>
+
+<p>I am writing a series about how money moves. Later pieces will say InstaPay, authorization, or PSP and need one public address to point at. This is that page. It is a word list. It is not a history of payments and not a vendor comparison.</p>
+
+<h2 id="contents">Contents</h2>
+
+<p>Parties: <a href="#cardholder">cardholder</a> · <a href="#merchant">merchant</a> · <a href="#acquirer">acquirer</a> · <a href="#issuing-bank">issuing bank</a> · <a href="#card-network">card network</a> · <a href="#four-party-model">four-party model</a> · <a href="#payment-gateway">payment gateway</a> · <a href="#processor">processor</a> · <a href="#payment-service-provider">payment service provider</a> · <a href="#activemerchant">ActiveMerchant</a></p>
+
+<p>Lifecycle: <a href="#authorization">authorization</a> · <a href="#capture">capture</a> · <a href="#settlement">settlement</a> · <a href="#void-and-refund">void and refund</a> · <a href="#card-present">card-present</a> · <a href="#card-not-present">card-not-present</a> · <a href="#chargeback">chargeback</a> · <a href="#interchange-fee">interchange fee</a> · <a href="#scheme-fee">scheme fee</a></p>
+
+<p>Security: <a href="#avs-and-cvc">AVS and CVC</a> · <a href="#3-d-secure">3-D Secure</a> · <a href="#pan">PAN</a> · <a href="#pci-dss">PCI DSS</a> · <a href="#qsa-and-saq">QSA and SAQ</a></p>
+
+<p>US rails: <a href="#federal-reserve-payment-system">Federal Reserve payment system</a> · <a href="#reserve-bank">Reserve Bank</a> · <a href="#ach">ACH</a> · <a href="#fedach-and-epn">FedACH and EPN</a> · <a href="#nacha">Nacha</a> · <a href="#same-day-ach">Same-Day ACH</a> · <a href="#check-presentment">check presentment</a> · <a href="#fedwire">Fedwire</a> · <a href="#fednow">FedNow</a></p>
+
+<p>PH rails: <a href="#instapay">InstaPay</a> · <a href="#pesonet">PESONet</a> · <a href="#philpassplus">PhilPaSSplus</a> · <a href="#philpass">PhilPaSS</a> · <a href="#qr-ph">QR Ph</a> · <a href="#instapay-qr">InstaPay QR</a> · <a href="#pddts">PDDTS</a> · <a href="#php-usd-pvp">PhP-USD PvP</a> · <a href="#nrps">NRPS</a> · <a href="#ppmi">PPMI</a> · <a href="#bancnet">BancNet</a> · <a href="#pchc">PCHC</a> · <a href="#pnpi">PNPI</a> · <a href="#ra-11127">RA 11127</a> · <a href="#odps">ODPS</a></p>
+
+<h2 id="parties">Parties</h2>
+
+<h3 id="cardholder">Cardholder</h3>
+
+<p>The person who holds the card and starts the purchase.</p>
+
+<h3 id="merchant">Merchant</h3>
+
+<p>The party selling goods or services and receiving payment.</p>
+
+<h3 id="acquirer">Acquirer</h3>
+
+<p>The merchant&#x27;s bank, or a processor working for that bank. It brings the merchant into the card network.</p>
+
+<h3 id="issuing-bank">Issuing bank</h3>
+
+<p>The cardholder&#x27;s bank. It approves or declines each authorization request.</p>
+
+<h3 id="card-network">Card network</h3>
+
+<p>The switch and the rulebook between acquirer and issuer. Visa, Mastercard, Discover, American Express. It is usually not the issuer and not the merchant bank.</p>
+
+<h3 id="four-party-model">Four-party model</h3>
+
+<p>Cardholder, merchant, acquirer, and issuer, with the network between acquirer and issuer. Open networks use this shape. Classic American Express issued and acquired itself.</p>
+
+<h3 id="payment-gateway">Payment gateway</h3>
+
+<p>Software that encrypts card data on the merchant side and sends it toward the acquirer.</p>
+
+<h3 id="processor">Processor</h3>
+
+<p>The party that talks to the card networks on the acquirer&#x27;s behalf. Gateway and acquirer are often the same vendor. The three jobs remain even then.</p>
+
+<h3 id="payment-service-provider">Payment service provider</h3>
+
+<p>A Stripe-class vendor that sells gateway, processor, and acquirer as one API and one payout.</p>
+
+<h3 id="activemerchant">ActiveMerchant</h3>
+
+<p>A Ruby library extracted from Shopify. One interface (<code>authorize</code> / <code>capture</code>, integer cents) over many gateways with incompatible internals. In production since June 2006.</p>
+
+<h2 id="lifecycle">Lifecycle</h2>
+
+<h3 id="authorization">Authorization</h3>
+
+<p>The issuer&#x27;s seconds-long promise to pay. It places a hold. It is not a transfer.</p>
+
+<h3 id="capture">Capture</h3>
+
+<p>The later instruction to take the held funds. Hotels, fuel pumps, and ship-later checkouts split this from authorization because the final amount is not known at hold time.</p>
+
+<h3 id="settlement">Settlement</h3>
+
+<p>The issuer pays the acquirer through the network. The merchant is funded, minus fees. Card settlement is typically one to three business days.</p>
+
+<h3 id="void-and-refund">Void and refund</h3>
+
+<p>A void cancels an uncaptured hold. A refund reverses a completed capture. Both are different messages from capture.</p>
+
+<h3 id="card-present">Card-present</h3>
+
+<p>A chip, swipe, or tap at a reader.</p>
+
+<h3 id="card-not-present">Card-not-present</h3>
+
+<p>Neither the plastic nor the cardholder is at a reader, and no PIN is entered. Web checkout, mail or telephone order, card-on-file, and subscriptions are in this class.</p>
+
+<h3 id="chargeback">Chargeback</h3>
+
+<p>A dispute the true cardholder files with the issuer. Network rules usually favor that cardholder. On a card-not-present sale the merchant usually loses the goods or service, the sale amount, and a fee.</p>
+
+<h3 id="interchange-fee">Interchange fee</h3>
+
+<p>The largest piece of card cost. Paid to the issuer.</p>
+
+<h3 id="scheme-fee">Scheme fee</h3>
+
+<p>Paid to the card network for authorization, cross-border handling, and other network services.</p>
+
+<h2 id="security">Security</h2>
+
+<h3 id="avs-and-cvc">AVS and CVC</h3>
+
+<p>Address Verification Service checks the billing address. CVC is the three- or four-digit code on the card. Both shrink some card-not-present fraud. Neither proves the shopper is the cardholder.</p>
+
+<h3 id="3-d-secure">3-D Secure</h3>
+
+<p>EMV 3-D Secure lets the merchant and issuer exchange device and transaction data so the issuer can authenticate the shopper. Many payments pass with no extra prompt. Higher-risk ones get a challenge.</p>
+
+<h3 id="pan">PAN</h3>
+
+<p>Primary account number. The card number. The value PCI scope reduction keeps off merchant servers.</p>
+
+<h3 id="pci-dss">PCI DSS</h3>
+
+<p>Payment Card Industry Data Security Standard. Baseline for anyone who stores, processes, or transmits cardholder data. The Council writes it. Brands and acquirers enforce it. It is not a U.S. federal statute.</p>
+
+<h3 id="qsa-and-saq">QSA and SAQ</h3>
+
+<p>A Qualified Security Assessor runs a point-in-time PCI assessment. A Self-Assessment Questionnaire is what a merchant files. The questionnaire shrinks when the PAN never touches the merchant&#x27;s servers.</p>
+
+<h2 id="us-rails">US rails</h2>
+
+<h3 id="federal-reserve-payment-system">Federal Reserve payment system</h3>
+
+<p>The Fed&#x27;s own list: currency, checks, ACH, and Fedwire. Card networks are not on it. A grocery swipe still happens. It rides a private switch.</p>
+
+<h3 id="reserve-bank">Reserve Bank</h3>
+
+<p>One of twelve district operating arms of the Federal Reserve System. A bank for banks. It holds master accounts where depository institutions settle with each other.</p>
+
+<h3 id="ach">ACH</h3>
+
+<p>Automated Clearing House. A nationwide U.S. batch network for bank-to-bank credits (payroll, tax refunds) and debits (bills). It pushes or pulls. It is not real time.</p>
+
+<h3 id="fedach-and-epn">FedACH and EPN</h3>
+
+<p>The two operators that process ACH files: the Reserve Banks, and the Electronic Payments Network of The Clearing House.</p>
+
+<h3 id="nacha">Nacha</h3>
+
+<p>Writes the ACH Operating Rules. Does not process the transfers.</p>
+
+<h3 id="same-day-ach">Same-Day ACH</h3>
+
+<p>FedACH SameDay processes an eligible ACH item on the current processing day if it hits a same-day deadline and is not future-dated. Standard ACH still settles on a later designated date. It is still a batch, not instant.</p>
+
+<h3 id="check-presentment">Check presentment</h3>
+
+<p>The paper-check collection process Reserve Banks run. Related to ACH. Not the same rail.</p>
+
+<h3 id="fedwire">Fedwire</h3>
+
+<p>The Fed&#x27;s large-value wholesale funds and securities rail. Banking hours.</p>
+
+<h3 id="fednow">FedNow</h3>
+
+<p>The Fed&#x27;s instant public payment rail, launched in 2023. Complements ACH. Does not replace it. Does not replace the card switch.</p>
+
+<h2 id="ph-rails">PH rails</h2>
+
+<h3 id="instapay">InstaPay</h3>
+
+<p>A real-time, low-value electronic fund transfer in Philippine pesos. Customers send between accounts at participating BSP-supervised banks and e-money issuers. Domestic only. Almost instant. Open 24x7, all year. Published FAQ cap: PHP 50,000 per transaction. The sender may pay a fee. The receiver is not charged and gets the full amount. Inter-participant nets are prefunded in BSP demand-deposit accounts and settled on the peso RTGS. That is not the same as settling each customer payment as RTGS.</p>
+
+<h3 id="pesonet">PESONet</h3>
+
+<p>Same-day batch electronic fund transfer in pesos. No official per-transaction cap. Available 24/7 on banking days only. Typical uses: salaries, supplier payments, government collections.</p>
+
+<h3 id="philpassplus">PhilPaSSplus</h3>
+
+<p>BSP-owned peso real-time gross settlement system. Successor to PhilPaSS in 2021. Settles large-value interbank transfers one by one, plus the net clearing results of check, ATM, InstaPay, and PESONet. Hours: 09:00 to 17:45, Monday to Friday.</p>
+
+<h3 id="philpass">PhilPaSS</h3>
+
+<p>Older name for the BSP peso RTGS. Still used in the published InstaPay FAQ.</p>
+
+<h3 id="qr-ph">QR Ph</h3>
+
+<p>National EMV QR standard. Not a designated settlement system. There is no QR Ph app. Person-to-person and person-to-merchant payments that use the code settle on InstaPay. The code is an address. The rail is InstaPay.</p>
+
+<h3 id="instapay-qr">InstaPay QR</h3>
+
+<p>Person-to-person brand under the QR Ph standard after the July 2026 rebrand. QR Ph on the logo is person-to-merchant. Both still settle on InstaPay. BSP (as of 29 July 2026) says technical standards, operating rules, and infrastructure do not change.</p>
+
+<h3 id="pddts">PDDTS</h3>
+
+<p>Designated domestic-dollar transfer system. The Bankers Association of the Philippines established it. PCHC operates it on the inspected operators list.</p>
+
+<h3 id="php-usd-pvp">PhP-USD PvP</h3>
+
+<p>Designated peso-dollar payment-versus-payment system. Same establishment and operator as PDDTS. The peso side links to the peso RTGS.</p>
+
+<h3 id="nrps">NRPS</h3>
+
+<p>National Retail Payment System. BSP policy framework (Monetary Board 2015; Circular 980, 6 November 2017). Not a BSP-owned retail switch. An industry body governs each automated clearing house.</p>
+
+<h3 id="ppmi">PPMI</h3>
+
+<p>Philippine Payments Management Inc. The published InstaPay FAQ names it as the industry-led body that governs InstaPay under BSP oversight.</p>
+
+<h3 id="bancnet">BancNet</h3>
+
+<p>Designated InstaPay operator on the inspected BSP operators list.</p>
+
+<h3 id="pchc">PCHC</h3>
+
+<p>Philippine Clearing House Corporation. Designated operator of PESONet, PDDTS, and PhP-USD PvP on that same list.</p>
+
+<h3 id="pnpi">PNPI</h3>
+
+<p>Payments Network of the Philippines, Inc. BusinessWorld reported on 3 June 2026 that the SEC cleared the BancNet-PCHC merger, with BancNet surviving under this name from 1 June 2026. The inspected BSP operators list still names BancNet and PCHC separately.</p>
+
+<h3 id="ra-11127">RA 11127</h3>
+
+<p>National Payment Systems Act. Gives BSP payment-system oversight and the power to own and operate systems.</p>
+
+<h3 id="odps">ODPS</h3>
+
+<p>Operator of a designated payment system. Needs prior BSP / Monetary Board authority.</p>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+
+<li>Federal Reserve, <a href="https://www.federalreserve.gov/aboutthefed/fedexplained/payment-systems.htm">The Fed Explained: Payment Systems</a>. Currency, checks, ACH, Fedwire. Reserve Banks as a bank for banks. FedNow launched 2023.</li>
+
+<li>Stripe, <a href="https://stripe.com/guides/introduction-to-online-payments">Collecting online payments</a>. Four parties, gateway, processor, acquirer, interchange, scheme fees, chargebacks.</li>
+
+<li>Stripe, <a href="https://stripe.com/resources/more/credit-card-processing-101">Credit card processing 101</a>. Authorization, capture, settlement.</li>
+
+<li>Stripe, <a href="https://stripe.com/resources/more/what-are-card-not-present-transactions">What are card-not-present transactions?</a>. CNP class. CVC. Address Verification Service (AVS). 3-D Secure as an extra issuer check.</li>
+
+<li>Stripe, <a href="https://stripe.com/guides/3d-secure-2">3D Secure 2</a></li>
+
+<li>EMVCo, <a href="https://www.emvco.com/emv-technologies/3-d-secure/">EMV 3-D Secure</a></li>
+
+<li><a href="https://activemerchant.org/">Active Merchant</a>. Production since June 2006. Authorize and capture in cents.</li>
+
+<li>PCI Security Standards Council, <a href="https://www.pcisecuritystandards.org/standards/pci-dss/">PCI DSS</a>. Live fetch of this URL failed on 20260818. Stripe&#x27;s <a href="https://stripe.com/guides/pci-compliance">PCI compliance guide</a> names QSA and SAQ and the Council as administrator.</li>
+
+<li>BSP, <a href="https://www.bsp.gov.ph/PaymentAndSettlement/FAQ_Instapay.pdf">InstaPay FAQ</a>. PHP 50,000 cap, 24x7, PHP and domestic only, sender fee optional, receiver not charged, nets prefunded in BSP DDAs, settlement on PhilPaSS. Names PPMI as the industry-led governing body under BSP.</li>
+
+<li>BSP, <a href="https://www.bsp.gov.ph/PaymentAndSettlement/FAQ_PESONet.pdf">PESONet FAQ</a></li>
+
+<li>BSP, <a href="https://www.bsp.gov.ph/PaymentAndSettlement/List_of_Operators_of_Designated_Payment_Systems.pdf">List of Operators of Designated Payment Systems</a></li>
+
+<li>BSP, <a href="https://www.bsp.gov.ph/Pages/PAYMENTS%20AND%20SETTLEMENTS/PhilPaSS/PhilPaSS-Overview.aspx">PhilPaSS overview</a>. PhilPaSSplus is the lone peso RTGS, adopted 2021; hours 9:00 AM to 5:45 PM, Monday to Friday; settles check, ATM, InstaPay, and PESONet clearing results.</li>
+
+<li>BSP, <a href="https://www.bsp.gov.ph/Media_and_Research/Primers%20Faqs/QR_Ph_P2M_FAQs.pdf">QR Ph P2M FAQs</a></li>
+
+<li>BSP, <a href="https://www.bsp.gov.ph/Media_And_Research/Primers%20Faqs/FAQs-QR-Ph-Rebranding.pdf">QR Ph Rebranding FAQs</a>. As of 29 July 2026: QR Ph is P2M, InstaPay QR is P2P; both stay on the QR Ph standard; technical standards, rules, and infrastructure do not change.</li>
+
+<li>BusinessWorld, <a href="https://bworldonline.com/banking-finance/2026/06/03/753866/sec-clears-bancnet-pchc-merger/">SEC clears BancNet-PCHC merger</a>. 3 June 2026. Press. PNPI name from 1 June 2026.</li>
+
+<li>BSP, <a href="https://www.bsp.gov.ph/Regulations/Issuances/2017/c980.pdf">Circular 980</a></li>
+
+<li><a href="https://lawphil.net/statutes/repacts/ra2018/ra_11127_2018.html">Republic Act No. 11127</a></li>
+
+<li>Federal Reserve, <a href="https://www.federalreserve.gov/paymentsystems/fedach_about.htm">FedACH</a></li>
+
+<li>Federal Reserve Bank Services, <a href="https://www.frbservices.org/financial-services/ach/same-day-service.html">FedACH SameDay Service</a>. Current processing day if the item hits a same-day deadline and is not future-dated.</li>
+
+<li>Nacha, <a href="https://achdevguide.nacha.org/how-ach-works">How ACH works</a></li>
+
+</ul>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
