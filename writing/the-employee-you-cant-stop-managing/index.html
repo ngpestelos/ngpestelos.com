@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Employee You Can&#x27;t Stop Managing — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Treating AI agents like employees shifts software from static tools into collaborative relationships. But without strict systems discipline, ephemeral boundaries, and hard concurrency caps, it turns the solo builder…">
+  <meta property="og:title" content="The Employee You Can&#x27;t Stop Managing">
+  <meta property="og:description" content="Treating AI agents like employees shifts software from static tools into collaborative relationships. But without strict systems discipline, ephemeral boundaries, and hard concurrency caps, it turns the solo builder…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/the-employee-you-cant-stop-managing/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/the-employee-you-cant-stop-managing/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260818a">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a></p>
+    <h1>The Employee You Can&#x27;t Stop Managing</h1>
+<p class="byline">Published August 21, 2026</p>
+
+
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>Treating AI agents like employees shifts software from static tools into collaborative relationships. But without strict systems discipline, ephemeral boundaries, and hard concurrency caps, it turns the solo builder into an exhausted middle manager.</p></div>
+
+<hr>
+
+<h2 id="the-new-hire-fantasy">The New Hire Fantasy</h2>
+
+<p>The most compelling reframe of generative AI treats personal software as an employee rather than an application. The mental model shifts how builders invest:</p>
+
+<ul>
+
+<li><strong>Personal software as relationship</strong>: <a href="https://x.com/danshipper/status/2026014755438182782">Dan Shipper</a> describes moving from static interfaces to an evolving collaboration. You onboard an agent, teach it through feedback, watch it absorb your working style, and expand its autonomy as it earns trust through completed work.</li>
+
+<li><strong>Hardware and identity provisioning</strong>: <a href="https://x.com/cathrynlavery/status/2015077203189407788">Cathryn Lavery</a> is considering a dedicated Mac mini for an agent named Clawdbot, with its own email, credentials, and 1Password account, as a two-week experiment treated like a new hire.</li>
+
+</ul>
+
+<p>The metaphor is intuitive because onboarding an agent feels like training a junior engineer. But treating agents as employees imports a hidden organizational structure. When you hire an employee, you take on management overhead. When you deploy a dozen AI employees, you take on all of it at once.</p>
+
+<h2 id="the-maker-to-manager-trap">The Maker-to-Manager Trap</h2>
+
+<p>The friction starts when the volume of agent output collides with the limits of human attention:</p>
+
+<ul>
+
+<li><strong>The solo founder ticket queue</strong>: Indie hacker <a href="https://x.com/kylegawley/status/2074403257426891131">Kyle Gawley</a> left a VC-funded company to get back to making. In July 2026 he said managing tickets for agents had put him back where he was in 2016: a manager, not a maker.</li>
+
+<li><strong>Distributed monitoring overload</strong>: <a href="https://x.com/koltregaskes/status/2026952134756024504">Kol Tregaskes</a> was running 10+ agent sessions at once and getting them confused. Watching, redirecting, approving, and context-switching across parallel streams had made him the bottleneck.</li>
+
+<li><strong>The oversight scaling law</strong>: <a href="https://web.archive.org/web/20260301232114/https://twitter.com/stevesi/status/2028249231493058765">Steven Sinofsky</a> argued in March 2026 that more agent use requires more humans in the loop, not fewer.</li>
+
+</ul>
+
+<p>The solo developer who set out to build products wakes up as an on-call manager for a fleet of tireless, error-prone reports.</p>
+
+<h2 id="stateful-employees-vs-ephemeral-workers">Stateful Employees vs. Ephemeral Workers</h2>
+
+<p>The root failure lies in conflating persistent identity with task execution.</p>
+
+<p><a href="https://x.com/elvissun/status/2048718880835821774">Elvis Sun</a> argues that naming agents limits how far you can scale. He keeps one named orchestrator and lets unnamed subagents spawn for a job and die when the job ends.</p>
+
+<p>Most engineering tasks need an ephemeral subroutine, not a named employee:</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th>Dimension</th><th>Ephemeral Subagent</th><th>Stateful &quot;Employee&quot; Agent</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Lifecycle</strong></td><td>Short-lived; spawns on demand, terminates on return</td><td>Long-lived; persistent session across tasks</td></tr>
+<tr><td><strong>Context Management</strong></td><td>Stateless; context injected per task by orchestrator</td><td>Accumulates history, prompt cache, and memory banks</td></tr>
+<tr><td><strong>Failure Mode</strong></td><td>Isolated failure; destroyed on error</td><td>State drift, conversational hallucination</td></tr>
+<tr><td><strong>Best Used For</strong></td><td>Linting, test execution, file editing, scraping</td><td>High-context domains, customer relationship logs</td></tr>
+<tr><td><strong>Managerial Drag</strong></td><td>Near-zero on closed-loop tasks; returns a diff or return code</td><td>High; requires ongoing supervision and prompt pruning</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Management drag also depends on task determinism. In closed-loop environments with objective evaluation metrics (unit test suites, static analysis, and CI pipelines), self-healing agent harnesses evaluate outputs with automated test runners and trigger repairs without human triage. The managerial burden concentrates in open-ended, subjective, and architectural workflows where correctness cannot be verified by an automated test.</p>
+
+<h2 id="the-guardrails-of-attention">The Guardrails of Attention</h2>
+
+<p>You do not need dedicated hardware or custom agent frameworks to start today. If you operate multiple agents, your own attention is the ultimate scarce resource. Dropping a larger frontier model into an ambiguous workspace still produces more articulate mistakes.</p>
+
+<ul>
+
+<li><strong>Four practices over model size</strong>: <a href="https://x.com/theahmadosman/status/2024662391464612039">Ahmad Osman</a> converts agent guessing into deterministic execution with modularity, domain-driven design, painfully explicit specs, and excessive documentation. Without docs that answer where, what, how, and why, agents guess, and guessing degrades codebases.</li>
+
+<li><strong>Shared markdown</strong>: <a href="https://x.com/casjam/status/2024531559135457371">Brian Casel</a> stores work, content, and audience feedback as markdown files in a shared Dropbox folder both he and his agents can read and write.</li>
+
+</ul>
+
+<ol>
+
+<li><strong>The zero-infrastructure on-ramp</strong>: Replace conversational chat sessions with single-file specifications. Create a simple <code>TASK.md</code> or <code>AGENTS.md</code> file defining inputs, constraints, and success criteria before spawning a coding agent. Give the agent a single, bounded objective and let it run to completion.</li>
+
+<li><strong>The decommissioning protocol</strong>: Every agent deployment needs an explicit exit trigger. If an agent requires repeated manual interventions on the same workflow, do not keep coaching it in chat. Decommission the agent session, capture the failure mode as a written specification or lint rule, and rebuild the task as an ephemeral script.</li>
+
+<li><strong>Strict concurrency limits</strong>: Never run more parallel agent workflows than you can review in a single sitting. Capping active runs (for instance, maximum two parallel pipelines) prevents unreviewed output from piling up.</li>
+
+<li><strong>Batch review windows</strong>: Do not poll agent runs in real time. Launch background jobs, let them finish asynchronously, and review completed diffs in focused batches.</li>
+
+<li><strong>Separation of concerns</strong>: An agent&#x27;s operational task list must remain strictly separate from human promises and obligations.</li>
+
+</ol>
+
+<p>The &quot;agent as employee&quot; model is a useful metaphor for investing in tooling, infrastructure, and onboarding. Treated as an operating philosophy, it recreates the corporate hierarchy that solo developers built their workflows to avoid. Before you hire a fleet of digital employees, build the factory floor: plain text, explicit specifications, ephemeral subagents, and a concurrency cap. Durable leverage comes from deterministic systems that need little supervision.</p>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+
+<li>Dan Shipper, &quot;What personal software actually is,&quot; X, 23 February 2026 — <a href="https://x.com/danshipper/status/2026014755438182782">https://x.com/danshipper/status/2026014755438182782</a></li>
+
+<li>Cathryn Lavery, X, 24 January 2026 — <a href="https://x.com/cathrynlavery/status/2015077203189407788">https://x.com/cathrynlavery/status/2015077203189407788</a></li>
+
+<li>Kyle Gawley, X, 7 July 2026 — <a href="https://x.com/kylegawley/status/2074403257426891131">https://x.com/kylegawley/status/2074403257426891131</a></li>
+
+<li>Kol Tregaskes, X, 26 February 2026 — <a href="https://x.com/koltregaskes/status/2026952134756024504">https://x.com/koltregaskes/status/2026952134756024504</a></li>
+
+<li>Steven Sinofsky, X, 1 March 2026 — <a href="https://web.archive.org/web/20260301232114/https://twitter.com/stevesi/status/2028249231493058765">https://web.archive.org/web/20260301232114/https://twitter.com/stevesi/status/2028249231493058765</a></li>
+
+<li>Elvis Sun, X, 27 April 2026 — <a href="https://x.com/elvissun/status/2048718880835821774">https://x.com/elvissun/status/2048718880835821774</a></li>
+
+<li>Ahmad Osman, X, 20 February 2026 — <a href="https://x.com/theahmadosman/status/2024662391464612039">https://x.com/theahmadosman/status/2024662391464612039</a></li>
+
+<li>Brian Casel, &quot;I&#x27;m Reorganizing My Business Around Markdown Files&quot;, X, 19 February 2026 — <a href="https://x.com/casjam/status/2024531559135457371">https://x.com/casjam/status/2024531559135457371</a></li>
+
+</ul>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
