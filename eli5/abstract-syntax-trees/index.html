@@ -201,6 +201,38 @@
     }
     .to-top a { color: var(--op); text-decoration: none; }
     .to-top a:hover { text-decoration: underline; }
+    .more {
+      width: 100%;
+      max-width: 36rem;
+      margin: 0.15rem auto 0;
+      text-align: left;
+      font-size: 1.02rem;
+      line-height: 1.45;
+    }
+    .more summary {
+      cursor: pointer;
+      color: var(--op);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+      text-align: center;
+      padding: 0.3rem 0.4rem;
+    }
+    .more summary:hover { text-decoration: underline; }
+    .more ul {
+      margin: 0.65rem auto 0.15rem;
+      padding: 0 0 0 1.2rem;
+      max-width: 42ch;
+    }
+    .more li {
+      margin: 0.45rem 0;
+      color: var(--mute);
+    }
+    .more code {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.95em;
+      color: var(--ink);
+    }
     @media (max-width: 700px) {
       .arrow { transform: rotate(90deg); }
       .block,
@@ -264,6 +296,14 @@
         </div>
       </div>
       <p class="one">Leaves are names and numbers. Joints are the work.</p>
+      <details class="more">
+        <summary>Why two shapes</summary>
+        <ul>
+          <li>The line is what you typed.</li>
+          <li>The tree is the structure the computer keeps.</li>
+          <li>The equals sign sits at the top. <code>total</code> hangs on the left. <code>price * qty</code> hangs on the right.</li>
+        </ul>
+      </details>
     </section>
 
     <section class="block">
@@ -329,6 +369,14 @@
           <p class="one">That tree would mean (1 + 2) * 3, which is 9.</p>
         </div>
       </div>
+      <details class="more">
+        <summary>Why the answer is 7</summary>
+        <ul>
+          <li>Multiply happens before add. That rule is called precedence.</li>
+          <li>The tree stores the rule as shape: <code>*</code> sits under <code>+</code>.</li>
+          <li>Left to right would mean <code>(1 + 2) * 3</code>, which is 9. The language does not read that way.</li>
+        </ul>
+      </details>
     </section>
 
     <section class="block">
@@ -372,6 +420,14 @@
         </div>
       </div>
       <p class="one">Tokens are the words; the tree hangs each word on a parent.</p>
+      <details class="more">
+        <summary>What each step is</summary>
+        <ul>
+          <li>Letters are characters in a file. They have no structure yet.</li>
+          <li>A lexer splits the characters into tokens: names, numbers, signs.</li>
+          <li>A parser hangs each token on a parent. That hanging is the tree.</li>
+        </ul>
+      </details>
     </section>
 
     <section class="block">
@@ -402,6 +458,14 @@
         </svg>
       </div>
       <p class="one">A compiler, a linter, and a rewriter all visit the same nodes in order.</p>
+      <details class="more">
+        <summary>What a walk does</summary>
+        <ul>
+          <li>The numbers on the picture are one visit order: the parent, then the left child, then the right child.</li>
+          <li>A tool can pick another order. Evaluation often does the children first, then the operator.</li>
+          <li>Compiler, linter, and rewriter share the tree. They differ in the work they do at each node.</li>
+        </ul>
+      </details>
     </section>
 
     <section class="block">
@@ -431,6 +495,14 @@
         </svg>
       </div>
       <p class="one">The dropped extra is the abstract in Abstract Syntax Tree.</p>
+      <details class="more">
+        <summary>What “abstract” drops</summary>
+        <ul>
+          <li>Concrete syntax keeps every mark you typed, including parentheses.</li>
+          <li>Abstract syntax keeps the family: who is whose parent.</li>
+          <li><code>(price * qty)</code> and <code>price * qty</code> are the same tree. The parens were only a grouping hint.</li>
+        </ul>
+      </details>
     </section>
     <p class="to-top"><a href="#top">Back to top</a></p>
   </main>
