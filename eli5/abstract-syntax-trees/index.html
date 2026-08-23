@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Abstract Syntax Trees — ELI5 — Nestor G Pestelos Jr</title>
-  <meta name="description" content="A picture-book explainer of abstract syntax trees. Code is a line. Meaning is a tree.">
+  <meta name="description" content="A picture-book explainer of abstract syntax trees. Type a line, watch the tree.">
   <meta property="og:title" content="Abstract Syntax Trees — ELI5">
-  <meta property="og:description" content="A picture-book explainer of abstract syntax trees. Code is a line. Meaning is a tree.">
+  <meta property="og:description" content="A picture-book explainer of abstract syntax trees. Type a line, watch the tree.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/eli5/abstract-syntax-trees/">
   <link rel="canonical" href="https://ngpestelos.com/eli5/abstract-syntax-trees/">
@@ -233,6 +233,89 @@
       font-size: 0.95em;
       color: var(--ink);
     }
+    .play-figure { width: 100%; max-width: 36rem; }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      justify-content: center;
+    }
+    .chips button,
+    .modes button,
+    .walk-btn {
+      font: inherit;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1.5px solid var(--line);
+      background: var(--card);
+      color: var(--ink);
+      padding: 0.35rem 0.75rem;
+    }
+    .chips button[aria-pressed="true"],
+    .modes button[aria-pressed="true"] {
+      border-color: var(--op-edge);
+      background: #fff4ea;
+      color: var(--op);
+    }
+    .chips button:hover,
+    .modes button:hover,
+    .walk-btn:hover { text-decoration: underline; }
+    .line-box {
+      width: min(100%, 28rem);
+      margin-inline: auto;
+    }
+    .line-box input {
+      width: 100%;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--ink);
+      background: var(--card);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      padding: 0.55rem 0.85rem;
+      box-shadow: 0 1px 2px rgba(28, 22, 18, 0.06);
+    }
+    .line-box input:focus {
+      outline: 2px solid var(--op);
+      outline-offset: 2px;
+    }
+    .modes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      justify-content: center;
+    }
+    .result {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--mute);
+      min-height: 1.4em;
+    }
+    .result strong { color: var(--ink); }
+    .tok.is-on, .tok:focus-visible {
+      outline: 2px solid #fffaf3;
+      box-shadow: 0 0 0 3px var(--op);
+    }
+    svg.tree .node.is-on rect {
+      stroke-width: 3;
+      stroke: #1c1612;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+    @media (max-width: 700px) {
+      .play-figure { width: 100%; }
+    }
     @media (max-width: 700px) {
       .arrow { transform: rotate(90deg); }
       .block,
@@ -379,6 +462,63 @@
       </details>
     </section>
 
+    <section class="block" id="play">
+      <h2>Now change the line.</h2>
+      <p class="one">Type. The tree has to follow.</p>
+      <div class="chips" role="group" aria-label="Example lines">
+        <button type="button" data-ex="1 + 2 * 3">1 + 2 * 3</button>
+        <button type="button" data-ex="(1 + 2) * 3">(1 + 2) * 3</button>
+        <button type="button" data-ex="price * qty">price * qty</button>
+        <button type="button" data-ex="total = price * qty">total = price * qty</button>
+      </div>
+      <div class="line-box">
+        <label class="sr-only" for="line">The line</label>
+        <input id="line" type="text" maxlength="48" value="1 + 2 * 3" autocomplete="off" spellcheck="false" enterkeyhint="done">
+      </div>
+      <div class="modes" role="group" aria-label="How to read the line">
+        <button type="button" id="mode-school" aria-pressed="true">school order</button>
+        <button type="button" id="mode-ltr" aria-pressed="false">left to right</button>
+      </div>
+      <div class="col">
+        <p class="label">tokens</p>
+        <div id="tokens" class="tokens"></div>
+      </div>
+      <div class="figure play-figure">
+        <svg id="live-tree" class="tree" viewBox="0 0 440 368" width="440" height="368" overflow="visible" role="img" aria-label="Correct tree: plus of 1 and multiply of 2 and 3">
+          <g fill="none" stroke="#8a7d72" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M220 64 L220 108 L68 108 L68 156"/>
+            <path d="M220 64 L220 108 L324 108 L324 156"/>
+            <path d="M324 204 L324 248 L260 248 L260 292"/>
+            <path d="M324 204 L324 248 L388 248 L388 292"/>
+          </g>
+          <rect x="164" y="16" width="112" height="48" rx="8" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+          <text x="220" y="40" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="24" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">+</text>
+          <rect x="40" y="156" width="56" height="48" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.25"/>
+          <text x="68" y="180" text-anchor="middle" dy="0.35em" fill="#f3fffd" font-size="20" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">1</text>
+          <rect x="280" y="156" width="88" height="48" rx="8" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+          <text x="324" y="180" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="22" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">*</text>
+          <rect x="232" y="292" width="56" height="48" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.25"/>
+          <text x="260" y="316" text-anchor="middle" dy="0.35em" fill="#f3fffd" font-size="20" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">2</text>
+          <rect x="360" y="292" width="56" height="48" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.25"/>
+          <text x="388" y="316" text-anchor="middle" dy="0.35em" fill="#f3fffd" font-size="20" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">3</text>
+        </svg>
+      </div>
+      <p id="result" class="result" aria-live="polite">The tree says <strong>7</strong>.</p>
+      <p><button type="button" class="walk-btn" id="walk">Walk the tree</button></p>
+      <noscript>
+        <p class="one">This box needs JavaScript. The pictures above still work.</p>
+      </noscript>
+      <details class="more">
+        <summary>What you can change</summary>
+        <ul>
+          <li>This tiny language is names, numbers, <code>+ - * /</code>, parentheses, and <code>=</code>.</li>
+          <li>School order puts multiply under plus, so <code>1 + 2 * 3</code> is 7.</li>
+          <li>Left to right ignores that rule. The same line becomes 9.</li>
+          <li>Parentheses drop out of the tree. That drop is the abstract in AST.</li>
+        </ul>
+      </details>
+    </section>
+
     <section class="block">
       <h2>Three steps. Then you have an AST.</h2>
       <div class="row">
@@ -506,5 +646,402 @@
     </section>
     <p class="to-top"><a href="#top">Back to top</a></p>
   </main>
+<script>
+(function () {
+"use strict";
+var OPS = { "=": 1, "+": 2, "-": 2, "*": 3, "/": 3 };
+
+function tokenize(s) {
+  var out = [];
+  var i = 0;
+  while (i < s.length) {
+    var c = s.charAt(i);
+    if (c === " " || c === "\t" || c === "\n") { i++; continue; }
+    if ("+-*/()=".indexOf(c) >= 0) {
+      out.push({ t: (c === "(" || c === ")") ? "p" : "op", v: c, i: i });
+      i++;
+      continue;
+    }
+    if (c >= "0" && c <= "9") {
+      var j = i;
+      var dots = 0;
+      while (j < s.length) {
+        var d = s.charAt(j);
+        if (d >= "0" && d <= "9") { j++; continue; }
+        if (d === ".") { dots++; j++; continue; }
+        break;
+      }
+      var num = s.slice(i, j);
+      if (dots > 1 || num.charAt(num.length - 1) === "." || !/^\d+(\.\d+)?$/.test(num)) {
+        return { err: "that number is not one I can read" };
+      }
+      out.push({ t: "num", v: num, n: Number(num), i: i });
+      i = j;
+      continue;
+    }
+    if ((c >= "A" && c <= "Z") || (c >= "a" && c <= "z") || c === "_") {
+      var k = i + 1;
+      while (k < s.length) {
+        var e = s.charAt(k);
+        if ((e >= "A" && e <= "Z") || (e >= "a" && e <= "z") || (e >= "0" && e <= "9") || e === "_") k++;
+        else break;
+      }
+      out.push({ t: "id", v: s.slice(i, k), i: i });
+      i = k;
+      continue;
+    }
+    return { err: "that mark is not in this tiny language" };
+  }
+  return { toks: out };
+}
+
+function parse(toks, ltr) {
+  var p = 0;
+  function peek() { return p < toks.length ? toks[p] : null; }
+  function eat() { return toks[p++]; }
+  function fail(m) { var e = new Error(m); e.parse = true; throw e; }
+
+  function primary() {
+    var t = peek();
+    if (!t) fail("the line stopped too soon");
+    if (t.t === "num") { eat(); return { k: "num", v: t.v, n: t.n, id: "n" + t.i }; }
+    if (t.t === "id") { eat(); return { k: "id", v: t.v, id: "n" + t.i }; }
+    if (t.t === "p" && t.v === "(") {
+      eat();
+      var inner = expr(0);
+      var close = peek();
+      if (!close || close.v !== ")") fail("a ( needs a )");
+      eat();
+      return inner;
+    }
+    if (t.t === "op" && t.v === "-") {
+      eat();
+      return { k: "op", v: "−", kids: [primary()], id: "n" + t.i };
+    }
+    fail("I expected a name or a number");
+  }
+
+  function expr(minBp) {
+    var left = primary();
+    while (true) {
+      var t = peek();
+      if (!t || t.t !== "op") break;
+      var bp = ltr ? 2 : (OPS[t.v] || -1);
+      if (bp < minBp) break;
+      eat();
+      var nextMin = (t.v === "=") ? bp : bp + 1;
+      var right = expr(nextMin);
+      left = { k: "op", v: t.v, kids: [left, right], id: "n" + t.i };
+    }
+    return left;
+  }
+
+  if (!toks.length) fail("type a line");
+  var tree = expr(0);
+  if (p < toks.length) fail("extra marks after the expression");
+  return tree;
+}
+
+function evaluate(node) {
+  if (node.k === "num") return { ok: true, n: node.n };
+  if (node.k === "id") return { ok: false, why: "names have no number here" };
+  if (node.v === "−") {
+    var a = evaluate(node.kids[0]);
+    if (!a.ok) return a;
+    return { ok: true, n: -a.n };
+  }
+  if (node.v === "=") return { ok: false, why: "a store, not a number" };
+  var L = evaluate(node.kids[0]);
+  if (!L.ok) return L;
+  var R = evaluate(node.kids[1]);
+  if (!R.ok) return R;
+  if (node.v === "+") return { ok: true, n: L.n + R.n };
+  if (node.v === "-") return { ok: true, n: L.n - R.n };
+  if (node.v === "*") return { ok: true, n: L.n * R.n };
+  if (node.v === "/") {
+    if (R.n === 0) return { ok: false, why: "can't divide by 0" };
+    return { ok: true, n: L.n / R.n };
+  }
+  return { ok: false, why: "I don't know that sign" };
+}
+
+function shape(node) {
+  if (node.k === "num") return node.v;
+  if (node.k === "id") return node.v;
+  if (node.kids.length === 1) return "(" + node.v + " " + shape(node.kids[0]) + ")";
+  return "(" + node.v + " " + shape(node.kids[0]) + " " + shape(node.kids[1]) + ")";
+}
+
+function walkOrder(node) {
+  var out = [];
+  function vis(n) {
+    if (n.kids) n.kids.forEach(vis);
+    out.push(n);
+  }
+  vis(node);
+  return out;
+}
+
+  "use strict";
+  var NS = "http://www.w3.org/2000/svg";
+  var NODE_H = 48;
+  var LEVEL = 92;
+  var GAP = 28;
+  var PAD = 28;
+
+  var input = document.getElementById("line");
+  var tokenBox = document.getElementById("tokens");
+  var svg = document.getElementById("live-tree");
+  var result = document.getElementById("result");
+  var walkBtn = document.getElementById("walk");
+  var schoolBtn = document.getElementById("mode-school");
+  var ltrBtn = document.getElementById("mode-ltr");
+  if (!input || !svg) return;
+
+  var ltr = false;
+  var walk = [];
+  var walkAt = -1;
+  var tree = null;
+
+  function pillW(label) {
+    return Math.max(56, 18 + String(label).length * 11);
+  }
+
+  function shiftX(node, dx) {
+    node.x += dx;
+    if (node.kids) node.kids.forEach(function (k) { shiftX(k, dx); });
+  }
+
+  function shiftY(node, dy) {
+    node.y += dy;
+    if (node.kids) node.kids.forEach(function (k) { shiftY(k, dy); });
+  }
+
+  function layout(node, y) {
+    node.h = NODE_H;
+    node.w = pillW(node.v);
+    if (!node.kids || !node.kids.length) {
+      node.x = 0;
+      node.y = y;
+      node.sw = node.w;
+      return;
+    }
+    var x = 0;
+    node.kids.forEach(function (kid) {
+      layout(kid, y + LEVEL);
+      shiftX(kid, x);
+      x += kid.sw + GAP;
+    });
+    node.sw = Math.max(node.w, x - GAP);
+    var first = node.kids[0];
+    var last = node.kids[node.kids.length - 1];
+    node.x = (first.x + first.w / 2 + last.x + last.w / 2) / 2 - node.w / 2;
+    node.y = y;
+  }
+
+  function bounds(node, b) {
+    b.minX = Math.min(b.minX, node.x);
+    b.minY = Math.min(b.minY, node.y);
+    b.maxX = Math.max(b.maxX, node.x + node.w);
+    b.maxY = Math.max(b.maxY, node.y + node.h);
+    if (node.kids) node.kids.forEach(function (k) { bounds(k, b); });
+  }
+
+  function el(name, attrs) {
+    var n = document.createElementNS(NS, name);
+    Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    return n;
+  }
+
+  function drawNode(parent, node, hi) {
+    if (node.kids) {
+      var px = node.x + node.w / 2;
+      var py = node.y + node.h;
+      var mid = node.y + node.h + 22;
+      node.kids.forEach(function (kid) {
+        var cx = kid.x + kid.w / 2;
+        parent.appendChild(el("path", {
+          d: "M" + px + " " + py + " L" + px + " " + mid + " L" + cx + " " + mid + " L" + cx + " " + kid.y,
+          fill: "none",
+          stroke: "#8a7d72",
+          "stroke-width": "1.75",
+          "stroke-linejoin": "round",
+          "stroke-linecap": "round"
+        }));
+      });
+    }
+    var g = el("g", { class: "node" + (hi && hi.id === node.id ? " is-on" : ""), "data-id": node.id || "" });
+    var op = node.k === "op";
+    g.appendChild(el("rect", {
+      x: String(node.x),
+      y: String(node.y),
+      width: String(node.w),
+      height: String(node.h),
+      rx: "8",
+      fill: op ? "#9a3412" : "#0f5c57",
+      stroke: op ? "#7c2d12" : "#0b4a46",
+      "stroke-width": "1.25"
+    }));
+    var t = el("text", {
+      x: String(node.x + node.w / 2),
+      y: String(node.y + node.h / 2),
+      "text-anchor": "middle",
+      dy: "0.35em",
+      fill: op ? "#fff8f0" : "#f3fffd",
+      "font-size": node.v.length > 6 ? "16" : "20",
+      "font-family": "ui-sans-serif, system-ui, sans-serif",
+      "font-weight": "700"
+    });
+    t.appendChild(document.createTextNode(node.v));
+    g.appendChild(t);
+    parent.appendChild(g);
+    if (node.kids) node.kids.forEach(function (k) { drawNode(parent, k, hi); });
+  }
+
+  function setText(node, s) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+    node.appendChild(document.createTextNode(s));
+  }
+
+  function fmt(n) {
+    if (Number.isInteger(n)) return String(n);
+    return String(Math.round(n * 1000) / 1000);
+  }
+
+  function findId(node, id) {
+    if (node.id === id) return node;
+    if (!node.kids) return null;
+    for (var i = 0; i < node.kids.length; i++) {
+      var hit = findId(node.kids[i], id);
+      if (hit) return hit;
+    }
+    return null;
+  }
+
+  function paint(hi) {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    if (!tree) return;
+    var b = { minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity };
+    bounds(tree, b);
+    var w = Math.max(200, Math.ceil(b.maxX + PAD));
+    var h = Math.max(120, Math.ceil(b.maxY + PAD));
+    svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    svg.setAttribute("width", String(w));
+    svg.setAttribute("height", String(h));
+    var g = el("g", {});
+    drawNode(g, tree, hi);
+    svg.appendChild(g);
+    svg.setAttribute("aria-label", "Tree " + shape(tree));
+    var onId = hi ? hi.id : "";
+    Array.prototype.forEach.call(tokenBox.querySelectorAll(".tok"), function (elTok) {
+      if (elTok.getAttribute("data-id") === onId) elTok.classList.add("is-on");
+      else elTok.classList.remove("is-on");
+    });
+  }
+
+  function syncChips() {
+    var cur = input.value;
+    Array.prototype.forEach.call(document.querySelectorAll("#play .chips button"), function (btn) {
+      btn.setAttribute("aria-pressed", btn.getAttribute("data-ex") === cur ? "true" : "false");
+    });
+    schoolBtn.setAttribute("aria-pressed", ltr ? "false" : "true");
+    ltrBtn.setAttribute("aria-pressed", ltr ? "true" : "false");
+  }
+
+  function renderAll() {
+    var src = input.value.slice(0, 48);
+    var tok = tokenize(src);
+    walk = [];
+    walkAt = -1;
+    tree = null;
+    setText(walkBtn, "Walk the tree");
+    while (tokenBox.firstChild) tokenBox.removeChild(tokenBox.firstChild);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+    if (tok.err) {
+      setText(result, tok.err);
+      svg.setAttribute("viewBox", "0 0 200 80");
+      svg.setAttribute("width", "200");
+      svg.setAttribute("height", "80");
+      svg.setAttribute("aria-label", tok.err);
+      return;
+    }
+
+    tok.toks.forEach(function (t) {
+      if (t.t === "p") return;
+      var span = document.createElement("span");
+      span.className = "tok" + (t.t === "op" ? " op" : "");
+      span.setAttribute("data-id", "n" + t.i);
+      span.appendChild(document.createTextNode(t.v));
+      tokenBox.appendChild(span);
+    });
+
+    try {
+      tree = parse(tok.toks, ltr);
+    } catch (e) {
+      setText(result, e.message);
+      svg.setAttribute("viewBox", "0 0 200 80");
+      svg.setAttribute("width", "200");
+      svg.setAttribute("height", "80");
+      svg.setAttribute("aria-label", e.message);
+      return;
+    }
+
+    layout(tree, 0);
+    var b = { minX: Infinity, minY: Infinity, maxX: -Infinity, maxY: -Infinity };
+    bounds(tree, b);
+    shiftX(tree, PAD - b.minX);
+    shiftY(tree, PAD - b.minY);
+
+    var ev = evaluate(tree);
+    if (ev.ok) {
+      while (result.firstChild) result.removeChild(result.firstChild);
+      result.appendChild(document.createTextNode("The tree says "));
+      var strong = document.createElement("strong");
+      strong.appendChild(document.createTextNode(fmt(ev.n)));
+      result.appendChild(strong);
+      result.appendChild(document.createTextNode("."));
+    } else {
+      setText(result, ev.why + ".");
+    }
+
+    paint(null);
+    walk = walkOrder(tree);
+    syncChips();
+  }
+
+  input.addEventListener("input", renderAll);
+  schoolBtn.addEventListener("click", function () { ltr = false; renderAll(); });
+  ltrBtn.addEventListener("click", function () { ltr = true; renderAll(); });
+  Array.prototype.forEach.call(document.querySelectorAll("#play .chips button"), function (btn) {
+    btn.addEventListener("click", function () {
+      input.value = btn.getAttribute("data-ex");
+      input.focus();
+      renderAll();
+    });
+  });
+  tokenBox.addEventListener("click", function (ev) {
+    var t = ev.target;
+    if (!t || !t.getAttribute) return;
+    var id = t.getAttribute("data-id");
+    if (!id || !tree) return;
+    paint(findId(tree, id));
+  });
+  walkBtn.addEventListener("click", function () {
+    if (!walk.length) return;
+    walkAt += 1;
+    if (walkAt >= walk.length) {
+      walkAt = -1;
+      paint(null);
+      setText(walkBtn, "Walk the tree");
+      return;
+    }
+    paint(walk[walkAt]);
+    setText(walkBtn, "Next (" + (walkAt + 1) + " of " + walk.length + ")");
+  });
+
+  renderAll();
+})();
+</script>
 </body>
 </html>
