@@ -139,8 +139,14 @@
       color: var(--mute);
       margin-bottom: 0.6rem;
     }
-    .col { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
-    svg.tree { width: min(480px, 88vw); height: auto; }
+    .col { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; min-width: 0; max-width: 100%; }
+    svg.tree {
+      display: block;
+      width: 100%;
+      max-width: 28rem;
+      height: auto;
+      overflow: visible;
+    }
     .badge {
       display: inline-block;
       font-weight: 700;
@@ -174,7 +180,7 @@
         </div>
         <div class="col">
           <p class="label">the tree the computer keeps</p>
-          <svg class="tree" viewBox="0 0 520 420" role="img" aria-label="Tree: equals, with total on the left and multiply of price and qty on the right">
+          <svg class="tree" viewBox="0 0 580 430" overflow="visible" role="img" aria-label="Tree: equals, with total on the left and multiply of price and qty on the right">
             <line x1="260" y1="78" x2="120" y2="200" stroke="#1c1612" stroke-width="6"/>
             <line x1="260" y1="78" x2="400" y2="200" stroke="#1c1612" stroke-width="6"/>
             <line x1="400" y1="248" x2="320" y2="330" stroke="#1c1612" stroke-width="6"/>
@@ -201,7 +207,7 @@
       <div class="row">
         <div class="col">
           <span class="badge yes">this tree</span>
-          <svg class="tree" viewBox="0 0 420 340" role="img" aria-label="Correct tree: plus of 1 and multiply of 2 and 3">
+          <svg class="tree" viewBox="-10 0 450 360" overflow="visible" role="img" aria-label="Correct tree: plus of 1 and multiply of 2 and 3">
             <line x1="210" y1="64" x2="90" y2="160" stroke="#1c1612" stroke-width="6"/>
             <line x1="210" y1="64" x2="320" y2="160" stroke="#1c1612" stroke-width="6"/>
             <line x1="320" y1="204" x2="250" y2="270" stroke="#1c1612" stroke-width="6"/>
@@ -221,7 +227,7 @@
         </div>
         <div class="col">
           <span class="badge no">not left to right</span>
-          <svg class="tree" viewBox="0 0 420 340" role="img" aria-label="Wrong tree: multiply of plus 1 and 2, then 3">
+          <svg class="tree" viewBox="-20 0 460 360" overflow="visible" role="img" aria-label="Wrong tree: multiply of plus 1 and 2, then 3">
             <g opacity="0.38">
               <line x1="210" y1="64" x2="90" y2="160" stroke="#1c1612" stroke-width="6"/>
               <line x1="210" y1="64" x2="320" y2="160" stroke="#1c1612" stroke-width="6"/>
@@ -264,7 +270,7 @@
         <span class="arrow" aria-hidden="true">→</span>
         <div class="col">
           <p class="label">3 · tree</p>
-          <svg class="tree" viewBox="0 0 280 240" role="img" aria-label="Multiply of price and qty" style="width:min(260px,70vw)">
+          <svg class="tree" viewBox="-8 0 300 230" overflow="visible" role="img" aria-label="Multiply of price and qty" style="max-width:16rem">
             <line x1="140" y1="56" x2="56" y2="150" stroke="#1c1612" stroke-width="6"/>
             <line x1="140" y1="56" x2="224" y2="150" stroke="#1c1612" stroke-width="6"/>
             <rect x="84" y="8" width="112" height="56" rx="28" fill="#9a3412"/>
@@ -281,7 +287,7 @@
 
     <section class="block">
       <h2>After the tree exists, tools walk it.</h2>
-      <svg class="tree" viewBox="0 0 520 280" role="img" aria-label="A walker visits star, then price, then qty">
+      <svg class="tree" viewBox="0 0 540 270" overflow="visible" role="img" aria-label="A walker visits star, then price, then qty">
         <line x1="260" y1="70" x2="120" y2="190" stroke="#1c1612" stroke-width="6"/>
         <line x1="260" y1="70" x2="400" y2="190" stroke="#1c1612" stroke-width="6"/>
         <rect x="196" y="12" width="128" height="64" rx="32" fill="#9a3412"/>
@@ -305,7 +311,7 @@
         <span class="arrow" aria-hidden="true">=</span>
         <p class="code">price * qty</p>
       </div>
-      <svg class="tree" viewBox="0 0 280 240" role="img" aria-label="Same multiply tree for both spellings" style="width:min(280px,70vw)">
+      <svg class="tree" viewBox="-8 0 300 230" overflow="visible" role="img" aria-label="Same multiply tree for both spellings" style="max-width:16rem">
         <line x1="140" y1="56" x2="56" y2="150" stroke="#1c1612" stroke-width="6"/>
         <line x1="140" y1="56" x2="224" y2="150" stroke="#1c1612" stroke-width="6"/>
         <rect x="84" y="8" width="112" height="56" rx="28" fill="#9a3412"/>
