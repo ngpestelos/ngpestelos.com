@@ -39,7 +39,14 @@
       --card: #fffaf3;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
     body {
       background: var(--paper);
       color: var(--ink);
@@ -184,6 +191,16 @@
     }
     .badge.yes { background: #dcfce7; color: var(--yes); }
     .badge.no { background: #ffe4e6; color: var(--no); }
+    .to-top {
+      margin: 0.4rem 0 0;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .to-top a { color: var(--op); text-decoration: none; }
+    .to-top a:hover { text-decoration: underline; }
     @media (max-width: 700px) {
       .arrow { transform: rotate(90deg); }
       .block,
@@ -205,7 +222,7 @@
 </head>
 <body>
   <main>
-    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/eli5/">ELI5</a></p>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/eli5/">ELI5</a></p>
     <p class="kicker">Abstract Syntax Trees</p>
     <h1>Code is a line. Meaning is a tree.</h1>
     <p class="lead">The computer keeps a family tree of who belongs to whom.</p>
@@ -415,6 +432,7 @@
       </div>
       <p class="one">The dropped extra is the abstract in Abstract Syntax Tree.</p>
     </section>
+    <p class="to-top"><a href="#top">Back to top</a></p>
   </main>
 </body>
 </html>
