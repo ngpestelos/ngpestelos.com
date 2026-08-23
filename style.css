@@ -19,6 +19,13 @@ html {
   text-size-adjust: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -362,10 +369,29 @@ a:hover {
   font-size: inherit;
 }
 
-.article footer.meta {
+.article p.to-top {
   margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
   padding-top: 1rem;
   border-top: 1px solid var(--border);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.article p.to-top a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.article p.to-top a:hover {
+  text-decoration: underline;
+}
+
+.article footer.meta {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
   color: var(--muted);
   font-size: 0.85rem;
 }
