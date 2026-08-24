@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Payments — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference for online payments: card lifecycle, 4-party mechanics, CNP liability, PCI DSS, ActiveMerchant, and US/PH payment rails.">
+  <meta property="og:title" content="Online Payments — Reference">
+  <meta property="og:description" content="A citable ground-truth reference for online payments: card lifecycle, 4-party mechanics, CNP liability, PCI DSS, ActiveMerchant, and US/PH payment rails.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/online-payments/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/online-payments/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+      --table-border: #eaecf0;
+      --table-header: #f2f4f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    .toc-grid a:hover {
+      text-decoration: underline;
+    }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p {
+      margin-bottom: 1rem;
+    }
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 0.4rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--well);
+      font-weight: 600;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .def-box {
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px dashed #d0d7de;
+    }
+    .def-box:last-child {
+      border-bottom: none;
+    }
+    .term-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      display: inline;
+    }
+    .term-desc {
+      display: inline;
+      margin-left: 0.35rem;
+    }
+    .related-links {
+      margin-top: 0.35rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+    }
+    .related-links a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    .related-links a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 {
+      font-size: 0.95rem;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Online Payments</h1>
+    <p class="subtitle">A citable reference on how electronic money moves: 4-party card flows, CNP fraud mechanics, PCI DSS compliance, Ruby adapter abstractions, and US vs. Philippine interbank settlement rails.</p>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#core-model">Core Model</a> &middot;
+        <a href="#four-party">Four-Party Flow</a> &middot;
+        <a href="#lifecycle">Card Lifecycle</a> &middot;
+        <a href="#cnp-security">CNP &amp; Security</a> &middot;
+        <a href="#software-adapters">Software Adapters</a> &middot;
+        <a href="#rails-comparison">US vs. PH Rails</a> &middot;
+        <a href="#glossary-index">Term Glossary</a> &middot;
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Core Model -->
+    <h2 id="core-model">1. The Core Split: Private Card Overlays vs. Public Rails</h2>
+    <p>
+      An electronic payment belongs to one of two fundamental architectures:
+    </p>
+    <ol>
+      <li>
+        <strong>Private Card Overlays (Visa, Mastercard, Amex):</strong> The network operates a messaging switch. The cardholder's bank issues credit or debit; the merchant's bank receives funds days later. Authorization is an instantaneous hold, not a settlement.
+      </li>
+      <li>
+        <strong>Public Interbank Settlement Rails (Fedwire, PhilPaSSplus, ACH, InstaPay):</strong> Banks maintain reserve accounts directly with the central bank (Federal Reserve or Bangko Sentral ng Pilipinas). Settlement transfers sovereign central bank balances between depository institutions.
+      </li>
+    </ol>
+
+    <!-- Section 2: Four-Party Flow -->
+    <h2 id="four-party">2. The Four-Party Card Model</h2>
+    <p>
+      Open card networks operate across four distinct entities connected by the network switch:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Definition</th>
+          <th>Key Responsibility</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong id="cardholder">Cardholder</strong></td>
+          <td>The consumer presenting a Primary Account Number (PAN).</td>
+          <td>Initiates purchase; pays issuing bank per billing agreement.</td>
+        </tr>
+        <tr>
+          <td><strong id="merchant">Merchant</strong></td>
+          <td>The seller of goods or services.</td>
+          <td>Collects order details; presents auth request via gateway; pays merchant discount rate (MDR).</td>
+        </tr>
+        <tr>
+          <td><strong id="acquirer">Acquirer</strong></td>
+          <td>The merchant's acquiring bank.</td>
+          <td>Underwrites merchant risk; routes transactions through the card network; funds merchant bank accounts.</td>
+        </tr>
+        <tr>
+          <td><strong id="issuing-bank">Issuing Bank</strong></td>
+          <td>The cardholder's bank.</td>
+          <td>Holds cardholder account; approves/declines authorizations; holds default credit risk; receives interchange.</td>
+        </tr>
+        <tr>
+          <td><strong id="card-network">Card Network (Scheme)</strong></td>
+          <td>Visa, Mastercard, Discover (or 3-party closed loop Amex).</td>
+          <td>Maintains switch hardware and rules; routes messages; sets interchange tables and scheme assessments.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="psp-collapse">The Payment Service Provider (PSP) Collapse</h3>
+    <p>
+      In legacy setups, merchants contracted separately with a <strong>Gateway</strong> (message encryption/routing), a <strong>Processor</strong> (network formatting), and an <strong>Acquirer</strong> (merchant account underwriting). Modern PSPs (e.g., Stripe, Adyen, Braintree) collapse all three into a single API contract and single payout schedule.
+    </p>
+
+    <!-- Section 3: Card Lifecycle -->
+    <h2 id="lifecycle">3. Card Transaction Lifecycle</h2>
+    <p>
+      A card transaction moves through three distinct chronological phases:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Timeframe</th>
+          <th>What Actually Happens</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong id="authorization">1. Authorization</strong></td>
+          <td>1–3 seconds</td>
+          <td>Issuer checks credit limit and fraud rules. Reserves funds on the cardholder account and returns an auth code. <em>No money moves between banks.</em></td>
+        </tr>
+        <tr>
+          <td><strong id="capture">2. Capture</strong></td>
+          <td>At shipment or EOD</td>
+          <td>Merchant signals that goods were delivered and claims the authorized hold. Can capture full, partial, or multiple amounts against an open authorization.</td>
+        </tr>
+        <tr>
+          <td><strong id="settlement">3. Clearing &amp; Settlement</strong></td>
+          <td>1–3 business days</td>
+          <td>Acquirer submits captured batch to network. Network nets positions across banks. Issuer debits cardholder; acquirer credits merchant minus interchange and fees.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 4: CNP & Security -->
+    <h2 id="cnp-security">4. Card-Not-Present (CNP) &amp; Security Regime</h2>
+    
+    <h3 id="merchant-liability">CNP Fraud &amp; Liability</h3>
+    <p>
+      In <strong>Card-Present (CP)</strong> transactions with EMV chip-and-PIN, fraud liability rests with the party failing to support EMV (usually the issuer). In <strong>Card-Not-Present (CNP)</strong> e-commerce transactions, fraudulent chargebacks land by default on the <strong>merchant</strong>, who loses both the merchandise and the purchase price, plus a penalty fee.
+    </p>
+
+    <h3 id="3-d-secure">3-D Secure (EMV 3DS) &amp; PSD2 SCA</h3>
+    <p>
+      3-D Secure (3DS v2) is an XML/JSON messaging protocol that enables authentication directly between the consumer and their issuing bank prior to authorization.
+    </p>
+    <ul>
+      <li><strong>Frictionless Flow:</strong> Merchant passes device and behavioral telemetry to the issuer. If risk is low, authentication passes invisibly.</li>
+      <li><strong>Challenge Flow:</strong> High-risk transactions trigger step-up authentication (biometric, SMS OTP, or banking app approval).</li>
+      <li><strong>Liability Shift:</strong> Passing 3DS shifts the liability for fraudulent chargebacks from the merchant to the issuing bank.</li>
+    </ul>
+
+    <h3 id="pci-dss">PCI DSS &amp; Scope Reduction</h3>
+    <p>
+      The Payment Card Industry Data Security Standard (PCI DSS) mandates security controls for entities storing, processing, or transmitting Cardholder Data (CHD).
+    </p>
+    <ul>
+      <li><strong>SAQ A (Hosted Fields / iFrames):</strong> Merchant servers never touch or receive the Primary Account Number (PAN). Card data is captured directly by PSP JavaScript into secure iframes. Self-Assessment Questionnaire A is minimal (~22 requirements).</li>
+      <li><strong>SAQ D (Direct API Intake):</strong> Card PAN touches merchant servers before forwarding. Requires full PCI DSS validation (~300+ technical controls and annual penetration testing).</li>
+    </ul>
+
+    <!-- Section 5: Software Adapters -->
+    <h2 id="software-adapters">5. Software Abstractions: ActiveMerchant &amp; Rails</h2>
+    <p>
+      <strong id="activemerchant">ActiveMerchant</strong> is an open-source Ruby payment library extracted by Shopify in June 2006. It standardizes disparate bank APIs behind a unified object-oriented interface:
+    </p>
+    <ul>
+      <li><strong>Standard Verbs:</strong> <code>authorize(money, credit_card, options)</code>, <code>capture(money, authorization, options)</code>, <code>purchase(money, credit_card, options)</code>, <code>void(authorization, options)</code>, <code>refund(money, identification, options)</code>.</li>
+      <li><strong>Integer Cents Rule:</strong> All monetary amounts are passed as integers representing the currency subunit (e.g. <code>4000</code> for $40.00 USD) to prevent floating-point arithmetic errors.</li>
+      <li><strong>Response Envelope:</strong> Returns a standardized <code>Response</code> object indicating <code>success?</code>, <code>authorization</code> token, raw error messages, and AVS/CVC match codes.</li>
+    </ul>
+
+    <!-- Section 6: Rails Comparison -->
+    <h2 id="rails-comparison">6. Interbank Rails: United States vs. Philippines</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Payment Job</th>
+          <th>United States Rail</th>
+          <th>Philippine Rail</th>
+          <th>Settlement Mechanism</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Wholesale / High-Value RTGS</strong></td>
+          <td><strong id="fedwire">Fedwire Funds</strong> (Federal Reserve)</td>
+          <td><strong id="philpassplus">PhilPaSSplus</strong> (BSP)</td>
+          <td>Real-time gross settlement; immediate central bank account debit/credit.</td>
+        </tr>
+        <tr>
+          <td><strong>Planned Batch ACH</strong></td>
+          <td><strong id="ach">ACH</strong> (FedACH / EPN; Nacha rules)</td>
+          <td><strong id="pesonet">PESONet</strong> (PCHC; NRPS policy)</td>
+          <td>Net settlement across multiple scheduled batch windows during business days.</td>
+        </tr>
+        <tr>
+          <td><strong>Instant Retail Account-to-Account</strong></td>
+          <td><strong id="fednow">FedNow</strong> / RTP (The Clearing House)</td>
+          <td><strong id="instapay">InstaPay</strong> (BancNet switch; PhilPaSSplus net)</td>
+          <td>FedNow settles instantly per item at Fed; InstaPay settles customer instant 24/7 with prefunded collateral nets on PhilPaSSplus.</td>
+        </tr>
+        <tr>
+          <td><strong>QR Interoperability Standard</strong></td>
+          <td>Proprietary (Venmo, Zelle, Cash App)</td>
+          <td><strong id="qr-ph">QR Ph</strong> (EMVCo national QR standard)</td>
+          <td>Routes P2P and P2M transactions across participating banks and e-wallets via InstaPay/PESONet.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 7: Glossary Index -->
+    <h2 id="glossary-index">7. Comprehensive Glossary Index</h2>
+
+    <div class="def-box">
+      <h3 class="term-title" id="avs-and-cvc">AVS and CVC:</h3>
+      <p class="term-desc">Address Verification Service checks the cardholder's numeric street address and ZIP against issuer records. Card Verification Code (CVV2/CVC2) checks the 3- or 4-digit code on the card. Both reduce fraud but do not trigger liability shifts.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="bancnet">BancNet:</h3>
+      <p class="term-desc">The consortium and technical switch operator designated by the Bangko Sentral ng Pilipinas to process InstaPay retail transactions in the Philippines.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="chargeback">Chargeback:</h3>
+      <p class="term-desc">A forced reversal of funds initiated by the issuing bank on behalf of the cardholder, citing fraud, non-delivery, or authorization error.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="interchange-fee">Interchange Fee:</h3>
+      <p class="term-desc">The fee paid by the acquiring bank to the issuing bank on every card transaction to compensate the issuer for credit risk and processing costs.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="nacha">Nacha:</h3>
+      <p class="term-desc">National Automated Clearinghouse Association. The private governance body that authors operating rules and formats for the US ACH network.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="nrps">NRPS:</h3>
+      <p class="term-desc">National Retail Payment System. The regulatory policy framework established by BSP Circular 980 in 2017 governing interoperable Philippine retail electronic payment schemes (InstaPay and PESONet).</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="pan">PAN:</h3>
+      <p class="term-desc">Primary Account Number. The 15- or 16-digit number embossed on a payment card that identifies the card scheme, issuer bank identification number (BIN), and individual account.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="pchc">PCHC:</h3>
+      <p class="term-desc">Philippine Clearing House Corporation. The clearing operator for checks, PESONet batch electronic transfers, PDDTS (domestic USD transfers), and PhP-USD PvP.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="ra-11127">RA 11127:</h3>
+      <p class="term-desc">The National Payment Systems Act of 2018. The Philippine statute granting Bangko Sentral ng Pilipinas comprehensive regulatory oversight, licensing, and operational authority over all national payment systems.</p>
+    </div>
+
+    <!-- Section 8: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Primary Authorities</h3>
+      <ul>
+        <li>Federal Reserve: <a href="https://www.federalreserve.gov/paymentsystems.htm" target="_blank" rel="noopener">Payment System Overview &amp; Research</a></li>
+        <li>Nacha: <a href="https://www.nacha.org/rules" target="_blank" rel="noopener">Nacha Operating Rules &amp; Guidelines</a></li>
+        <li>Bangko Sentral ng Pilipinas: <a href="https://www.bsp.gov.ph/Regulations/Issuances/2017/c980.pdf" target="_blank" rel="noopener">BSP Circular 980 (NRPS Framework)</a> &middot; <a href="https://www.bsp.gov.ph/Pages/Regulations/RA11127.pdf" target="_blank" rel="noopener">RA 11127 (NPSA)</a></li>
+        <li>PCI Security Standards Council: <a href="https://www.pcisecuritystandards.org/" target="_blank" rel="noopener">PCI DSS v4.0 Specification</a></li>
+        <li>EMVCo: <a href="https://www.emvco.com/emv-technologies/3d-secure/" target="_blank" rel="noopener">EMV 3-D Secure Protocol and Core Functions</a></li>
+        <li>Shopify / ActiveMerchant: <a href="https://github.com/activemerchant/active_merchant" target="_blank" rel="noopener">ActiveMerchant GitHub Repository</a></li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/trees/online-payments/">Online Payments Knowledge Tree</a> &middot; <a href="/writing/payments-glossary/">Payments Glossary</a> &middot; <a href="/writing/us-and-philippine-payment-rails/">US &amp; PH Payment Rails</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
