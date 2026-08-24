@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Large Language Models — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Large Language Models (LLMs): transformer architecture, tokenization, context engineering, RAG, gateways, and evaluation.">
+  <meta property="og:title" content="Large Language Models — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Large Language Models (LLMs): transformer architecture, tokenization, context engineering, RAG, gateways, and evaluation.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/large-language-models/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/large-language-models/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .def-box {
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px dashed #d0d7de;
+    }
+    .def-box:last-child { border-bottom: none; }
+    .term-title { font-weight: 700; font-size: 1.05rem; display: inline; }
+    .term-desc { display: inline; margin-left: 0.35rem; }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Large Language Models</h1>
+    <p class="subtitle">A citable reference on Large Language Models (LLMs): transformer mechanics, tokenization, context engineering, RAG pipelines, architectural resilience patterns, and evaluation frameworks.</p>
+
+    <div class="companion-box">
+      <h2>Companion Formats</h2>
+      <ul>
+        <li>🎨 <a href="/eli5/large-language-models/"><strong>ELI5: How Large Language Models Work</strong></a> — Visual picture-book explainer for intuitive understanding.</li>
+        <li>🌳 <a href="/trees/large-language-models/"><strong>LLM System Design Knowledge Tree</strong></a> — Prerequisite curriculum map and active learning frontier.</li>
+        <li>📖 <a href="/reference/retrieval-augmented-generation/"><strong>Reference: Retrieval-Augmented Generation</strong></a> — Dedicated ground-truth page on RAG architectures.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">Definition &amp; Core Model</a> &middot;
+        <a href="#capability-stack">The AI Capability Stack</a> &middot;
+        <a href="#tokenization-embeddings">Tokens &amp; Embeddings</a> &middot;
+        <a href="#context-engineering">Context Engineering</a> &middot;
+        <a href="#system-patterns">Production Architecture</a> &middot;
+        <a href="#evals-benchmarks">Evaluation &amp; Evals</a> &middot;
+        <a href="#failure-modes">Failure Modes &amp; Security</a> &middot;
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Definition & Core Model -->
+    <h2 id="definition">1. Definition &amp; Core Mechanism</h2>
+    <p>
+      A <strong>Large Language Model (LLM)</strong> is an autoregressive deep neural network trained on vast text corpora to model the conditional probability distribution of text tokens. Based primarily on the Transformer decoder architecture (Vaswani et al., 2017), an LLM generates output by iteratively predicting the single most plausible next token given all preceding context tokens.
+    </p>
+    <p>
+      At its core, an LLM is a mathematical function mapping an input sequence of token IDs \((x_1, x_2, \dots, x_t)\) to a probability distribution over the vocabulary \(V\):
+    </p>
+    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      P(x_{t+1} \mid x_1, x_2, \dots, x_t) = \text{softmax}(W_v \cdot h_t)
+    </p>
+    <p>
+      <strong>Next-Token Prediction Default:</strong> Because generation optimizes for statistical plausibility across training data rather than factual truth, an unconstrained LLM will generate hallucinated text with high statistical confidence whenever source facts are absent.
+    </p>
+
+    <!-- Section 2: Capability Stack -->
+    <h2 id="capability-stack">2. The AI Capability Stack</h2>
+    <p>
+      Modern AI systems select models across a four-tier capability spectrum based on latency budgets, cost constraints, and reasoning depth:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Parameter Scale</th>
+          <th>Typical Use Cases</th>
+          <th>Tradeoffs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Frontier Models</strong> (e.g. Claude Opus, GPT-4.5)</td>
+          <td>&gt;500B (MoE)</td>
+          <td>Complex multi-step reasoning, architectural planning, system synthesis, edge-case analysis.</td>
+          <td>Highest cost ($5–$30 / 1M tokens), high latency (TTFT &gt; 1.5s), external API dependency.</td>
+        </tr>
+        <tr>
+          <td><strong>Workhorse Models</strong> (e.g. Claude Sonnet, GPT-4o)</td>
+          <td>70B–200B</td>
+          <td>Production coding, automated PR reviews, complex extraction, agent tool orchestration.</td>
+          <td>Balanced performance, moderate cost, primary production driver.</td>
+        </tr>
+        <tr>
+          <td><strong>Fast / Flash Models</strong> (e.g. Claude Haiku, Gemini Flash)</td>
+          <td>8B–35B</td>
+          <td>Triage, summarization, classifier gates, firewall intent filtering, high-throughput routing.</td>
+          <td>Sub-second TTFT, low cost ($0.10–$0.50 / 1M tokens), lower deep-reasoning ceiling.</td>
+        </tr>
+        <tr>
+          <td><strong>Specialized SLMs</strong> (e.g. Llama 3 8B, Qwen 2.5)</td>
+          <td>1B–8B</td>
+          <td>On-device inference, air-gapped data compliance, narrow fine-tuned classification, parsing.</td>
+          <td>Runs locally / on CPU/edge, zero API cost, strict single-task specialization.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 3: Tokenization & Embeddings -->
+    <h2 id="tokenization-embeddings">3. Tokens, Embeddings &amp; Vector Search</h2>
+    
+    <h3 id="tokenization">Tokenization Mechanics</h3>
+    <p>
+      LLMs do not process raw text or characters directly. Text is converted into discrete integer tokens using subword algorithms such as Byte-Pair Encoding (BPE) or WordPiece. 
+      On average in English, 1 token &approx; 0.75 words (or 4 characters). Numbers, whitespace, non-Latin scripts, and complex code syntax consume substantially higher token density.
+    </p>
+
+    <h3 id="embeddings">Dense Vector Embeddings</h3>
+    <p>
+      An embedding model projects text tokens into a continuous high-dimensional vector space (e.g., 768 to 3072 dimensions). 
+      Geometric proximity in this space captures semantic meaning: two text passages with similar conceptual meaning cluster closely together as measured by <strong>cosine similarity</strong>, regardless of whether they share exact vocabulary.
+    </p>
+
+    <!-- Section 4: Context Engineering -->
+    <h2 id="context-engineering">4. Context Engineering &amp; Memory Strategies</h2>
+    <p>
+      Context engineering is the systematic discipline of curating the token payload submitted to an LLM on each call. It is a data-pipeline engineering problem, not prompt styling.
+    </p>
+    <ul>
+      <li><strong>The Context Window Budget:</strong> Every LLM has a finite context length (e.g. 128k to 2M tokens). However, "effective recall" degrades as context grows (the <em>Lost in the Middle</em> phenomenon).</li>
+      <li><strong>Context Overflow Strategy:</strong> Massive context windows do not replace a structured memory hierarchy. Production systems split state into:
+        <ul>
+          <li><em>Short-term Working Memory:</em> Immediate session turn buffer and current active files.</li>
+          <li><em>Episodic Memory:</em> Git commit logs, session transcripts, and daily worklogs.</li>
+          <li><em>Semantic Long-Term Memory:</em> Curated atomic notes, vector databases, and knowledge graphs.</li>
+        </ul>
+      </li>
+      <li><strong>Structured Prompt Framework:</strong> High-reliability prompts partition instructions into four deterministic sections: <code>Role &amp; Identity</code>, <code>Task &amp; Context</code>, <code>Constraints &amp; Safety Guards</code>, and <code>Output Format / Schema</code>.</li>
+    </ul>
+
+    <!-- Section 5: Production Architecture -->
+    <h2 id="system-patterns">5. Production System Architecture Patterns</h2>
+    <p>
+      Deploying LLMs in production requires isolating application code from non-deterministic, high-latency external model APIs (Mitra, 2026):
+    </p>
+
+    <h3 id="gateway-pattern">1. The LLM Gateway Pattern</h3>
+    <p>
+      Decouples business services from proprietary vendor SDKs. The gateway acts as a reverse proxy providing centralized API key rotation, unified request/response normalization, token-bucket rate limiting, and observability metrics.
+    </p>
+
+    <h3 id="tiered-fallback">2. Circuit Breakers &amp; Tiered Model Fallback</h3>
+    <p>
+      When an upstream provider experiences elevated 5xx errors or latency spikes, a circuit breaker trips from <em>Closed</em> to <em>Open</em>, instantly routing incoming traffic to secondary providers (e.g., Primary Claude Sonnet &rarr; Fallback DeepSeek-V3 on Nous / OpenAI GPT-4o) without user-facing downtime.
+    </p>
+
+    <h3 id="caching-tiers">3. Three-Level Caching Strategy</h3>
+    <ul>
+      <li><strong>Level 1 (Exact Match):</strong> Hash lookup over raw prompt strings and temperature settings (0ms latency, zero token cost).</li>
+      <li><strong>Level 2 (Semantic Caching):</strong> Cosine distance matching over prompt embeddings to serve cached answers for semantically identical questions within a cosine threshold (e.g., \(&gt;0.96\)).</li>
+      <li><strong>Level 3 (Proactive Caching):</strong> Pre-populating responses for anticipated high-frequency queries.</li>
+    </ul>
+
+    <!-- Section 6: Evals & Benchmarks -->
+    <h2 id="evals-benchmarks">6. Evaluation, Testing &amp; LLM-as-a-Judge</h2>
+    <p>
+      Because LLM output is non-deterministic and natural language-based, classical string-equality unit tests fail. Production systems rely on three testing layers:
+    </p>
+    <ol>
+      <li><strong>Deterministic Rule Checks:</strong> JSON Schema validation, regex constraints, forbidden keyword filters, and execution compiler checks.</li>
+      <li><strong>Golden Set Benchmarking:</strong> Curated suites of input-output test cases evaluated by a frontier model (LLM-as-a-Judge) using explicit, rubric-based scoring.</li>
+      <li><strong>Mutation &amp; Red-Team Testing:</strong> Programmatically injecting deliberate errors (syntax mutations, adversarial prompt injections) to verify that guardrails catch regressions.</li>
+    </ol>
+
+    <!-- Section 7: Failure Modes & Security -->
+    <h2 id="failure-modes">7. Failure Modes &amp; AI Security</h2>
+    <div class="def-box">
+      <h3 class="term-title" id="prompt-injection">Prompt Injection:</h3>
+      <p class="term-desc">An attacker embeds instructions inside untrusted user data that override the system instructions. Mitigated by the Firewall LLM pattern (filtering data before main model), strict instruction/data separation, and treating all model outputs as untrusted input.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="excessive-agency">Excessive Agency:</h3>
+      <p class="term-desc">Granting an LLM autonomous write or execution permissions without validation gates. Mitigated by the <strong>Plan-Approve-Execute</strong> pattern: the model proposes an action, but a deterministic policy or human operator executes the gate.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="data-poisoning">Data Poisoning:</h3>
+      <p class="term-desc">Adversarial manipulation of training corpora or RAG knowledge bases to induce biased, false, or backdoored completions. Mitigated by cryptographic hash verification of data sources and trusted ingest curation.</p>
+    </div>
+
+    <!-- Section 8: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Foundational Literature</h3>
+      <ul>
+        <li>Vaswani et al. (2017): <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (Transformer Architecture)</li>
+        <li>Sampriti Mitra (2026): <a href="https://www.packtpub.com/en-us/product/system-design-for-the-llm-era-9781807789930" target="_blank" rel="noopener">System Design for the LLM Era</a> (Packt Publishing)</li>
+        <li>Lewis et al. (2020): <a href="https://arxiv.org/abs/2005.11401" target="_blank" rel="noopener">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li>
+        <li>Anthropic Research: <a href="https://www.anthropic.com/research/contextual-retrieval" target="_blank" rel="noopener">Contextual Retrieval &amp; Prompt Engineering Guides</a></li>
+        <li>OpenAI: <a href="https://platform.openai.com/docs/guides/evals" target="_blank" rel="noopener">Model Evaluation &amp; Evals Framework</a></li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/eli5/large-language-models/">ELI5: Large Language Models</a> &middot; <a href="/trees/large-language-models/">LLM System Design Tree</a> &middot; <a href="/reference/retrieval-augmented-generation/">RAG Reference</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>

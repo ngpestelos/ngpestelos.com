@@ -31,6 +31,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/eli5/large-language-models/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/eli5/retrieval-augmented-generation/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -39,6 +44,11 @@
     <loc>https://ngpestelos.com/trees/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/trees/large-language-models/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ngpestelos.com/trees/online-payments/</loc>
@@ -57,6 +67,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/epistemology/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/large-language-models/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
