@@ -16,7 +16,6 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260823a">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -24,30 +23,254 @@
     gtag('js', new Date());
     gtag('config', 'G-TLBY8P4GG9');
   </script>
+  <style>
+    :root {
+      --bg: #f4f7f5;
+      --card-bg: #ffffff;
+      --ink: #111a17;
+      --mute: #53645e;
+      --border: #d4deda;
+      --border-hover: #0e4a3b;
+      --accent: #0e4a3b;
+      --accent-hover: #083328;
+      --accent-light: #e6f1ec;
+      --mastered: #15803d;
+      --mastered-bg: #ecfdf5;
+      --frontier: #b45309;
+      --frontier-bg: #fffbeb;
+      --max-width: 720px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem;
+    }
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+    .back {
+      font-size: 0.9rem;
+      margin-bottom: 1.2rem;
+    }
+    .back a {
+      color: var(--mute);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .back a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    header {
+      margin-bottom: 2.2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.8rem;
+    }
+    .badge-section {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: var(--accent-light);
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      margin-bottom: 0.6rem;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+    .tagline {
+      font-size: 1.1rem;
+      color: var(--mute);
+      line-height: 1.5;
+    }
+    .intro-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.25rem 1.4rem;
+      margin-bottom: 2.2rem;
+      font-size: 0.96rem;
+      color: #273832;
+    }
+    .intro-card p {
+      margin-bottom: 0.6rem;
+    }
+    .intro-card p:last-child {
+      margin-bottom: 0;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--mute);
+      margin-bottom: 1rem;
+    }
+    .trees-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      list-style: none;
+    }
+    .tree-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.35rem 1.5rem;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .tree-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 4px 14px rgba(14, 74, 59, 0.08);
+      transform: translateY(-1px);
+    }
+    .tree-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .tree-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+    }
+    .tree-meta {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8rem;
+      color: var(--mute);
+      white-space: nowrap;
+    }
+    .tree-desc {
+      font-size: 0.95rem;
+      color: #31423c;
+      line-height: 1.55;
+      margin-bottom: 0.8rem;
+    }
+    .tree-footer {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+    .pill-mastered {
+      background: var(--mastered-bg);
+      color: var(--mastered);
+      border: 1px solid #bbf7d0;
+    }
+    .pill-frontier {
+      background: var(--frontier-bg);
+      color: var(--frontier);
+      border: 1px solid #fde68a;
+    }
+    .pill-backbone {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--mute);
+      display: flex;
+      justify-content: space-between;
+    }
+    footer a {
+      color: var(--mute);
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <main>
+    <p class="back"><a href="/">← Nestor G Pestelos Jr</a></p>
+    
     <header>
-      <p class="back"><a href="/">Nestor G Pestelos Jr</a></p>
+      <span class="badge-section">Curriculum &amp; Mastery Maps</span>
       <h1>Knowledge Trees</h1>
-      <p class="tagline">Prerequisite graphs and knowledge frontiers. Inspectable mastery maps across engineering and systems.</p>
+      <p class="tagline">Prerequisite graphs and knowledge frontiers. Inspectable mastery maps for continuous engineering and systems learning.</p>
     </header>
 
-    <section>
-      <p style="margin-bottom: 1.5rem; color: #4a443e; line-height: 1.6;">
-        Unlike a flat syllabus, a knowledge tree organizes a domain as a directed prerequisite graph (per Math Academy's knowledge frontier mechanic). Each node defines an assessable demonstration test, evidence of mastery, and dependencies.
-      </p>
-      <ul>
-        <li>
-          <a href="/trees/online-payments/">Online Payments</a>
-          <div style="font-size: 0.9rem; color: #6e645a; margin-top: 0.25rem;">Card authorization, settlement, CNP fraud, 3DS liability shift, Rails multi-provider adapters, and PH/US parallel rails.</div>
-        </li>
-        <li style="margin-top: 1rem;">
-          <a href="/trees/bitcoin/">Bitcoin Protocol</a>
-          <div style="font-size: 0.9rem; color: #6e645a; margin-top: 0.25rem;">Nakamoto 2008 whitepaper backbone: double-spending, proof-of-work consensus, Merkle pruning, SPV, and Gambler's Ruin security proof.</div>
-        </li>
-      </ul>
-    </section>
+    <div class="intro-card">
+      <p><strong>The Mechanic:</strong> Unlike a linear syllabus, a knowledge tree structures a domain as a directed acyclic graph (per Math Academy's knowledge frontier concept).</p>
+      <p>Each node specifies a falsifiable demonstration test, exact references, and prerequisite dependencies. You study only at the frontier—items whose prerequisites are mastered.</p>
+    </div>
+
+    <h2 class="section-title">Published Trees</h2>
+
+    <ul class="trees-list">
+      <li>
+        <a href="/trees/online-payments/" class="tree-card">
+          <div class="tree-card-header">
+            <h3 class="tree-title">Online Payments</h3>
+            <span class="tree-meta">22 nodes · 7 phases</span>
+          </div>
+          <p class="tree-desc">From typed PAN to merchant settlement. Covers 4-party authorization, CNP fraud liability, EMV 3DS liability shift, Rails multi-provider adapters (ActiveMerchant), and parallel rails (ACH, FedNow, PH InstaPay/PESONet).</p>
+          <div class="tree-footer">
+            <span class="pill pill-mastered">3 Mastered</span>
+            <span class="pill pill-frontier">Phase 2 Frontier</span>
+            <span class="pill pill-backbone">Federal Reserve &amp; Stripe Backbone</span>
+          </div>
+        </a>
+      </li>
+
+      <li>
+        <a href="/trees/bitcoin/" class="tree-card">
+          <div class="tree-card-header">
+            <h3 class="tree-title">Bitcoin Protocol</h3>
+            <span class="tree-meta">12 nodes · 5 phases</span>
+          </div>
+          <p class="tree-desc">Satoshi Nakamoto's 2008 whitepaper decomposed into assessable protocol mechanics: double-spending, proof-of-work consensus, Merkle pruning, Simplified Payment Verification (SPV), and Gambler's Ruin security proof.</p>
+          <div class="tree-footer">
+            <span class="pill pill-mastered">8 Mastered</span>
+            <span class="pill pill-frontier">Phase 2 Frontier</span>
+            <span class="pill pill-backbone">Nakamoto 2008 Primary</span>
+          </div>
+        </a>
+      </li>
+    </ul>
+
+    <footer>
+      <span>Part of the <a href="https://ngpestelos.com">ngpestelos.com</a> collection</span>
+      <span><a href="/eli5/">ELI5</a> · <a href="/writing/">Writing</a></span>
+    </footer>
   </main>
 </body>
 </html>
