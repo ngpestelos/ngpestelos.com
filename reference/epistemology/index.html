@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Five Checks Against Motivated Reasoning — Nestor G Pestelos Jr</title>
-  <meta name="description" content="A reference for telling what you believe because it's true from what you believe because you want it to be — five checks, each anchored to a citable source.">
-  <meta property="og:title" content="Five Checks Against Motivated Reasoning">
-  <meta property="og:description" content="A reference for telling what you believe because it's true from what you believe because you want it to be — five checks, each anchored to a citable source.">
+  <title>Epistemology — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Epistemology is the branch of philosophy concerned with the nature, sources, and limits of knowledge. This entry covers five practical checks for telling a checked belief from a wanted one.">
+  <meta property="og:title" content="Epistemology — Reference">
+  <meta property="og:description" content="The branch of philosophy concerned with the nature, sources, and limits of knowledge. Five practical checks for telling a checked belief from a wanted one.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/reference/epistemology/">
   <link rel="canonical" href="https://ngpestelos.com/reference/epistemology/">
@@ -16,7 +16,6 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="/style.css?v=20260823a">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -24,44 +23,196 @@
     gtag('js', new Date());
     gtag('config', 'G-TLBY8P4GG9');
   </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
 </head>
 <body>
-  <main class="article">
-    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
-    <h1>Five Checks Against Motivated Reasoning</h1>
-    <p class="byline">Reference page &middot; last updated August 24, 2026</p>
+  <main id="top">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Philosophy</p>
+    <h1>Epistemology</h1>
+    <p class="updated">Reference entry &middot; last updated August 24, 2026</p>
 
-    <div class="tldr"><span class="tldr-label">TL;DR</span><p>Wanting a thing to be true and it actually being true feel identical from the inside. Five checks catch the gap: name the preference first, ask what would falsify the claim, use a confidence number, apply the same skepticism to sources you like and dislike, and treat certainty itself as a cost. Three of the five trace to specific, citable sources; two are this page's own synthesis, stated as such.</p></div>
+    <p class="lede"><strong>Epistemology</strong> is the branch of philosophy concerned with the nature, sources, and limits of knowledge<span class="cite">[<a href="#ref1">1</a>]</span> &mdash; how a person distinguishes a justified true belief from mere opinion. A recurring practical problem inside epistemology is that a belief held because it is true and a belief held because it is wanted feel identical from the inside; both arrive with the same subjective sense of certainty.<span class="cite">[<a href="#ref2">2</a>]</span> This entry summarizes five checks for telling the two apart. Three trace to a specific source in the philosophical or psychological literature; two are unattributed working heuristics, marked as such.</p>
 
-    <hr>
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#etymology">Etymology</a></li>
+        <li><a href="#core-difficulty">The core difficulty</a></li>
+        <li><a href="#practical-checks">Practical checks</a>
+          <ol>
+            <li><a href="#preference-disclosure">Preference disclosure</a></li>
+            <li><a href="#falsifiability">Falsifiability</a></li>
+            <li><a href="#calibration">Calibration</a></li>
+            <li><a href="#symmetric-skepticism">Symmetric skepticism</a></li>
+            <li><a href="#certainty-as-cost">Certainty as cost</a></li>
+          </ol>
+        </li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
 
-    <p>This page exists to be pointed at. When a claim needs a citable check for "am I reasoning honestly here," this is that reference — five checks, each stated plainly, three of them anchored to a specific published source rather than a vague appeal to "critical thinking."</p>
+    <h2 id="etymology">Etymology</h2>
+    <p>The word derives from the Greek <em>epist&#275;m&#275;</em> ("knowledge") and <em>logos</em> ("study of, account of").<span class="cite">[<a href="#ref1">1</a>]</span> As a named field, epistemology asks what knowledge is, how it is acquired, and what separates a justified belief from an unjustified one.</p>
 
-    <h2>1. Name the preference before it decides the conclusion</h2>
-    <p>Write down what you want to be true before you go check. Wanting a thing is not evidence for it, and the only way to catch a preference smuggling itself into your conclusion is to have written the preference down first, separately, where you can compare the two afterward.</p>
-    <p><em>No external academic anchor found for this specific practice; it follows directly from Check 5's motivated-reasoning mechanism (Kunda, below) but isn't itself a named finding in the literature.</em></p>
+    <h2 id="core-difficulty">The core difficulty</h2>
+    <p>The subjective feeling of certainty does not, by itself, distinguish a checked belief from a wanted one. Motivated reasoning research finds that a person's motivation to reach a particular conclusion changes which cognitive strategies and which evidence get used, while the reasoner still experiences the process as appropriately rigorous throughout &mdash; the bias operates inside the reasoning, not as an admitted shortcut around it.<span class="cite">[<a href="#ref2">2</a>]</span> This is why the checks below rely on external, structural tests rather than an internal sense of confidence.</p>
 
-    <h2>2. Ask what would falsify the claim</h2>
-    <p>Karl Popper proposed falsifiability as the line between a scientific claim and an unfalsifiable one: a theory only counts as testable if some observation could, in principle, prove it false. No number of confirmations proves a theory, he argued, but a single genuine counterexample can refute one. Applied to an everyday belief: if nothing you could observe would change your mind, the belief is functioning as an axiom, not a finding, regardless of how much evidence its holder cites for it.</p>
+    <h2 id="practical-checks">Practical checks</h2>
 
-    <h2>3. Assign a number, not a feeling</h2>
-    <p>"I believe it" collapses a 60%-confident claim and a 95%-confident claim into the same sentence. Philip Tetlock's Good Judgment Project forecasting-tournament research found that assigning explicit probabilities, then tracking them against outcomes, is what separates calibrated judgment from confident guessing — the best forecasters weren't smarter, they updated in small, frequent, numbered increments instead of large confident swings.</p>
+    <h3 id="preference-disclosure">1. Preference disclosure</h3>
+    <p>Stating what one wants to be true before evaluating a claim, in writing, separately from the evaluation itself, so the two can be compared afterward. Wanting a thing is not evidence for it.</p>
+    <p class="unattributed">No external source found for this specific practice as a named technique; it follows from the mechanism in <a href="#ref2">[2]</a> but is not itself a documented finding.</p>
 
-    <h2>4. Check whether the skepticism is symmetric</h2>
-    <p>Ziva Kunda's 1990 paper gave this pattern its mechanism: motivation doesn't make people stop reasoning critically, it changes <em>which</em> evidence gets scrutinized. The motivated reasoner applies heavy scrutiny to evidence against their preferred conclusion and light scrutiny to evidence for it, while still feeling like they're being appropriately rigorous throughout. The tell isn't a lack of skepticism — it's asymmetry. Would the same piece of evidence, from a source you liked, pass your bar?</p>
+    <h3 id="falsifiability">2. Falsifiability</h3>
+    <p>Karl Popper proposed falsifiability as the boundary between a scientific claim and an unfalsifiable one: a theory counts as testable only if some observation could, in principle, show it false.<span class="cite">[<a href="#ref3">3</a>]</span> No finite number of confirmations proves a theory, but one genuine counterexample can refute it. Applied to an everyday belief: if no observation would change the belief, it is functioning as an axiom rather than a finding, regardless of the evidence cited in its favor.</p>
 
-    <h2>5. Hold certainty as a cost, not a virtue</h2>
-    <p>The distinction that survives scrutiny runs between commitment (held firm, on purpose, because you've decided to act) and certainty about reality (held loosely, because it can turn out wrong). Treating certainty as free is what makes updating feel like a defeat instead of routine maintenance.</p>
-    <p><em>No external academic anchor found for this framing; it's a working synthesis, not a citation.</em></p>
+    <h3 id="calibration">3. Calibration</h3>
+    <p>Stating a numeric confidence level rather than a qualitative one. A forecasting-tournament study by Mellers, Tetlock, and colleagues found that assigning explicit probabilities and tracking them against outcomes over time &mdash; not raw intelligence &mdash; was what separated the most accurate forecasters ("superforecasters") from the rest; accuracy came from frequent small probability updates rather than confident, dramatic ones.<span class="cite">[<a href="#ref4">4</a>]</span></p>
 
-    <h2>Sources</h2>
+    <h3 id="symmetric-skepticism">4. Symmetric skepticism</h3>
+    <p>Checking whether the same standard of evidence is applied to a source regardless of whether its conclusion is preferred. Kunda's 1990 account of motivated reasoning identifies the mechanism: motivated reasoners are not skipping scrutiny, they are distributing it unevenly &mdash; applying more scrutiny to evidence against a preferred conclusion and less to evidence for it, while still constructing a justification that would satisfy an impartial observer.<span class="cite">[<a href="#ref2">2</a>]</span> A double standard that happens to favor the preferred conclusion is the signature of this pattern.</p>
+
+    <h3 id="certainty-as-cost">5. Certainty as cost</h3>
+    <p>Treating certainty about a claim as something to hold loosely, revisable on new evidence, distinct from commitment to an action, which can be held firmly on purpose. Under this framing, updating a belief is routine maintenance rather than a defeat.</p>
+    <p class="unattributed">No external source found for this specific framing; stated here as a working heuristic, not a citation.</p>
+
+    <h2 id="see-also">See also</h2>
     <ul>
-      <li>Karl Popper, <em>The Logic of Scientific Discovery</em> (Routledge, 1935/1959; not freely available in full). Overview: "Karl Popper," <em>Stanford Encyclopedia of Philosophy</em> — <a href="https://plato.stanford.edu/entries/popper/">https://plato.stanford.edu/entries/popper/</a></li>
-      <li>Ziva Kunda, "The Case for Motivated Reasoning," <em>Psychological Bulletin</em> 108(3), 480&ndash;498 (1990). DOI: <a href="https://doi.org/10.1037/0033-2909.108.3.480">10.1037/0033-2909.108.3.480</a>. Free full text: <a href="https://fbaum.unc.edu/teaching/articles/Psych-Bulletin-1990-Kunda.pdf">fbaum.unc.edu (PDF)</a></li>
-      <li>Barbara Mellers, Lyle Ungar, Jonathan Baron, et al. &amp; Philip E. Tetlock, "Psychological Strategies for Winning a Geopolitical Forecasting Tournament," <em>Psychological Science</em> 25(5), 1106&ndash;1115 (2014). DOI: <a href="https://doi.org/10.1177/0956797614524255">10.1177/0956797614524255</a>. Free full text: <a href="https://sydneyscott.nfshost.com/pubs/Psychological_Strategies_for_Winning_a_G.pdf">sydneyscott.nfshost.com (PDF)</a></li>
+      <li><a href="/writing/five-checks-against-motivated-reasoning/">Five Checks Against Motivated Reasoning</a> &mdash; a longer, narrative treatment of the same five checks</li>
+      <li><a href="/eli5/how-do-you-know-its-true/">How Do You Know It's True?</a> &mdash; a picture-book explainer covering the same ground</li>
     </ul>
 
-    <p class="to-top"><a href="#top">Back to top</a></p>
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> "Epistemology," <em>Stanford Encyclopedia of Philosophy</em> &mdash; <a href="https://plato.stanford.edu/entries/epistemology/">https://plato.stanford.edu/entries/epistemology/</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ziva Kunda, "The Case for Motivated Reasoning," <em>Psychological Bulletin</em> 108(3), 480&ndash;498 (1990). DOI: <a href="https://doi.org/10.1037/0033-2909.108.3.480">10.1037/0033-2909.108.3.480</a>. Free full text: <a href="https://fbaum.unc.edu/teaching/articles/Psych-Bulletin-1990-Kunda.pdf">fbaum.unc.edu (PDF)</a></li>
+      <li id="ref3"><span class="backlink">^</span> Karl Popper, <em>The Logic of Scientific Discovery</em> (Routledge, 1935/1959). Overview: "Karl Popper," <em>Stanford Encyclopedia of Philosophy</em> &mdash; <a href="https://plato.stanford.edu/entries/popper/">https://plato.stanford.edu/entries/popper/</a></li>
+      <li id="ref4"><span class="backlink">^</span> Barbara Mellers, Lyle Ungar, Jonathan Baron, et al. &amp; Philip E. Tetlock, "Psychological Strategies for Winning a Geopolitical Forecasting Tournament," <em>Psychological Science</em> 25(5), 1106&ndash;1115 (2014). DOI: <a href="https://doi.org/10.1177/0956797614524255">10.1177/0956797614524255</a>. Free full text: <a href="https://sydneyscott.nfshost.com/pubs/Psychological_Strategies_for_Winning_a_G.pdf">sydneyscott.nfshost.com (PDF)</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
   </main>
 </body>
 </html>
