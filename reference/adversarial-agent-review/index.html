@@ -177,7 +177,7 @@
     <p>The word comes from the Latin <em>adversarius</em>, "one turned against, an opponent." Paired with "review," it names a check performed by a party assigned to oppose the material under review, not approve it. The idea predates AI: a military red team attacks a plan the way a real adversary would, and formal debate assigns two sides to argue against each other in front of a judge. The AI-agent sense narrows this to one mechanism: a language model, or a separate instance of one, is assigned the job of finding a flaw in another model's output, rather than summarizing or endorsing it.</p>
 
     <h2 id="the-problem">The problem it solves</h2>
-    <p>A large language model asked to review its own output, or another model's output, on a single pass tends toward agreement rather than genuine scrutiny. Sharma et al. document this as sycophancy: a model trained on human feedback learns to tell a user what it appears to want to hear, including reversing a correct answer once the user pushes back on it.<span class="cite">[<a href="#ref5">5</a>]</span> The same pull operates in agent-to-agent review. A reviewer prompted only to "tell me what's wrong with this" has no structural reason to actually find something, so the review degrades into agreement dressed up with a caveat or two.</p>
+    <p>A large language model asked to review its own output, or another model's output, on a single pass tends toward agreement rather than genuine scrutiny. Sharma et al. document this as <a href="/reference/sycophancy/">sycophancy</a>: a model trained on human feedback learns to tell a user what it appears to want to hear, including reversing a correct answer once the user pushes back on it.<span class="cite">[<a href="#ref5">5</a>]</span> The same pull operates in agent-to-agent review. A reviewer prompted only to "tell me what's wrong with this" has no structural reason to actually find something, so the review degrades into agreement dressed up with a caveat or two.</p>
 
     <h2 id="how-it-works">How it works</h2>
     <p>Agent frameworks that apply adversarial review combine several design elements. Dropping any one of them tends to collapse the review back toward agreement.</p>
@@ -190,7 +190,7 @@
 
     <h3 id="verify-before-criticize">Verify before criticize</h3>
     <p>A raised objection has to check out against the actual artifact, code, a log, a cited source, before it counts as a finding. Without this step, an adversarial reviewer can produce an objection that sounds plausible and is itself wrong, and a process built only to generate criticism has no way to catch that.</p>
-    <p class="unattributed">No external source found for this specific step as a named technique; it follows from the incentive problem in the sycophancy literature above but is not itself a documented finding.</p>
+    <p class="unattributed">No external source found for this specific step as a named technique; it follows from the incentive problem in the <a href="/reference/sycophancy/">sycophancy</a> literature above but is not itself a documented finding.</p>
 
     <h3 id="multiple-lenses">Multiple lenses, independent votes</h3>
     <p>Separate reviewer instances judge the same output from different angles, correctness, security, and performance are common examples, or vote independently on the same finding. Perez et al. demonstrate a version of this at scale: one language model automatically generates test inputs designed to provoke bad behavior in a second, target model, replacing hand-written adversarial test cases with model-written ones.<span class="cite">[<a href="#ref2">2</a>]</span> A finding can also be put to a small panel of reviewers and kept only if a majority fail to refute it, trading extra compute for a lower rate of false findings.</p>
@@ -209,6 +209,7 @@
 
     <h2 id="see-also">See also</h2>
     <ul>
+      <li><a href="/reference/sycophancy/">Reference: Sycophancy</a> &mdash; the failure mode this pattern is designed to counteract</li>
       <li><a href="/writing/the-bugs-that-hide-between-your-agents/">The Bugs That Hide Between Your Agents</a> &mdash; a two-day adversarial review of the author's own agent infrastructure, and what it found</li>
       <li><a href="/writing/tell-me-whats-wrong-with-it-isnt-review/">'Tell Me What's Wrong With It' Isn't a Review</a> &mdash; why a one-sentence adversarial review prompt degrades into agreement, and what a working prompt needs</li>
       <li><a href="/writing/nine-security-issues-zero-lines-i-wrote/">Nine Security Issues, Zero Lines I Wrote</a> &mdash; review gates in an autonomous plan-to-PR pipeline catching real defects before merge</li>
