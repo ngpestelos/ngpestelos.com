@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exponential Backoff — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Exponential backoff is a retry strategy in which each successive wait after a failed operation grows exponentially, up to a capped maximum, instead of retrying immediately or at a fixed interval. Origin, the synchronization problem, and jitter.">
+  <meta property="og:title" content="Exponential Backoff — Reference">
+  <meta property="og:description" content="A retry strategy where each wait after a failure grows exponentially, up to a cap. Origin, the synchronization problem, and jitter.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/exponential-backoff/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/exponential-backoff/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin: 0.5rem 0 1.2rem;
+      text-align: center;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Software Engineering &middot; Distributed Systems</p>
+    <h1>Exponential Backoff</h1>
+    <p class="updated">Reference entry &middot; last updated August 24, 2026</p>
+
+    <p class="lede"><strong>Exponential backoff</strong> is a retry strategy in which a client that fails to complete an operation waits before retrying, with each successive wait growing exponentially &mdash; most commonly by doubling &mdash; up to a fixed maximum, instead of retrying immediately or after a fixed delay.<span class="cite">[<a href="#ref1">1</a>]</span> It is used throughout networking and distributed systems to reduce the load a wave of failing retries places on a resource that is already struggling.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#general-shape">The general shape</a></li>
+        <li><a href="#origin">Origin: Ethernet's collision backoff</a></li>
+        <li><a href="#synchronization">The synchronization problem</a></li>
+        <li><a href="#jitter">Jitter</a></li>
+        <li><a href="#usage">Where it is used</a></li>
+        <li><a href="#not-backoff">What is not exponential backoff</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="general-shape">The general shape</h2>
+    <p>The delay before the <em>n</em>-th retry is typically computed as:</p>
+    <div class="formula">\( t_n = \min\bigl(t_{max},\ base \times 2^{n}\bigr) \)</div>
+    <p>where <code>base</code> is a starting delay (for example, 100&nbsp;ms), <code>n</code> is the number of attempts already made, and <code>t_max</code> is a ceiling that stops the delay from growing without bound. The wait doubles with every failed attempt &mdash; roughly 1s, 2s, 4s, 8s, 16s &mdash; until it hits the cap, after which every further retry waits the same capped duration, or the client gives up once a retry limit is reached.</p>
+
+    <h2 id="origin">Origin: Ethernet's collision backoff</h2>
+    <p>The technique originates in Ethernet's media access control, described by Robert Metcalfe and David Boggs in their 1976 paper introducing Ethernet.<span class="cite">[<a href="#ref2">2</a>]</span> When two stations on a shared cable transmit at the same time, their signals collide and both transmissions are lost. Instead of retransmitting immediately &mdash; which risks the same collision recurring &mdash; each station waits a random number of slot times, drawn from a window that doubles after every consecutive collision on that transmission: truncated binary exponential backoff. This keeps the network usable as contention rises, rather than letting it collapse into a continuous stream of collisions.</p>
+
+    <h2 id="synchronization">The synchronization problem</h2>
+    <p>Exponential growth alone controls how much retry traffic exists, but not when that traffic arrives. If every client that fails at the same moment computes the same deterministic delay, all of them retry at the same instant &mdash; reproducing the original spike of concurrent requests, just one delay period later. This clustering is sometimes called a retry storm, or, when the synchronizing event is an outage recovering, the thundering herd problem: many clients wake at once and hit the recovering resource simultaneously, which can push it back into failure.</p>
+
+    <h2 id="jitter">Jitter</h2>
+    <p>The standard fix is jitter: adding randomness to the computed delay so that clients which failed at the same moment do not retry at the same moment. A widely-cited 2015 Amazon Web Services Architecture Blog post by Marc Brooker formalized three jittered variants and benchmarked them against plain exponential backoff:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Full jitter</strong> &mdash; <code>sleep = random(0, min(cap, base * 2 ** attempt))</code>. The delay is a uniform random draw across the entire computed window, rather than a fixed value with randomness added on top.</li>
+      <li><strong>Equal jitter</strong> &mdash; half of the computed delay is fixed and half is randomized, keeping a guaranteed minimum wait while still spreading the rest.</li>
+      <li><strong>Decorrelated jitter</strong> &mdash; each delay is a random draw bounded by the previous delay rather than by the attempt count directly, decorrelating consecutive waits from one another.</li>
+    </ul>
+    <p>Brooker's benchmarks found full jitter reduced the total work a contended system performed by more than half compared to backoff without jitter, at the cost of arriving slightly later on average &mdash; a tradeoff most systems accept.</p>
+
+    <h2 id="usage">Where it is used</h2>
+    <p>Beyond Ethernet, exponential backoff with jitter is the default retry policy in most cloud SDKs, including AWS SDKs and Google Cloud client libraries,<span class="cite">[<a href="#ref3">3</a>]</span> in gRPC's retry configuration, and in HTTP clients handling <code>429 Too Many Requests</code> or <code>503 Service Unavailable</code> responses &mdash; often combined with a server-supplied <code>Retry-After</code> header that overrides the client's own computed delay when present.</p>
+
+    <h2 id="not-backoff">What is not exponential backoff</h2>
+    <p>A fixed retry interval &mdash; waiting the same duration between attempts regardless of how many have already failed &mdash; is not exponential backoff, even when it is loosely called "backoff." Linear backoff, where the delay grows by a constant increment each time (<code>t_n = base &times; n</code> rather than <code>base &times; 2^n</code>), is also a distinct strategy: it grows too slowly to relieve contention on a resource under heavy, sustained failure, which is the specific problem exponential growth is chosen to solve.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/eli5/exponential-backoff/">ELI5: What Is Exponential Backoff?</a> &mdash; a picture-book explainer covering the same ground</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Marc Brooker, "Exponential Backoff and Jitter," <em>AWS Architecture Blog</em>, March 4, 2015 &mdash; <a href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/">https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/</a></li>
+      <li id="ref2"><span class="backlink">^</span> R. M. Metcalfe and D. R. Boggs, "Ethernet: Distributed Packet Switching for Local Computer Networks," <em>Communications of the ACM</em>, vol. 19, no. 7, pp. 395&ndash;404, July 1976. DOI: <a href="https://doi.org/10.1145/360248.360253">10.1145/360248.360253</a></li>
+      <li id="ref3"><span class="backlink">^</span> "Retry strategy," <em>Google Cloud Storage documentation</em> &mdash; <a href="https://docs.cloud.google.com/storage/docs/retry-strategy">https://docs.cloud.google.com/storage/docs/retry-strategy</a></li>
+    </ol>
+    <p class="unattributed">A freely-accessible full copy of the Metcalfe &amp; Boggs 1976 paper was not located at time of writing; the ACM Digital Library entry is paywalled. Cited above by formal reference regardless.</p>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

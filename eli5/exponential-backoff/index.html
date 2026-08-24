@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What Is Exponential Backoff? — ELI5 — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Exponential backoff in plain words: wait longer each time a retry fails, so a busy server gets a break instead of a wall of retries. Doubling, the thundering herd problem, jitter, and the cap.">
+  <meta property="og:title" content="What Is Exponential Backoff? — ELI5">
+  <meta property="og:description" content="Wait longer each time a retry fails, so a busy server gets a break instead of a wall of retries. Doubling, the thundering herd problem, jitter, and the cap.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/exponential-backoff/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/exponential-backoff/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --paper: #f4eee4;
+      --ink: #1c1612;
+      --mute: #6e645a;
+      --line: #d4c9bb;
+      --op: #9a3412;
+      --op-edge: #7c2d12;
+      --leaf: #0f5c57;
+      --leaf-edge: #0b4a46;
+      --edge: #8a7d72;
+      --yes: #166534;
+      --no: #9f1239;
+      --card: #fffaf3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
+    }
+    main {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      margin: 0 0 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .back a { color: var(--op); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    h1, h2 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-weight: 700;
+      line-height: 1.12;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 2.9rem);
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: clamp(1.4rem, 3.4vw, 1.9rem);
+      margin-bottom: 1rem;
+    }
+    .lead {
+      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      color: var(--mute);
+      max-width: 44ch;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+    }
+    .block {
+      padding: 2.2rem 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.2rem;
+      text-align: center;
+    }
+    .block h2 { max-width: 32ch; margin-inline: auto; }
+    .one {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--mute);
+      max-width: 44ch;
+      line-height: 1.35;
+      margin-inline: auto;
+    }
+    .one em { color: var(--ink); font-style: normal; font-weight: 700; }
+    .figure {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.05rem 0.95rem 0.9rem;
+      box-shadow: 0 10px 28px rgba(28, 22, 18, 0.07);
+      width: 36rem;
+      max-width: 100%;
+      min-width: 0;
+      margin-inline: auto;
+    }
+    svg.pic {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .more {
+      width: 100%;
+      max-width: 42rem;
+      margin: 0.15rem auto 0;
+      text-align: left;
+      font-size: 1.02rem;
+      line-height: 1.45;
+    }
+    .more summary {
+      cursor: pointer;
+      color: var(--op);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+      text-align: center;
+      padding: 0.3rem 0.4rem;
+    }
+    .more summary:hover { text-decoration: underline; }
+    .more p {
+      margin: 0.65rem auto 0.15rem;
+      max-width: 44ch;
+      color: var(--mute);
+    }
+    .sources {
+      padding-top: 1.8rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.92rem;
+      color: var(--mute);
+      max-width: 44ch;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    .sources a { color: var(--op); }
+    .to-top {
+      margin: 1.6rem 0 0;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .to-top a { color: var(--op); text-decoration: none; }
+    .to-top a:hover { text-decoration: underline; }
+    @media (max-width: 700px) {
+      .figure { width: 100%; padding: 0.85rem 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/eli5/">← ELI5</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Software Engineering</p>
+    <h1>What is exponential backoff?</h1>
+    <p class="lead">It's a rule for retrying something that failed: <strong>wait longer after every failure</strong>, instead of trying again right away or waiting the same fixed amount every time.</p>
+
+    <section class="block">
+      <h2>Wait longer, every time</h2>
+      <div class="figure">
+        <svg class="pic" viewBox="0 0 640 230" role="img" aria-labelledby="fig1title">
+          <title id="fig1title">Four retry attempts, each waiting roughly twice as long as the one before: 1 second, 2 seconds, 4 seconds, 8 seconds</title>
+          <line x1="20" y1="190" x2="620" y2="190" stroke="#8a7d72" stroke-width="2"/>
+          <rect x="60" y="170" width="70" height="20" rx="6" fill="#9a3412" stroke="#7c2d12" stroke-width="2"/>
+          <text x="95" y="162" text-anchor="middle" font-size="14" font-weight="700" fill="#1c1612">1s</text>
+          <text x="95" y="210" text-anchor="middle" font-size="12" fill="#6e645a">try 1 fails</text>
+          <rect x="190" y="150" width="70" height="40" rx="6" fill="#9a3412" stroke="#7c2d12" stroke-width="2"/>
+          <text x="225" y="142" text-anchor="middle" font-size="14" font-weight="700" fill="#1c1612">2s</text>
+          <text x="225" y="210" text-anchor="middle" font-size="12" fill="#6e645a">try 2 fails</text>
+          <rect x="320" y="110" width="70" height="80" rx="6" fill="#9a3412" stroke="#7c2d12" stroke-width="2"/>
+          <text x="355" y="102" text-anchor="middle" font-size="14" font-weight="700" fill="#1c1612">4s</text>
+          <text x="355" y="210" text-anchor="middle" font-size="12" fill="#6e645a">try 3 fails</text>
+          <rect x="450" y="30" width="70" height="160" rx="6" fill="#9a3412" stroke="#7c2d12" stroke-width="2"/>
+          <text x="485" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1c1612">8s</text>
+          <text x="485" y="210" text-anchor="middle" font-size="12" fill="#6e645a">try 4 works</text>
+        </svg>
+      </div>
+      <p class="one">Each failed try earns a wait roughly <em>double</em> the last one. A little patience after the first failure; a lot of patience if the failures keep coming.</p>
+    </section>
+
+    <section class="block">
+      <h2>Why doubling alone isn't enough</h2>
+      <div class="figure">
+        <svg class="pic" viewBox="0 0 640 300" role="img" aria-labelledby="fig2title">
+          <title id="fig2title">Three clients all failed at the same moment, so their doubling wait times line up exactly, and all three retry at the exact same instant, overloading the server again</title>
+          <circle cx="30" cy="65" r="16" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
+          <text x="30" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#fff8f0">A</text>
+          <line x1="55" y1="90" x2="620" y2="90" stroke="#d4c9bb" stroke-width="1.5"/>
+          <rect x="70" y="80" width="50" height="10" rx="4" fill="#9a3412"/>
+          <rect x="150" y="70" width="50" height="20" rx="4" fill="#9a3412"/>
+          <rect x="230" y="50" width="50" height="40" rx="4" fill="#9a3412"/>
+
+          <circle cx="30" cy="145" r="16" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
+          <text x="30" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#fff8f0">B</text>
+          <line x1="55" y1="170" x2="620" y2="170" stroke="#d4c9bb" stroke-width="1.5"/>
+          <rect x="70" y="160" width="50" height="10" rx="4" fill="#9a3412"/>
+          <rect x="150" y="150" width="50" height="20" rx="4" fill="#9a3412"/>
+          <rect x="230" y="130" width="50" height="40" rx="4" fill="#9a3412"/>
+
+          <circle cx="30" cy="225" r="16" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
+          <text x="30" y="230" text-anchor="middle" font-size="13" font-weight="700" fill="#fff8f0">C</text>
+          <line x1="55" y1="250" x2="620" y2="250" stroke="#d4c9bb" stroke-width="1.5"/>
+          <rect x="70" y="240" width="50" height="10" rx="4" fill="#9a3412"/>
+          <rect x="150" y="230" width="50" height="20" rx="4" fill="#9a3412"/>
+          <rect x="230" y="210" width="50" height="40" rx="4" fill="#9a3412"/>
+
+          <line x1="300" y1="15" x2="300" y2="280" stroke="#9f1239" stroke-width="2" stroke-dasharray="6 4"/>
+          <text x="315" y="25" font-size="12" font-weight="700" fill="#9f1239">A, B, and C all retry</text>
+          <text x="315" y="41" font-size="12" font-weight="700" fill="#9f1239">at the exact same instant</text>
+
+          <path d="M300 280 L 380 200" stroke="#9f1239" stroke-width="2" fill="none" marker-end="url(#arrowbad)"/>
+          <defs>
+            <marker id="arrowbad" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#9f1239"/>
+            </marker>
+          </defs>
+          <rect x="380" y="110" width="220" height="110" rx="10" fill="#faf4f2" stroke="#9f1239" stroke-width="2"/>
+          <text x="490" y="148" text-anchor="middle" font-size="14" fill="#1c1612">SERVER</text>
+          <text x="490" y="170" text-anchor="middle" font-size="13" fill="#6e645a">hit by A, B, and C</text>
+          <text x="490" y="188" text-anchor="middle" font-size="13" fill="#6e645a">at once, again</text>
+          <text x="490" y="210" text-anchor="middle" font-size="14" font-weight="700" fill="#9f1239">OVERLOADED</text>
+        </svg>
+      </div>
+      <p class="one">If everyone who failed together computes the <em>same</em> wait, everyone retries together &mdash; and the pile-up that caused the failure just happens again, a little later.</p>
+      <details class="more">
+        <summary>Why this is called the "thundering herd"</summary>
+        <p>It usually shows up right after an outage: a service goes down, thousands of clients fail at the same instant, and if they all back off on the same schedule, they all come back at the same instant too &mdash; knocking the recovering service straight back over.</p>
+      </details>
+    </section>
+
+    <section class="block">
+      <h2>The fix: jitter</h2>
+      <div class="figure">
+        <svg class="pic" viewBox="0 0 640 300" role="img" aria-labelledby="fig3title">
+          <title id="fig3title">The same three clients now add a random amount to their wait, so their retries land spread out over time instead of all at once, and the server handles them one at a time</title>
+          <circle cx="30" cy="65" r="16" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
+          <text x="30" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#fff8f0">A</text>
+          <line x1="55" y1="90" x2="620" y2="90" stroke="#d4c9bb" stroke-width="1.5"/>
+          <rect x="70" y="80" width="50" height="10" rx="4" fill="#0f5c57"/>
+          <rect x="150" y="70" width="50" height="20" rx="4" fill="#0f5c57"/>
+          <rect x="210" y="55" width="50" height="35" rx="4" fill="#0f5c57"/>
+          <path d="M260 65 L 380 168" stroke="#166534" stroke-width="2" fill="none" marker-end="url(#arrowgood)"/>
+
+          <circle cx="30" cy="145" r="16" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
+          <text x="30" y="150" text-anchor="middle" font-size="13" font-weight="700" fill="#fff8f0">B</text>
+          <line x1="55" y1="170" x2="620" y2="170" stroke="#d4c9bb" stroke-width="1.5"/>
+          <rect x="70" y="160" width="50" height="10" rx="4" fill="#0f5c57"/>
+          <rect x="150" y="150" width="50" height="20" rx="4" fill="#0f5c57"/>
+          <rect x="250" y="132" width="50" height="38" rx="4" fill="#0f5c57"/>
+          <path d="M300 150 L 390 190" stroke="#166534" stroke-width="2" fill="none" marker-end="url(#arrowgood)"/>
+
+          <circle cx="30" cy="225" r="16" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
+          <text x="30" y="230" text-anchor="middle" font-size="13" font-weight="700" fill="#fff8f0">C</text>
+          <line x1="55" y1="250" x2="620" y2="250" stroke="#d4c9bb" stroke-width="1.5"/>
+          <rect x="70" y="240" width="50" height="10" rx="4" fill="#0f5c57"/>
+          <rect x="150" y="230" width="50" height="20" rx="4" fill="#0f5c57"/>
+          <rect x="190" y="205" width="50" height="45" rx="4" fill="#0f5c57"/>
+          <path d="M240 225 L 370 212" stroke="#166534" stroke-width="2" fill="none" marker-end="url(#arrowgood)"/>
+
+          <defs>
+            <marker id="arrowgood" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#166534"/>
+            </marker>
+          </defs>
+          <rect x="380" y="110" width="220" height="110" rx="10" fill="#f2f7f5" stroke="#166534" stroke-width="2"/>
+          <text x="490" y="148" text-anchor="middle" font-size="14" fill="#1c1612">SERVER</text>
+          <text x="490" y="170" text-anchor="middle" font-size="13" fill="#6e645a">hears from A, B, C</text>
+          <text x="490" y="188" text-anchor="middle" font-size="13" fill="#6e645a">one at a time</text>
+          <text x="490" y="210" text-anchor="middle" font-size="14" font-weight="700" fill="#166534">STEADY, NOT SPIKY</text>
+        </svg>
+      </div>
+      <p class="one">Add a random wobble to each wait, still growing on average, and the exact same three retries land at three different moments instead of one pile-up.</p>
+    </section>
+
+    <section class="block">
+      <h2>It doesn't wait forever</h2>
+      <div class="figure">
+        <svg class="pic" viewBox="0 0 640 230" role="img" aria-labelledby="fig4title">
+          <title id="fig4title">Wait times double for the first few attempts, then stop growing once they hit a ceiling, so later retries all wait the same capped amount instead of climbing forever</title>
+          <line x1="20" y1="190" x2="620" y2="190" stroke="#8a7d72" stroke-width="2"/>
+          <line x1="20" y1="110" x2="620" y2="110" stroke="#9f1239" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <text x="605" y="103" text-anchor="end" font-size="12" font-weight="700" fill="#9f1239">CAP</text>
+          <rect x="40" y="180" width="50" height="10" rx="4" fill="#9a3412" stroke="#7c2d12" stroke-width="1.5"/>
+          <rect x="115" y="170" width="50" height="20" rx="4" fill="#9a3412" stroke="#7c2d12" stroke-width="1.5"/>
+          <rect x="190" y="150" width="50" height="40" rx="4" fill="#9a3412" stroke="#7c2d12" stroke-width="1.5"/>
+          <rect x="265" y="110" width="50" height="80" rx="4" fill="#9a3412" stroke="#7c2d12" stroke-width="1.5"/>
+          <rect x="340" y="110" width="50" height="80" rx="4" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
+          <rect x="415" y="110" width="50" height="80" rx="4" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
+          <text x="65" y="210" text-anchor="middle" font-size="11" fill="#6e645a">try 1</text>
+          <text x="140" y="210" text-anchor="middle" font-size="11" fill="#6e645a">try 2</text>
+          <text x="215" y="210" text-anchor="middle" font-size="11" fill="#6e645a">try 3</text>
+          <text x="290" y="210" text-anchor="middle" font-size="11" fill="#6e645a">try 4</text>
+          <text x="365" y="210" text-anchor="middle" font-size="11" fill="#6e645a">try 5</text>
+          <text x="440" y="210" text-anchor="middle" font-size="11" fill="#6e645a">try 6</text>
+        </svg>
+      </div>
+      <p class="one">The wait doubles until it hits a ceiling &mdash; then every later retry waits that same capped amount, so a run of bad luck never turns into an hours-long silence.</p>
+    </section>
+
+    <p class="sources"><strong>Sources:</strong> Marc Brooker, "<a href="https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/">Exponential Backoff and Jitter</a>," AWS Architecture Blog, 2015. "<a href="https://docs.cloud.google.com/storage/docs/retry-strategy">Retry strategy</a>," Google Cloud Storage documentation. Longer, more technical version: <a href="/reference/exponential-backoff/">Reference: Exponential Backoff</a>.</p>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+  </main>
+</body>
+</html>
