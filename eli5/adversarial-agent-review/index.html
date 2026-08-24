@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adversarial Review — ELI5 — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A picture-book explainer of adversarial review in AI agents: why one agent should not grade its own homework, and how a second, skeptical agent catches what it misses.">
+  <meta property="og:title" content="Adversarial Review — ELI5">
+  <meta property="og:description" content="A picture-book explainer of adversarial review in AI agents: why one agent should not grade its own homework, and how a second, skeptical agent catches what it misses.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/adversarial-agent-review/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/adversarial-agent-review/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --paper: #f4eee4;
+      --ink: #1c1612;
+      --mute: #6e645a;
+      --line: #d4c9bb;
+      --op: #9a3412;
+      --op-edge: #7c2d12;
+      --leaf: #0f5c57;
+      --leaf-edge: #0b4a46;
+      --edge: #8a7d72;
+      --yes: #166534;
+      --no: #9f1239;
+      --card: #fffaf3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
+    }
+    main {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      margin: 0 0 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .back a { color: var(--op); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    h1, h2 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-weight: 700;
+      line-height: 1.12;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.1rem);
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: clamp(1.45rem, 3.4vw, 2rem);
+      margin-bottom: 1rem;
+    }
+    .lead {
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+      color: var(--mute);
+      max-width: 34ch;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+    }
+    .block {
+      padding: 2.2rem 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.2rem;
+      text-align: center;
+    }
+    .block h2 { max-width: 26ch; margin-inline: auto; }
+    .one {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--mute);
+      max-width: 38ch;
+      line-height: 1.35;
+      margin-inline: auto;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.8rem 2.6rem;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+    .row.compare { align-items: flex-start; }
+    .code {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: clamp(0.95rem, 2vw, 1.2rem);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.55rem 1rem;
+      box-shadow: 0 1px 2px rgba(28, 22, 18, 0.06), 0 8px 20px rgba(28, 22, 18, 0.05);
+      width: max-content;
+      max-width: 100%;
+      margin-inline: auto;
+    }
+    .label {
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.55rem;
+    }
+    .col { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; min-width: 0; max-width: 100%; }
+    .col > .one { max-width: 22ch; }
+    .figure {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.05rem 0.95rem 0.9rem;
+      box-shadow: 0 10px 28px rgba(28, 22, 18, 0.07);
+      width: 22rem;
+      max-width: 100%;
+      min-width: 0;
+      margin-inline: auto;
+    }
+    .figure.wide { width: 30rem; }
+    svg.tree {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .badge {
+      display: inline-block;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.65rem;
+      border-radius: 6px;
+    }
+    .badge.yes { background: #dcfce7; color: var(--yes); }
+    .badge.no { background: #ffe4e6; color: var(--no); }
+    .to-top {
+      margin: 0.4rem 0 0;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .to-top a { color: var(--op); text-decoration: none; }
+    .to-top a:hover { text-decoration: underline; }
+    .more {
+      width: 100%;
+      max-width: 36rem;
+      margin: 0.15rem auto 0;
+      text-align: left;
+      font-size: 1.02rem;
+      line-height: 1.45;
+    }
+    .more summary {
+      cursor: pointer;
+      color: var(--op);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+      text-align: center;
+      padding: 0.3rem 0.4rem;
+    }
+    .more summary:hover { text-decoration: underline; }
+    .more ul {
+      margin: 0.65rem auto 0.15rem;
+      padding: 0 0 0 1.2rem;
+      max-width: 44ch;
+    }
+    .more li {
+      margin: 0.45rem 0;
+      color: var(--mute);
+    }
+    .more code {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.95em;
+      color: var(--ink);
+    }
+    .sources {
+      padding-top: 1.8rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.92rem;
+      color: var(--mute);
+      max-width: 44ch;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    .sources a { color: var(--op); }
+    @media (max-width: 700px) {
+      .block,
+      .row,
+      .row.compare,
+      .col {
+        display: block;
+        width: 100%;
+      }
+      .col + .col { margin-top: 1.4rem; }
+      .figure,
+      .figure.wide {
+        width: 100%;
+        padding: 0.85rem 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/eli5/">← ELI5</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Adversarial Review</p>
+    <h1>One agent should not grade its own homework.</h1>
+    <p class="lead">Have a second agent try to prove it wrong instead.</p>
+
+    <section class="block">
+      <h2>Same agent, same blind spot.</h2>
+      <div class="row compare">
+        <div class="col">
+          <span class="badge no">self-review</span>
+          <div class="figure">
+            <svg class="tree" viewBox="0 0 280 350" width="280" height="350" overflow="visible" role="img" aria-label="Agent writes an answer, the same agent checks it, and always says looks good">
+              <defs>
+                <filter id="s1" x="-12%" y="-12%" width="124%" height="130%">
+                  <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" flood-color="#1c1612" flood-opacity="0.14"/>
+                </filter>
+              </defs>
+              <g fill="none" stroke="#8a7d72" stroke-width="1.75" stroke-linecap="round">
+                <path d="M140 64 L140 100"/>
+                <path d="M140 148 L140 184"/>
+                <path d="M140 240 L140 276"/>
+              </g>
+              <rect filter="url(#s1)" x="70" y="16" width="140" height="48" rx="8" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+              <text x="140" y="40" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Agent</text>
+              <rect filter="url(#s1)" x="70" y="100" width="140" height="48" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.25"/>
+              <text x="140" y="124" text-anchor="middle" dy="0.35em" fill="#f3fffd" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Answer</text>
+              <rect filter="url(#s1)" x="30" y="184" width="220" height="56" rx="8" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+              <text x="140" y="204" text-anchor="middle" fill="#fff8f0" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Same agent</text>
+              <text x="140" y="224" text-anchor="middle" fill="#fff8f0" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">checks its own work</text>
+              <rect x="40" y="276" width="200" height="44" rx="8" fill="#ffe4e6" stroke="#9f1239" stroke-width="1.25"/>
+              <text x="140" y="298" text-anchor="middle" dy="0.35em" fill="#9f1239" font-size="15" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Always: "looks good"</text>
+            </svg>
+          </div>
+        </div>
+        <div class="col">
+          <span class="badge yes">adversarial review</span>
+          <div class="figure">
+            <svg class="tree" viewBox="0 0 280 350" width="280" height="350" overflow="visible" role="img" aria-label="Agent writes an answer, a different agent tries to disagree, and finds a real problem">
+              <defs>
+                <filter id="s2" x="-12%" y="-12%" width="124%" height="130%">
+                  <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" flood-color="#1c1612" flood-opacity="0.14"/>
+                </filter>
+              </defs>
+              <g fill="none" stroke="#8a7d72" stroke-width="1.75" stroke-linecap="round">
+                <path d="M140 64 L140 100"/>
+                <path d="M140 148 L140 184"/>
+                <path d="M140 240 L140 276"/>
+              </g>
+              <rect filter="url(#s2)" x="70" y="16" width="140" height="48" rx="8" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+              <text x="140" y="40" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Agent</text>
+              <rect filter="url(#s2)" x="70" y="100" width="140" height="48" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.25"/>
+              <text x="140" y="124" text-anchor="middle" dy="0.35em" fill="#f3fffd" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Answer</text>
+              <rect filter="url(#s2)" x="30" y="184" width="220" height="56" rx="8" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+              <text x="140" y="204" text-anchor="middle" fill="#fff8f0" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">A different agent</text>
+              <text x="140" y="224" text-anchor="middle" fill="#fff8f0" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">told to disagree</text>
+              <rect x="40" y="276" width="200" height="44" rx="8" fill="#dcfce7" stroke="#166534" stroke-width="1.25"/>
+              <text x="140" y="298" text-anchor="middle" dy="0.35em" fill="#166534" font-size="15" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Found: off-by-one</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <p class="one">The agent that wrote the answer already believes it. Asking it to check its own work rarely finds anything.</p>
+      <details class="more">
+        <summary>Why the same agent misses it</summary>
+        <ul>
+          <li>The agent's own reasoning produced the answer, so that same reasoning tends to approve it.</li>
+          <li>A second agent brings a fresh pass with no stake in the first answer being right.</li>
+          <li>The bug above is a made-up example, to show the shape of the idea, not a real incident.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="block">
+      <h2>Tell it to disagree, not to summarize.</h2>
+      <div class="row compare">
+        <div class="col">
+          <span class="badge no">vague ask</span>
+          <p class="code">"Check this."</p>
+          <p class="one">Result: "Looks fine."</p>
+        </div>
+        <div class="col">
+          <span class="badge yes">adversarial ask</span>
+          <p class="code">"Try to break this. Only report what you can prove."</p>
+          <p class="one">Result: "Off-by-one on the last row."</p>
+        </div>
+      </div>
+      <p class="one">A reviewer only asked to check something tends to agree. A reviewer told to break it tends to try.</p>
+      <details class="more">
+        <summary>What the instruction has to do</summary>
+        <ul>
+          <li>The reviewer needs a job that only succeeds if it finds something wrong.</li>
+          <li>Agreement with no real problem found should feel like a failed search, not a pass.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="block">
+      <h2>A complaint only counts once it's checked.</h2>
+      <div class="figure wide">
+        <svg class="tree" viewBox="0 0 460 260" width="460" height="260" overflow="visible" role="img" aria-label="A claim gets run against the real thing; if it breaks it counts, if it does not it gets dropped">
+          <defs>
+            <filter id="s3" x="-12%" y="-12%" width="124%" height="130%">
+              <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" flood-color="#1c1612" flood-opacity="0.14"/>
+            </filter>
+          </defs>
+          <g fill="none" stroke="#8a7d72" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M230 64 L230 96"/>
+            <path d="M230 144 L230 170 L110 170 L110 196"/>
+            <path d="M230 144 L230 170 L350 170 L350 196"/>
+          </g>
+          <rect filter="url(#s3)" x="90" y="16" width="280" height="48" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.25"/>
+          <text x="230" y="40" text-anchor="middle" dy="0.35em" fill="#f3fffd" font-size="16" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Claim: off-by-one on row 5</text>
+          <rect filter="url(#s3)" x="120" y="96" width="220" height="48" rx="8" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+          <text x="230" y="120" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="15" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Run it. Does it break?</text>
+          <rect x="40" y="196" width="140" height="44" rx="8" fill="#dcfce7" stroke="#166534" stroke-width="1.25"/>
+          <text x="110" y="218" text-anchor="middle" dy="0.35em" fill="#166534" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">Yes, it broke.</text>
+          <rect x="280" y="196" width="140" height="44" rx="8" fill="#ffe4e6" stroke="#9f1239" stroke-width="1.25"/>
+          <text x="350" y="218" text-anchor="middle" dy="0.35em" fill="#9f1239" font-size="14" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">No, it held.</text>
+        </svg>
+      </div>
+      <p class="one">Sounding right and being right are not the same thing. Verify before you count it.</p>
+      <details class="more">
+        <summary>Why this step exists</summary>
+        <ul>
+          <li>An adversarial reviewer can write a plausible objection that turns out to be wrong.</li>
+          <li>Only a checked objection, run against the actual code, log, or source, is a real finding.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="block">
+      <h2>Ask a few skeptics, not one.</h2>
+      <div class="figure">
+        <svg class="tree" viewBox="0 0 400 210" width="400" height="210" overflow="visible" role="img" aria-label="Three skeptics vote on the same claim; two say it is real, one says it is not, and the majority keeps it">
+          <defs>
+            <filter id="s4" x="-12%" y="-12%" width="124%" height="130%">
+              <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" flood-color="#1c1612" flood-opacity="0.14"/>
+            </filter>
+          </defs>
+          <g fill="none" stroke="#8a7d72" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M90 100 L90 118 L200 118 L200 140"/>
+            <path d="M200 100 L200 140"/>
+            <path d="M310 100 L310 118 L200 118 L200 140"/>
+          </g>
+          <circle filter="url(#s4)" cx="90" cy="42" r="26" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+          <text x="90" y="42" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">1</text>
+          <circle filter="url(#s4)" cx="200" cy="42" r="26" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+          <text x="200" y="42" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">2</text>
+          <circle filter="url(#s4)" cx="310" cy="42" r="26" fill="#9a3412" stroke="#7c2d12" stroke-width="1.25"/>
+          <text x="310" y="42" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="18" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">3</text>
+          <text x="90" y="84" text-anchor="middle" font-size="22" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#166534">✓</text>
+          <text x="200" y="84" text-anchor="middle" font-size="22" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#166534">✓</text>
+          <text x="310" y="84" text-anchor="middle" font-size="22" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#9f1239">✗</text>
+          <rect filter="url(#s4)" x="60" y="140" width="280" height="48" rx="8" fill="#dcfce7" stroke="#166534" stroke-width="1.25"/>
+          <text x="200" y="164" text-anchor="middle" dy="0.35em" fill="#166534" font-size="15" font-family="ui-sans-serif, system-ui, sans-serif" font-weight="700">2 of 3 say real. Keep it.</text>
+        </svg>
+      </div>
+      <p class="one">One skeptic can be wrong. A few agreeing is harder to fool.</p>
+      <details class="more">
+        <summary>How many rounds is enough</summary>
+        <ul>
+          <li>An adversarial pass can generate objections forever if nothing tells it to stop.</li>
+          <li>A common rule: stop once a few rounds in a row turn up nothing new.</li>
+          <li>Each extra skeptic or round costs time and compute, so this only pays off for a change worth the scrutiny.</li>
+        </ul>
+      </details>
+    </section>
+
+    <p class="sources"><strong>Sources:</strong> Ethan Perez et al., "<a href="https://arxiv.org/abs/2202.03286">Red Teaming Language Models with Language Models</a>," 2022 (using one model to find failures in another). Mrinank Sharma et al., "<a href="https://arxiv.org/abs/2310.13548">Towards Understanding Sycophancy in Language Models</a>," 2023 (why a single reviewing pass tends to agree). Longer, more technical version: <a href="/reference/adversarial-agent-review/">Reference: Adversarial Review (Agents)</a>.</p>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+  </main>
+</body>
+</html>

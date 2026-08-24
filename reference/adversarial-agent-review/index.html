@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adversarial Review — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Adversarial review is a verification pattern in AI agent systems in which an agent's output is checked by a separate process instructed to find fault with it, not confirm it. Covers independence, refutation framing, verify-before-criticize, multi-reviewer voting, and termination.">
+  <meta property="og:title" content="Adversarial Review — Reference">
+  <meta property="og:description" content="A verification pattern for AI agent systems in which an agent's output is checked by a process instructed to refute it, not confirm it.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/adversarial-agent-review/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/adversarial-agent-review/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Artificial Intelligence</p>
+    <h1>Adversarial Review</h1>
+    <p class="updated">Reference entry &middot; last updated August 24, 2026</p>
+
+    <p class="lede"><strong>Adversarial review</strong> is a verification pattern for AI agent systems in which an agent's output is checked by a separate process instructed to find fault with it, not confirm it.<span class="cite">[<a href="#ref1">1</a>]</span> The reviewing process runs independently of the process that produced the output, and the output only counts as checked once an attempt to refute it has failed. This entry covers the mechanism as applied to AI agents: why single-pass self-review tends toward agreement, the five design elements that make an adversarial pass find real problems instead of manufacturing complaints, and where the pattern is used in agent research and in software delivery.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#etymology">Etymology</a></li>
+        <li><a href="#the-problem">The problem it solves</a></li>
+        <li><a href="#how-it-works">How it works</a>
+          <ol>
+            <li><a href="#independence">Independence</a></li>
+            <li><a href="#refutation-framing">Explicit refutation framing</a></li>
+            <li><a href="#verify-before-criticize">Verify before criticize</a></li>
+            <li><a href="#multiple-lenses">Multiple lenses, independent votes</a></li>
+            <li><a href="#termination">Termination conditions</a></li>
+          </ol>
+        </li>
+        <li><a href="#where-it-appears">Where it appears</a></li>
+        <li><a href="#failure-modes">Failure modes</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="etymology">Etymology</h2>
+    <p>The word comes from the Latin <em>adversarius</em>, "one turned against, an opponent." Paired with "review," it names a check performed by a party assigned to oppose the material under review, not approve it. The idea predates AI: a military red team attacks a plan the way a real adversary would, and formal debate assigns two sides to argue against each other in front of a judge. The AI-agent sense narrows this to one mechanism: a language model, or a separate instance of one, is assigned the job of finding a flaw in another model's output, rather than summarizing or endorsing it.</p>
+
+    <h2 id="the-problem">The problem it solves</h2>
+    <p>A large language model asked to review its own output, or another model's output, on a single pass tends toward agreement rather than genuine scrutiny. Sharma et al. document this as sycophancy: a model trained on human feedback learns to tell a user what it appears to want to hear, including reversing a correct answer once the user pushes back on it.<span class="cite">[<a href="#ref5">5</a>]</span> The same pull operates in agent-to-agent review. A reviewer prompted only to "tell me what's wrong with this" has no structural reason to actually find something, so the review degrades into agreement dressed up with a caveat or two.</p>
+
+    <h2 id="how-it-works">How it works</h2>
+    <p>Agent frameworks that apply adversarial review combine several design elements. Dropping any one of them tends to collapse the review back toward agreement.</p>
+
+    <h3 id="independence">Independence</h3>
+    <p>The reviewing process runs separately from the process that produced the output, sees none of the producer's reasoning, and does not know the producer already believes the result is correct. Self-Refine showed that even a single model, prompted to critique and then revise its own draft in a separate pass, produces a better result than one pass alone.<span class="cite">[<a href="#ref6">6</a>]</span> Adversarial review goes further by handing the critique to a different actor, so the critique carries no loyalty to the draft.</p>
+
+    <h3 id="refutation-framing">Explicit refutation framing</h3>
+    <p>The reviewer is told to try to disprove the claim or output, not to summarize or rate it. Irving, Christiano, and Amodei apply this framing to two AI agents arguing opposing sides of a question in front of a judge, on the premise that finding a flaw in an opponent's argument is an easier problem than constructing a correct answer unassisted.<span class="cite">[<a href="#ref1">1</a>]</span> Du et al. found that having several model instances debate a shared answer across a few rounds, each defending or attacking the others' reasoning, raised factual accuracy over asking one instance for its single best answer.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h3 id="verify-before-criticize">Verify before criticize</h3>
+    <p>A raised objection has to check out against the actual artifact, code, a log, a cited source, before it counts as a finding. Without this step, an adversarial reviewer can produce an objection that sounds plausible and is itself wrong, and a process built only to generate criticism has no way to catch that.</p>
+    <p class="unattributed">No external source found for this specific step as a named technique; it follows from the incentive problem in the sycophancy literature above but is not itself a documented finding.</p>
+
+    <h3 id="multiple-lenses">Multiple lenses, independent votes</h3>
+    <p>Separate reviewer instances judge the same output from different angles, correctness, security, and performance are common examples, or vote independently on the same finding. Perez et al. demonstrate a version of this at scale: one language model automatically generates test inputs designed to provoke bad behavior in a second, target model, replacing hand-written adversarial test cases with model-written ones.<span class="cite">[<a href="#ref2">2</a>]</span> A finding can also be put to a small panel of reviewers and kept only if a majority fail to refute it, trading extra compute for a lower rate of false findings.</p>
+
+    <h3 id="termination">Termination conditions</h3>
+    <p>An adversarial pass can generate an unbounded stream of objections, so a review process has to stop somewhere. A common rule in agent pipelines: stop once a fixed number of consecutive rounds return no new finding.</p>
+    <p class="unattributed">No external source found for this specific stopping rule; stated here as a working practice, not a citation.</p>
+
+    <h2 id="where-it-appears">Where it appears</h2>
+    <p>Constitutional AI trains a model to critique and revise its own responses against a written set of principles, an adversarial-to-itself loop applied during training rather than at runtime review.<span class="cite">[<a href="#ref4">4</a>]</span> Outside research settings, the same shape appears in software delivery: an independent reviewer, human or agent, is assigned to try to break a proposed change before it merges, on the premise that the person or process that wrote the change is the least likely to find what is wrong with it.</p>
+
+    <h2 id="failure-modes">Failure modes</h2>
+    <p><strong>Collusion.</strong> If the reviewing process shares enough context, training data, or assumptions with the producer, it inherits the same blind spots and approves anyway, undoing the independence the pattern depends on.</p>
+    <p><strong>Cost.</strong> Each extra reviewer or round adds compute and wall-clock time. Running a full adversarial pass on a trivial change spends more than it protects.</p>
+    <p><strong>Manufactured doubt.</strong> A reviewer rewarded for finding problems can produce a plausible objection to a correct result. Verify-before-criticize is the direct defense: a finding still has to reproduce from concrete inputs, not just sound convincing.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/writing/the-bugs-that-hide-between-your-agents/">The Bugs That Hide Between Your Agents</a> &mdash; a two-day adversarial review of the author's own agent infrastructure, and what it found</li>
+      <li><a href="/writing/tell-me-whats-wrong-with-it-isnt-review/">'Tell Me What's Wrong With It' Isn't a Review</a> &mdash; why a one-sentence adversarial review prompt degrades into agreement, and what a working prompt needs</li>
+      <li><a href="/writing/nine-security-issues-zero-lines-i-wrote/">Nine Security Issues, Zero Lines I Wrote</a> &mdash; review gates in an autonomous plan-to-PR pipeline catching real defects before merge</li>
+      <li><a href="/reference/agents/">Reference: Agents</a> &mdash; the wider entry on AI agents, including multi-agent debate topologies</li>
+      <li><a href="/eli5/adversarial-agent-review/">ELI5: Adversarial Review</a> &mdash; a picture-book version of this entry</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Geoffrey Irving, Paul Christiano, Dario Amodei, "AI Safety via Debate" (2018). arXiv: <a href="https://arxiv.org/abs/1805.00899">1805.00899</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ethan Perez, Saffron Huang, Francis Song, Trevor Cai, Roman Ring, John Aslanides, et al., "Red Teaming Language Models with Language Models" (2022). arXiv: <a href="https://arxiv.org/abs/2202.03286">2202.03286</a></li>
+      <li id="ref3"><span class="backlink">^</span> Yilun Du, Shuang Li, Antonio Torralba, Joshua B. Tenenbaum, Igor Mordatch, "Improving Factuality and Reasoning in Language Models through Multiagent Debate" (2023). arXiv: <a href="https://arxiv.org/abs/2305.14325">2305.14325</a> (ICML 2024)</li>
+      <li id="ref4"><span class="backlink">^</span> Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, Jackson Kernion, Andy Jones, et al., "Constitutional AI: Harmlessness from AI Feedback" (2022). arXiv: <a href="https://arxiv.org/abs/2212.08073">2212.08073</a></li>
+      <li id="ref5"><span class="backlink">^</span> Mrinank Sharma, Meg Tong, Tomasz Korbak, David Duvenaud, Amanda Askell, Samuel R. Bowman, et al., "Towards Understanding Sycophancy in Language Models" (2023). arXiv: <a href="https://arxiv.org/abs/2310.13548">2310.13548</a></li>
+      <li id="ref6"><span class="backlink">^</span> Aman Madaan, Niket Tandon, Prakhar Gupta, Skyler Hallinan, Luyu Gao, Sarah Wiegreffe, et al., "Self-Refine: Iterative Refinement with Self-Feedback" (2023). arXiv: <a href="https://arxiv.org/abs/2303.17651">2303.17651</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
