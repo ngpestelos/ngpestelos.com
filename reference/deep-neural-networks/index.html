@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Neural Networks — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Deep Neural Networks (DNNs): multi-layer architectures, non-linear activations, backpropagation, and representation learning.">
+  <meta property="og:title" content="Deep Neural Networks — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Deep Neural Networks (DNNs): multi-layer architectures, non-linear activations, backpropagation, and representation learning.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/deep-neural-networks/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/deep-neural-networks/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Deep Neural Networks</h1>
+    <p class="subtitle">A citable reference on Deep Neural Networks (DNNs): multi-layer architecture, non-linear activation functions, backpropagation via the chain rule, and hierarchical representation learning.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a> — Deep transformer decoders and scale dynamics.</li>
+        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a> — Sequential factorization and causal generation.</li>
+        <li>📖 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> — Context window dynamics and token management.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">Definition &amp; Layer Composition</a> &middot;
+        <a href="#non-linearity">Non-Linear Activations</a> &middot;
+        <a href="#representation-learning">Representation Hierarchy</a> &middot;
+        <a href="#training-backprop">Training &amp; Backpropagation</a> &middot;
+        <a href="#architectures">Major Architectural Families</a> &middot;
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Definition -->
+    <h2 id="definition">1. Definition &amp; Mathematical Formulation</h2>
+    <p>
+      A <strong>Deep Neural Network (DNN)</strong> is an artificial neural network with multiple hidden layers (\(L \ge 2\)) between its input and output layers. Mathematically, a DNN is a nested composite function that maps an input vector \(x \in \mathbb{R}^{d_{in}}\) to an output vector \(y \in \mathbb{R}^{d_{out}}\):
+    </p>
+    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      y = f(x; \theta) = f_L\Big(f_{L-1}\big(\dots f_1(x; W_1, b_1)\dots; W_{L-1}, b_{L-1}\big); W_L, b_L\Big)
+    </p>
+    <p>
+      where each layer \(l\) computes an affine linear transformation followed by an element-wise non-linear activation function \(\sigma\):
+    </p>
+    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      h_l = \sigma(W_l h_{l-1} + b_l)
+    </p>
+
+    <!-- Section 2: Non-Linear Activations -->
+    <h2 id="non-linearity">2. The Necessity of Non-Linearity</h2>
+    <p>
+      Without non-linear activation functions, any deep composition of linear layers collapses algebraically into a single matrix multiplication:
+    </p>
+    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1rem 0;">
+      W_3 (W_2 (W_1 x)) = (W_3 W_2 W_1) x = W_{net} x
+    </p>
+    <p>
+      Non-linear activations (e.g. <strong>ReLU</strong> \(\max(0, x)\), <strong>GELU</strong> \(x \Phi(x)\), <strong>SwiGLU</strong>) allow the network to construct complex, non-linear decision boundaries. Under the <strong>Universal Approximation Theorem</strong> (Cybenko 1989, Hornik 1991), non-linear feedforward networks can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) to arbitrary precision.
+    </p>
+
+    <!-- Section 3: Representation Learning -->
+    <h2 id="representation-learning">3. Hierarchical Representation Learning</h2>
+    <p>
+      The fundamental advantage of depth over width is <strong>automatic feature hierarchy extraction</strong>:
+    </p>
+    <ul>
+      <li><strong>Early Layers (Low-Level):</strong> Learn generic primitives (e.g., edge detectors and color blobs in vision; subword token stems and syntactic n-grams in language).</li>
+      <li><strong>Intermediate Layers (Mid-Level):</strong> Combine primitives into structural motifs (e.g., shapes and textures in vision; part-of-speech dependencies and semantic phrases in language).</li>
+      <li><strong>Deep Layers (High-Level):</strong> Synthesize abstract conceptual representations (e.g., entire object identities in vision; complex pragmatic intent, facts, and code logic in <a href="/reference/large-language-models/">LLMs</a>).</li>
+    </ul>
+
+    <!-- Section 4: Training & Backpropagation -->
+    <h2 id="training-backprop">4. Training, Loss &amp; Backpropagation</h2>
+    <p>
+      Deep networks are trained end-to-end via gradient descent by minimizing an objective empirical loss function \(\mathcal{L}(y_{pred}, y_{true})\) (e.g. Cross-Entropy Loss for language modeling).
+    </p>
+    <ul>
+      <li><strong>Forward Pass:</strong> Propagates input data through all \(L\) layers to compute predictions and loss \(\mathcal{L}\).</li>
+      <li><strong>Backward Pass (Backpropagation):</strong> Evaluates the exact partial derivatives of the loss with respect to all network weights \(\frac{\partial \mathcal{L}}{\partial W_l}\) via reverse-mode automatic differentiation (multivariable chain rule):
+        <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 0.8rem 0;">
+          \frac{\partial \mathcal{L}}{\partial W_l} = \frac{\partial \mathcal{L}}{\partial h_l} \cdot \frac{\partial h_l}{\partial z_l} \cdot \frac{\partial z_l}{\partial W_l}
+        </p>
+      </li>
+      <li><strong>Weight Update:</strong> Stochastic gradient optimizers with momentum and decoupled weight decay (e.g. <strong>AdamW</strong>) update parameters \(\theta \leftarrow \theta - \eta \nabla_{\theta}\mathcal{L}\).</li>
+    </ul>
+
+    <!-- Section 5: Architectural Families -->
+    <h2 id="architectures">5. Major Architectural Families</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Family</th>
+          <th>Core Structural Mechanism</th>
+          <th>Primary Domains</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Multilayer Perceptrons (MLPs)</strong></td>
+          <td>Fully-connected dense linear transformations.</td>
+          <td>Tabular data, classification heads, inner projection blocks.</td>
+        </tr>
+        <tr>
+          <td><strong>Convolutional Neural Networks (CNNs)</strong></td>
+          <td>Spatial weight sharing and translation equivariance via sliding filters.</td>
+          <td>Computer vision, medical imaging, audio spectrogram analysis.</td>
+        </tr>
+        <tr>
+          <td><strong>Recurrent Neural Networks (RNNs / LSTMs)</strong></td>
+          <td>Sequential hidden-state recurrence across time steps.</td>
+          <td>Time series, legacy machine translation.</td>
+        </tr>
+        <tr>
+          <td><strong>Transformers (Self-Attention Networks)</strong></td>
+          <td>Pairwise dot-product attention scaling across sequence length.</td>
+          <td>Modern <a href="/reference/large-language-models/">Large Language Models</a>, vision transformers (ViT), multimodal foundation models.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 6: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Foundational Research</h3>
+      <ul>
+        <li>Goodfellow, Bengio, and Courville (2016): <a href="https://www.deeplearningbook.org/" target="_blank" rel="noopener">Deep Learning</a> (MIT Press)</li>
+        <li>LeCun, Bengio, and Hinton (2015): <a href="https://www.nature.com/articles/nature14539" target="_blank" rel="noopener">Deep Learning Review</a> (Nature 521, 436–444)</li>
+        <li>Rumelhart, Hinton, and Williams (1986): <a href="https://www.nature.com/articles/323533a0" target="_blank" rel="noopener">Learning Representations by Back-Propagating Errors</a> (Nature 323, 533–536)</li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/reference/large-language-models/">Large Language Models Reference</a> &middot; <a href="/reference/autoregressive/">Autoregressive Models Reference</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>

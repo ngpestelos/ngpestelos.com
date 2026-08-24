@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autoregressive Models — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on autoregressive models: probabilistic sequence factorization, causal masking, generation bottlenecks, and KV caching in LLMs.">
+  <meta property="og:title" content="Autoregressive Models — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on autoregressive models: probabilistic sequence factorization, causal masking, generation bottlenecks, and KV caching in LLMs.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/autoregressive/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/autoregressive/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Autoregressive Models</h1>
+    <p class="subtitle">A citable reference on autoregression in machine learning and natural language processing: mathematical formulation, causal masking, sequential inference bottlenecks, and KV caching.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a> — Transformer architecture, tokenization, and gateway patterns.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a> — Multilayer architectures, backpropagation, and representation learning.</li>
+        <li>📖 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> — Attention dynamics, memory tiers, and token budgeting.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">Definition &amp; Probability Chain</a> &middot;
+        <a href="#causal-masking">Causal Masking &amp; Transformers</a> &middot;
+        <a href="#inference-bottleneck">Inference Bottlenecks</a> &middot;
+        <a href="#kv-caching">KV Caching Mechanics</a> &middot;
+        <a href="#vs-non-autoregressive">Autoregressive vs. Non-Autoregressive</a> &middot;
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Definition -->
+    <h2 id="definition">1. Definition &amp; Mathematical Formulation</h2>
+    <p>
+      An <strong>autoregressive (AR) model</strong> is a statistical or machine learning model that forecasts future values in a sequence as a function of its own preceding past values. In natural language processing, autoregressive language modeling decomposes the joint probability distribution of a sequence of tokens \(X = (x_1, x_2, \dots, x_T)\) using the probabilistic chain rule:
+    </p>
+    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      P(X) = \prod_{t=1}^{T} P(x_t \mid x_1, x_2, \dots, x_{t-1})
+    </p>
+    <p>
+      At each step \(t\), the model conditions strictly on the prefix \(x_{<t}\) to emit a probability distribution over the vocabulary \(V\), samples or selects token \(x_t\), appends \(x_t\) to the sequence, and repeats the forward pass.
+    </p>
+
+    <!-- Section 2: Causal Masking -->
+    <h2 id="causal-masking">2. Causal Masking in Decoder Transformers</h2>
+    <p>
+      Modern autoregressive LLMs (such as GPT-4, Claude, and Llama) utilize the decoder-only Transformer architecture (Vaswani et al., 2017). During parallel training across full sequences, future tokens must be hidden to prevent the model from "cheating" by looking ahead.
+    </p>
+    <p>
+      This is enforced via a <strong>causal attention mask</strong> (lower-triangular matrix), setting attention weights to \(-\infty\) for all positions \(j > i\):
+    </p>
+    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V, \quad M_{ij} = \begin{cases} 0 & i \ge j \\ -\infty & i < j \end{cases}
+    </p>
+
+    <!-- Section 3: Inference Bottleneck -->
+    <h2 id="inference-bottleneck">3. The Sequential Inference Bottleneck</h2>
+    <p>
+      While training can process all \(T\) tokens in parallel using matrix multiplication and causal masks, <strong>inference is inherently sequential (\(O(N)\))</strong>:
+    </p>
+    <ul>
+      <li><strong>Prefill Phase (Prompt Evaluation):</strong> Parallel forward pass evaluating all prompt tokens simultaneously. Compute-bound (high arithmetic intensity). Measured by <em>Time to First Token (TTFT)</em>.</li>
+      <li><strong>Decode Phase (Generation):</strong> Sequential loop generating one token per forward pass. Memory-bandwidth bound (low arithmetic intensity, constantly reading weights from VRAM to compute a single token). Measured by <em>Time Per Output Token (TPOT)</em>.</li>
+    </ul>
+
+    <!-- Section 4: KV Caching -->
+    <h2 id="kv-caching">4. Key-Value (KV) Caching</h2>
+    <p>
+      Without optimization, generating token \(t\) would require re-computing the Key (\(K\)) and Value (\(V\)) vectors for all preceding \(t-1\) tokens, resulting in quadratic \(O(N^2)\) computational complexity during generation.
+    </p>
+    <p>
+      <strong>KV Caching</strong> stores previously computed \(K\) and \(V\) projection tensors in GPU memory. On each step, the model computes \(Q, K, V\) only for the newest token, concatenates the new \(K, V\) to the cache, and computes attention over the cached history in \(O(N)\) linear time.
+    </p>
+
+    <!-- Section 5: Comparison -->
+    <h2 id="vs-non-autoregressive">5. Autoregressive vs. Non-Autoregressive Models</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Architecture</th>
+          <th>Attention Direction</th>
+          <th>Generation Complexity</th>
+          <th>Primary Applications</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Autoregressive (Causal / Decoder)</strong></td>
+          <td>Left-to-Right (Unidirectional)</td>
+          <td>\(O(N)\) sequential turns</td>
+          <td>Text generation, code synthesis, conversational agents, mathematical reasoning (<a href="/reference/large-language-models/">LLMs</a>).</td>
+        </tr>
+        <tr>
+          <td><strong>Masked Language Models (Encoder)</strong></td>
+          <td>Bidirectional (Full Context)</td>
+          <td>\(O(1)\) single forward pass</td>
+          <td>Text classification, named-entity recognition, semantic search embeddings (e.g. BERT).</td>
+        </tr>
+        <tr>
+          <td><strong>Non-Autoregressive (Diffusion / Flow)</strong></td>
+          <td>Iterative Denoising / Parallel</td>
+          <td>Fixed \(K\) denoising steps</td>
+          <td>Image generation (Stable Diffusion), speech synthesis, continuous control.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 6: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; References</h3>
+      <ul>
+        <li>Vaswani et al. (2017): <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (NeurIPS)</li>
+        <li>Radford et al. (2018): <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank" rel="noopener">Improving Language Understanding by Generative Pre-Training</a> (GPT)</li>
+        <li>Bengio et al. (2003): <a href="https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf" target="_blank" rel="noopener">A Neural Probabilistic Language Model</a> (JMLR)</li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/reference/large-language-models/">Large Language Models Reference</a> &middot; <a href="/reference/deep-neural-networks/">Deep Neural Networks Reference</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>

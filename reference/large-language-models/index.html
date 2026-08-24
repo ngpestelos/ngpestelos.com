@@ -199,10 +199,13 @@
     <p class="subtitle">A citable reference on Large Language Models (LLMs): transformer mechanics, tokenization, context engineering, RAG pipelines, architectural resilience patterns, and evaluation frameworks.</p>
 
     <div class="companion-box">
-      <h2>Companion Formats</h2>
+      <h2>Companion Formats &amp; Related References</h2>
       <ul>
         <li>🎨 <a href="/eli5/large-language-models/"><strong>ELI5: How Large Language Models Work</strong></a> — Visual picture-book explainer for intuitive understanding.</li>
         <li>🌳 <a href="/trees/large-language-models/"><strong>LLM System Design Knowledge Tree</strong></a> — Prerequisite curriculum map and active learning frontier.</li>
+        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a> — Sequential factorization and causal attention masks.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a> — Multi-layer architectures, backpropagation, and representation learning.</li>
+        <li>📖 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> — Attention dynamics, memory tiers, and token budgeting.</li>
         <li>📖 <a href="/reference/retrieval-augmented-generation/"><strong>Reference: Retrieval-Augmented Generation</strong></a> — Dedicated ground-truth page on RAG architectures.</li>
       </ul>
     </div>
@@ -224,7 +227,7 @@
     <!-- Section 1: Definition & Core Model -->
     <h2 id="definition">1. Definition &amp; Core Mechanism</h2>
     <p>
-      A <strong>Large Language Model (LLM)</strong> is an autoregressive deep neural network trained on vast text corpora to model the conditional probability distribution of text tokens. Based primarily on the Transformer decoder architecture (Vaswani et al., 2017), an LLM generates output by iteratively predicting the single most plausible next token given all preceding context tokens.
+      A <strong>Large Language Model (LLM)</strong> is an <a href="/reference/autoregressive/">autoregressive</a> <a href="/reference/deep-neural-networks/">deep neural network</a> trained on vast text corpora to model the conditional probability distribution of text tokens. Based primarily on the Transformer decoder architecture (Vaswani et al., 2017), an LLM generates output by iteratively predicting the single most plausible next token given all preceding context tokens.
     </p>
     <p>
       At its core, an LLM is a mathematical function mapping an input sequence of token IDs \((x_1, x_2, \dots, x_t)\) to a probability distribution over the vocabulary \(V\):
