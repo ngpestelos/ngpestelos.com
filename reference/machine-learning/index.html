@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Machine Learning — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Machine Learning (ML): empirical risk minimization, supervised/unsupervised/RL paradigms, and bias-variance tradeoff.">
+  <meta property="og:title" content="Machine Learning — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Machine Learning (ML): empirical risk minimization, supervised/unsupervised/RL paradigms, and bias-variance tradeoff.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/machine-learning/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/machine-learning/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Machine Learning</h1>
+    <p class="subtitle">A citable reference on Machine Learning (ML): empirical risk minimization, supervised, unsupervised, and reinforcement paradigms, optimization, and generalization theorems.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/artificial-intelligence/"><strong>Reference: Artificial Intelligence</strong></a> — Rational agents, historical taxonomy, and system design.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a> — Multi-layer architectures, backpropagation, and representation learning.</li>
+        <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a> — Self-supervised training, transformers, and model selection.</li>
+        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a> — Sequential factorization and causal language modeling.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">Formal Definition</a> &middot;
+        <a href="#paradigms">Learning Paradigms</a> &middot;
+        <a href="#empirical-risk">Empirical Risk Minimization</a> &middot;
+        <a href="#bias-variance">Bias-Variance Tradeoff</a> &middot;
+        <a href="#theorems">Generalization &amp; Core Theorems</a> &middot;
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Definition -->
+    <h2 id="definition">1. Formal Definition: The (T, P, E) Formulation</h2>
+    <p>
+      <strong>Machine Learning (ML)</strong> is a subfield of artificial intelligence focused on mathematical algorithms that build statistical models from sample data in order to make predictions or decisions without being explicitly programmed with deterministic rules.
+    </p>
+    <p>
+      Under Tom Mitchell's canonical definition (Mitchell, 1997):
+    </p>
+    <blockquote>
+      "A computer program is said to learn from experience <strong>E</strong> with respect to some class of tasks <strong>T</strong> and performance measure <strong>P</strong>, if its performance at tasks in <strong>T</strong>, as measured by <strong>P</strong>, improves with experience <strong>E</strong>."
+    </blockquote>
+
+    <!-- Section 2: Paradigms -->
+    <h2 id="paradigms">2. The Three Primary Learning Paradigms</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Paradigm</th>
+          <th>Training Data Signal (Experience \(E\))</th>
+          <th>Objective / Task \(T\)</th>
+          <th>Representative Algorithms</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Supervised Learning</strong></td>
+          <td>Labeled pairs \(\mathcal{D} = \{(x_i, y_i)\}_{i=1}^N\).</td>
+          <td>Learn mapping function \(f: X \to Y\) predicting labels for unseen \(x\).</td>
+          <td>Linear/Logistic Regression, Support Vector Machines (SVM), Random Forests, <a href="/reference/deep-neural-networks/">DNNs</a>.</td>
+        </tr>
+        <tr>
+          <td><strong>Unsupervised &amp; Self-Supervised</strong></td>
+          <td>Unlabeled data \(\mathcal{D} = \{x_i\}_{i=1}^N\) (or self-derived token masks).</td>
+          <td>Discover latent structure, density \(P(X)\), or predict masked tokens from context.</td>
+          <td>k-Means Clustering, PCA, t-SNE, Autoencoders, <a href="/reference/autoregressive/">Autoregressive Pre-Training</a>.</td>
+        </tr>
+        <tr>
+          <td><strong>Reinforcement Learning (RL)</strong></td>
+          <td>Scalar reward signal \(R_t\) from environment transitions in an MDP \((S, A, P, R, \gamma)\).</td>
+          <td>Learn optimal policy \(\pi^*(a \mid s)\) maximizing expected cumulative discounted return.</td>
+          <td>Q-Learning, PPO, Deep Q-Networks (DQN), RLHF/DPO for <a href="/reference/large-language-models/">LLM Alignment</a>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 3: Empirical Risk -->
+    <h2 id="empirical-risk">3. Empirical Risk Minimization (ERM)</h2>
+    <p>
+      In supervised learning, the ideal objective is minimizing the <em>true risk</em> \(R(f) = \mathbb{E}_{(x,y)\sim P}[\mathcal{L}(f(x), y)]\) over the unknown data distribution \(P(X,Y)\). Because \(P\) is unknown, algorithms minimize the <strong>Empirical Risk</strong> over the training set, augmented by a regularization penalty \(\Omega(\theta)\) to prevent overfitting:
+    </p>
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$\hat{\theta} = \arg\min_{\theta} \left( \frac{1}{N} \sum_{i=1}^N \mathcal{L}\big(f(x_i; \theta), y_i\big) + \lambda \Omega(\theta) \right)$$
+    </p>
+    <ul>
+      <li><strong>Loss Function \(\mathcal{L}\):</strong> Measures point-wise error (e.g. Mean Squared Error \((y - \hat{y})^2\) for regression; Cross-Entropy \(-\sum y_k \log \hat{y}_k\) for classification).</li>
+      <li><strong>Regularization \(\Omega(\theta)\):</strong> Penalizes model complexity (e.g. \(L_1\) Lasso \(\|\theta\|_1\) for sparsity; \(L_2\) Ridge \(\|\theta\|_2^2\) / Weight Decay for smoothness).</li>
+    </ul>
+
+    <!-- Section 4: Bias-Variance -->
+    <h2 id="bias-variance">4. The Bias-Variance Tradeoff</h2>
+    <p>
+      For any supervised regression model, the expected generalization error on unseen test data decomposes analytically into three orthogonal components:
+    </p>
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$\mathbb{E}\big[(y - \hat{f}(x))^2\big] = \text{Bias}\big[\hat{f}(x)\big]^2 + \text{Var}\big[\hat{f}(x)\big] + \sigma^2$$
+    </p>
+    <ul>
+      <li><strong>Bias:</strong> Error from erroneous assumptions in the learning algorithm (underfitting; e.g. fitting a straight line to quadratic data).</li>
+      <li><strong>Variance:</strong> Error from extreme sensitivity to small fluctuations in the training set (overfitting; model memorizes noise).</li>
+      <li><strong>Irreducible Error (\(\sigma^2\)):</strong> Inherent noise in the data-generating distribution that no model can eliminate.</li>
+    </ul>
+
+    <!-- Section 5: Core Theorems -->
+    <h2 id="theorems">5. Foundational Theorems &amp; Principles</h2>
+    <ul>
+      <li><strong>No Free Lunch Theorem (Wolpert &amp; Macready, 1997):</strong> Averaged over all possible data distributions, no single machine learning algorithm outperforms random guessing. An algorithm succeeds only by exploiting inductive biases matched to the target problem domain.</li>
+      <li><strong>Curse of Dimensionality:</strong> As feature dimension \(d\) increases, the volume of the space grows exponentially, causing sample data to become exponentially sparse. Distance metrics (e.g. Euclidean distance) lose contrast unless constrained by manifold learning or dense embeddings.</li>
+      <li><strong>Double Descent Phenomenon (Belkin et al., 2019):</strong> In modern overparameterized models (such as deep networks and LLMs), increasing parameters past the interpolation threshold causes test error to decrease again, defying classical bias-variance tradeoffs.</li>
+    </ul>
+
+    <!-- Section 6: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Foundational Literature</h3>
+      <ul>
+        <li>Tom M. Mitchell (1997): <a href="https://www.cs.cmu.edu/~tom/mlbook.html" target="_blank" rel="noopener">Machine Learning</a> (McGraw-Hill)</li>
+        <li>Christopher M. Bishop (2006): <a href="https://www.microsoft.com/en-us/research/publication/pattern-recognition-and-machine-learning/" target="_blank" rel="noopener">Pattern Recognition and Machine Learning</a> (Springer)</li>
+        <li>Trevor Hastie, Robert Tibshirani, and Jerome Friedman (2009): <a href="https://hastie.su.domains/ElemStatLearn/" target="_blank" rel="noopener">The Elements of Statistical Learning</a> (2nd Edition, Springer)</li>
+        <li>Richard S. Sutton and Andrew G. Barto (2018): <a href="http://incompleteideas.net/book/the-book-2nd.html" target="_blank" rel="noopener">Reinforcement Learning: An Introduction</a> (2nd Edition, MIT Press)</li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/reference/artificial-intelligence/">Artificial Intelligence Reference</a> &middot; <a href="/reference/deep-neural-networks/">Deep Neural Networks</a> &middot; <a href="/reference/large-language-models/">Large Language Models</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>

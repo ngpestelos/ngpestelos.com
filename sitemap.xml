@@ -76,6 +76,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/artificial-intelligence/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/autoregressive/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -97,6 +102,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/large-language-models/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/machine-learning/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artificial Intelligence — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Artificial Intelligence (AI): rational agent theory, classical vs. statistical paradigms, hierarchy of intelligence, and safety.">
+  <meta property="og:title" content="Artificial Intelligence — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Artificial Intelligence (AI): rational agent theory, classical vs. statistical paradigms, hierarchy of intelligence, and safety.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/artificial-intelligence/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/artificial-intelligence/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Artificial Intelligence</h1>
+    <p class="subtitle">A citable reference on Artificial Intelligence (AI): the rational agent paradigm, historical taxonomy, statistical foundation models, and autonomy bounds.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/machine-learning/"><strong>Reference: Machine Learning</strong></a> — Empirical risk minimization, learning paradigms, and loss optimization.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a> — Multi-layer composite functions, non-linear activations, and backpropagation.</li>
+        <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a> — Transformer decoders, autoregressive tokens, and production gateways.</li>
+        <li>🌳 <a href="/trees/large-language-models/"><strong>LLM System Design Knowledge Tree</strong></a> — Prerequisite curriculum map and mastery frontier.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">Definition &amp; Agent Theory</a> &middot;
+        <a href="#taxonomy-hierarchy">The AI Hierarchy</a> &middot;
+        <a href="#historical-epochs">Historical Paradigms</a> &middot;
+        <a href="#rational-agents">Rational Agent Model</a> &middot;
+        <a href="#subfields">Core Subfields</a> &middot;
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Definition -->
+    <h2 id="definition">1. Definition: The Rational Agent Paradigm</h2>
+    <p>
+      <strong>Artificial Intelligence (AI)</strong> is the computational study and engineering of systems that perceive their environment and execute actions that maximize the expected probability of successfully achieving defined goals (Russell &amp; Norvig, 2020).
+    </p>
+    <p>
+      Modern technical definitions reject superficial "human-likeness" (the Turing test framing) in favor of <strong>rationality</strong>: an agent is rational if it selects an action \(a \in A\) that maximizes expected utility given its percept history \(P\) and internal knowledge base:
+    </p>
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$a^* = \arg\max_{a \in A} \mathbb{E}\big[U(s') \mid P, a\big]$$
+    </p>
+
+    <!-- Section 2: Hierarchy -->
+    <h2 id="taxonomy-hierarchy">2. The Hierarchy of Artificial Intelligence</h2>
+    <p>
+      Artificial Intelligence is a broad umbrella discipline containing progressively specialized nested subfields:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Definition &amp; Scope</th>
+          <th>Primary Mechanism</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Artificial Intelligence (AI)</strong></td>
+          <td>The overarching field of building goal-directed agents that perceive, reason, plan, and act.</td>
+          <td>Search algorithms, formal logic, knowledge graphs, heuristic optimization, machine learning.</td>
+        </tr>
+        <tr>
+          <td><strong><a href="/reference/machine-learning/">Machine Learning (ML)</a></strong></td>
+          <td>A subfield of AI focused on algorithms that learn statistical parameters from data without explicit manual rules.</td>
+          <td>Empirical risk minimization, loss optimization, decision trees, gradient descent.</td>
+        </tr>
+        <tr>
+          <td><strong><a href="/reference/deep-neural-networks/">Deep Learning (DL)</a></strong></td>
+          <td>A subfield of ML utilizing multi-layered neural networks (\(L \ge 2\)) for automatic representation learning.</td>
+          <td>Backpropagation, non-linear activation functions (ReLU, GELU), GPU tensor operations.</td>
+        </tr>
+        <tr>
+          <td><strong>Generative Foundation Models (<a href="/reference/large-language-models/">LLMs</a>)</strong></td>
+          <td>Massive deep networks trained self-supervised on internet-scale corpora for cross-domain generation and reasoning.</td>
+          <td>Self-attention transformers, autoregressive next-token prediction, RLHF alignment.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 3: Historical Epochs -->
+    <h2 id="historical-epochs">3. Historical Paradigm Shifts</h2>
+    <ul>
+      <li><strong>Symbolic AI / GOFAI (1950s–1980s):</strong> Explicit rule-based systems, first-order logic inference engines, and heuristic tree searches (e.g. A* search, Expert Systems). Fragile to ambiguity and combinatorial explosion.</li>
+      <li><strong>Statistical Machine Learning (1990s–2000s):</strong> Shift to probabilistic formulations, Support Vector Machines (SVMs), Random Forests, and Bayesian networks with manual feature engineering.</li>
+      <li><strong>Deep Learning Era (2012–2020):</strong> Breakthrough of large-scale backpropagation on GPUs (AlexNet, ResNet, Transformer). Replaced manual feature engineering with end-to-end representation learning.</li>
+      <li><strong>Foundation Models &amp; Agentic AI (2020s–Present):</strong> Emergence of billion-parameter autoregressive models capable of general in-context reasoning, tool orchestration, and autonomous execution loops.</li>
+    </ul>
+
+    <!-- Section 4: Rational Agents -->
+    <h2 id="rational-agents">4. The PEAS Agent Environment Framework</h2>
+    <p>
+      In formal AI design (Russell &amp; Norvig), every agent system is specified by its <strong>PEAS</strong> descriptors:
+    </p>
+    <ul>
+      <li><strong>Performance Measure (P):</strong> The mathematical utility function \(U\) defining success (e.g., latency, accuracy, profit, safety constraints).</li>
+      <li><strong>Environment (E):</strong> The operational domain (observable vs. partially observable, deterministic vs. stochastic, static vs. dynamic, discrete vs. continuous).</li>
+      <li><strong>Actuators (A):</strong> Mechanisms through which the agent acts (e.g., API calls, shell execution, database writes, physical motors).</li>
+      <li><strong>Sensors (S):</strong> Mechanisms through which the agent receives percepts (e.g., HTTP payloads, file streams, cameras, microphones).</li>
+    </ul>
+
+    <!-- Section 5: Subfields -->
+    <h2 id="subfields">5. Major Subfields of AI</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Subfield</th>
+          <th>Core Problem</th>
+          <th>Key Techniques</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Natural Language Processing (NLP)</strong></td>
+          <td>Understanding, translating, and generating human language.</td>
+          <td><a href="/reference/autoregressive/">Autoregressive Transformers</a>, tokenizers, dense vector embeddings.</td>
+        </tr>
+        <tr>
+          <td><strong>Computer Vision (CV)</strong></td>
+          <td>Extracting structured geometric and semantic meaning from pixels.</td>
+          <td>Convolutional networks (CNNs), Vision Transformers (ViT), diffusion models.</td>
+        </tr>
+        <tr>
+          <td><strong>Planning &amp; Multi-Agent Systems</strong></td>
+          <td>Coordinating multi-step action sequences across competing/cooperating agents.</td>
+          <td>Hierarchical Task Networks (HTN), Monte Carlo Tree Search (MCTS), Game Theory.</td>
+        </tr>
+        <tr>
+          <td><strong>Robotics &amp; Control</strong></td>
+          <td>Embodied physical interaction in continuous dynamic environments.</td>
+          <td>Model Predictive Control (MPC), Reinforcement Learning, Sim-to-Real transfer.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 6: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Foundational Literature</h3>
+      <ul>
+        <li>Stuart Russell and Peter Norvig (2020): <a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Artificial Intelligence: A Modern Approach</a> (4th Edition, Pearson)</li>
+        <li>Alan M. Turing (1950): <a href="https://doi.org/10.1093/mind/LIX.236.433" target="_blank" rel="noopener">Computing Machinery and Intelligence</a> (Mind 59, 433–460)</li>
+        <li>John McCarthy, Marvin Minsky, Nathaniel Rochester, and Claude Shannon (1955): <a href="https://ojs.aaai.org/index.php/aimagazine/article/view/1904" target="_blank" rel="noopener">A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence</a></li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/reference/machine-learning/">Machine Learning Reference</a> &middot; <a href="/reference/deep-neural-networks/">Deep Neural Networks</a> &middot; <a href="/reference/large-language-models/">Large Language Models</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
