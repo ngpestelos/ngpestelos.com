@@ -168,6 +168,45 @@
     .def-box:last-child {
       border-bottom: none;
     }
+    .essays-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .essays-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .essays-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .essays-box li {
+      margin-bottom: 0.4rem;
+    }
+    .essays-box li:last-child {
+      margin-bottom: 0;
+    }
+    .essays-box a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    .essays-box a:hover {
+      text-decoration: underline;
+    }
     .term-title {
       font-weight: 700;
       font-size: 1.05rem;
@@ -212,6 +251,16 @@
     <h1>Online Payments</h1>
     <p class="subtitle">A citable reference on how electronic money moves: 4-party card flows, CNP fraud mechanics, PCI DSS compliance, Ruby adapter abstractions, and US vs. Philippine interbank settlement rails.</p>
 
+    <div class="essays-box">
+      <h2>Essays in this Series (Travel Guide to Philippine Payments)</h2>
+      <ul>
+        <li>📖 <a href="/writing/us-and-philippine-payment-rails/"><strong>US and Philippine Payment Rails</strong></a> — Mapping equivalent wholesale, batch, and instant rails.</li>
+        <li>📖 <a href="/writing/instapay-is-not-ach/"><strong>InstaPay is Not ACH</strong></a> — Why customer-instant settlement is not RTGS interbank posting.</li>
+        <li>📖 <a href="/writing/payments-glossary/"><strong>Payments Glossary</strong></a> — The foundational vocabulary and stable anchor addresses for the series.</li>
+        <li>🌳 <a href="/trees/online-payments/"><strong>Online Payments Knowledge Tree</strong></a> — Prerequisite dependency graph and mastery frontier.</li>
+      </ul>
+    </div>
+
     <div class="toc">
       <h2>Jump to Section</h2>
       <div class="toc-grid">
@@ -229,7 +278,7 @@
     <!-- Section 1: Core Model -->
     <h2 id="core-model">1. The Core Split: Private Card Overlays vs. Public Rails</h2>
     <p>
-      An electronic payment belongs to one of two fundamental architectures:
+      An electronic payment belongs to one of two fundamental architectures (detailed in <a href="/writing/us-and-philippine-payment-rails/">US and Philippine Payment Rails</a>):
     </p>
     <ol>
       <li>
@@ -359,6 +408,9 @@
 
     <!-- Section 6: Rails Comparison -->
     <h2 id="rails-comparison">6. Interbank Rails: United States vs. Philippines</h2>
+    <p>
+      A detailed architectural comparison of US and Philippine settlement mechanisms is explored in <a href="/writing/us-and-philippine-payment-rails/">US and Philippine Payment Rails</a> and <a href="/writing/instapay-is-not-ach/">InstaPay is Not ACH</a>.
+    </p>
     <table>
       <thead>
         <tr>
