@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Natural Language Processing — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Natural Language Processing (NLP): tokenization, embeddings, syntax parsing, sequence-to-sequence models, and transformer language modeling.">
+  <meta property="og:title" content="Natural Language Processing — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Natural Language Processing (NLP): tokenization, embeddings, syntax parsing, sequence-to-sequence models, and transformer language modeling.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/natural-language-processing/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/natural-language-processing/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Natural Language Processing</h1>
+    <p class="subtitle">A citable reference on Natural Language Processing (NLP): linguistic representations, statistical language modeling, tokenization algorithms, sequence-to-sequence mechanisms, and transformers.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a> — Autoregressive transformer decoders, prompt architecture, and evals.</li>
+        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a> — Sequential factorization, causal masking, and KV caching.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a> — Multi-layer architectures, backpropagation, and embeddings.</li>
+        <li>📖 <a href="/reference/artificial-intelligence/"><strong>Reference: Artificial Intelligence</strong></a> — Rational agent framework and historical paradigms.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">Definition &amp; Scope</a> &middot;
+        <a href="#evolution">Historical Eras</a> &middot;
+        <a href="#tokenization">Tokenization Mechanics</a> &middot;
+        <a href="#embeddings">Distributed Word Representations</a> &middot;
+        <a href="#language-modeling">Statistical Language Modeling</a> &middot;
+        <a href="#core-tasks">Core NLP Tasks</a> &middot;
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Definition -->
+    <h2 id="definition">1. Definition &amp; Theoretical Scope</h2>
+    <p>
+      <strong>Natural Language Processing (NLP)</strong> is an interdisciplinary subfield of computer science, artificial intelligence, and computational linguistics concerned with giving computers the capability to process, analyze, translate, and generate human natural language.
+    </p>
+    <p>
+      The fundamental challenge of NLP stems from <strong>linguistic ambiguity</strong> across multiple structural levels:
+    </p>
+    <ul>
+      <li><strong>Phonetic &amp; Morphological:</strong> Ambiguity in speech-to-text boundaries and word inflection stems.</li>
+      <li><strong>Syntactic:</strong> Multiple valid parse trees for a single sentence (e.g. prepositional phrase attachment).</li>
+      <li><strong>Semantic &amp; Polysemous:</strong> Words possessing multiple distinct senses depending on context (e.g. <em>"bank"</em> as financial institution vs. river embankment).</li>
+      <li><strong>Pragmatic &amp; Discourse:</strong> Understanding intent, sarcasm, implicature, and co-reference across long conversational turns.</li>
+    </ul>
+
+    <!-- Section 2: Historical Eras -->
+    <h2 id="evolution">2. Evolution of NLP Paradigms</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Era</th>
+          <th>Dominant Paradigm</th>
+          <th>Representation &amp; Approach</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Symbolic / Rule-Based (1950s–1980s)</strong></td>
+          <td>Formal grammars (Chomsky), expert rule systems, dictionary lookups.</td>
+          <td>Discrete hand-crafted syntax trees and symbolic logic. Highly brittle to ungrammatical input.</td>
+        </tr>
+        <tr>
+          <td><strong>Statistical NLP (1990s–2000s)</strong></td>
+          <td>N-gram probability models, Hidden Markov Models (HMM), Maximum Entropy classifiers.</td>
+          <td>Bag-of-Words (BoW) and TF-IDF matrices; manual linguistic feature engineering.</td>
+        </tr>
+        <tr>
+          <td><strong>Dense Embeddings &amp; RNNs (2013–2017)</strong></td>
+          <td>Static vector embeddings (Word2Vec, GloVe), Recurrent Networks (LSTMs, GRUs), Seq2Seq.</td>
+          <td>Continuous geometric vector spaces; sequential hidden state recurrence with early attention (Bahdanau 2014).</td>
+        </tr>
+        <tr>
+          <td><strong>Transformer Era (2017–Present)</strong></td>
+          <td>Self-attention architectures (Vaswani et al., 2017), Masked (BERT) and <a href="/reference/autoregressive/">Autoregressive</a> (<a href="/reference/large-language-models/">LLMs</a>) Foundation Models.</td>
+          <td>Contextualized token embeddings learned self-supervised over trillions of words via next-token prediction.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 3: Tokenization -->
+    <h2 id="tokenization">3. Subword Tokenization Algorithms</h2>
+    <p>
+      Modern NLP processes text as integer token IDs using subword algorithms that balance vocabulary size against sequence length, eliminating Out-of-Vocabulary (OOV) errors:
+    </p>
+    <ul>
+      <li><strong>Byte-Pair Encoding (BPE):</strong> Iteratively merges the most frequent pairs of adjacent characters or bytes in the training corpus (Sennrich et al., 2016; used by GPT, Claude, Llama).</li>
+      <li><strong>WordPiece:</strong> Merges candidate character pairs based on maximizing the likelihood of a language model scoring the training data (used by BERT).</li>
+      <li><strong>Unigram / SentencePiece:</strong> Starts with a massive vocabulary and iteratively prunes subwords that least decrease training corpus likelihood (Kudo, 2018; treats raw text directly as unicode byte streams without language-specific pre-tokenizers).</li>
+    </ul>
+
+    <!-- Section 4: Embeddings -->
+    <h2 id="embeddings">4. Distributed Word Representations</h2>
+    <p>
+      NLP relies on the <strong>Distributional Hypothesis</strong> (Harris 1954, Firth 1957): <em>"You shall know a word by the company it keeps."</em>
+    </p>
+    <p>
+      In dense vector spaces, words are represented as vectors \(v \in \mathbb{R}^d\) (e.g. \(d = 768\) to \(4096\)). Linear vector arithmetic captures semantic and syntactic analogies (e.g., \(\vec{v}_{\text{King}} - \vec{v}_{\text{Man}} + \vec{v}_{\text{Woman}} \approx \vec{v}_{\text{Queen}}\)), and semantic proximity is measured by <strong>cosine similarity</strong>:
+    </p>
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$\text{sim}(u, v) = \frac{u \cdot v}{\|u\|_2 \|v\|_2} = \cos(\theta)$$
+    </p>
+
+    <!-- Section 5: Language Modeling -->
+    <h2 id="language-modeling">5. Statistical Language Modeling</h2>
+    <p>
+      The core theoretical task of NLP is <strong>Language Modeling</strong>: estimating the joint probability distribution \(P(W)\) over arbitrary token sequences \(W = (w_1, w_2, \dots, w_N)\).
+    </p>
+    <p>
+      Under the autoregressive factorization, this probability is computed sequentially via cross-entropy loss:
+    </p>
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$\mathcal{L}_{\text{LM}} = -\frac{1}{N} \sum_{i=1}^N \log P(w_i \mid w_1, w_2, \dots, w_{i-1})$$
+    </p>
+    <p>
+      Model evaluation is formally measured by <strong>Perplexity (\(\text{PPL}\))</strong>, which equals the exponentiated average cross-entropy per token:
+    </p>
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$\text{PPL}(W) = \exp\left( \mathcal{L}_{\text{LM}} \right) = \left( \prod_{i=1}^N \frac{1}{P(w_i \mid w_{\lt i})} \right)^{1/N}$$
+    </p>
+
+    <!-- Section 6: Core Tasks -->
+    <h2 id="core-tasks">6. Core NLP Task Taxonomy</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Task Category</th>
+          <th>Specific Objectives</th>
+          <th>Primary Evaluation Metrics</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sequence Labeling</strong></td>
+          <td>Part-of-Speech (POS) tagging, Named Entity Recognition (NER).</td>
+          <td>Precision, Recall, F1-Score.</td>
+        </tr>
+        <tr>
+          <td><strong>Text Classification</strong></td>
+          <td>Sentiment analysis, intent detection, topic classification, spam filtering.</td>
+          <td>Accuracy, Macro/Micro F1, ROC-AUC.</td>
+        </tr>
+        <tr>
+          <td><strong>Sequence-to-Sequence</strong></td>
+          <td>Machine translation, abstractive text summarization.</td>
+          <td>BLEU, ROUGE-1/2/L, METEOR.</td>
+        </tr>
+        <tr>
+          <td><strong>Information Extraction &amp; QA</strong></td>
+          <td>Open-domain question answering, <a href="/reference/retrieval-augmented-generation/">RAG</a>, entity relation extraction.</td>
+          <td>Exact Match (EM), F1, MRR (Mean Reciprocal Rank).</td>
+        </tr>
+        <tr>
+          <td><strong>Generative Reasoning</strong></td>
+          <td>Code generation, agentic reasoning loops, mathematical derivation (<a href="/reference/large-language-models/">LLMs</a>).</td>
+          <td>Pass@k, HumanEval, LLM-as-a-Judge Rubric scoring.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 7: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Foundational Literature</h3>
+      <ul>
+        <li>Daniel Jurafsky and James H. Martin (2024): <a href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="noopener">Speech and Language Processing</a> (3rd Edition Draft, Stanford)</li>
+        <li>Christopher D. Manning and Hinrich Schütze (1999): <a href="https://nlp.stanford.edu/fsnlp/" target="_blank" rel="noopener">Foundations of Statistical Natural Language Processing</a> (MIT Press)</li>
+        <li>Tomas Mikolov et al. (2013): <a href="https://arxiv.org/abs/1301.3781" target="_blank" rel="noopener">Efficient Estimation of Word Representations in Vector Space</a> (Word2Vec)</li>
+        <li>Vaswani et al. (2017): <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (Transformer Architecture)</li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/reference/large-language-models/">Large Language Models</a> &middot; <a href="/reference/autoregressive/">Autoregressive Models</a> &middot; <a href="/reference/machine-learning/">Machine Learning</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
