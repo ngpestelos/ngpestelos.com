@@ -51,6 +51,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/eli5/exponential-decay/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/eli5/large-language-models/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -157,6 +162,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/exponential-growth/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/exponential-decay/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

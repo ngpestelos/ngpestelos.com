@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>What Is Exponential Growth? — ELI5 — Nestor G Pestelos Jr</title>
-  <meta name="description" content="Exponential growth in plain words: each step adds a percentage of the current amount, not a fixed amount, so the increase itself keeps growing. Doubling, why it looks slow then suddenly isn't, and why it always hits a wall.">
+  <meta name="description" content="Exponential growth in plain words: each step adds a percentage of the current amount, not a fixed amount, so the increase itself keeps growing. Drag the clock through the bacteria-in-a-bottle trick, and see why it always hits a wall.">
   <meta property="og:title" content="What Is Exponential Growth? — ELI5">
-  <meta property="og:description" content="Each step adds a percentage of the current amount, not a fixed amount, so the increase itself keeps growing. Doubling, the bacteria-in-a-bottle trick, and why it always hits a wall.">
+  <meta property="og:description" content="Each step adds a percentage of the current amount, not a fixed amount, so the increase itself keeps growing. Drag the clock through the bacteria-in-a-bottle trick, and see why it always hits a wall.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/eli5/exponential-growth/">
   <link rel="canonical" href="https://ngpestelos.com/eli5/exponential-growth/">
@@ -161,6 +161,25 @@
       line-height: 1.5;
     }
     .sources a { color: var(--op); }
+    .control {
+      width: min(100%, 26rem);
+      margin: 0.2rem auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .control label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+    }
+    .control input[type="range"] {
+      width: 100%;
+      accent-color: var(--op);
+    }
+    .readout { color: var(--op); }
     .to-top {
       margin: 1.6rem 0 0;
       padding-top: 2.2rem;
@@ -211,25 +230,20 @@
     <section class="block">
       <h2>Looks slow, then suddenly isn't</h2>
       <div class="figure">
-        <svg class="pic" viewBox="0 0 640 260" role="img" aria-labelledby="fig2title">
-          <title id="fig2title">Three bottles that double in fullness every minute: at 11:55 the bottle is 3 percent full, at 11:59 it is 50 percent full, and at 12:00 it is completely full</title>
-          <rect x="60" y="30" width="110" height="190" rx="10" fill="none" stroke="#8a7d72" stroke-width="2.5"/>
-          <rect x="65" y="211" width="100" height="4" fill="#9a3412"/>
-          <text x="115" y="245" text-anchor="middle" font-size="13" fill="#1c1612">11:55</text>
-          <text x="115" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1612">3% full</text>
-
-          <rect x="265" y="30" width="110" height="190" rx="10" fill="none" stroke="#8a7d72" stroke-width="2.5"/>
-          <rect x="270" y="125" width="100" height="90" fill="#9a3412"/>
-          <text x="320" y="245" text-anchor="middle" font-size="13" fill="#1c1612">11:59</text>
-          <text x="320" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1612">50% full</text>
-
-          <rect x="470" y="30" width="110" height="190" rx="10" fill="none" stroke="#0b4a46" stroke-width="2.5"/>
-          <rect x="475" y="35" width="100" height="180" fill="#0f5c57"/>
-          <text x="525" y="245" text-anchor="middle" font-size="13" fill="#1c1612">12:00</text>
-          <text x="525" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">100% full</text>
+        <svg class="pic" viewBox="0 0 220 260" role="img" aria-labelledby="fig2title">
+          <title id="fig2title">A bottle that fills as bacteria double every minute; a slider moves the clock from 11:00 to 12:00</title>
+          <rect x="55" y="30" width="110" height="190" rx="10" fill="none" stroke="#8a7d72" stroke-width="2.5"/>
+          <rect id="bottleFill" x="60" y="214" width="100" height="6" fill="#9a3412"/>
+          <text id="bottleTimeLabel" x="110" y="245" text-anchor="middle" font-size="14" font-weight="700" fill="#1c1612">11:55</text>
+          <text id="bottlePctLabel" x="110" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#1c1612">3.1% full</text>
         </svg>
       </div>
-      <p class="one">Say bacteria that double every minute fill an empty bottle in exactly one hour. Five minutes before the end, the bottle still looks 97% empty. One minute before the end, it's still half empty. Then it's full.</p>
+      <div class="control">
+        <label for="minuteSlider">Minutes since 11:00 <span class="readout" id="minuteVal">55</span></label>
+        <input type="range" id="minuteSlider" min="0" max="60" value="55" step="1" aria-describedby="bottleReadout">
+      </div>
+      <p class="one" id="bottleReadout">Bacteria that double every minute fill an empty bottle in exactly one hour. Drag the slider &mdash; watch how long it stays looking almost empty.</p>
+      <noscript><p class="one">JavaScript is off, so the slider won't move &mdash; the bottle above is frozen at 11:55, five minutes before the end, when it's only 3% full and still looks 97% empty.</p></noscript>
       <details class="more">
         <summary>Why this trick works on almost anyone</summary>
         <p>Physicist Albert Bartlett used this exact bottle to argue that people misjudge exponential growth &mdash; a population, a debt, a resource running out &mdash; because most of the curve looks calm right up until the last couple of doublings, and by then there's no time left to react.</p>
@@ -259,5 +273,47 @@
     <p class="sources"><strong>Sources:</strong> Albert A. Bartlett, "<a href="https://www.albartlett.org/presentations/arithmetic_population_energy_transcript_english.html">Arithmetic, Population and Energy</a>" (lecture transcript). "<a href="https://openstax.org/books/biology-2e/pages/45-3-environmental-limits-to-population-growth">45.3 Environmental Limits to Population Growth</a>," Biology 2e, OpenStax. Longer, more technical version: <a href="/reference/exponential-growth/">Reference: Exponential Growth</a>.</p>
     <p class="to-top"><a href="#top">Back to top</a></p>
   </main>
+<script>
+(function () {
+  "use strict";
+  var slider = document.getElementById("minuteSlider");
+  var fill = document.getElementById("bottleFill");
+  var minuteVal = document.getElementById("minuteVal");
+  var timeLabel = document.getElementById("bottleTimeLabel");
+  var pctLabel = document.getElementById("bottlePctLabel");
+  if (!slider || !fill) return;
+
+  var TOP = 30, H = 190, BOTTOM = 220;
+
+  function pad(n) { return n < 10 ? "0" + n : String(n); }
+
+  function setText(node, s) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+    node.appendChild(document.createTextNode(s));
+  }
+
+  function render(minute) {
+    var pct = 100 * Math.pow(2, minute - 60);
+    if (pct < 0.05) pct = 0;
+    if (pct > 100) pct = 100;
+    var fh = H * (pct / 100);
+    var fy = BOTTOM - fh;
+    fill.setAttribute("y", fy.toFixed(1));
+    fill.setAttribute("height", Math.max(fh, 0).toFixed(1));
+    fill.setAttribute("fill", pct >= 95 ? "#0f5c57" : "#9a3412");
+    var label = minute >= 60 ? "12:00" : ("11:" + pad(minute));
+    setText(timeLabel, label);
+    var pctText = (pct < 0.1 ? "<0.1" : String(Math.round(pct * 10) / 10)) + "% full";
+    setText(pctLabel, pctText);
+    setText(minuteVal, String(minute));
+    slider.setAttribute("aria-valuetext", label + ", " + pctText);
+  }
+
+  slider.addEventListener("input", function () {
+    render(parseInt(slider.value, 10));
+  });
+  render(parseInt(slider.value, 10));
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exponential Decay — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Exponential decay is a pattern in which a quantity's rate of decrease is proportional to its current size, so the quantity loses a constant percentage of itself each period. Half-life, carbon-14 dating, drug elimination, and Newton's Law of Cooling.">
+  <meta property="og:title" content="Exponential Decay — Reference">
+  <meta property="og:description" content="A quantity whose decrease rate is proportional to its current size. Half-life, carbon-14 dating, drug elimination, and Newton's Law of Cooling.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/exponential-decay/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/exponential-decay/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin: 0.5rem 0 1.2rem;
+      text-align: center;
+    }
+    table.data {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5rem 0 1.2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    table.data th, table.data td {
+      border: 1px solid var(--line);
+      padding: 0.4rem 0.7rem;
+      text-align: left;
+    }
+    table.data th { background: var(--box-bg); }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Mathematics &middot; Applied Mathematics</p>
+    <h1>Exponential Decay</h1>
+    <p class="updated">Reference entry &middot; last updated August 24, 2026</p>
+
+    <p class="lede"><strong>Exponential decay</strong> is a pattern of change in which a quantity's rate of decrease is proportional to its current size, so the quantity loses a constant <em>percentage</em> of itself each period rather than a constant amount. A quantity <em>N</em> decaying exponentially follows \( N(t) = N_0 e^{-\lambda t} \), where \( \lambda \) is the decay constant. It is the mirror image of exponential growth: the same functional form, with a negative rate, so the quantity shrinks toward zero instead of compounding upward &mdash; and, like growth, it is characterized by a fixed multiplicative rate rather than a fixed absolute change.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#half-life">Half-life</a></li>
+        <li><a href="#radiocarbon">Carbon-14 dating and its limit</a></li>
+        <li><a href="#pharmacokinetics">Drug elimination</a></li>
+        <li><a href="#cooling">Newton's Law of Cooling</a></li>
+        <li><a href="#vs-growth">Decay vs. growth</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="half-life">Half-life</h2>
+    <p>Exponential decay is usually characterized by its <strong>half-life</strong>: the time it takes for the quantity to fall to half its current value, which is the same regardless of what that current value happens to be. Solving \( N_0 e^{-\lambda t} = \tfrac{1}{2}N_0 \) for <em>t</em> gives \( t_{1/2} = \ln(2)/\lambda \approx 0.693/\lambda \).<span class="cite">[<a href="#ref1">1</a>]</span> This is the exact mirror of the doubling-time formula for exponential growth &mdash; same constant, opposite sign on the exponent.</p>
+    <div class="formula">\( t_{1/2} = \dfrac{\ln(2)}{\lambda} \approx \dfrac{0.693}{\lambda} \)</div>
+    <table class="data">
+      <tr><th>Half-lives elapsed</th><th>Fraction remaining</th></tr>
+      <tr><td>1</td><td>50%</td></tr>
+      <tr><td>2</td><td>25%</td></tr>
+      <tr><td>3</td><td>12.5%</td></tr>
+      <tr><td>4&ndash;5</td><td>&asymp;3&ndash;6% (commonly treated as "negligible")</td></tr>
+      <tr><td>10</td><td>&asymp;0.1%</td></tr>
+    </table>
+    <p>Because half-life is a fixed property of the process, not of the current quantity, a sample never technically reaches zero under this model &mdash; it only ever gets closer, by half each period. Cobalt-60, with a half-life of about 5.27 years, leaves half its original radioactivity after 5.27 years regardless of whether the starting sample was one gram or ten.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="radiocarbon">Carbon-14 dating and its limit</h2>
+    <p>Radiocarbon dating is the standard applied example of half-life. Living organisms continuously exchange carbon with the atmosphere &mdash; respiration in animals, photosynthesis in plants &mdash; which keeps the ratio of radioactive carbon-14 to stable carbon-12 in their tissue matched to the atmospheric ratio. At death, that exchange stops, and the carbon-14 already present decays on its own schedule, with a half-life of 5,730 years.<span class="cite">[<a href="#ref2">2</a>]</span> Because the technique depends on measuring how much carbon-14 activity remains, it has a hard practical ceiling: after roughly ten half-lives &mdash; about 58,000 to 62,000 years &mdash; so little carbon-14 is left that it can no longer be distinguished from instrument noise. Older material has to be dated with an isotope of longer half-life, matched to the timescale being measured; carbon-14's short half-life is what makes it useful for archaeological and recent-geological dating specifically, not a general-purpose clock.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="pharmacokinetics">Drug elimination</h2>
+    <p>Pharmacokinetics applies the same model to how the body clears a medication. A drug cleared by <strong>first-order kinetics</strong> has a half-life &mdash; the time for its plasma concentration to fall by half &mdash; that stays constant regardless of the current dose, because the elimination rate is proportional to the concentration present.<span class="cite">[<a href="#ref3">3</a>]</span> Clinicians use this to justify a standard rule of thumb: a drug is considered substantially eliminated after four to five half-lives, by which point roughly 94&ndash;97% of it is gone. Morphine, with a half-life of about 120 minutes, is treated as negligible in the body after roughly eight to ten hours &mdash; four to five halvings of its two-hour clock.<span class="cite">[<a href="#ref3">3</a>]</span> Not every drug follows first-order kinetics: some are cleared at a fixed rate regardless of concentration (zero-order kinetics), in which case half-life is not constant and this shortcut does not apply.</p>
+
+    <h2 id="cooling">Newton's Law of Cooling</h2>
+    <p>Newton's Law of Cooling models how a hot object's temperature falls toward the temperature of its surroundings, and the detail easiest to miss is what is actually decaying: not the object's temperature itself, but the <em>gap</em> between the object's temperature and the ambient temperature. The solution is \( T(t) = T_a + (T_0 - T_a)e^{-kt} \), where \( T_a \) is the constant ambient temperature, \( T_0 \) is the starting temperature, and <em>k</em> is a positive cooling-rate constant.<span class="cite">[<a href="#ref4">4</a>]</span> Because the exponential term is attached to the difference \( (T_0 - T_a) \) rather than to \( T_a \) itself, it is that difference which shrinks toward zero; the object's temperature therefore approaches \( T_a \) asymptotically rather than continuing past it, matching what is observed. A cup of coffee 10&deg; above room temperature and one 50&deg; above room temperature both lose the same <em>percentage</em> of their respective gaps in the same time, even though the hotter cup loses far more heat in absolute terms early on.</p>
+
+    <h2 id="vs-growth">Decay vs. growth</h2>
+    <p>Exponential decay and exponential growth are the same equation with the sign of the rate flipped: \( N(t) = N_0 e^{kt} \) grows when <em>k</em> is positive and decays when <em>k</em> is negative. Doubling time and half-life are computed with the identical formula, \( \ln(2)/|k| \), just answering opposite questions &mdash; how long to double versus how long to halve. Both share the property that the rate applies to the <em>current</em> quantity rather than the starting quantity, which is why both a growing population and a decaying radioactive sample can be fully described by a single constant rate that never has to change as the quantity itself changes.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/eli5/exponential-decay/">ELI5: What Is Exponential Decay?</a> &mdash; a picture-book explainer covering the same ground</li>
+      <li><a href="/reference/exponential-growth/">Reference: Exponential Growth</a> &mdash; the mirror-image process this entry decays away from</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> "21.3 Radioactive Decay," <em>Chemistry 2e</em>, OpenStax &mdash; <a href="https://openstax.org/books/chemistry-2e/pages/21-3-radioactive-decay">https://openstax.org/books/chemistry-2e/pages/21-3-radioactive-decay</a></li>
+      <li id="ref2"><span class="backlink">^</span> "Radiocarbon Dating," <em>Chemistry LibreTexts</em> &mdash; <a href="https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Supplemental_Modules_(Physical_and_Theoretical_Chemistry)/Nuclear_Chemistry/Applications_of_Nuclear_Chemistry/Radiocarbon_Dating">https://chem.libretexts.org/.../Radiocarbon_Dating</a></li>
+      <li id="ref3"><span class="backlink">^</span> "Pharmacokinetics," <em>StatPearls</em>, NIH National Library of Medicine &mdash; <a href="https://www.ncbi.nlm.nih.gov/books/NBK557744/">https://www.ncbi.nlm.nih.gov/books/NBK557744/</a></li>
+      <li id="ref4"><span class="backlink">^</span> "4.7: Exponential and Logarithmic Models," <em>Precalculus</em>, Mathematics LibreTexts &mdash; <a href="https://math.libretexts.org/Courses/Quinebaug_Valley_Community_College/MAT186:_Pre-calculus_-_Walsh/04:_Exponential_and_Logarithmic_Functions/4.07:_Exponential_and_Logarithmic_Models">https://math.libretexts.org/.../4.07:_Exponential_and_Logarithmic_Models</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

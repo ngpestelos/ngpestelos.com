@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What Is Exponential Decay? — ELI5 — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Exponential decay in plain words: each step loses a percentage of the current amount, not a fixed amount, so the loss itself keeps shrinking. Drag the slider through carbon-14's half-lives and see why the signal eventually vanishes into noise.">
+  <meta property="og:title" content="What Is Exponential Decay? — ELI5">
+  <meta property="og:description" content="Each step loses a percentage of the current amount, not a fixed amount, so the loss itself keeps shrinking. Drag the slider through carbon-14's half-lives and see why the signal eventually vanishes into noise.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/exponential-decay/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/exponential-decay/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --paper: #f4eee4;
+      --ink: #1c1612;
+      --mute: #6e645a;
+      --line: #d4c9bb;
+      --op: #9a3412;
+      --op-edge: #7c2d12;
+      --leaf: #0f5c57;
+      --leaf-edge: #0b4a46;
+      --edge: #8a7d72;
+      --yes: #166534;
+      --no: #9f1239;
+      --card: #fffaf3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
+    }
+    main {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      margin: 0 0 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .back a { color: var(--op); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    h1, h2 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-weight: 700;
+      line-height: 1.12;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 2.9rem);
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: clamp(1.4rem, 3.4vw, 1.9rem);
+      margin-bottom: 1rem;
+    }
+    .lead {
+      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      color: var(--mute);
+      max-width: 44ch;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+    }
+    .block {
+      padding: 2.2rem 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.2rem;
+      text-align: center;
+    }
+    .block h2 { max-width: 32ch; margin-inline: auto; }
+    .one {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--mute);
+      max-width: 44ch;
+      line-height: 1.35;
+      margin-inline: auto;
+    }
+    .one em { color: var(--ink); font-style: normal; font-weight: 700; }
+    .figure {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.05rem 0.95rem 0.9rem;
+      box-shadow: 0 10px 28px rgba(28, 22, 18, 0.07);
+      width: 36rem;
+      max-width: 100%;
+      min-width: 0;
+      margin-inline: auto;
+    }
+    svg.pic {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    .more {
+      width: 100%;
+      max-width: 42rem;
+      margin: 0.15rem auto 0;
+      text-align: left;
+      font-size: 1.02rem;
+      line-height: 1.45;
+    }
+    .more summary {
+      cursor: pointer;
+      color: var(--op);
+      font-weight: 700;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+      text-align: center;
+      padding: 0.3rem 0.4rem;
+    }
+    .more summary:hover { text-decoration: underline; }
+    .more p {
+      margin: 0.65rem auto 0.15rem;
+      max-width: 44ch;
+      color: var(--mute);
+    }
+    .sources {
+      padding-top: 1.8rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.92rem;
+      color: var(--mute);
+      max-width: 44ch;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    .sources a { color: var(--op); }
+    .control {
+      width: min(100%, 26rem);
+      margin: 0.2rem auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .control label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--ink);
+      display: flex;
+      justify-content: space-between;
+    }
+    .control input[type="range"] {
+      width: 100%;
+      accent-color: var(--op);
+    }
+    .readout { color: var(--op); }
+    .to-top {
+      margin: 1.6rem 0 0;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .to-top a { color: var(--op); text-decoration: none; }
+    .to-top a:hover { text-decoration: underline; }
+    @media (max-width: 700px) {
+      .figure { width: 100%; padding: 0.85rem 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/eli5/">← ELI5</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Mathematics</p>
+    <h1>What is exponential decay?</h1>
+    <p class="lead">It's when something shrinks by a <strong>percentage of itself</strong> each step, instead of by the same fixed amount every time &mdash; so the smaller it gets, the smaller each step's loss gets too.</p>
+
+    <section class="block">
+      <h2>Losing a percentage, not a fixed amount</h2>
+      <div class="figure">
+        <svg class="pic" viewBox="0 0 640 250" role="img" aria-labelledby="fig1title">
+          <title id="fig1title">Six bars, each exactly half the height of the one before: 128, 64, 32, 16, 8, and 4</title>
+          <line x1="20" y1="210" x2="620" y2="210" stroke="#8a7d72" stroke-width="2"/>
+          <rect x="40" y="18" width="60" height="192" rx="3" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
+          <text x="70" y="228" text-anchor="middle" font-size="12" fill="#6e645a">128</text>
+          <rect x="120" y="114" width="60" height="96" rx="3" fill="#9a3412" stroke="#7c2d12" stroke-width="1.5"/>
+          <text x="150" y="228" text-anchor="middle" font-size="12" fill="#6e645a">64</text>
+          <rect x="200" y="162" width="60" height="48" rx="3" fill="#9a3412" stroke="#7c2d12" stroke-width="1.5"/>
+          <text x="230" y="228" text-anchor="middle" font-size="12" fill="#6e645a">32</text>
+          <rect x="280" y="186" width="60" height="24" rx="3" fill="#9a3412" stroke="#7c2d12" stroke-width="1.5"/>
+          <text x="310" y="228" text-anchor="middle" font-size="12" fill="#6e645a">16</text>
+          <rect x="360" y="198" width="60" height="12" rx="3" fill="#9a3412" stroke="#7c2d12" stroke-width="1.5"/>
+          <text x="390" y="228" text-anchor="middle" font-size="12" fill="#6e645a">8</text>
+          <rect x="440" y="204" width="60" height="6" rx="3" fill="#b7aaa0" stroke="#8a7d72" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="470" y="228" text-anchor="middle" font-size="12" fill="#6e645a">4</text>
+          <text x="70" y="14" text-anchor="middle" font-size="13" font-weight="700" fill="#1c1612">−64 this step</text>
+          <text x="470" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="#1c1612">−4</text>
+        </svg>
+      </div>
+      <p class="one">Going from 128 to 64 loses sixty-four. Going from 8 to 4 loses only four &mdash; the same halving rule, but a much smaller loss, because it's applied to a much smaller number.</p>
+    </section>
+
+    <section class="block">
+      <h2>Half of what's left, every half-life</h2>
+      <div class="figure">
+        <svg class="pic" viewBox="0 0 220 260" role="img" aria-labelledby="fig2title">
+          <title id="fig2title">A tank that drains as a substance loses half of what remains each half-life; a slider moves through zero to ten half-lives</title>
+          <rect x="55" y="30" width="110" height="190" rx="10" fill="none" stroke="#8a7d72" stroke-width="2.5"/>
+          <rect id="tankFill" x="60" y="35" width="100" height="180" fill="#9a3412"/>
+          <text id="halfLifeLabel" x="110" y="245" text-anchor="middle" font-size="14" font-weight="700" fill="#1c1612">4 half-lives</text>
+          <text id="tankPctLabel" x="110" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#1c1612">6.3% left</text>
+        </svg>
+      </div>
+      <div class="control">
+        <label for="halfLifeSlider">Half-lives elapsed <span class="readout" id="halfLifeVal">4</span></label>
+        <input type="range" id="halfLifeSlider" min="0" max="10" value="4" step="1" aria-describedby="tankReadout">
+      </div>
+      <p class="one" id="tankReadout">Using carbon-14's real half-life of 5,730 years: <strong id="yearsReadout">22,920</strong> years have passed at this point.</p>
+      <noscript><p class="one">JavaScript is off, so the slider won't move &mdash; the tank above is frozen at 4 half-lives, about 22,920 years on carbon-14's clock, with roughly 6% of the original signal left.</p></noscript>
+    </section>
+
+    <section class="block">
+      <h2>It never quite hits zero</h2>
+      <div class="figure">
+        <svg class="pic" viewBox="0 0 640 280" role="img" aria-labelledby="fig3title">
+          <title id="fig3title">A curve that keeps dropping and flattening but never reaches the zero line, crossing a dashed detector noise floor partway across, after which the real signal can no longer be told apart from noise</title>
+          <line x1="40" y1="240" x2="600" y2="240" stroke="#8a7d72" stroke-width="2"/>
+          <line x1="40" y1="240" x2="40" y2="20" stroke="#8a7d72" stroke-width="2"/>
+          <path d="M40,40 C 150,62 220,138 300,178 C 400,206 500,216 600,222" fill="none" stroke="#9a3412" stroke-width="2.5"/>
+          <line x1="40" y1="208" x2="600" y2="208" stroke="#9f1239" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <text x="600" y="200" text-anchor="end" font-size="12" font-weight="700" fill="#9f1239">detector noise floor</text>
+          <circle cx="366" cy="208" r="5" fill="#9f1239"/>
+          <text x="366" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#9f1239">signal lost here</text>
+        </svg>
+      </div>
+      <p class="one">The curve keeps shrinking forever, in theory. In practice, once what's left drops below what an instrument can detect &mdash; for carbon dating, that's around ten half-lives &mdash; there's no way to tell the real signal apart from noise.</p>
+    </section>
+
+    <p class="sources"><strong>Sources:</strong> "<a href="https://openstax.org/books/chemistry-2e/pages/21-3-radioactive-decay">21.3 Radioactive Decay</a>," Chemistry 2e, OpenStax. "<a href="https://chem.libretexts.org/Bookshelves/Physical_and_Theoretical_Chemistry_Textbook_Maps/Supplemental_Modules_(Physical_and_Theoretical_Chemistry)/Nuclear_Chemistry/Applications_of_Nuclear_Chemistry/Radiocarbon_Dating">Radiocarbon Dating</a>," Chemistry LibreTexts. Longer, more technical version: <a href="/reference/exponential-decay/">Reference: Exponential Decay</a>.</p>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+  </main>
+<script>
+(function () {
+  "use strict";
+  var slider = document.getElementById("halfLifeSlider");
+  var fill = document.getElementById("tankFill");
+  var halfLifeVal = document.getElementById("halfLifeVal");
+  var halfLifeLabel = document.getElementById("halfLifeLabel");
+  var pctLabel = document.getElementById("tankPctLabel");
+  var yearsReadout = document.getElementById("yearsReadout");
+  if (!slider || !fill) return;
+
+  var TOP = 30, H = 190, BOTTOM = 220;
+  var CARBON14_HALF_LIFE = 5730;
+
+  function setText(node, s) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+    node.appendChild(document.createTextNode(s));
+  }
+
+  function commas(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function render(halfLives) {
+    var pct = 100 / Math.pow(2, halfLives);
+    var fh = H * (pct / 100);
+    var fy = BOTTOM - fh;
+    fill.setAttribute("y", fy.toFixed(1));
+    fill.setAttribute("height", Math.max(fh, 0).toFixed(1));
+    fill.setAttribute("fill", pct < 5 ? "#b7aaa0" : "#9a3412");
+    var hlText = halfLives + (halfLives === 1 ? " half-life" : " half-lives");
+    setText(halfLifeLabel, hlText);
+    var pctText = (pct < 0.1 ? "<0.1" : String(Math.round(pct * 10) / 10)) + "% left";
+    setText(pctLabel, pctText);
+    setText(halfLifeVal, String(halfLives));
+    setText(yearsReadout, commas(halfLives * CARBON14_HALF_LIFE));
+    slider.setAttribute("aria-valuetext", hlText + ", " + pctText);
+  }
+
+  slider.addEventListener("input", function () {
+    render(parseInt(slider.value, 10));
+  });
+  render(parseInt(slider.value, 10));
+})();
+</script>
+</body>
+</html>
