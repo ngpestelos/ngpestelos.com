@@ -120,6 +120,13 @@
     .intro-card p:last-child {
       margin-bottom: 0;
     }
+    .intro-card a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    .intro-card a:hover {
+      color: var(--accent-hover);
+    }
     .section-title {
       font-size: 1.1rem;
       font-weight: 700;
@@ -229,13 +236,28 @@
     </header>
 
     <div class="intro-card">
-      <p><strong>The Mechanic:</strong> Unlike a linear syllabus, a knowledge tree structures a domain as a directed acyclic graph (per Math Academy's knowledge frontier concept).</p>
+      <p><strong>The Mechanic:</strong> Unlike a linear syllabus, a knowledge tree structures a domain as a directed acyclic graph (per <a href="https://www.mathacademy.com/how-it-works" target="_blank" rel="noopener">Math Academy's knowledge frontier concept</a>).</p>
       <p>Each node specifies a falsifiable demonstration test, exact references, and prerequisite dependencies. You study only at the frontier—items whose prerequisites are mastered.</p>
     </div>
 
     <h2 class="section-title">Published Trees</h2>
 
     <ul class="trees-list">
+      <li>
+        <a href="/trees/agents/" class="tree-card">
+          <div class="tree-card-header">
+            <h3 class="tree-title">AI Agents</h3>
+            <span class="tree-meta">22 nodes · 6 phases</span>
+          </div>
+          <p class="tree-desc">Autonomous agent systems: POMDP formulation, ReAct and Reflexion execution loops, MCP tool calling schemas, 3-tier memory hierarchies, sandboxing, and multi-agent supervisor/worker orchestration.</p>
+          <div class="tree-footer">
+            <span class="pill pill-mastered">14 Mastered</span>
+            <span class="pill pill-frontier">Phase 3 Frontier</span>
+            <span class="pill pill-backbone">ReAct &amp; POMDP Backbone</span>
+          </div>
+        </a>
+      </li>
+
       <li>
         <a href="/trees/context-engineering/" class="tree-card">
           <div class="tree-card-header">

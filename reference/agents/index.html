@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Autonomous Agents: MDP formulation, perception-action-reflection loops, tool calling protocols, memory tiers, and multi-agent orchestration.">
+  <meta property="og:title" content="Agents — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Autonomous AI Agents: MDP formulation, perception-action-reflection loops, tool calling protocols, memory tiers, and multi-agent orchestration.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/agents/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/agents/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0 1.4rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+    .def-box {
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px dashed #d0d7de;
+    }
+    .def-box:last-child { border-bottom: none; }
+    .term-title { font-weight: 700; font-size: 1.05rem; display: inline; }
+    .term-desc { display: inline; margin-left: 0.35rem; }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Agents</h1>
+    <p class="subtitle">A citable ground-truth reference on Autonomous Agents: MDP formulation, perception-action-reflection loops, tool calling protocols, memory tiers, and multi-agent orchestration.</p>
+
+    <div class="companion-box">
+      <h2>Companion Formats &amp; Essays</h2>
+      <ul>
+        <li>🎨 <a href="/eli5/agents/"><strong>ELI5: How Do AI Agents Work?</strong></a> — Visual picture-book explainer.</li>
+        <li>🌳 <a href="/trees/agents/"><strong>AI Agents Knowledge Tree</strong></a> — Prerequisite curriculum map and active frontier.</li>
+        <li>📖 <a href="/writing/ai-writes-code-plan-becomes-work/"><strong>Essay: When the AI Writes the Code, the Plan Becomes the Work</strong></a> — Agent autonomy and human specification.</li>
+        <li>📖 <a href="/writing/agent-didnt-get-dumber-chat-got-contaminated/"><strong>Essay: The Agent Didn't Get Dumber, the Chat Got Contaminated</strong></a> — Context degradation in stateful agent sessions.</li>
+        <li>📖 <a href="/writing/debug-system-not-prompt/"><strong>Essay: Debug the System Not the Prompt</strong></a> — Agent harness architecture over prompt tuning.</li>
+        <li>📚 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> &middot; <a href="/reference/prompt-engineering/"><strong>Reference: Prompt Engineering</strong></a></li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">1. Formal Definition &amp; Mathematical Model</a> &middot;
+        <a href="#core-subsystems">2. The Four Core Agent Subsystems</a> &middot;
+        <a href="#execution-loops">3. Execution Loops (ReAct, Reflexion, Plan-and-Solve)</a> &middot;
+        <a href="#tool-calling">4. Tool Calling Protocols &amp; Sandboxing</a> &middot;
+        <a href="#multi-agent">5. Multi-Agent Topologies &amp; Orchestration</a> &middot;
+        <a href="#failure-modes">6. Failure Modes &amp; Defensive Guardrails</a> &middot;
+        <a href="#topology-matrix">7. Architecture Comparison Matrix</a> &middot;
+        <a href="#sources">8. Sources &amp; Literature</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Formal Definition -->
+    <h2 id="definition">1. Formal Definition &amp; Mathematical Model</h2>
+    <p>
+      An <strong>AI Agent</strong> is an autonomous computational system that perceives its environment through multimodal sensors/context inputs, maintains internal state and goals, formulates sequential reasoning plans, and executes discrete actions via external tools to affect environmental state across multi-turn trajectories.
+    </p>
+    <p>
+      Formally, an agent operates within a Partially Observable Markov Decision Process (POMDP) defined by the tuple:
+    </p>
+    $$\mathcal{M} = \langle \mathcal{S}, \mathcal{A}, \mathcal{O}, \mathcal{T}, \mathcal{Z}, \mathcal{R}, \gamma \rangle$$
+    <ul>
+      <li>$\mathcal{S}$: Environmental state space (e.g., codebase filesystem, database records, API server state).</li>
+      <li>$\mathcal{A}$: Discrete action space parameterized by structured tool calls: $a_t = (\text{tool\_name}, \text{arguments})$.</li>
+      <li>$\mathcal{O}$: Observation space (e.g., shell stdout/stderr, API responses, compiler outputs).</li>
+      <li>$\mathcal{T}(s_{t+1} \mid s_t, a_t)$: State transition probability density function governed by the external system.</li>
+      <li>$\mathcal{Z}(o_t \mid s_t, a_{t-1})$: Observation emission function mapping system state to tokenized observations.</li>
+      <li>$\mathcal{R}(s_t, a_t)$: Reward function (or binary evaluation success criteria $\mathcal{M}(s_{\text{final}}) \in \{0, 1\}$).</li>
+      <li>$\gamma \in [0, 1]$: Temporal discount factor for multi-turn planning horizon.</li>
+    </ul>
+    <p>
+      The agent parameterizes an autoregressive policy $\pi_\theta(a_t \mid h_t)$ conditioned on the cumulative trajectory history $h_t = (o_0, a_0, o_1, a_1, \dots, o_t)$, optimizing expected cumulative utility:
+    </p>
+    $$\pi^* = \arg\max_\pi \mathbb{E}\left[ \sum_{t=0}^T \gamma^t \mathcal{R}(s_t, a_t) \;\Bigg|\; a_t \sim \pi(\cdot \mid h_t) \right]$$
+
+    <!-- Section 2: Four Core Subsystems -->
+    <h2 id="core-subsystems">2. The Four Core Agent Subsystems</h2>
+
+    <div class="def-box">
+      <p class="term-title">1. Planning &amp; Reasoning Core:</p>
+      <p class="term-desc">Decomposes high-level natural language objectives into executable DAGs (Directed Acyclic Graphs) of sub-tasks. Utilizes tree search (MCTS/ToT), linear rationales (CoT), or dynamic replanning upon encountering unexpected environment errors.</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">2. Memory Hierarchy:</p>
+      <p class="term-desc">
+        <ul>
+          <li><strong>Short-Term (Working Memory):</strong> Active KV-cache token context containing system instructions, recent turn observations, and scratchpad state.</li>
+          <li><strong>Episodic Memory:</strong> Vector-indexed past conversation transcripts and tool execution histories retrieved via semantic similarity ($k$-NN RAG).</li>
+          <li><strong>Parametric Memory:</strong> Frozen foundation model weights $\theta$ capturing general world knowledge and code representations.</li>
+        </ul>
+      </p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">3. Tool &amp; Action Interface:</p>
+      <p class="term-desc">A deterministic bridge translating LLM-generated JSON/symbolic tokens into RPC, HTTP, or POSIX system calls, capturing outputs and packing them back into observations.</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">4. Environment &amp; Sensor Ingestion:</p>
+      <p class="term-desc">Parsers converting unstructured external state (file diffs, DOM trees, compiler logs) into clean, token-efficient, schema-validated prompt payloads.</p>
+    </div>
+
+    <!-- Section 3: Execution Loops -->
+    <h2 id="execution-loops">3. Execution Loops (ReAct, Reflexion, Plan-and-Solve)</h2>
+
+    <div class="def-box">
+      <p class="term-title">ReAct Loop (Yao et al., 2022):</p>
+      <p class="term-desc">Interleaves internal deduction with external interaction in a continuous three-phase step:
+      $$\text{Thought}_t \to \text{Action}_t \to \text{Observation}_t \to \text{Thought}_{t+1}$$
+      Prevents error compounding by grounding each reasoning step against real-time environment observations rather than hallucinating world transitions.</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Reflexion (Shinn et al., 2023):</p>
+      <p class="term-desc">Introduces episodic self-reflection across trials. When a trajectory fails validation ($\mathcal{R}=0$), a reflection model analyzes the error trace and generates a natural language self-critique $r \in \mathcal{L}$, which is prepended into working memory for the next trial:
+      $$h_{t}^{\text{trial } k+1} = h_0 \circ r_k \circ (o_0, a_0, \dots)$$</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Plan-and-Solve (Wang et al., 2023):</p>
+      <p class="term-desc">Separates strategic planning from tactical execution. A planner agent produces a static sub-task list, and an executor agent executes each task sequentially, updating plan progress after each verification gate.</p>
+    </div>
+
+    <!-- Section 4: Tool Calling & Sandboxing -->
+    <h2 id="tool-calling">4. Tool Calling Protocols &amp; Sandboxing</h2>
+    <p>
+      Modern agents interact with host operating systems via standardized tool calling protocols (e.g., Anthropic Tool Use API, OpenAI Function Calling, MCP — Model Context Protocol).
+    </p>
+
+    <pre><code>// Formal Tool Schema Specification (JSON Schema)
+{
+  "name": "replace_file_content",
+  "description": "Edits an existing file via exact block match replacement.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "target_file": { "type": "string", "description": "Absolute path" },
+      "target_content": { "type": "string", "description": "Exact text to replace" },
+      "replacement_content": { "type": "string", "description": "New content" }
+    },
+    "required": ["target_file", "target_content", "replacement_content"]
+  }
+}</code></pre>
+
+    <p><strong>Sandboxing &amp; Execution Safety:</strong></p>
+    <ul>
+      <li><strong>Process Isolation:</strong> Running arbitrary shell and interpreter execution inside ephemeral containers (Docker/gVisor), Linux namespaces, or isolated WASM runtimes.</li>
+      <li><strong>Path Traversal &amp; Permission Gates:</strong> Strict allowlisting of workspace directories and explicit human approval gates for destructive commands (e.g., <code>rm -rf</code>, <code>DROP TABLE</code>, cloud infrastructure provisioning).</li>
+      <li><strong>Idempotent Operations:</strong> Designing tools such that repeated invocation does not cause corrupting side effects (e.g., git patch verification, atomic writes).</li>
+    </ul>
+
+    <!-- Section 5: Multi-Agent Topologies -->
+    <h2 id="multi-agent">5. Multi-Agent Topologies &amp; Orchestration</h2>
+    <p>
+      Complex workflows exceed the context window and cognitive capacity of a single monolithic agent. Multi-agent systems distribute work across specialized agent nodes.
+    </p>
+
+    <div class="def-box">
+      <p class="term-title">Hierarchical (Supervisor-Worker):</p>
+      <p class="term-desc">An orchestrator decomposes the primary goal, spawns specialized subagents (e.g., Code Searcher, Test Writer, Refactorer), collects structured results, and handles task transitions. Subagent context windows remain clean and focused.</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Sequential Pipeline (Assembly Line):</p>
+      <p class="term-desc">Output of Agent $A$ (e.g., Architectural Spec) forms the input prompt for Agent $B$ (Code Implementation), which passes artifacts to Agent $C$ (Security Auditor).</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Blackboard Architecture:</p>
+      <p class="term-desc">Multiple autonomous agents read from and write to a shared, persistent state repository (e.g., a shared git repository or KV store) asynchronously without point-to-point message routing.</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Multi-Agent Debate &amp; Consensus (Du et al., 2023):</p>
+      <p class="term-desc">Multiple independent agents generate candidate solutions and critique each other's outputs across debate rounds, converging on truth via adversarial peer review.</p>
+    </div>
+
+    <!-- Section 6: Failure Modes -->
+    <h2 id="failure-modes">6. Failure Modes &amp; Defensive Guardrails</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Failure Mode</th>
+          <th>Root Cause</th>
+          <th>Defensive Mitigation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Infinite Error-Fix Loops</strong></td>
+          <td>Agent encounters tool failure, reprompts with identical strategy, and exhausts token budget.</td>
+          <td>Anti-loop watchdog counters; deterministic circuit breaker after $N=3$ identical errors.</td>
+        </tr>
+        <tr>
+          <td><strong>Context Contamination</strong></td>
+          <td>Verbose tool outputs (gigabyte logs, minified JS) push system instructions out of effective attention span.</td>
+          <td>Observation truncation, intermediate summarization, and ephemeral subagent scoping.</td>
+        </tr>
+        <tr>
+          <td><strong>Compounding Trajectory Drift</strong></td>
+          <td>Small incorrect assumption at Step 1 snowballs into invalid refactors by Step 10.</td>
+          <td>Plan-gate verification: enforcing test assertions before advancing to subsequent sub-tasks.</td>
+        </tr>
+        <tr>
+          <td><strong>Indirect Prompt Injection</strong></td>
+          <td>Agent reads untrusted webpage/file containing malicious override instructions.</td>
+          <td>Dual-LLM reader-actor privilege separation; XML boundary delimiters.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 7: Topology Matrix -->
+    <h2 id="topology-matrix">7. Architecture Comparison Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Architecture</th>
+          <th>Coordination Overhead</th>
+          <th>Context Isolation</th>
+          <th>Fault Tolerance</th>
+          <th>Best Suited For</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Monolithic Single-Agent</strong></td>
+          <td>None</td>
+          <td>Low (Single context window)</td>
+          <td>Low (Error halts session)</td>
+          <td>Targeted scripting, single-file edits, interactive chat assistants.</td>
+        </tr>
+        <tr>
+          <td><strong>Hierarchical Orchestrator</strong></td>
+          <td>Medium</td>
+          <td>High (Subagents have fresh context)</td>
+          <td>High (Subagent failure isolated)</td>
+          <td>Full-stack software engineering, multi-repo migrations, deep research.</td>
+        </tr>
+        <tr>
+          <td><strong>Sequential Pipeline</strong></td>
+          <td>Low</td>
+          <td>Medium (Handoff artifacts)</td>
+          <td>Medium (Stage-gated verification)</td>
+          <td>Content publishing, automated code review &amp; static analysis.</td>
+        </tr>
+        <tr>
+          <td><strong>Multi-Agent Debate</strong></td>
+          <td>High</td>
+          <td>High (Independent perspectives)</td>
+          <td>Very High (Consensus filtering)</td>
+          <td>Fact-checking, security vulnerability audits, formal verification.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 8: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Foundational Literature</h3>
+      <ul>
+        <li>Stuart Russell and Peter Norvig (2020): <a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Artificial Intelligence: A Modern Approach</a> (4th Edition, Pearson — Rational Agents &amp; POMDPs).</li>
+        <li>Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao (2022): <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct: Synergizing Reasoning and Acting in Language Models</a> (ICLR 2023).</li>
+        <li>Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, Shunyu Yao (2023): <a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener">Reflexion: Language Agents with Verbal Reinforcement Learning</a> (NeurIPS 2023).</li>
+        <li>Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein (2023): <a href="https://arxiv.org/abs/2304.03442" target="_blank" rel="noopener">Generative Agents: Interactive Simulacra of Human Behavior</a> (UIST 2023).</li>
+        <li>Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Shaokun Zhang, Erkang Zhu, et al. (2023): <a href="https://arxiv.org/abs/2308.08155" target="_blank" rel="noopener">AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation</a>.</li>
+        <li>Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, et al. (2023): <a href="https://arxiv.org/abs/2308.00352" target="_blank" rel="noopener">MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework</a> (ICLR 2024).</li>
+        <li>Yilun Du, Shuang Li, Antonio Torralba, Joshua B. Tenenbaum, Igor Mordatch (2023): <a href="https://arxiv.org/abs/2305.14325" target="_blank" rel="noopener">Improving Factuality and Reasoning in Language Models through Multiagent Debate</a> (ICML 2024).</li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/reference/context-engineering/">Context Engineering</a> &middot; <a href="/reference/prompt-engineering/">Prompt Engineering</a> &middot; <a href="/reference/large-language-models/">Large Language Models</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>

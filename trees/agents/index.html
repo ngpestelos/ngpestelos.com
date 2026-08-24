@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Agents Knowledge Tree — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Prerequisite graph and knowledge frontier for Autonomous AI Agents: execution loops, tool calling, memory tiers, and multi-agent orchestration.">
+  <meta property="og:title" content="AI Agents Knowledge Tree">
+  <meta property="og:description" content="Prerequisite graph and knowledge frontier for Autonomous AI Agents: execution loops, tool calling, memory tiers, and multi-agent orchestration.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/trees/agents/">
+  <link rel="canonical" href="https://ngpestelos.com/trees/agents/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #f4f7f5;
+      --card-bg: #ffffff;
+      --ink: #111a17;
+      --mute: #53645e;
+      --line: #d4deda;
+      --card: #ffffff;
+      --card-mastered: #f0fdf4;
+      --card-frontier: #fffbeb;
+      --mastered-badge: #15803d;
+      --frontier-badge: #b45309;
+      --locked-badge: #64748b;
+      --accent: #0e4a3b;
+      --accent-hover: #083328;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.55;
+    }
+    main {
+      max-width: 54rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-size: 0.9rem;
+      color: var(--mute);
+      margin-bottom: 0.8rem;
+    }
+    .back a {
+      color: var(--mute);
+      text-decoration: none;
+    }
+    .back a:hover {
+      text-decoration: underline;
+    }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.3rem;
+    }
+    .tagline {
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.2rem;
+    }
+    .overview-box {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+    .overview-box h2 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+      color: var(--ink);
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+    .controls span {
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-right: 0.3rem;
+    }
+    .filter-btn {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .filter-btn.active {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+    .phase-block {
+      margin-bottom: 2rem;
+    }
+    .phase-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .phase-count {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--mute);
+    }
+    .nodes-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .node-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1rem;
+      transition: border-color 0.15s ease;
+    }
+    .node-card.mastered {
+      background: var(--card-mastered);
+      border-left: 4px solid var(--mastered-badge);
+    }
+    .node-card.frontier {
+      background: var(--card-frontier);
+      border-left: 4px solid var(--frontier-badge);
+    }
+    .node-card.locked {
+      opacity: 0.85;
+      border-left: 4px solid var(--locked-badge);
+    }
+    .node-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 0.15rem 0.45rem;
+      border-radius: 3px;
+    }
+    .badge.mastered {
+      background: #dcfce7;
+      color: var(--mastered-badge);
+    }
+    .badge.frontier {
+      background: #ffedd5;
+      color: var(--frontier-badge);
+    }
+    .badge.locked {
+      background: #e7e5e4;
+      color: var(--locked-badge);
+    }
+    .node-ref {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8rem;
+      color: var(--mute);
+    }
+    .node-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .node-desc {
+      font-size: 0.92rem;
+      color: #2c3834;
+      margin-bottom: 0.6rem;
+    }
+    .node-meta {
+      font-size: 0.82rem;
+      color: var(--mute);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/trees/">← Knowledge Trees</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <h1>AI Agents Knowledge Tree</h1>
+    <p class="tagline">A structured prerequisite curriculum and mastery map for autonomous AI agent architectures, loops, memory tiers, and multi-agent coordination.</p>
+
+    <div class="overview-box">
+      <h2>Curriculum Status</h2>
+      <p>
+        <strong>22 Concepts</strong> organized across 6 learning phases &middot;
+        <span style="color:var(--mastered-badge); font-weight:600;">14 Mastered</span> &middot;
+        <span style="color:var(--frontier-badge); font-weight:600;">6 Active Frontier</span> &middot;
+        <span style="color:var(--locked-badge); font-weight:600;">2 Planned</span>
+      </p>
+      <p style="margin-top:0.4rem; font-size:0.88rem; color:var(--mute);">
+        Companion Reference: <a href="/reference/agents/" style="color:var(--accent); font-weight:600;">AI Agents Ground-Truth Reference</a> &middot;
+        ELI5: <a href="/eli5/agents/" style="color:var(--accent); font-weight:600;">How Do AI Agents Work?</a>
+      </p>
+    </div>
+
+    <div class="controls">
+      <span>Filter:</span>
+      <button class="filter-btn active" onclick="filterNodes('all', this)">All (22)</button>
+      <button class="filter-btn" onclick="filterNodes('mastered', this)">Mastered (14)</button>
+      <button class="filter-btn" onclick="filterNodes('frontier', this)">Active Frontier (6)</button>
+      <button class="filter-btn" onclick="filterNodes('locked', this)">Planned (2)</button>
+    </div>
+
+    <!-- Phase 1: Foundations -->
+    <div class="phase-block">
+      <div class="phase-title">
+        <span>Phase 1: Agent Foundations &amp; Decision Theory</span>
+        <span class="phase-count">3 nodes</span>
+      </div>
+      <div class="nodes-grid">
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-01</span>
+            <span class="node-name">Partially Observable MDP Formulation</span>
+          </div>
+          <p class="node-desc">Modeling agent trajectories as POMDPs $(\mathcal{S}, \mathcal{A}, \mathcal{O}, \mathcal{T}, \mathcal{R}, \gamma)$ where LLM token generation parameterizes a policy over discrete tool actions.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Probability Theory, Autoregressive LLMs</span>
+          </div>
+        </div>
+
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-02</span>
+            <span class="node-name">Tool Calling Schemas (JSON / MCP)</span>
+          </div>
+          <p class="node-desc">Defining rigorous input/output schemas using JSON Schema and Model Context Protocol (MCP) to constrain and parse model tool invocations.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Structured Data, JSON Schema</span>
+          </div>
+        </div>
+
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-03</span>
+            <span class="node-name">Observation &amp; Feedback Grounding</span>
+          </div>
+          <p class="node-desc">Capturing runtime execution outputs (stdout, stderr, HTTP status, exit codes) and injecting them into the next turn prompt to ground reasoning in physical reality.</p>
+          <div class="node-meta">
+            <span>Prerequisites: POSIX Shell, Error Handling</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2: Single-Agent Reasoning Loops -->
+    <div class="phase-block">
+      <div class="phase-title">
+        <span>Phase 2: Execution Loops &amp; Reasoning Scaffolding</span>
+        <span class="phase-count">4 nodes</span>
+      </div>
+      <div class="nodes-grid">
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-04</span>
+            <span class="node-name">The ReAct Loop (Reason + Act)</span>
+          </div>
+          <p class="node-desc">Interleaving internal deduction with external tool calls (Thought &rarr; Action &rarr; Observation &rarr; Thought) to avoid speculative error compounding.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Chain-of-Thought, Tool Calling</span>
+          </div>
+        </div>
+
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-05</span>
+            <span class="node-name">Plan-and-Solve Decomposition</span>
+          </div>
+          <p class="node-desc">Separating high-level strategic roadmap construction from tactical step-by-step execution to maintain long-horizon coherence.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Task Decomposition, Directed Acyclic Graphs</span>
+          </div>
+        </div>
+
+        <div class="node-card frontier" data-status="frontier">
+          <div class="node-header">
+            <span class="badge frontier">Frontier</span>
+            <span class="node-ref">AGT-06</span>
+            <span class="node-name">Reflexion &amp; Verbal Reinforcement</span>
+          </div>
+          <p class="node-desc">Generating post-mortem linguistic critiques on failed trajectories and persisting reflections into working memory to guide subsequent trials.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Self-Critique, Working Memory</span>
+          </div>
+        </div>
+
+        <div class="node-card frontier" data-status="frontier">
+          <div class="node-header">
+            <span class="badge frontier">Frontier</span>
+            <span class="node-ref">AGT-07</span>
+            <span class="node-name">Tree-of-Thoughts &amp; MCTS Planning</span>
+          </div>
+          <p class="node-desc">Exploring branching decision trajectories using Monte Carlo Tree Search or Breadth/Depth-first search with explicit state rollbacks and pruning heuristics.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Search Algorithms, Value Heuristics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3: Memory Systems -->
+    <div class="phase-block">
+      <div class="phase-title">
+        <span>Phase 3: Memory Hierarchy &amp; Context Management</span>
+        <span class="phase-count">4 nodes</span>
+      </div>
+      <div class="nodes-grid">
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-08</span>
+            <span class="node-name">Three-Tier Memory Architecture</span>
+          </div>
+          <p class="node-desc">Partitioning memory across L1 Working Context (active prompt), L2 Session Scratchpad (ephemeral logs), and L3 Long-term Storage (vector DB/vault).</p>
+          <div class="node-meta">
+            <span>Prerequisites: Context Engineering, Vector Databases</span>
+          </div>
+        </div>
+
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-09</span>
+            <span class="node-name">Context Truncation &amp; Compaction</span>
+          </div>
+          <p class="node-desc">Preventing chat contamination and token window exhaustion by systematically summarizing completed milestones and dropping raw stdout logs.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Token Budgeting, Progressive Summarization</span>
+          </div>
+        </div>
+
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-10</span>
+            <span class="node-name">Semantic Vector Retrieval (Episodic Memory)</span>
+          </div>
+          <p class="node-desc">Indexing past tool solutions, user preferences, and project facts into dense vector stores with cosine similarity $k$-NN lookups.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Embeddings, RAG Architectures</span>
+          </div>
+        </div>
+
+        <div class="node-card frontier" data-status="frontier">
+          <div class="node-header">
+            <span class="badge frontier">Frontier</span>
+            <span class="node-ref">AGT-11</span>
+            <span class="node-name">Dynamic KV Cache Eviction &amp; Caching</span>
+          </div>
+          <p class="node-desc">Structuring system instructions and tool definitions to maximize KV cache hit rates across multi-turn agent conversations.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Attention KV-Cache, Prompt Caching</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4: Action Execution & Sandboxing -->
+    <div class="phase-block">
+      <div class="phase-title">
+        <span>Phase 4: Action Execution &amp; Sandboxing</span>
+        <span class="phase-count">4 nodes</span>
+      </div>
+      <div class="nodes-grid">
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-12</span>
+            <span class="node-name">Process Isolation &amp; Containerization</span>
+          </div>
+          <p class="node-desc">Executing agent commands inside ephemeral Docker/WASM sandboxes with restricted network access and strict filesystem boundaries.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Linux Namespaces, Containerization</span>
+          </div>
+        </div>
+
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-13</span>
+            <span class="node-name">Blast Radius &amp; Destructive Command Gates</span>
+          </div>
+          <p class="node-desc">Intercepting high-risk system actions (destructive file deletions, migrations, terraform changes) with required human confirmation gates.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Security Policies, Permission Hierarchies</span>
+          </div>
+        </div>
+
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-14</span>
+            <span class="node-name">Idempotent File Patching</span>
+          </div>
+          <p class="node-desc">Applying unified diffs or contiguous target-replacement blocks with exact collision detection to ensure deterministic codebase modifications.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Unified Diff, Patch Mechanics</span>
+          </div>
+        </div>
+
+        <div class="node-card frontier" data-status="frontier">
+          <div class="node-header">
+            <span class="badge frontier">Frontier</span>
+            <span class="node-ref">AGT-15</span>
+            <span class="node-name">Transactional State Rollbacks</span>
+          </div>
+          <p class="node-desc">Automated checkpointing of filesystem and database states prior to multi-file refactors to guarantee clean one-command rollbacks on validation failures.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Git Worktrees, SQLite Checkpoints</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 5: Multi-Agent Topologies -->
+    <div class="phase-block">
+      <div class="phase-title">
+        <span>Phase 5: Multi-Agent Orchestration &amp; Topologies</span>
+        <span class="phase-count">4 nodes</span>
+      </div>
+      <div class="nodes-grid">
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-16</span>
+            <span class="node-name">Hierarchical Supervisor-Worker Topology</span>
+          </div>
+          <p class="node-desc">An orchestrator agent decomposes tasks and dynamically spawns isolated worker subagents with scoped prompts and fresh context windows.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Task Partitioning, Subagent Lifecycles</span>
+          </div>
+        </div>
+
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-17</span>
+            <span class="node-name">Sequential Pipeline Hand-offs</span>
+          </div>
+          <p class="node-desc">Structuring linear agent workflows where the validated artifact of one specialist becomes the input context for the next stage.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Schema Contracts, Pipeline Verification</span>
+          </div>
+        </div>
+
+        <div class="node-card frontier" data-status="frontier">
+          <div class="node-header">
+            <span class="badge frontier">Frontier</span>
+            <span class="node-ref">AGT-18</span>
+            <span class="node-name">Blackboard Architecture</span>
+          </div>
+          <p class="node-desc">Coordinating asynchronous multi-agent fleets via a shared persistent store (git repository, SQLite DB) without point-to-point message passing.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Distributed State, Optimistic Concurrency</span>
+          </div>
+        </div>
+
+        <div class="node-card locked" data-status="locked">
+          <div class="node-header">
+            <span class="badge locked">Planned</span>
+            <span class="node-ref">AGT-19</span>
+            <span class="node-name">Multi-Agent Adversarial Debate &amp; Consensus</span>
+          </div>
+          <p class="node-desc">Running parallel independent reasoning passes with structured cross-critique rounds to filter hallucinations and reach consensus.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Game Theory, Consensus Mechanisms</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 6: Safety, Anti-Looping & Guardrails -->
+    <div class="phase-block">
+      <div class="phase-title">
+        <span>Phase 6: Reliability &amp; Defensive Guardrails</span>
+        <span class="phase-count">3 nodes</span>
+      </div>
+      <div class="nodes-grid">
+        <div class="node-card mastered" data-status="mastered">
+          <div class="node-header">
+            <span class="badge mastered">Mastered</span>
+            <span class="node-ref">AGT-20</span>
+            <span class="node-name">Anti-Loop Watchdogs &amp; Circuit Breakers</span>
+          </div>
+          <p class="node-desc">Detecting repetitive error-fix cycles and halting execution after $N$ repeated failures to prevent infinite loops and token waste.</p>
+          <div class="node-meta">
+            <span>Prerequisites: State Fingerprinting, Circuit Breakers</span>
+          </div>
+        </div>
+
+        <div class="node-card frontier" data-status="frontier">
+          <div class="node-header">
+            <span class="badge frontier">Frontier</span>
+            <span class="node-ref">AGT-21</span>
+            <span class="node-name">Dual-LLM Privilege Separation</span>
+          </div>
+          <p class="node-desc">Isolating untrusted external data ingestion in a quarantined reader model before passing verified structured summaries to action agents.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Prompt Injection Security, Privilege Separation</span>
+          </div>
+        </div>
+
+        <div class="node-card locked" data-status="locked">
+          <div class="node-header">
+            <span class="badge locked">Planned</span>
+            <span class="node-ref">AGT-22</span>
+            <span class="node-name">Formal Verification of Agent Invariants</span>
+          </div>
+          <p class="node-desc">Mathematical specification and static assertion checking over agent plans prior to executing production-level mutations.</p>
+          <div class="node-meta">
+            <span>Prerequisites: Formal Methods, Temporal Logic</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        <a href="/trees/">All Knowledge Trees</a> &middot;
+        <a href="/reference/agents/">AI Agents Reference</a> &middot;
+        <a href="/eli5/agents/">ELI5: How Do AI Agents Work?</a>
+      </p>
+    </footer>
+  </main>
+
+  <script>
+    function filterNodes(status, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.node-card');
+      cards.forEach(card => {
+        if (status === 'all' || card.getAttribute('data-status') === status) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

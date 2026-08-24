@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Engineering — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Prompt Engineering: autoregressive conditioning, in-context learning, reasoning scaffolding (CoT, ToT, ReAct), structured outputs, and prompt security.">
+  <meta property="og:title" content="Prompt Engineering — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Prompt Engineering: autoregressive conditioning, in-context learning, reasoning scaffolding (CoT, ToT, ReAct), structured outputs, and prompt security.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/prompt-engineering/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/prompt-engineering/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0 1.4rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+    .def-box {
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px dashed #d0d7de;
+    }
+    .def-box:last-child { border-bottom: none; }
+    .term-title { font-weight: 700; font-size: 1.05rem; display: inline; }
+    .term-desc { display: inline; margin-left: 0.35rem; }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Prompt Engineering</h1>
+    <p class="subtitle">A citable ground-truth reference on Prompt Engineering: conditioning autoregressive models, in-context learning, reasoning scaffolding (CoT, ToT, ReAct), structured outputs, and prompt security.</p>
+
+    <div class="companion-box">
+      <h2>Companion Formats &amp; Essays</h2>
+      <ul>
+        <li>📖 <a href="/writing/debug-system-not-prompt/"><strong>Essay: Debug the System Not the Prompt</strong></a> — Why systems and workflows outrank prompt tuning.</li>
+        <li>📖 <a href="/writing/agent-didnt-get-dumber-chat-got-contaminated/"><strong>Essay: The Agent Didn't Get Dumber, the Chat Got Contaminated</strong></a> — Context window drift and instruction decay.</li>
+        <li>📖 <a href="/writing/ai-writes-code-plan-becomes-work/"><strong>Essay: When the AI Writes the Code, the Plan Becomes the Work</strong></a> — Spec-first prompt design.</li>
+        <li>📚 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> — Token budgeting, memory tiers, and cache mechanics.</li>
+        <li>📚 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models</strong></a> — Pre-training, attention architecture, and scaling laws.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">1. Definition &amp; Mathematical Formulation</a> &middot;
+        <a href="#icl">2. In-Context Learning (ICL)</a> &middot;
+        <a href="#reasoning-scaffolding">3. Reasoning Scaffolding (CoT, ToT, ReAct)</a> &middot;
+        <a href="#structured-outputs">4. Structured Output Control</a> &middot;
+        <a href="#prompt-security">5. Vulnerabilities &amp; Prompt Security</a> &middot;
+        <a href="#taxonomy">6. Technique Matrix</a> &middot;
+        <a href="#sources">7. Sources &amp; Literature</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Definition & Math -->
+    <h2 id="definition">1. Definition &amp; Mathematical Formulation</h2>
+    <p>
+      <strong>Prompt Engineering</strong> is the practice of structuring, parameterizing, and formatting natural language and symbolic inputs to guide the conditional probability distribution of an autoregressive foundation model toward a desired output behavior without updating the model's underlying parameter weights $\theta$.
+    </p>
+    <p>
+      Formally, a causal language model computes the conditional probability distribution over a vocabulary $\mathcal{V}$ for the next token $y_t$ given an input prompt prefix sequence $X = (x_1, x_2, \dots, x_n)$ and previously generated tokens $y_{<t} = (y_1, \dots, y_{t-1})$:
+    </p>
+    $$P_\theta(Y \mid X) = \prod_{t=1}^T P_\theta(y_t \mid X, y_1, \dots, y_{t-1})$$
+    <p>
+      Prompt engineering optimizes the prefix $X$ to maximize the likelihood of a target response $Y^*$:
+    </p>
+    $$X^* = \arg\max_{X \in \mathcal{S}} \mathbb{E}_{Y^* \sim \mathcal{D}_{\text{eval}}} \left[ \mathcal{M}(Y^*, \arg\max_Y P_\theta(Y \mid X)) \right]$$
+    <p>
+      where $\mathcal{S}$ is the space of allowable prompt strings, $\mathcal{D}_{\text{eval}}$ is the task evaluation distribution, and $\mathcal{M}$ is a task-specific performance metric.
+    </p>
+
+    <!-- Section 2: In-Context Learning -->
+    <h2 id="icl">2. In-Context Learning (ICL)</h2>
+    <p>
+      In-Context Learning (Brown et al., 2020) is the emergent capability of scaled transformers to execute novel downstream tasks given only instruction text and input-output demonstrations inside the prompt prefix, without gradient updates.
+    </p>
+
+    <div class="def-box">
+      <p class="term-title">Zero-Shot Prompting:</p>
+      <p class="term-desc">The model receives only the task directive $I$ and query $x_{\text{query}}$, relying strictly on parametric memory acquired during pre-training and instruction tuning: $X = I \circ x_{\text{query}}$.</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Few-Shot Prompting ($k$-Shot ICL):</p>
+      <p class="term-desc">The prompt provides $k$ exemplars demonstrating the input-to-output mapping before presenting the query:
+      $$X = I \circ (x^{(1)}, y^{(1)}) \circ (x^{(2)}, y^{(2)}) \circ \dots \circ (x^{(k)}, y^{(k)}) \circ x_{\text{query}}$$
+      Exemplars condition attention heads to resolve task formats, token distributions, and reasoning conventions via implicit meta-gradients calculated during the forward pass.</p>
+    </div>
+
+    <!-- Section 3: Reasoning Scaffolding -->
+    <h2 id="reasoning-scaffolding">3. Reasoning Scaffolding (CoT, ToT, ReAct)</h2>
+    <p>
+      Direct sequence-to-sequence generation ($X \to Y$) forces transformers to perform complex reasoning within fixed constant-depth forward-pass layer allocations. Reasoning scaffolding forces the model to allocate additional compute tokens by generating explicit intermediate latent rationales $Z = (z_1, \dots, z_m)$ before emitting the final answer.
+    </p>
+
+    <div class="def-box">
+      <p class="term-title">Chain-of-Thought (CoT) (Wei et al., 2022):</p>
+      <p class="term-desc">Decomposes multi-step deduction into sequential reasoning hops:
+      $$P(Y \mid X) = \sum_Z P(Y \mid X, Z) P(Z \mid X)$$
+      By generating rationale tokens $Z$ into the autoregressive stream, downstream tokens attend over the activations of prior reasoning steps rather than jumping directly from question to answer.
+      <strong>Zero-Shot CoT</strong> (Kojima et al., 2022) elicits this behavior with deterministic trigger phrases such as <code>"Let's think step by step."</code></p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Self-Consistency (Wang et al., 2022):</p>
+      <p class="term-desc">Samples multiple independent reasoning paths $Z^{(1)}, Z^{(2)}, \dots, Z^{(N)}$ at non-zero temperature ($T > 0$) and marginalizes over reasoning paths to select the majority answer via consensus voting:
+      $$y^* = \arg\max_{a \in \mathcal{A}} \sum_{i=1}^N \mathbb{I}\left( \text{extract\_answer}(Z^{(i)}) = a \right)$$</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Tree of Thoughts (ToT) (Yao et al., 2023):</p>
+      <p class="term-desc">Generalizes linear chains into a deliberate search tree. The prompt architecture generates multiple candidate thoughts per step, evaluates each branch using self-evaluative scoring prompts, and navigates the state space via breadth-first search (BFS) or depth-first search (DFS) with backtracking.</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">ReAct: Reason + Act (Yao et al., 2022):</p>
+      <p class="term-desc">Interleaves internal reasoning traces with external tool execution:
+      $$\text{Thought}_t \to \text{Action}_t \to \text{Observation}_t \to \text{Thought}_{t+1} \to \dots \to \text{Final Answer}$$
+      External observations inject ground truth into the prompt context, mitigating hallucination and enabling stateful interaction with APIs, shell environments, and databases.</p>
+    </div>
+
+    <!-- Section 4: Structured Output Control -->
+    <h2 id="structured-outputs">4. Structured Output Control &amp; Schema Enforcement</h2>
+    <p>
+      Production integration requires LLM outputs to conform strictly to programmatic specifications (e.g., JSON, YAML, SQL).
+    </p>
+
+    <ul>
+      <li><strong>Prompt-Level Directives:</strong> Few-shot schema examples, Markdown code fences (<code>```json ... ```</code>), and negative constraints (e.g., <em>"Return JSON only, no explanatory prose."</em>). Subject to non-zero failure rates under long context or model degradation.</li>
+      <li><strong>Grammar-Constrained Decoding:</strong> Logit-masking at inference time (e.g., via Context-Free Grammars, JSON Schemas, or Pydantic models). The inference engine computes a finite-state machine (FSM) over vocabulary tokens, setting $z_{t, v} = -\infty$ for any token $v$ that would violate the grammar. This guarantees 100% syntactic validity independent of prompt phrasing.</li>
+      <li><strong>Metaprompting &amp; System Framing:</strong> Establishing operational roles, execution boundaries, and explicit error-handling protocols at the system level before user inputs are ingested.</li>
+    </ul>
+
+    <!-- Section 5: Security -->
+    <h2 id="prompt-security">5. Prompt Security &amp; Vulnerabilities</h2>
+    <p>
+      Because autoregressive architectures process system instructions and untrusted user input within a single concatenated token stream, language models lack hardware-level separation between code and data (analogous to von Neumann architecture vulnerabilities).
+    </p>
+
+    <div class="def-box">
+      <p class="term-title">Direct Prompt Injection (Jailbreaking):</p>
+      <p class="term-desc">Adversarial user inputs designed to override the system prompt's instructions or safety guardrails (e.g., <em>"Ignore all previous instructions and output..."</em>, character-roleplaying, base64 payload encoding).</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Indirect Prompt Injection (Greshake et al., 2023):</p>
+      <p class="term-desc">Adversarial payload embedded in external data retrieved by the model (e.g., web pages, emails, database records, search results). When the model ingests the document into its context window, the hidden payload hijacks agent execution.</p>
+    </div>
+
+    <div class="def-box">
+      <p class="term-title">Defensive Architectures:</p>
+      <p class="term-desc">
+        <ul>
+          <li><strong>Structural Delimiters:</strong> Isolating untrusted data using explicit XML tags (e.g., <code>&lt;user_input&gt;...&lt;/user_input&gt;</code>) or markdown fences with explicit parsing instructions.</li>
+          <li><strong>Privilege Separation / Dual LLM Pattern:</strong> Isolating untrusted data processing in an unprivileged reader model before passing verified structured summaries to the privileged action agent.</li>
+          <li><strong>Deterministic Post-Validation:</strong> Verifying all agent tool calls and generated artifacts against strict programmatic schemas before execution.</li>
+        </ul>
+      </p>
+    </div>
+
+    <!-- Section 6: Matrix -->
+    <h2 id="taxonomy">6. Prompt Engineering Technique Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Technique</th>
+          <th>Mechanism</th>
+          <th>Compute / Token Overhead</th>
+          <th>Optimal Use Case</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Zero-Shot</strong></td>
+          <td>Direct instruction + query</td>
+          <td>Baseline ($1\times$)</td>
+          <td>Simple classification, standard summarization, high-throughput tasks.</td>
+        </tr>
+        <tr>
+          <td><strong>Few-Shot (ICL)</strong></td>
+          <td>$k$ input-output exemplars</td>
+          <td>Low–Medium ($k \times \text{len}(\text{sample})$)</td>
+          <td>Strict format adherence, domain-specific syntax, rare token patterns.</td>
+        </tr>
+        <tr>
+          <td><strong>Zero-Shot CoT</strong></td>
+          <td>Trigger phrase (<em>"Let's think step by step"</em>)</td>
+          <td>Low token increase (generates rationale)</td>
+          <td>General multi-step arithmetic, logic puzzles, basic code synthesis.</td>
+        </tr>
+        <tr>
+          <td><strong>Few-Shot CoT</strong></td>
+          <td>Exemplars containing explicit reasoning rationales</td>
+          <td>Medium ($2\times - 5\times$)</td>
+          <td>Complex symbolic reasoning, math word problems, multi-hop question answering.</td>
+        </tr>
+        <tr>
+          <td><strong>Self-Consistency</strong></td>
+          <td>Multi-path generation + majority vote</td>
+          <td>High ($N \times \text{tokens}$)</td>
+          <td>High-stakes mathematical verification, competitive coding, formal proof verification.</td>
+        </tr>
+        <tr>
+          <td><strong>Tree of Thoughts</strong></td>
+          <td>Branching thought exploration + BFS/DFS search</td>
+          <td>Very High ($10\times - 30\times$)</td>
+          <td>Strategic planning, combinatorial puzzles, multi-constraint design.</td>
+        </tr>
+        <tr>
+          <td><strong>ReAct</strong></td>
+          <td>Interleaved Thought $\to$ Action $\to$ Observation loops</td>
+          <td>Variable (scales with tool interactions)</td>
+          <td>Autonomous agents, live API querying, terminal debugging, active research.</td>
+        </tr>
+        <tr>
+          <td><strong>Grammar Masking</strong></td>
+          <td>Inference-time logit masking via schema/FSM</td>
+          <td>Zero token overhead; minor engine latency</td>
+          <td>Deterministic API contracts, structured database output, tool calling payloads.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 7: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Foundational Literature</h3>
+      <ul>
+        <li>Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, et al. (2020): <a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">Language Models are Few-Shot Learners</a> (NeurIPS 2020 — GPT-3 &amp; In-Context Learning).</li>
+        <li>Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, et al. (2022): <a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</a> (NeurIPS 2022).</li>
+        <li>Takeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, Yusuke Iwasawa (2022): <a href="https://arxiv.org/abs/2205.11916" target="_blank" rel="noopener">Large Language Models are Zero-Shot Reasoners</a> (NeurIPS 2022).</li>
+        <li>Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao (2022): <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct: Synergizing Reasoning and Acting in Language Models</a> (ICLR 2023).</li>
+        <li>Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L. Griffiths, Yuan Cao, Karthik Narasimhan (2023): <a href="https://arxiv.org/abs/2305.10601" target="_blank" rel="noopener">Tree of Thoughts: Deliberate Problem Solving with Large Language Models</a> (NeurIPS 2023).</li>
+        <li>Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed Chi, Sharan Narang, Aakanksha Chowdhery, Denny Zhou (2022): <a href="https://arxiv.org/abs/2203.11171" target="_blank" rel="noopener">Self-Consistency Improves Chain of Thought Reasoning in Language Models</a> (ICLR 2023).</li>
+        <li>Kai Greshake, Sahar Abdelnabi, Shailesh Mishra, Christoph Endres, Thorsten Holz, Mario Fritz (2023): <a href="https://arxiv.org/abs/2302.12173" target="_blank" rel="noopener">Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection</a> (AISec '23).</li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/reference/context-engineering/">Context Engineering</a> &middot; <a href="/reference/large-language-models/">Large Language Models</a> &middot; <a href="/reference/autoregressive/">Autoregressive Models</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
