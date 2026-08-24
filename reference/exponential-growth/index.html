@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exponential Growth — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Exponential growth is a pattern in which a quantity's rate of increase is proportional to its current size, so the quantity grows by a constant percentage each period rather than by a constant amount. Doubling time, why intuition fails, and why unbounded exponential growth is rare in practice.">
+  <meta property="og:title" content="Exponential Growth — Reference">
+  <meta property="og:description" content="A quantity whose growth rate is proportional to its current size. Doubling time, why intuition fails, real examples, and why it always runs into limits.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/exponential-growth/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/exponential-growth/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin: 0.5rem 0 1.2rem;
+      text-align: center;
+    }
+    table.data {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.5rem 0 1.2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    table.data th, table.data td {
+      border: 1px solid var(--line);
+      padding: 0.4rem 0.7rem;
+      text-align: left;
+    }
+    table.data th { background: var(--box-bg); }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Mathematics &middot; Applied Mathematics</p>
+    <h1>Exponential Growth</h1>
+    <p class="updated">Reference entry &middot; last updated August 24, 2026</p>
+
+    <p class="lede"><strong>Exponential growth</strong> is a pattern of change in which a quantity's rate of increase is proportional to its current size, so the quantity grows by a constant <em>percentage</em> of itself each period rather than by a constant amount. A quantity <em>N</em> growing exponentially at rate <em>r</em> follows \( N(t) = N_0 (1+r)^{t} \) in discrete time, or \( N(t) = N_0 e^{kt} \) in continuous time. The defining feature is that growth compounds on top of itself: each period's increase is added to a larger base than the last, which is what makes the curve accelerate rather than run in a straight line.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#vs-linear">Exponential growth vs. linear growth</a></li>
+        <li><a href="#doubling-time">Doubling time and the Rule of 72</a></li>
+        <li><a href="#intuition">Why intuition fails</a></li>
+        <li><a href="#examples">Real-world examples</a></li>
+        <li><a href="#limits">Why it doesn't continue forever</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="vs-linear">Exponential growth vs. linear growth</h2>
+    <p>Linear growth adds a fixed <em>amount</em> each period: \( N(t) = N_0 + ct \). Exponential growth adds a fixed <em>percentage</em> of the current amount each period. Early on, the two can look similar, because a percentage of a small number is itself small. The difference becomes stark once the base has grown: a fixed 10% of 100 is 10, but a fixed 10% of 10,000 is 1,000 &mdash; the absolute increase itself keeps growing, which a linear process never does. Plotted on a standard (linear) y-axis, exponential growth produces a curve that bends sharply upward; plotted on a logarithmic y-axis, it becomes a straight line, which is why log scales are the standard tool for reading growth rates off a chart.</p>
+
+    <h2 id="doubling-time">Doubling time and the Rule of 72</h2>
+    <p>A useful way to characterize exponential growth is by its <strong>doubling time</strong>: how long it takes the quantity to double, which stays constant regardless of the starting value. Solving \( N_0(1+r)^t = 2N_0 \) for <em>t</em> gives the exact doubling time \( t = \ln(2) / \ln(1+r) \). For everyday mental arithmetic, this is commonly approximated by the <strong>Rule of 72</strong>: divide 72 by the growth rate (as a percentage) to estimate the number of periods to double.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <div class="formula">\( t_{double} \approx \dfrac{72}{r} \)</div>
+    <table class="data">
+      <tr><th>Growth rate</th><th>Rule-of-72 estimate</th><th>Exact doubling time</th></tr>
+      <tr><td>2% / period</td><td>36.0 periods</td><td>35.0 periods</td></tr>
+      <tr><td>6% / period</td><td>12.0 periods</td><td>11.9 periods</td></tr>
+      <tr><td>9% / period</td><td>8.0 periods</td><td>8.0 periods</td></tr>
+      <tr><td>12% / period</td><td>6.0 periods</td><td>6.1 periods</td></tr>
+    </table>
+    <p>The constant 72 is a rounded stand-in for \( 100 \times \ln(2) \approx 69.3 \), chosen because 72 divides evenly by 1, 2, 3, 4, 6, 8, 9, and 12, which makes the mental division easier at a small accuracy cost. The approximation is tightest in the 6&ndash;10% range; two adjacent variants exist for other ranges: the <strong>Rule of 70</strong>, more accurate near 2% and commonly used for population growth rates, and the <strong>Rule of 69.3</strong>, exact for continuous compounding.<span class="cite">[<a href="#ref1">1</a>]</span> The identical arithmetic runs in reverse for shrinking quantities: at a 6% annual rate, purchasing power halves in about 72&nbsp;/&nbsp;6&nbsp;=&nbsp;12 years.</p>
+
+    <h2 id="intuition">Why intuition fails</h2>
+    <p>Because the absolute size of each period's increase depends on the current base, and that base itself keeps growing, most of an exponential curve's total increase happens in its last few doublings &mdash; which makes the growth look deceptively slow for most of its length and then suddenly urgent. Physicist Albert Bartlett illustrated this with a bacteria-in-a-bottle thought experiment: bacteria that double every minute, placed in an empty bottle at 11:00&nbsp;a.m., fill the bottle completely by noon. One minute before the end, at 11:59, the bottle is only half full. Five minutes before the end, at 11:55, only 3% of the bottle is full &mdash; 97% still looks like open space.<span class="cite">[<a href="#ref2">2</a>]</span> Bartlett used the example to argue that a population or a resource consumption rate growing at a constant percentage does not look alarming until it is almost exhausted, since most of the growth curve's length is spent looking nearly empty.</p>
+
+    <h2 id="examples">Real-world examples</h2>
+    <p>Compound interest and inflation both follow the exponential form directly: a balance or a price level growing at a fixed annual percentage rate compounds on itself period over period. In epidemiology, the early stage of an outbreak &mdash; before immunity, distancing, or intervention change the contact rate &mdash; approximates exponential growth, with the reproduction number determining the rate. In computing, Gordon Moore's 1965 observation that the number of components achievable at minimum manufacturing cost per integrated circuit was increasing "at a rate of roughly a factor of two per year" is the origin of what became known as Moore's Law: an extrapolated exponential trend, read off three years of cost-curve data, that predicted 65,000 components per circuit by 1975.<span class="cite">[<a href="#ref3">3</a>]</span> A single bacterium dividing every 20 minutes under ideal lab conditions is the standard biology-textbook case of unconstrained exponential population growth.</p>
+
+    <h2 id="limits">Why it doesn't continue forever</h2>
+    <p>Exponential growth requires that the growth rate stay constant regardless of the quantity's size &mdash; an assumption that requires unlimited resources, and one that essentially never holds indefinitely in a physical system. Population ecology's standard correction is the <strong>logistic growth model</strong>, which adds a term for the environment's carrying capacity, <em>K</em>: \( \frac{dN}{dt} = r_{max} N \frac{(K-N)}{K} \). When the population <em>N</em> is small relative to <em>K</em>, the added factor is close to 1 and growth is nearly indistinguishable from exponential; as <em>N</em> approaches <em>K</em>, the factor shrinks toward zero and growth is throttled down by resource competition and waste accumulation, producing an S-shaped curve rather than the unbroken J-shape of pure exponential growth.<span class="cite">[<a href="#ref4">4</a>]</span> Exponential growth is best understood as the special case of logistic growth where the carrying capacity is effectively infinite &mdash; a useful local approximation, not a description of how any bounded real system grows over the long run.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/eli5/exponential-growth/">ELI5: What Is Exponential Growth?</a> &mdash; a picture-book explainer covering the same ground</li>
+      <li><a href="/reference/exponential-backoff/">Reference: Exponential Backoff</a> &mdash; a specific engineering technique that deliberately uses exponential growth (of a retry delay) to relieve system contention</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> "Rule of 72," <em>Wikipedia</em> &mdash; <a href="https://en.wikipedia.org/wiki/Rule_of_72">https://en.wikipedia.org/wiki/Rule_of_72</a></li>
+      <li id="ref2"><span class="backlink">^</span> Albert A. Bartlett, "Arithmetic, Population and Energy" (lecture transcript) &mdash; <a href="https://www.albartlett.org/presentations/arithmetic_population_energy_transcript_english.html">https://www.albartlett.org/presentations/arithmetic_population_energy_transcript_english.html</a></li>
+      <li id="ref3"><span class="backlink">^</span> Gordon E. Moore, "Cramming More Components onto Integrated Circuits," <em>Electronics</em>, vol. 38, no. 8, April 19, 1965 (reprinted <em>Proceedings of the IEEE</em>, vol. 86, no. 1, January 1998) &mdash; <a href="https://www.cs.utexas.edu/~fussell/courses/cs352h/papers/moore.pdf">https://www.cs.utexas.edu/~fussell/courses/cs352h/papers/moore.pdf</a></li>
+      <li id="ref4"><span class="backlink">^</span> "45.3 Environmental Limits to Population Growth," <em>Biology 2e</em>, OpenStax &mdash; <a href="https://openstax.org/books/biology-2e/pages/45-3-environmental-limits-to-population-growth">https://openstax.org/books/biology-2e/pages/45-3-environmental-limits-to-population-growth</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
