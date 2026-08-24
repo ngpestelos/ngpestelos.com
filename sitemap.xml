@@ -36,6 +36,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/eli5/toctou-race-condition/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/eli5/large-language-models/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -122,6 +127,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/retrieval-augmented-generation/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/toctou-race-condition/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

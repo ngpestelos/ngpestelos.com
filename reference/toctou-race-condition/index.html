@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOCTOU Race Condition — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A TOCTOU (time-of-check to time-of-use) race condition is a software bug where a program checks a resource's state, then acts on it, but the resource changes in the gap between the two. This entry covers the general shape, a classic example, and what does not qualify as one.">
+  <meta property="og:title" content="TOCTOU Race Condition — Reference">
+  <meta property="og:description" content="A software bug where a program checks a resource's state, then acts on it, but the resource changes in the gap between the two. The general shape, a classic example, and what does not qualify.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/toctou-race-condition/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/toctou-race-condition/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Software Engineering &middot; Security</p>
+    <h1>TOCTOU Race Condition</h1>
+    <p class="updated">Reference entry &middot; last updated August 24, 2026</p>
+
+    <p class="lede"><strong>Time-of-check to time-of-use (TOCTOU)</strong>, also written <strong>TOCTTOU</strong>, is a class of software bug in which a program checks the state of a resource and then acts on that state, but the resource is able to change in the interval between the check and the use &mdash; so the check's result is stale by the time the program relies on it.<span class="cite">[<a href="#ref1">1</a>]</span> It is a specific kind of race condition: the "race" is between the checking step and whatever else, running concurrently, can alter the resource before the using step executes.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#general-shape">The general shape</a></li>
+        <li><a href="#classic-example">Classic example</a></li>
+        <li><a href="#why-a-race">Why it is called a race condition</a></li>
+        <li><a href="#not-a-toctou">What is not a TOCTOU</a></li>
+        <li><a href="#mitigations">Mitigations</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="general-shape">The general shape</h2>
+    <p>Every TOCTOU bug follows the same two-step pattern:</p>
+    <ol style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Check</strong> &mdash; the program queries a resource's current state (a file's permissions, a slot's availability, a balance, a lock's status).</li>
+      <li><strong>Use</strong> &mdash; the program acts as if that state still holds (opens the file, confirms the booking, debits the balance, enters the critical section).</li>
+    </ol>
+    <p>The bug lives in the gap between the two steps. If nothing else in the system can touch that resource during the gap, the check remains valid and there is no bug. A TOCTOU vulnerability exists specifically when something else &mdash; another process, another thread, another user, an attacker &mdash; can act on the same resource during that window, making the check's answer wrong by the time the use step trusts it.</p>
+
+    <h2 id="classic-example">Classic example</h2>
+    <p>The canonical case is a Unix program that calls <code>access()</code> to check whether the calling user has permission to open a file, then calls <code>open()</code> on the same path shortly after. Between the two calls, an attacker with write access to the containing directory can delete the original file and replace the path with a symbolic link to a different, sensitive file. The <code>access()</code> check ran against the original file; the <code>open()</code> call follows the now-substituted symlink, and the program acts on a file it never actually checked.<span class="cite">[<a href="#ref1">1</a>]</span> This exact pattern accounts for a long-running category of Unix security advisories, since the check and the use are two separate system calls with an attacker-controllable filesystem in between.</p>
+
+    <h2 id="why-a-race">Why it is called a race condition</h2>
+    <p>A race condition, generally, is any situation where a system's correctness depends on the relative timing of events that are not otherwise synchronized. TOCTOU is a race between the checking actor and whatever else can modify the resource: if the other actor's modification lands inside the gap, the program loses the race and acts on stale information. If it lands outside the gap &mdash; before the check or after the use completes &mdash; there is no observable bug, which is what makes TOCTOU issues intermittent and hard to reproduce on demand.</p>
+
+    <h2 id="not-a-toctou">What is not a TOCTOU</h2>
+    <p>Two properties have to both be present for a real TOCTOU race: a genuine elapsed-time gap between check and use, and a second actor (or process, or thread) capable of changing the resource's state during that gap. A function that reads a value from static, precomputed configuration and returns it &mdash; with no other process able to alter that configuration between the read and whatever consumes it &mdash; is not exhibiting a TOCTOU race, even if a narrative description of the same code uses check-then-act language ("it looked available, then it wasn't"). Without a concurrent second actor and a real window of elapsed time in which state could actually change, the situation is a deterministic lookup, not a race: the same input will produce the same "checked" result every time, which a genuine race condition, by definition, will not.</p>
+
+    <h2 id="mitigations">Mitigations</h2>
+    <p>The standard fix is to collapse the two separate steps into one atomic operation, so no window exists for another actor to intervene:</p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Atomic operations</strong> &mdash; using a single system call or API that performs the check and the use together (for example, opening a file with flags that fail if it already exists, rather than checking existence and then creating it as two calls).</li>
+      <li><strong>Locking</strong> &mdash; holding an exclusive lock on the resource from before the check until after the use completes, so no other actor can modify it in between.</li>
+      <li><strong>Optimistic concurrency / versioning</strong> &mdash; reading a version number or timestamp alongside the state, then making the update conditional on that version being unchanged at write time; the update itself detects and rejects a stale check instead of trusting it blindly.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/eli5/toctou-race-condition/">ELI5: What Is a TOCTOU Race Condition?</a> &mdash; a picture-book explainer covering the same ground</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> "CWE-367: Time-of-check Time-of-use (TOCTOU) Race Condition," <em>Common Weakness Enumeration</em>, MITRE Corporation &mdash; <a href="https://cwe.mitre.org/data/definitions/367.html">https://cwe.mitre.org/data/definitions/367.html</a></li>
+    </ol>
+    <p class="unattributed">A freely-accessible copy of Bishop &amp; Dilger's foundational 1996 paper on checking for TOCTOU races in file accesses (<em>Computing Systems</em> 9(2)) was not located at time of writing; not cited here to avoid pointing to a dead or paywalled link.</p>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
