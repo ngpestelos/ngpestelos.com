@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL vs URN vs URI — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A URI (Uniform Resource Identifier) is the general class of resource identifier; a URL (Uniform Resource Locator) is a URI that locates a resource, and a URN (Uniform Resource Name) is a persistent, location-independent name. This entry clarifies the relationship from the defining RFCs.">
+  <meta property="og:title" content="URL vs URN vs URI — Reference">
+  <meta property="og:description" content="URI is the general class of resource identifier; URL locates a resource; URN names it persistently. The relationship between the three, from the defining RFCs.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/url-urn-uri/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/url-urn-uri/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 0.9rem;
+    }
+    li { margin-bottom: 0.4rem; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0 1.2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--box-bg); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Internet Standards</p>
+    <h1>URL vs URN vs URI</h1>
+    <p class="updated">Reference entry &middot; last updated August 24, 2026</p>
+
+    <p class="lede"><strong>Uniform Resource Identifier (URI)</strong>, <strong>Uniform Resource Locator (URL)</strong>, and <strong>Uniform Resource Name (URN)</strong> are three terms for identifiers used on the Internet, related as a general class and two of its categories. A URI is a compact sequence of characters that identifies an abstract or physical resource.<span class="cite">[<a href="#ref1">1</a>]</span> A URL is the subset of URIs that, in addition to identifying a resource, provides a means of locating it by describing its primary access mechanism, such as a network location.<span class="cite">[<a href="#ref1">1</a>]</span> A URN is a URI assigned under the <code>urn</code> scheme with the intent that it remain a persistent, location-independent identifier of the resource.<span class="cite">[<a href="#ref3">3</a>]</span> The relationship between the three is a recurring source of confusion, because the standards corpus has described it two different ways over time.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#definitions">Definitions</a>
+          <ol>
+            <li><a href="#uri">URI</a></li>
+            <li><a href="#url">URL</a></li>
+            <li><a href="#urn">URN</a></li>
+          </ol>
+        </li>
+        <li><a href="#relationship">The relationship</a></li>
+        <li><a href="#views">Classical and contemporary views</a></li>
+        <li><a href="#persistence">URNs and persistence</a></li>
+        <li><a href="#in-practice">Why the distinction matters</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="definitions">Definitions</h2>
+
+    <h3 id="uri">URI</h3>
+    <p>A Uniform Resource Identifier is a sequence of characters matching the generic URI syntax that identifies an abstract or physical resource.<span class="cite">[<a href="#ref1">1</a>]</span> The concept was introduced in "Universal Resource Identifiers in WWW" (RFC 1630, 1994) and standardized in RFC 2396 (1998), which merged the earlier URL and relative-URL specifications into one generic syntax; the current specification is RFC 3986 (2005), which obsoletes RFC 2396.<span class="cite">[<a href="#ref1">1</a>]</span> A URI is not required to be reachable: "access to the resource is neither guaranteed nor implied by the presence of a URI."<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h3 id="url">URL</h3>
+    <p>"Uniform Resource Locator" (URL) is the term given to a URI that locates a resource. RFC 3986 defines a URL as "the subset of URIs that, in addition to identifying a resource, provide a means of locating the resource by describing its primary access mechanism (e.g., its network 'location')."<span class="cite">[<a href="#ref1">1</a>]</span> The name dates to RFC 1738 (1994), which defined the syntax for locating resources available "via the Internet" &mdash; chiefly the <code>http</code>, <code>ftp</code>, <code>file</code>, and related schemes, plus a generic form for future schemes.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h3 id="urn">URN</h3>
+    <p>A Uniform Resource Name is a URI assigned under the <code>urn</code> scheme and within a registered URN namespace, "with the intent that the URN will be a persistent, location-independent resource identifier."<span class="cite">[<a href="#ref3">3</a>]</span> RFC 8141 (2017) is the current specification; it obsoletes RFC 2141 (1997). RFC 3986 describes the same idea in looser terms: a URN is required to "remain globally unique and persistent even when the resource ceases to exist or becomes unavailable."<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="relationship">The relationship</h2>
+    <p>RFC 3986 states the relationship directly: "A URI can be further classified as a locator, a name, or both."<span class="cite">[<a href="#ref1">1</a>]</span> URL and URN are therefore not disjoint classes, and neither is every URI necessarily one of them. The specification emphasizes that a scheme does not lock an identifier into a class: "An individual scheme does not have to be classified as being just one of 'name' or 'locator'. Instances of URIs from any given scheme may have the characteristics of names or locators or both, often depending on the persistence and care in the assignment of identifiers by the naming authority, rather than on any quality of the scheme."<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <table aria-label="Comparison of URI, URL, and URN">
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Full name</th>
+          <th>What it is</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>URI</strong></td>
+          <td>Uniform Resource Identifier</td>
+          <td>The general class of resource identifier; a locator, a name, or both</td>
+          <td>Every URL and every URN is a URI</td>
+        </tr>
+        <tr>
+          <td><strong>URL</strong></td>
+          <td>Uniform Resource Locator</td>
+          <td>A URI that locates a resource via its primary access mechanism</td>
+          <td><code>http://www.ietf.org/rfc/rfc3986.txt</code></td>
+        </tr>
+        <tr>
+          <td><strong>URN</strong></td>
+          <td>Uniform Resource Name</td>
+          <td>A URI under the <code>urn</code> scheme, persistent and location-independent</td>
+          <td><code>urn:isbn:0451450523</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="views">Classical and contemporary views</h2>
+    <p>The confusion between the three terms is explained by RFC 3305, the report of the joint W3C/IETF URI Planning Interest Group, which describes two incompatible ways URI space has been partitioned over time.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <ul>
+      <li><strong>Classical view</strong> (early to mid-1990s): an identifier was assumed to fall into one of two classes &mdash; a URL specifying location, or a URN specifying a name independent of location. "Without loss of generality," the report says, "URI space was thought to be partitioned into two classes: URL and URN."<span class="cite">[<a href="#ref4">4</a>]</span></li>
+      <li><strong>Contemporary view</strong>: an individual scheme need not be cast into such classes. <code>http:</code> is a URI scheme; <code>urn:</code> is also a URI scheme, which defines subspaces called namespaces. Under this view, "URL" does not refer to a formal partition of URI space; it is "a useful but informal concept" &mdash; a type of URI that identifies a resource via its primary access mechanism.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+    </ul>
+    <p>RFC 3305 notes the practical consequence: because the RFC corpus spans both periods, "URL" and "URI" have often been used interchangeably, which confuses a community that expects them to mean different things.<span class="cite">[<a href="#ref4">4</a>]</span> RFC 3986 later made the recommended usage explicit: "Future specifications and related documentation should use the general term 'URI' rather than the more restrictive terms 'URL' and 'URN'."<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="persistence">URNs and persistence</h2>
+    <p>The defining property of a URN is persistence, not syntax. RFC 8141 requires that a URN namespace's names be unique (never reassigned to a different resource), assigned consistently, and assigned under a common definition &mdash; and it notes that "the syntactical correctness of a name starting with 'urn:' is not sufficient to make it a URN": the namespace identifier must be registered with the Internet Assigned Numbers Authority (IANA).<span class="cite">[<a href="#ref3">3</a>]</span> Because the identifier is meant to outlive any particular location, URN "resolution" is deliberately flexible &mdash; often mapping the URN to one or more current locators, but possibly returning only metadata, or nothing, depending on the namespace.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Registered URN namespaces include those for ISBNs and ISSNs, book and serial identifiers that were created outside the Web and are reused as URNs &mdash; for example, the URN for a specific edition of a book is written <code>urn:isbn:</code> followed by the ISBN.<span class="cite">[<a href="#ref5">5</a>]</span> RFC 3986's own example list includes <code>urn:oasis:names:specification:docbook:dtd:xml:4.1.2</code>, drawn from the <code>oasis</code> namespace.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="in-practice">Why the distinction matters</h2>
+    <p>Two properties of the distinction have practical consequences. First, a URL carries an expectation of being dereferenceable &mdash; using it should retrieve the resource &mdash; whereas a URI in general only provides identification.<span class="cite">[<a href="#ref1">1</a>]</span> Second, a URL is not a promise of permanence: RFC 1738 warned already in 1994 that "there is no general guarantee that a URL which at one time points to a given object continues to do so" &mdash; the object may move, and the URL then points at nothing, or at a different object.<span class="cite">[<a href="#ref2">2</a>]</span> The URN design exists precisely to give a stable name that survives such moves, at the cost of not itself saying where the resource is.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>So the three terms answer different questions: a URL says <em>where</em> something is, a URN says <em>what</em> something is, and URI is the general term for either.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li>No essay or ELI5 picture-book version of this topic exists on this site yet; the authoritative treatments are the specifications listed in the references below.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> T. Berners-Lee, R. Fielding, L. Masinter, "Uniform Resource Identifier (URI): Generic Syntax," RFC 3986, STD 66, January 2005 &mdash; <a href="https://www.rfc-editor.org/rfc/rfc3986">https://www.rfc-editor.org/rfc/rfc3986</a></li>
+      <li id="ref2"><span class="backlink">^</span> T. Berners-Lee, L. Masinter, M. McCahill, "Uniform Resource Locators (URL)," RFC 1738, December 1994 &mdash; <a href="https://www.rfc-editor.org/rfc/rfc1738">https://www.rfc-editor.org/rfc/rfc1738</a></li>
+      <li id="ref3"><span class="backlink">^</span> P. Saint-Andre, J. Klensin, "Uniform Resource Names (URNs)," RFC 8141, April 2017 (obsoletes RFC 2141 and RFC 3406) &mdash; <a href="https://www.rfc-editor.org/rfc/rfc8141">https://www.rfc-editor.org/rfc/rfc8141</a></li>
+      <li id="ref4"><span class="backlink">^</span> M. Mealling, R. Denenberg, "Report from the Joint W3C/IETF URI Planning Interest Group: Uniform Resource Identifiers (URIs), URLs, and Uniform Resource Names (URNs): Clarifications and Recommendations," RFC 3305, August 2002 &mdash; <a href="https://www.rfc-editor.org/rfc/rfc3305">https://www.rfc-editor.org/rfc/rfc3305</a></li>
+      <li id="ref5"><span class="backlink">^</span> J. Hakala, H. Walravens, "Using International Standard Book Numbers as Uniform Resource Names," RFC 3187, October 2001 &mdash; <a href="https://www.rfc-editor.org/rfc/rfc3187">https://www.rfc-editor.org/rfc/rfc3187</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

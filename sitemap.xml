@@ -136,6 +136,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/url-urn-uri/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/writing/five-checks-against-motivated-reasoning/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
