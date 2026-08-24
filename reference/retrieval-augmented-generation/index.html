@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retrieval-Augmented Generation — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Retrieval-Augmented Generation (RAG) is an AI architecture that grounds a language model's output in documents retrieved at query time. Pipeline, failure modes, and variants, cited.">
+  <meta property="og:title" content="Retrieval-Augmented Generation — Reference">
+  <meta property="og:description" content="An AI architecture that grounds a language model's output in documents retrieved at query time. Pipeline, failure modes, and variants, cited.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/retrieval-augmented-generation/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/retrieval-augmented-generation/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .pipeline {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+    }
+    .pipeline ol { padding-left: 1.3rem; }
+    .pipeline li { margin-bottom: 0.4rem; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">AI Architecture</p>
+    <h1>Retrieval-Augmented Generation</h1>
+    <p class="updated">Reference entry &middot; last updated August 24, 2026</p>
+
+    <p class="lede"><strong>Retrieval-Augmented Generation</strong> (RAG) is an AI architecture that grounds a large language model's output in documents retrieved at query time, instead of relying only on knowledge encoded during training.<span class="cite">[<a href="#ref1">1</a>]</span> The model itself is unchanged; RAG is a system built around it. It addresses two related limits of a language model on its own &mdash; a fixed training cutoff, and no reliable way to signal "I don't know" &mdash; by handing the model real, current documents to answer from rather than asking it to answer from memory alone.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#pipeline">The pipeline</a></li>
+        <li><a href="#failure-modes">Failure modes</a>
+          <ol>
+            <li><a href="#buried-answers">Buried answers</a></li>
+            <li><a href="#index-staleness">Index staleness</a></li>
+          </ol>
+        </li>
+        <li><a href="#variants">Variants</a>
+          <ol>
+            <li><a href="#graphrag">GraphRAG</a></li>
+            <li><a href="#reranking">Reranking</a></li>
+          </ol>
+        </li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="pipeline">The pipeline</h2>
+    <p>RAG runs in four stages, in this order.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <div class="pipeline">
+      <ol>
+        <li><strong>Ingestion</strong> &mdash; source documents are split into chunks, each chunk converted to a vector embedding, and the chunk plus its vector stored in a searchable index. Runs offline, before any query arrives.</li>
+        <li><strong>Retrieval</strong> &mdash; the user's query is converted to the same kind of vector, and the index is searched for the closest-matching chunks.</li>
+        <li><strong>Augmentation</strong> &mdash; the retrieved chunks are inserted into the prompt alongside the original query.</li>
+        <li><strong>Generation</strong> &mdash; the model produces an answer from that augmented prompt.</li>
+      </ol>
+    </div>
+    <p>Retrieval itself runs one of three ways: dense (vector similarity, finds meaning but can miss exact keywords), sparse (keyword matching such as BM25, fast but misses semantic similarity), or hybrid (both, merged).<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="failure-modes">Failure modes</h2>
+
+    <h3 id="buried-answers">Buried answers</h3>
+    <p>Vector search finds chunks that read as <em>similar</em> to a query, not necessarily the chunk that <em>answers</em> it. Because documents are often organized hierarchically (title, then section, then sub-section), a query can match a document's title-level summary while the actual answer sits several sections deeper, worded differently enough that its similarity score to the query is too low to surface. The system does not retrieve the wrong document &mdash; it retrieves the right document at the wrong depth.</p>
+    <p class="unattributed">This specific failure pattern is widely discussed in RAG-engineering literature; no single canonical academic source names it, so it is described here rather than cited to one paper.</p>
+
+    <h3 id="index-staleness">Index staleness</h3>
+    <p>Building the index once is not sufficient. Source data changes after ingestion runs, and a stale index returns outdated answers with the same apparent confidence as fresh ones. Keeping the external data current, through automated real-time syncing or scheduled batch refreshes, is a distinct, ongoing pipeline requirement separate from the one-time ingestion build.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="variants">Variants</h2>
+
+    <h3 id="graphrag">GraphRAG</h3>
+    <p>A second retrieval mode layered on top of vector search: a knowledge graph encoding explicit relationships between documents or entities, which the system can traverse instead of only measuring similarity. Vector search asks what looks similar to a query; graph traversal asks what is structurally connected to an entity &mdash; a different operation, useful for relationship-dependent or multi-hop queries that similarity search handles poorly.</p>
+
+    <h3 id="reranking">Reranking</h3>
+    <p>A second relevance pass over the initial retrieval shortlist, not the whole index. Initial retrieval is cheap and runs over the full corpus to return an approximate top-K; a separate, more expensive model (often a cross-encoder, which scores the query and each candidate document together rather than comparing precomputed vectors) re-scores that shortlist and reorders it before anything reaches the prompt. The two steps trade speed for precision on purpose.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/eli5/retrieval-augmented-generation/">How Does an AI Answer Things It Wasn't Taught?</a> &mdash; a picture-book explainer covering the same ground</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> "What is RAG (Retrieval-Augmented Generation)?" &mdash; Amazon Web Services &mdash; <a href="https://aws.amazon.com/what-is/retrieval-augmented-generation/">https://aws.amazon.com/what-is/retrieval-augmented-generation/</a></li>
+      <li id="ref2"><span class="backlink">^</span> Jenna Pederson, "Retrieval-Augmented Generation (RAG)" &mdash; Pinecone, 2025-06-12 &mdash; <a href="https://www.pinecone.io/learn/retrieval-augmented-generation/">https://www.pinecone.io/learn/retrieval-augmented-generation/</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
