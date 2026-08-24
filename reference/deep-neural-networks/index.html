@@ -226,14 +226,14 @@
     <p>
       A <strong>Deep Neural Network (DNN)</strong> is an artificial neural network with multiple hidden layers (\(L \ge 2\)) between its input and output layers. Mathematically, a DNN is a nested composite function that maps an input vector \(x \in \mathbb{R}^{d_{in}}\) to an output vector \(y \in \mathbb{R}^{d_{out}}\):
     </p>
-    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      y = f(x; \theta) = f_L\Big(f_{L-1}\big(\dots f_1(x; W_1, b_1)\dots; W_{L-1}, b_{L-1}\big); W_L, b_L\Big)
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$y = f(x; \theta) = f_L\Big(f_{L-1}\big(\dots f_1(x; W_1, b_1)\dots; W_{L-1}, b_{L-1}\big); W_L, b_L\Big)$$
     </p>
     <p>
       where each layer \(l\) computes an affine linear transformation followed by an element-wise non-linear activation function \(\sigma\):
     </p>
-    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      h_l = \sigma(W_l h_{l-1} + b_l)
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$h_l = \sigma(W_l h_{l-1} + b_l)$$
     </p>
 
     <!-- Section 2: Non-Linear Activations -->
@@ -241,8 +241,8 @@
     <p>
       Without non-linear activation functions, any deep composition of linear layers collapses algebraically into a single matrix multiplication:
     </p>
-    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1rem 0;">
-      W_3 (W_2 (W_1 x)) = (W_3 W_2 W_1) x = W_{net} x
+    <p style="text-align: center; margin: 1rem 0;">
+      $$W_3 (W_2 (W_1 x)) = (W_3 W_2 W_1) x = W_{net} x$$
     </p>
     <p>
       Non-linear activations (e.g. <strong>ReLU</strong> \(\max(0, x)\), <strong>GELU</strong> \(x \Phi(x)\), <strong>SwiGLU</strong>) allow the network to construct complex, non-linear decision boundaries. Under the <strong>Universal Approximation Theorem</strong> (Cybenko 1989, Hornik 1991), non-linear feedforward networks can approximate any continuous function on compact subsets of \(\mathbb{R}^n\) to arbitrary precision.
@@ -267,8 +267,8 @@
     <ul>
       <li><strong>Forward Pass:</strong> Propagates input data through all \(L\) layers to compute predictions and loss \(\mathcal{L}\).</li>
       <li><strong>Backward Pass (Backpropagation):</strong> Evaluates the exact partial derivatives of the loss with respect to all network weights \(\frac{\partial \mathcal{L}}{\partial W_l}\) via reverse-mode automatic differentiation (multivariable chain rule):
-        <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 0.8rem 0;">
-          \frac{\partial \mathcal{L}}{\partial W_l} = \frac{\partial \mathcal{L}}{\partial h_l} \cdot \frac{\partial h_l}{\partial z_l} \cdot \frac{\partial z_l}{\partial W_l}
+        <p style="text-align: center; margin: 0.8rem 0;">
+          $$\frac{\partial \mathcal{L}}{\partial W_l} = \frac{\partial \mathcal{L}}{\partial h_l} \cdot \frac{\partial h_l}{\partial z_l} \cdot \frac{\partial z_l}{\partial W_l}$$
         </p>
       </li>
       <li><strong>Weight Update:</strong> Stochastic gradient optimizers with momentum and decoupled weight decay (e.g. <strong>AdamW</strong>) update parameters \(\theta \leftarrow \theta - \eta \nabla_{\theta}\mathcal{L}\).</li>

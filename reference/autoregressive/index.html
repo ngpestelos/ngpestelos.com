@@ -226,8 +226,8 @@
     <p>
       An <strong>autoregressive (AR) model</strong> is a statistical or machine learning model that forecasts future values in a sequence as a function of its own preceding past values. In natural language processing, autoregressive language modeling decomposes the joint probability distribution of a sequence of tokens \(X = (x_1, x_2, \dots, x_T)\) using the probabilistic chain rule:
     </p>
-    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      P(X) = \prod_{t=1}^{T} P(x_t \mid x_1, x_2, \dots, x_{t-1})
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$P(X) = \prod_{t=1}^{T} P(x_t \mid x_1, x_2, \dots, x_{t-1})$$
     </p>
     <p>
       At each step \(t\), the model conditions strictly on the prefix \(x_{<t}\) to emit a probability distribution over the vocabulary \(V\), samples or selects token \(x_t\), appends \(x_t\) to the sequence, and repeats the forward pass.
@@ -241,8 +241,8 @@
     <p>
       This is enforced via a <strong>causal attention mask</strong> (lower-triangular matrix), setting attention weights to \(-\infty\) for all positions \(j > i\):
     </p>
-    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V, \quad M_{ij} = \begin{cases} 0 & i \ge j \\ -\infty & i < j \end{cases}
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V, \quad M_{ij} = \begin{cases} 0 & i \ge j \\ -\infty & i < j \end{cases}$$
     </p>
 
     <!-- Section 3: Inference Bottleneck -->

@@ -242,8 +242,8 @@
     <p>
       At its core, an LLM is a mathematical function mapping an input sequence of token IDs \((x_1, x_2, \dots, x_t)\) to a probability distribution over the vocabulary \(V\):
     </p>
-    <p style="text-align: center; font-family: ui-monospace, Menlo, monospace; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      P(x_{t+1} \mid x_1, x_2, \dots, x_t) = \text{softmax}(W_v \cdot h_t)
+    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      $$P(x_{t+1} \mid x_1, x_2, \dots, x_t) = \text{softmax}(W_v \cdot h_t)$$
     </p>
     <p>
       <strong>Next-Token Prediction Default:</strong> Because generation optimizes for statistical plausibility across training data rather than factual truth, an unconstrained LLM will generate hallucinated text with high statistical confidence whenever source facts are absent.
