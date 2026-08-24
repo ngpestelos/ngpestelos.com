@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Engineering — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Context Engineering: token budgeting, memory tiers, Lost in the Middle mechanics, prompt caching, and structured context pipelines.">
+  <meta property="og:title" content="Context Engineering — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Context Engineering: token budgeting, memory tiers, Lost in the Middle mechanics, prompt caching, and structured context pipelines.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/context-engineering/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/context-engineering/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
+      line-height: 1.4;
+    }
+    .toc-grid a { color: var(--link); text-decoration: none; }
+    .toc-grid a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .def-box {
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px dashed #d0d7de;
+    }
+    .def-box:last-child { border-bottom: none; }
+    .term-title { font-weight: 700; font-size: 1.05rem; display: inline; }
+    .term-desc { display: inline; margin-left: 0.35rem; }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a></p>
+    <p class="kicker">Reference Document</p>
+    <h1>Context Engineering</h1>
+    <p class="subtitle">A citable reference on context engineering: the systematic discipline of token budgeting, memory tiering, attention degradation mitigation, prompt caching, and structured payload assembly for LLMs.</p>
+
+    <div class="companion-box">
+      <h2>Companion Formats &amp; Essays</h2>
+      <ul>
+        <li>🎨 <a href="/eli5/context-engineering/"><strong>ELI5: What Is Context Engineering?</strong></a> — Visual picture-book explainer.</li>
+        <li>🌳 <a href="/trees/context-engineering/"><strong>Context Engineering Knowledge Tree</strong></a> — Prerequisite curriculum map and active frontier.</li>
+        <li>📖 <a href="/writing/agent-didnt-get-dumber-chat-got-contaminated/"><strong>Essay: The Agent Didn't Get Dumber, the Chat Got Contaminated</strong></a> — Context window drift and contamination.</li>
+        <li>📖 <a href="/writing/cheap-code-expensive-context/"><strong>Essay: Cheap Code, Expensive Context</strong></a> — Economics of token budgeting.</li>
+      </ul>
+    </div>
+
+    <div class="toc">
+      <h2>Jump to Section</h2>
+      <div class="toc-grid">
+        <a href="#definition">Definition &amp; Pipeline Thesis</a> &middot;
+        <a href="#lost-in-middle">Attention Degradation</a> &middot;
+        <a href="#four-part-framework">Structured Prompt Framework</a> &middot;
+        <a href="#memory-hierarchy">The Three-Tier Memory Hierarchy</a> &middot;
+        <a href="#prompt-caching">Prompt Caching Mechanics</a> &middot;
+        <a href="#pipeline-techniques">Compression &amp; Compaction</a> &middot;
+        <a href="#chat-contamination">Context Drift &amp; Contamination</a> &middot;
+        <a href="#sources">Sources</a>
+      </div>
+    </div>
+
+    <!-- Section 1: Definition -->
+    <h2 id="definition">1. Definition: A Data-Pipeline Discipline</h2>
+    <p>
+      <strong>Context Engineering</strong> is the systematic design, curation, optimization, and real-time assembly of the token sequence passed to a Large Language Model on each execution turn.
+    </p>
+    <p>
+      Unlike <em>prompt engineering</em> (which focuses on phrasing, tone, and subjective instructions), context engineering treats context as a strictly constrained, high-latency, expensive computing cache. It is governed as a deterministic ETL (Extract, Transform, Load) data pipeline:
+    </p>
+    <ul>
+      <li><strong>Extract:</strong> Dynamically retrieve relevant user history, active files, and semantic RAG vectors.</li>
+      <li><strong>Transform:</strong> Deduplicate passages, prune irrelevant AST branches, compress transcripts, and enforce schema formats.</li>
+      <li><strong>Load:</strong> Pack the token payload within strict budget bounds, ordered to maximize model attention and prompt cache hits.</li>
+    </ul>
+
+    <!-- Section 2: Attention Degradation -->
+    <h2 id="lost-in-middle">2. Attention Degradation &amp; "Lost in the Middle"</h2>
+    <p>
+      While modern models support context windows from 128k to 2M tokens, <strong>effective recall</strong> is non-uniform across the context window.
+    </p>
+    <p>
+      Empirical evaluations (Liu et al., 2023) show a distinct U-shaped retrieval accuracy curve:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Context Position</th>
+          <th>Relative Attention Weight</th>
+          <th>Recommended Payload Content</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Primacy (First 15%)</strong></td>
+          <td>High (&gt;95% recall)</td>
+          <td>Core system persona, security invariants, behavioral constraints, API schemas, and tool definitions.</td>
+        </tr>
+        <tr>
+          <td><strong>Middle (15% – 85%)</strong></td>
+          <td>Degraded (&lt;60% recall in dense context)</td>
+          <td>Supporting reference documents, raw RAG search results, background context. (Must be pre-filtered and relevance-ranked).</td>
+        </tr>
+        <tr>
+          <td><strong>Recency (Final 15%)</strong></td>
+          <td>Highest (&gt;98% recall)</td>
+          <td>Immediate turn task, user input, latest tool execution output, and explicit output formatting rules.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 3: Four-Part Framework -->
+    <h2 id="four-part-framework">3. The Four-Part Structured Prompt Framework</h2>
+    <p>
+      Production system prompts avoid freeform prose. They partition instructions into four deterministic sections:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Component</th>
+          <th>Header</th>
+          <th>Function</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1. Role &amp; Identity</strong></td>
+          <td><code>&lt;identity&gt;</code> / <code># Role</code></td>
+          <td>Establishes expertise domain, operational persona, register (e.g. ASD-STE100 technical brevity), and decision authority.</td>
+        </tr>
+        <tr>
+          <td><strong>2. Task &amp; Context</strong></td>
+          <td><code>&lt;context&gt;</code> / <code># Task</code></td>
+          <td>Defines the exact objective, relevant environmental state, file paths, and input data.</td>
+        </tr>
+        <tr>
+          <td><strong>3. Constraints &amp; Gates</strong></td>
+          <td><code>&lt;rules&gt;</code> / <code># Constraints</code></td>
+          <td>Negative constraints ("Never overwrite originals without confirmation", "Never execute destructive shell commands"), safety thresholds, and reality filters.</td>
+        </tr>
+        <tr>
+          <td><strong>4. Output Schema</strong></td>
+          <td><code>&lt;output_format&gt;</code> / <code># Format</code></td>
+          <td>Explicit JSON Schema, XML tag envelope, or tabular structure required for downstream parsing.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 4: Memory Hierarchy -->
+    <h2 id="memory-hierarchy">4. The Three-Tier Memory Hierarchy</h2>
+    <p>
+      A massive context window cannot replace a persistent, structured memory hierarchy (Mitra, 2026):
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Storage Medium</th>
+          <th>Lifecycle &amp; Scope</th>
+          <th>Retrieval Mechanism</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Working Memory (Short-Term)</strong></td>
+          <td>In-memory conversation buffer</td>
+          <td>Active session turns (sliding window of latest 5–15 turns).</td>
+          <td>Direct injection into payload.</td>
+        </tr>
+        <tr>
+          <td><strong>Episodic Memory (Medium-Term)</strong></td>
+          <td>Git commit logs, session transcripts, daily journals</td>
+          <td>Day-to-day session history and task logs.</td>
+          <td>Time-based search and progressive summarization sweeps.</td>
+        </tr>
+        <tr>
+          <td><strong>Semantic Memory (Long-Term)</strong></td>
+          <td>Curated atomic notes, vector database, Knowledge Trees</td>
+          <td>Durable domain rules, user preferences, codebase architecture maps.</td>
+          <td>Vector similarity, keyword grep, and knowledge-graph traversal.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 5: Prompt Caching -->
+    <h2 id="prompt-caching">5. Prompt Caching Architecture</h2>
+    <p>
+      Modern frontier inference providers (Anthropic, OpenAI, DeepSeek) support <strong>KV (Key-Value) Prompt Caching</strong>. When sequential requests share an identical prefix of tokens, the provider reuses the computed attention states from memory rather than re-computing them.
+    </p>
+    <ul>
+      <li><strong>Cost &amp; Latency Gains:</strong> Cached tokens are billed at a 75%–90% discount and eliminate up to 80% of Time-To-First-Token (TTFT) latency.</li>
+      <li><strong>Prefix-Stability Rule:</strong> Static tokens (system prompts, tool definitions, reference schemas) must be placed at the absolute start of the context payload. Dynamic tokens (timestamps, conversation turns) must always be appended at the end. Placing a dynamic timestamp at line 1 invalidates the entire downstream cache.</li>
+    </ul>
+
+    <!-- Section 6: Pipeline Techniques -->
+    <h2 id="pipeline-techniques">6. Compression, Pruning &amp; Compaction</h2>
+    <ul>
+      <li><strong>AST-Guided Pruning:</strong> Extracting only relevant class headers, function signatures, and targeted line ranges rather than dumping 5,000-line source files into context.</li>
+      <li><strong>Progressive Summarization:</strong> Distilling raw multi-thousand-word documents into 3-layer atomic notes (Layer 1: raw quotes, Layer 2: bold anchors, Layer 3: executive summary) before context assembly.</li>
+      <li><strong>Semantic Deduplication:</strong> Pruning redundant search results using Maximal Marginal Relevance (MMR) to prevent crowding the context window with repetitive vectors.</li>
+    </ul>
+
+    <!-- Section 7: Context Drift -->
+    <h2 id="chat-contamination">7. Context Drift &amp; Chat Contamination</h2>
+    <div class="def-box">
+      <h3 class="term-title" id="chat-contamination-def">Chat Contamination:</h3>
+      <p class="term-desc">In long multi-turn sessions, intermediate errors, exploratory false starts, and apologetic conversational filler accumulate in the turn buffer. The LLM pays attention to its own past degraded outputs, causing hallucination cascading. Solution: periodic compaction, scratchpad wiping, and fresh-session re-anchoring.</p>
+    </div>
+
+    <div class="def-box">
+      <h3 class="term-title" id="instruction-drift">Instruction Drift:</h3>
+      <p class="term-desc">As the context length grows past 50,000+ tokens, the model's adherence to initial system constraints weakens due to distance decay. Mitigated by re-anchoring critical constraints in the recency position immediately before the active user prompt.</p>
+    </div>
+
+    <!-- Section 8: Sources -->
+    <footer id="sources">
+      <h3>Sources &amp; Foundational Research</h3>
+      <ul>
+        <li>Nelson F. Liu et al. (2023): <a href="https://arxiv.org/abs/2307.03172" target="_blank" rel="noopener">Lost in the Middle: How Language Models Use Long Contexts</a> (Stanford / Berkeley)</li>
+        <li>Sampriti Mitra (2026): <a href="https://www.packtpub.com/en-us/product/system-design-for-the-llm-era-9781807789930" target="_blank" rel="noopener">System Design for the LLM Era</a> (Packt Publishing)</li>
+        <li>Anthropic Research (2024): <a href="https://www.anthropic.com/news/prompt-caching" target="_blank" rel="noopener">Prompt Caching with Claude</a></li>
+        <li>Greg Kamradt (2023): <a href="https://github.com/gkamradt/LLMTest_NeedleInAHaystack" target="_blank" rel="noopener">Needle In A Haystack — Pressure Testing LLM Context Retrieval</a></li>
+      </ul>
+      <p style="margin-top: 1rem;">
+        Related: <a href="/eli5/context-engineering/">ELI5: Context Engineering</a> &middot; <a href="/trees/context-engineering/">Context Engineering Tree</a> &middot; <a href="/reference/large-language-models/">LLM Reference</a>
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
