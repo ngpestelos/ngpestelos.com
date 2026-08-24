@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reinforcement Learning — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Reinforcement Learning (RL): Markov Decision Processes, Bellman optimality equations, policy gradients, Actor-Critic methods, PPO, DPO, and GRPO.">
+  <meta property="og:title" content="Reinforcement Learning — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Reinforcement Learning (RL): Markov Decision Processes, Bellman optimality equations, policy gradients, Actor-Critic methods, PPO, DPO, and GRPO.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/reinforcement-learning/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/reinforcement-learning/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag'js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\[', right: '\]', display: true},
+        {left: '\(', right: '\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-top: 0;
+    }
+    .toc ol {
+      padding-left: 1.3rem;
+      margin-bottom: 0;
+    }
+    .toc ol ol {
+      padding-left: 1.2rem;
+      margin-top: 0.15rem;
+    }
+    .toc li { margin: 0.25rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula-box {
+      text-align: center;
+      margin: 1.2rem 0;
+      background: var(--well);
+      padding: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    #references {
+      font-size: 0.92rem;
+    }
+    #references ol {
+      padding-left: 1.5rem;
+    }
+    #references li {
+      margin-bottom: 0.5rem;
+    }
+    #references .backlink {
+      margin-right: 0.3rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Artificial Intelligence</p>
+    <h1>Reinforcement Learning</h1>
+    <p class="subtitle">A citable reference on Reinforcement Learning (RL): Markov Decision Processes, Bellman optimality equations, value and policy iteration, policy gradient theorems, Actor-Critic methods, PPO, DPO, and GRPO.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/machine-learning/"><strong>Reference: Machine Learning</strong></a>: Empirical risk minimization, learning paradigms, and generalization theory.</li>
+        <li>📖 <a href="/reference/artificial-intelligence/"><strong>Reference: Artificial Intelligence</strong></a>: Rational agents, environment classification, and search algorithms.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a>: Multilayer perceptrons, gradient descent, and function approximation.</li>
+        <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a>: Post-training alignment, preference optimization, and reasoning trajectories.</li>
+        <li>📖 <a href="/reference/agents/"><strong>Reference: Agents</strong></a>: Perception-action loops, tool use, and autonomous execution patterns.</li>
+      </ul>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#formal-definition">1. Formal Definition and Markov Decision Processes</a>
+          <ol>
+            <li><a href="#mdp-tuple">1.1 The MDP 5-Tuple</a></li>
+            <li><a href="#return-policy">1.2 Returns, Trajectories, and Policies</a></li>
+            <li><a href="#value-functions">1.3 Value Functions</a></li>
+          </ol>
+        </li>
+        <li><a href="#bellman-equations">2. Bellman Equations and Optimality</a>
+          <ol>
+            <li><a href="#bellman-expectation">2.1 Bellman Expectation Equations</a></li>
+            <li><a href="#bellman-optimality">2.2 Bellman Optimality Equations</a></li>
+            <li><a href="#contraction-mapping">2.3 Contraction Mapping and Convergence</a></li>
+          </ol>
+        </li>
+        <li><a href="#taxonomy">3. Taxonomy of Reinforcement Learning Algorithms</a>
+          <ol>
+            <li><a href="#model-based-free">3.1 Model-Based vs. Model-Free</a></li>
+            <li><a href="#value-based">3.2 Value-Based Methods</a></li>
+            <li><a href="#policy-gradients">3.3 Policy Gradient Methods</a></li>
+            <li><a href="#actor-critic">3.4 Actor-Critic Architectures</a></li>
+          </ol>
+        </li>
+        <li><a href="#exploration-exploitation">4. The Exploration-Exploitation Tradeoff</a></li>
+        <li><a href="#frontier-llms">5. Reinforcement Learning in Large Language Models</a>
+          <ol>
+            <li><a href="#rlhf-ppo">5.1 RLHF with PPO</a></li>
+            <li><a href="#dpo">5.2 Direct Preference Optimization (DPO)</a></li>
+            <li><a href="#grpo-rlvr">5.3 GRPO and Verifiable Rewards (RLVR)</a></li>
+          </ol>
+        </li>
+        <li><a href="#references">6. References</a></li>
+      </ol>
+    </nav>
+
+    <!-- Section 1: Formal Definition -->
+    <h2 id="formal-definition">1. Formal Definition and Markov Decision Processes</h2>
+    <p>
+      <strong>Reinforcement Learning (RL)</strong> is a computational framework in machine learning where an agent learns to make sequential decisions by interacting with an environment to maximize cumulative numerical reward.<span class="cite">[<a href="#ref1">1</a>]</span> Unlike supervised learning, which relies on explicit input-output label pairs, the agent receives evaluative feedback through scalar reward signals generated by environmental transitions.
+    </p>
+
+    <h3 id="mdp-tuple">1.1 The MDP 5-Tuple</h3>
+    <p>
+      Sequential decision problems in RL are formally framed as <strong>Markov Decision Processes (MDPs)</strong>, defined by the 5-tuple \((S, A, P, R, \gamma)\):<span class="cite">[<a href="#ref1">1</a>]</span>
+    </p>
+    <ul>
+      <li>\(S\): The state space containing all valid environmental configurations.</li>
+      <li>\(A\): The action space available to the agent (discrete or continuous).</li>
+      <li>\(P(s' \mid s, a) = \mathbb{P}(S_{t+1} = s' \mid S_t = s, A_t = a)\): The transition probability distribution satisfying the Markov property:
+        <div class="formula-box">
+          $$\mathbb{P}(S_{t+1} = s_{t+1} \mid S_t = s_t, A_t = a_t, \dots, S_0 = s_0, A_0 = a_0) = \mathbb{P}(S_{t+1} = s_{t+1} \mid S_t = s_t, A_t = a_t)$$
+        </div>
+      </li>
+      <li>\(R(s, a, s') = \mathbb{E}[R_{t+1} \mid S_t = s, A_t = a, S_{t+1} = s']\): The reward function mapping state-action transitions to scalar values.</li>
+      <li>\(\gamma \in [0, 1)\): The discount factor weighting immediate versus future rewards.</li>
+    </ul>
+
+    <h3 id="return-policy">1.2 Returns, Trajectories, and Policies</h3>
+    <p>
+      An interaction trajectory \(	au\) is a sequence of states, actions, and rewards: \(	au = (s_0, a_0, r_0, s_1, a_1, r_1, \dots, s_T)\). The discounted return \(G_t\) from time step \(t\) onward is:
+    </p>
+    <div class="formula-box">
+      $$G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}$$
+    </div>
+    <p>
+      The agent behaves according to a policy \(\pi\). A stochastic policy \(\pi(a \mid s) = \mathbb{P}(A_t = a \mid S_t = s)\) maps states to action probability distributions; a deterministic policy \(\mu(s)\) maps each state directly to a specific action. The goal of the agent is to find an optimal policy \(\pi^*\) that maximizes the expected return \(J(\pi) = \mathbb{E}_{	au \sim \pi}[G_0]\).
+    </p>
+
+    <h3 id="value-functions">1.3 Value Functions</h3>
+    <p>
+      Value functions measure expected long-term return under a given policy:
+    </p>
+    <ul>
+      <li><strong>State-Value Function \(V^\pi(s)\):</strong> Expected return starting from state \(s\) under policy \(\pi\):
+        <div class="formula-box">
+          $$V^\pi(s) = \mathbb{E}_\pi \left[ \sum_{k=0}^\infty \gamma^k R_{t+k+1} \;\middle|\; S_t = s ight]$$
+        </div>
+      </li>
+      <li><strong>Action-Value Function \(Q^\pi(s, a)\):</strong> Expected return taking action \(a\) in state \(s\), then following policy \(\pi\):
+        <div class="formula-box">
+          $$Q^\pi(s, a) = \mathbb{E}_\pi \left[ \sum_{k=0}^\infty \gamma^k R_{t+k+1} \;\middle|\; S_t = s, A_t = a ight]$$
+        </div>
+      </li>
+      <li><strong>Advantage Function \(A^\pi(s, a)\):</strong> The relative value of taking action \(a\) compared to the policy average:
+        <div class="formula-box">
+          $$A^\pi(s, a) = Q^\pi(s, a) - V^\pi(s)$$
+        </div>
+      </li>
+    </ul>
+
+    <!-- Section 2: Bellman Equations -->
+    <h2 id="bellman-equations">2. Bellman Equations and Optimality</h2>
+    <p>
+      Value functions satisfy recursive relationships known as Bellman equations, decomposing the value of a state into immediate reward plus discounted downstream value.<span class="cite">[<a href="#ref2">2</a>]</span>
+    </p>
+
+    <h3 id="bellman-expectation">2.1 Bellman Expectation Equations</h3>
+    <p>
+      For any stationary policy \(\pi\), the value functions satisfy:
+    </p>
+    <div class="formula-box">
+      $$V^\pi(s) = \sum_{a \in A} \pi(a \mid s) \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma V^\pi(s') ight]$$
+    </div>
+    <div class="formula-box">
+      $$Q^\pi(s, a) = \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma \sum_{a' \in A} \pi(a' \mid s') Q^\pi(s', a') ight]$$
+    </div>
+
+    <h3 id="bellman-optimality">2.2 Bellman Optimality Equations</h3>
+    <p>
+      An optimal policy \(\pi^*\) achieves the maximum value across all states: \(V^*(s) = \max_\pi V^\pi(s)\) and \(Q^*(s, a) = \max_\pi Q^\pi(s, a)\). The Bellman optimality equations express these conditions without explicit policy reference:
+    </p>
+    <div class="formula-box">
+      $$V^*(s) = \max_{a \in A} \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma V^*(s') ight]$$
+    </div>
+    <div class="formula-box">
+      $$Q^*(s, a) = \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma \max_{a' \in A} Q^*(s', a') ight]$$
+    </div>
+
+    <h3 id="contraction-mapping">2.3 Contraction Mapping and Convergence</h3>
+    <p>
+      The Bellman optimality operator \(\mathcal{T}^*\) defined by \((\mathcal{T}^* V)(s) = \max_a \sum_{s'} P(s' \mid s, a)[R(s, a, s') + \gamma V(s')]\) is a \(\gamma\)-contraction mapping in the infinity norm:
+    </p>
+    <div class="formula-box">
+      $$\|\mathcal{T}^* U - \mathcal{T}^* V\|_\infty \le \gamma \|U - V\|_\infty$$
+    </div>
+    <p>
+      By the Banach Fixed-Point Theorem, applying \(\mathcal{T}^*\) iteratively from any initial value function \(V_0\) converges geometrically to the unique optimal value function \(V^*\) when \(\gamma < 1\). This property provides the theoretical foundation for value iteration and Q-learning.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref3">3</a>]</span>
+    </p>
+
+    <!-- Section 3: Taxonomy -->
+    <h2 id="taxonomy">3. Taxonomy of Reinforcement Learning Algorithms</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Optimization Target</th>
+          <th>Key Mechanism</th>
+          <th>Representative Algorithms</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Model-Based</strong></td>
+          <td>Transition model \(P(s' \mid s, a)\) and reward \(R\)</td>
+          <td>Plan via tree search, trajectory sampling, or world simulation</td>
+          <td>Dyna-Q, AlphaZero (MCTS), MuZero, World Models</td>
+        </tr>
+        <tr>
+          <td><strong>Value-Based</strong></td>
+          <td>Action-value function \(Q(s, a)\)</td>
+          <td>Iterative Temporal Difference updates; derive greedy policy \(rg\max_a Q\)</td>
+          <td>Q-Learning, SARSA, Deep Q-Networks (DQN), Rainbow</td>
+        </tr>
+        <tr>
+          <td><strong>Policy-Based</strong></td>
+          <td>Parameterized policy \(\pi_	heta(a \mid s)\)</td>
+          <td>Ascend policy performance gradient directly via trajectory samples</td>
+          <td>REINFORCE, Natural Policy Gradient</td>
+        </tr>
+        <tr>
+          <td><strong>Actor-Critic</strong></td>
+          <td>Joint policy \(\pi_	heta\) and value baseline \(V_\phi\)</td>
+          <td>Actor updates policy; Critic provides low-variance advantage estimates</td>
+          <td>A2C, A3C, TRPO, PPO, SAC</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="model-based-free">3.1 Model-Based vs. Model-Free</h3>
+    <p>
+      <strong>Model-Based RL</strong> algorithms learn or utilize an explicit model of environment transitions and reward dynamics. The agent uses this internal simulation to plan future action sequences before execution (for example, Monte Carlo Tree Search in AlphaZero).<span class="cite">[<a href="#ref4">4</a>]</span>
+    </p>
+    <p>
+      <strong>Model-Free RL</strong> algorithms bypass transition modeling and learn value functions or policies directly from sampled experience. While requiring higher sample complexity, model-free methods avoid compounding model bias in complex high-dimensional environments.
+    </p>
+
+    <h3 id="value-based">3.2 Value-Based Methods</h3>
+    <p>
+      In <strong>Q-Learning</strong> (Watkins, 1989), the agent updates action-value estimates off-policy using Temporal Difference (TD) learning:<span class="cite">[<a href="#ref3">3</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + lpha \left[ R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t) ight]$$
+    </div>
+    <p>
+      <strong>Deep Q-Networks (DQN)</strong> (Mnih et al., 2015) scale Q-learning to high-dimensional state spaces using deep neural networks parameterized by \(	heta\).<span class="cite">[<a href="#ref5">5</a>]</span> DQN stabilizes non-linear function approximation through two core mechanisms:
+    </p>
+    <ul>
+      <li><strong>Experience Replay:</strong> Transitions \((s_t, a_t, r_t, s_{t+1})\) are stored in a rolling replay buffer and sampled uniformly in mini-batches to break temporal correlation.</li>
+      <li><strong>Target Networks:</strong> A secondary parameter set \(	heta^-\) computes TD targets, updated periodically to eliminate moving-target instability during gradient descent.</li>
+    </ul>
+
+    <h3 id="policy-gradients">3.3 Policy Gradient Methods</h3>
+    <p>
+      Policy-based methods parameterize the policy directly as \(\pi_	heta(a \mid s)\) and optimize the objective \(J(	heta) = \mathbb{E}_{	au \sim \pi_	heta}[R(	au)]\) via gradient ascent. The <strong>Policy Gradient Theorem</strong> (Sutton et al., 1999) establishes that the objective gradient does not require differentiation through state transition probabilities:<span class="cite">[<a href="#ref6">6</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$
+abla_	heta J(	heta) = \mathbb{E}_{	au \sim \pi_	heta} \left[ \sum_{t=0}^T 
+abla_	heta \log \pi_	heta(A_t \mid S_t) \, Q^{\pi_	heta}(S_t, A_t) ight]$$
+    </div>
+    <p>
+      In the Monte Carlo <strong>REINFORCE</strong> algorithm (Williams, 1992), empirical episode return \(G_t\) serves as an unbiased sample estimate of \(Q(S_t, A_t)\).<span class="cite">[<a href="#ref7">7</a>]</span>
+    </p>
+
+    <h3 id="actor-critic">3.4 Actor-Critic Architectures</h3>
+    <p>
+      Pure policy gradients suffer from high variance. Actor-Critic methods resolve this by training a Critic network \(V_\phi(s)\) to estimate expected value and replacing \(Q(s, a)\) with the Advantage function \(A(s, a) = Q(s, a) - V(s)\).
+    </p>
+    <p>
+      <strong>Proximal Policy Optimization (PPO)</strong> (Schulman et al., 2017) stabilizes policy updates by constraining the step size using a clipped surrogate objective:<span class="cite">[<a href="#ref8">8</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$L^{	ext{CLIP}}(	heta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(	heta) \hat{A}_t, \, 	ext{clip}(r_t(	heta), 1-\epsilon, 1+\epsilon) \hat{A}_t ight) ight]$$
+    </div>
+    <p>
+      where \(r_t(	heta) = rac{\pi_	heta(a_t \mid s_t)}{\pi_{	heta_{	ext{old}}}(a_t \mid s_t)}\) is the probability ratio and \(\epsilon\) is a clipping parameter (typically \(0.1\) or \(0.2\)).
+    </p>
+
+    <!-- Section 4: Exploration vs Exploitation -->
+    <h2 id="exploration-exploitation">4. The Exploration-Exploitation Tradeoff</h2>
+    <p>
+      An RL agent balances exploitation (selecting actions known to yield high reward) with exploration (trying unfamiliar actions to discover potentially superior strategies). Common formal mechanisms include:
+    </p>
+    <ul>
+      <li><strong>\(\epsilon\)-Greedy:</strong> Select the highest-value action with probability \(1-\epsilon\), and a uniform random action with probability \(\epsilon\), where \(\epsilon\) is decayed over training.</li>
+      <li><strong>Upper Confidence Bound (UCB):</strong> Select actions balancing estimated mean return \(\hat{Q}(a)\) with estimation uncertainty based on visitation counts \(N(a)\):
+        <div class="formula-box">
+          $$A_t = rg\max_a \left[ Q_t(a) + c \sqrt{rac{\ln t}{N_t(a)}} ight]$$
+        </div>
+      </li>
+      <li><strong>Maximum Entropy RL (Soft Actor-Critic):</strong> Augments the objective with a policy entropy bonus \(\mathcal{H}(\pi(\cdot \mid s))\), encouraging broad state-space coverage and multi-modal policy discovery:<span class="cite">[<a href="#ref9">9</a>]</span>
+        <div class="formula-box">
+          $$J(\pi) = \mathbb{E}_{	au \sim \pi} \left[ \sum_{t=0}^\infty \gamma^t \Big( R(S_t, A_t, S_{t+1}) + lpha \mathcal{H}ig(\pi(\cdot \mid S_t)ig) \Big) ight]$$
+        </div>
+      </li>
+    </ul>
+
+    <!-- Section 5: LLMs -->
+    <h2 id="frontier-llms">5. Reinforcement Learning in Large Language Models</h2>
+    <p>
+      In modern language model post-training, the state space corresponds to the prompt context, actions are generated tokens, and the environment transition is deterministic token concatenation.<span class="cite">[<a href="#ref10">10</a>]</span>
+    </p>
+
+    <h3 id="rlhf-ppo">5.1 RLHF with PPO</h3>
+    <p>
+      <strong>Reinforcement Learning from Human Feedback (RLHF)</strong> aligns pretrained language models with user preferences using a three-stage pipeline (Christiano et al., 2017; Ouyang et al., 2022):<span class="cite">[<a href="#ref10">10</a>, <a href="#ref11">11</a>]</span>
+    </p>
+    <ol>
+      <li>Supervised fine-tuning (SFT) on prompt-response demonstrations.</li>
+      <li>Reward model training on pairwise human preference comparisons \((y_w \succ y_l)\) via the Bradley-Terry preference model:
+        <div class="formula-box">
+          $$\mathcal{L}_{	ext{RM}}(\psi) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigmaig(r_\psi(x, y_w) - r_\psi(x, y_l)ig) ight]$$
+        </div>
+      </li>
+      <li>PPO policy optimization maximizing reward while applying a Kullback-Leibler (KL) divergence penalty against the reference model \(\pi_{	ext{ref}}\) to prevent policy collapse:
+        <div class="formula-box">
+          $$	ext{obj}(	heta) = \mathbb{E}_{(x, y) \sim \mathcal{D}_{\pi_	heta}} \left[ r_\psi(x, y) - eta D_{	ext{KL}}ig(\pi_	heta(y \mid x) \,\|\, \pi_{	ext{ref}}(y \mid x)ig) ight]$$
+        </div>
+      </li>
+    </ol>
+
+    <h3 id="dpo">5.2 Direct Preference Optimization (DPO)</h3>
+    <p>
+      <strong>Direct Preference Optimization (DPO)</strong> (Rafailov et al., 2023) derives an exact closed-form substitution for the optimal reward function in terms of policy probabilities:<span class="cite">[<a href="#ref12">12</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$r(x, y) = eta \log rac{\pi_	heta(y \mid x)}{\pi_{	ext{ref}}(y \mid x)}$$
+    </div>
+    <p>
+      Substituting this parameterization directly into the pairwise preference loss eliminates the need for an explicit reward model or online reinforcement learning sampling loop:
+    </p>
+    <div class="formula-box">
+      $$\mathcal{L}_{	ext{DPO}}(	heta) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma \left( eta \log rac{\pi_	heta(y_w \mid x)}{\pi_{	ext{ref}}(y_w \mid x)} - eta \log rac{\pi_	heta(y_l \mid x)}{\pi_{	ext{ref}}(y_l \mid x)} ight) ight]$$
+    </div>
+
+    <h3 id="grpo-rlvr">5.3 GRPO and Verifiable Rewards (RLVR)</h3>
+    <p>
+      For formal reasoning domains (mathematics, formal logic, and software code generation), reward signals can be computed deterministically via rule-based verifiers such as unit test execution or mathematical equivalence checkers.
+    </p>
+    <p>
+      <strong>Group Relative Policy Optimization (GRPO)</strong> (Shao et al., 2024 / DeepSeekMath) eliminates the Critic neural network entirely to cut memory overhead during post-training.<span class="cite">[<a href="#ref13">13</a>]</span> For each prompt \(q\), GRPO samples a group of \(G\) candidate outputs \(\{o_1, o_2, \dots, o_G\}\), scores each output with reward verifier \(r_i\), and standardizes rewards across the group to compute advantage values:
+    </p>
+    <div class="formula-box">
+      $$\hat{A}_i = rac{r_i - 	ext{mean}(\{r_1, \dots, r_G\})}{	ext{std}(\{r_1, \dots, r_G\})}$$
+    </div>
+    <p>
+      The policy is updated with a clipped objective regularized by a direct token-level KL divergence penalty:
+    </p>
+    <div class="formula-box">
+      $$\mathcal{J}_{	ext{GRPO}}(	heta) = \mathbb{E}_{q \sim P(Q), \{o_i\}_{i=1}^G \sim \pi_{	heta_{	ext{old}}}} \left[ rac{1}{G} \sum_{i=1}^G \left( \min\left( rac{\pi_	heta(o_i \mid q)}{\pi_{	heta_{	ext{old}}}(o_i \mid q)} \hat{A}_i, \, 	ext{clip}\left(rac{\pi_	heta(o_i \mid q)}{\pi_{	heta_{	ext{old}}}(o_i \mid q)}, 1-\epsilon, 1+\epsilonight) \hat{A}_i ight) - eta D_{	ext{KL}}(\pi_	heta \,\|\, \pi_{	ext{ref}}) ight) ight]$$
+    </div>
+
+    <!-- Section 6: References -->
+    <h2 id="references">6. References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Richard S. Sutton and Andrew G. Barto, <em>Reinforcement Learning: An Introduction</em>, 2nd ed. (MIT Press, 2018). URL: <a href="http://incompleteideas.net/book/the-book-2nd.html" target="_blank" rel="noopener">incompleteideas.net</a>.</li>
+      <li id="ref2"><span class="backlink">^</span> Richard Bellman, <em>Dynamic Programming</em> (Princeton University Press, 1957).</li>
+      <li id="ref3"><span class="backlink">^</span> Christopher J. C. H. Watkins and Peter Dayan, "Q-learning," <em>Machine Learning</em> 8(3), 279–292 (1992). DOI: <a href="https://doi.org/10.1007/BF00992698" target="_blank" rel="noopener">10.1007/BF00992698</a>.</li>
+      <li id="ref4"><span class="backlink">^</span> David Silver, Thomas Hubert, Julian Schrittwieser, et al., "A general reinforcement learning algorithm that masters chess, shogi, and Go through self-play," <em>Science</em> 362(6419), 1140–1144 (2018). DOI: <a href="https://doi.org/10.1126/science.aar6404" target="_blank" rel="noopener">10.1126/science.aar6404</a>.</li>
+      <li id="ref5"><span class="backlink">^</span> Volodymyr Mnih, Koray Kavukcuoglu, David Silver, et al., "Human-level control through deep reinforcement learning," <em>Nature</em> 518(7540), 529–533 (2015). DOI: <a href="https://doi.org/10.1038/nature14236" target="_blank" rel="noopener">10.1038/nature14236</a>.</li>
+      <li id="ref6"><span class="backlink">^</span> Richard S. Sutton, David McAllester, Satinder Singh, and Yishay Mansour, "Policy Gradient Methods for Reinforcement Learning with Function Approximation," <em>Advances in Neural Information Processing Systems</em> 12 (NeurIPS 1999). URL: <a href="https://proceedings.neurips.cc/paper/1999/file/464d828b85b0bed98e80ade0a5c43b0f-Paper.pdf" target="_blank" rel="noopener">NeurIPS Proceedings (PDF)</a>.</li>
+      <li id="ref7"><span class="backlink">^</span> Ronald J. Williams, "Simple statistical gradient-following algorithms for connectionist reinforcement learning," <em>Machine Learning</em> 8(3), 229–256 (1992). DOI: <a href="https://doi.org/10.1007/BF00992696" target="_blank" rel="noopener">10.1007/BF00992696</a>.</li>
+      <li id="ref8"><span class="backlink">^</span> John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov, "Proximal Policy Optimization Algorithms," <em>arXiv:1707.06347</em> (2017). DOI: <a href="https://doi.org/10.48550/arXiv.1707.06347" target="_blank" rel="noopener">10.48550/arXiv.1707.06347</a>.</li>
+      <li id="ref9"><span class="backlink">^</span> Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, and Sergey Levine, "Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor," <em>International Conference on Machine Learning</em> (ICML 2018). URL: <a href="https://arxiv.org/abs/1801.01290" target="_blank" rel="noopener">arXiv:1801.01290</a>.</li>
+      <li id="ref10"><span class="backlink">^</span> Long Ouyang, Jeffrey Wu, Xu Jiang, et al., "Training language models to follow instructions with human feedback," <em>Advances in Neural Information Processing Systems</em> 35 (NeurIPS 2022). URL: <a href="https://arxiv.org/abs/2203.02155" target="_blank" rel="noopener">arXiv:2203.02155</a>.</li>
+      <li id="ref11"><span class="backlink">^</span> Paul F. Christiano, Jan Leike, Tom B. Brown, Miljan Martic, Shane Legg, and Dario Amodei, "Deep reinforcement learning from human preferences," <em>Advances in Neural Information Processing Systems</em> 30 (NeurIPS 2017). URL: <a href="https://arxiv.org/abs/1706.03741" target="_blank" rel="noopener">arXiv:1706.03741</a>.</li>
+      <li id="ref12"><span class="backlink">^</span> Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn, "Direct Preference Optimization: Your Language Model is Secretly a Reward Model," <em>Advances in Neural Information Processing Systems</em> 36 (NeurIPS 2023). URL: <a href="https://arxiv.org/abs/2305.18290" target="_blank" rel="noopener">arXiv:2305.18290</a>.</li>
+      <li id="ref13"><span class="backlink">^</span> Zhihong Shao, Peiyi Wang, Qihao Zhu, et al., "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models," <em>arXiv:2402.03300</em> (2024). DOI: <a href="https://doi.org/10.48550/arXiv.2402.03300" target="_blank" rel="noopener">10.48550/arXiv.2402.03300</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
