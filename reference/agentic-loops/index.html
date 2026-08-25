@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agentic Loops · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="An agentic loop is an autonomous execution cycle that drives an AI agent toward a target goal through continuous observation, action, and verification.">
+  <meta property="og:title" content="Agentic Loops · Reference">
+  <meta property="og:description" content="Architecture, 4 leverage layers, autonomy tiers, exit gates, and failure modes for AI agent loops.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/agentic-loops/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/agentic-loops/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Architecture · Artificial Intelligence</p>
+    <h1>Agentic Loops</h1>
+    <p class="updated">Reference entry · last updated August 25, 2026</p>
+
+    <p class="lede">An <strong>agentic loop</strong> is an autonomous execution cycle that drives an artificial intelligence agent toward a specified objective through iterative observation, reasoning, tool execution, and verification.<span class="cite">[<a href="#ref1">1</a>]</span> Positioned as the fourth and outermost layer of modern AI systems, the loop orchestrates prompts, context pipelines, and runtime harnesses into a self-directed feedback cycle.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 660 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agentic Loop Feedback Cycle">
+        <!-- Goal -->
+        <rect x="10" y="55" width="95" height="50" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="57" y="78" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#202122">Goal / Task</text>
+        <text x="57" y="93" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Target Spec</text>
+
+        <path d="M 105 80 L 145 80" stroke="#54595d" stroke-width="1.5"/>
+
+        <!-- The Loop Circle -->
+        <rect x="145" y="15" width="370" height="130" rx="8" fill="#f8f9fa" stroke="#0645ad" stroke-width="1.5"/>
+        <text x="330" y="38" font-family="-apple-system, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#0645ad">Autonomous Execution Loop</text>
+
+        <!-- Node 1: Observe -->
+        <rect x="160" y="55" width="75" height="35" rx="4" fill="#ffffff" stroke="#a2a9b1" stroke-width="1"/>
+        <text x="197" y="77" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#202122">1. Observe</text>
+
+        <path d="M 235 72 L 255 72" stroke="#54595d" stroke-width="1.5"/>
+
+        <!-- Node 2: Reason -->
+        <rect x="255" y="55" width="75" height="35" rx="4" fill="#ffffff" stroke="#0645ad" stroke-width="1.2"/>
+        <text x="292" y="77" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#0645ad">2. Reason</text>
+
+        <path d="M 330 72 L 350 72" stroke="#54595d" stroke-width="1.5"/>
+
+        <!-- Node 3: Act -->
+        <rect x="350" y="55" width="75" height="35" rx="4" fill="#ffffff" stroke="#a2a9b1" stroke-width="1"/>
+        <text x="387" y="77" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#202122">3. Act</text>
+
+        <path d="M 425 72 L 445 72" stroke="#54595d" stroke-width="1.5"/>
+
+        <!-- Node 4: Verify -->
+        <rect x="445" y="55" width="60" height="35" rx="4" fill="#ffffff" stroke="#166534" stroke-width="1.2"/>
+        <text x="475" y="77" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#166534">4. Verify</text>
+
+        <!-- Feedback arrow -->
+        <path d="M 475 90 L 475 115 L 197 115 L 197 90" fill="none" stroke="#166534" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <text x="330" y="110" font-family="-apple-system, sans-serif" font-size="8" fill="#166534" text-anchor="middle">Feedback &amp; Error Trace (Next Move)</text>
+
+        <path d="M 515 80 L 555 80" stroke="#166534" stroke-width="1.5"/>
+
+        <!-- Done -->
+        <rect x="555" y="55" width="95" height="50" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+        <text x="602" y="78" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#166534">Exit Gate</text>
+        <text x="602" y="93" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#166534">Tests Passed ✅</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#four-layers">The four nested leverage layers</a></li>
+        <li><a href="#loop-definition">The true loop criterion</a></li>
+        <li><a href="#four-conditions">The four-condition automation gate</a></li>
+        <li><a href="#autonomy-tiers">Taxonomy of agentic loop tiers</a></li>
+        <li><a href="#failure-modes">Failure modes and safety bounds</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="four-layers">The four nested leverage layers</h2>
+    <p>Modern agent engineering structures capabilities into four concentric layers:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ol>
+      <li><strong>Prompt engineering</strong>: Static text instructions formulated for model inference.</li>
+      <li><strong>Context engineering</strong>: Dynamic pipelines that select, compress, and isolate relevant tokens per turn.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+      <li><strong>Harness engineering</strong>: Runtime software infrastructure managing tools, state persistence, error classification, and guardrails.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+      <li><strong>Loop engineering</strong>: The autonomous control cycle driving the underlying three layers toward a goal without human intervention on every step.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+    </ol>
+
+    <h2 id="loop-definition">The true loop criterion</h2>
+    <p>A repetitive script or naive retry loop is not an agentic loop. A system earns the designation of a loop only when output from turn \(N\) actively alters the prompt, strategy, or search parameters of turn \(N+1\).<span class="cite">[<a href="#ref1">1</a>]</span> If failures do not narrow the problem space or inject corrective evidence into working memory, the system executes blind iteration rather than intelligent convergence.</p>
+
+    <h2 id="four-conditions">The four-condition automation gate</h2>
+    <p>Building an autonomous loop introduces token costs and execution risks. System designers evaluate four prerequisites before automating a loop:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ul>
+      <li><strong>Frequent repetition</strong>: The task occurs at high enough volume (daily, weekly, or continuously) to justify development.</li>
+      <li><strong>Deterministic verification</strong>: A non-probabilistic check (such as unit test suites, compilers, or linters) must evaluate pass/fail state. Without programmatic verification, loops hallucinate in circles.</li>
+      <li><strong>Exploration token budget</strong>: A defined budget allocated for trial-and-error discovery.</li>
+      <li><strong>Actionable tooling</strong>: Direct access to filesystem, terminal, or API mutations to execute real changes.</li>
+    </ul>
+
+    <h2 id="autonomy-tiers">Taxonomy of agentic loop tiers</h2>
+    <p>Agentic loops operate across four distinct architectural levels:<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <ul>
+      <li><strong>Level 1: Interactive ReAct</strong>: Single-turn Thought-Action-Observation loops requiring explicit human sign-off on mutations.</li>
+      <li><strong>Level 2: Bounded goal loop</strong>: Autonomous task execution (such as test-driven refactoring) that iterates until predefined exit criteria are met.</li>
+      <li><strong>Level 3: Bilevel / dual-agent loop</strong>: An inner worker agent executes actions while an outer supervisor agent audits strategy and protocol compliance.</li>
+      <li><strong>Level 4: Self-optimizing loop</strong>: Continuous recursive improvement loops (such as hill climbing on test traces) that rewrite the agent's own prompts and tools over time.<span class="cite">[<a href="#ref6">6</a>]</span></li>
+    </ul>
+
+    <h2 id="failure-modes">Failure modes and safety bounds</h2>
+    <p>Autonomous loops require defensive engineering to avoid common systemic failures:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <ul>
+      <li><strong>Runaway token loops</strong>: Failing to specify max-turn thresholds or hard budget caps causes infinite loops on unresolvable tasks.</li>
+      <li><strong>Local maxima stalling</strong>: When an agent repeatedly attempts the same invalid syntax fix, the harness must inject forced entropy (such as temperature adjustments or plan re-anchoring) to break the cycle.</li>
+      <li><strong>Epistemic drift</strong>: Multi-turn loops can drift from initial ground truth unless periodic re-anchoring to original requirements is enforced.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/agent-harness/">Agent Harness</a></li>
+      <li><a href="/reference/agents/">Agents</a></li>
+      <li><a href="/reference/fail-closed/">Fail-closed</a></li>
+      <li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li>
+      <li><a href="/reference/ooda-loop/">OODA Loop</a></li>
+      <li><a href="/eli5/agentic-loops/">Agentic Loops (ELI5 explainer)</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#loop-definition">↑</a> Osmani, Addy. "Loop Harness Factory: The Three-Layer Agentic Engineering Stack." Technical Notes, 2026.</li>
+      <li id="ref2"><a class="backlink" href="#four-layers">↑</a> Weng, Lilian. "LLM Powered Autonomous Agents." <em>lilianweng.github.io</em>, 2023.</li>
+      <li id="ref3"><a class="backlink" href="#four-layers">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+      <li id="ref4"><a class="backlink" href="#four-layers">↑</a> Trivedy, Vivek. "The Anatomy of an Agent Harness." LangChain Engineering Blog, March 2026.</li>
+      <li id="ref5"><a class="backlink" href="#autonomy-tiers">↑</a> Anthropic. "Building Effective Agents: Workflow and Autonomous Patterns." Research Report, 2024.</li>
+      <li id="ref6"><a class="backlink" href="#autonomy-tiers">↑</a> Shinn, N., et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." <em>NeurIPS</em>, 2023.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

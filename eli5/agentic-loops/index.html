@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agentic Loops · ELI5 · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A picture-book explainer of agentic loops. How AI agents keep trying, checking mistakes, and learning until the job is done.">
+  <meta property="og:title" content="Agentic Loops · ELI5">
+  <meta property="og:description" content="A picture-book explainer of autonomous AI feedback loops.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/agentic-loops/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/agentic-loops/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --paper: #f4eee4;
+      --ink: #1c1612;
+      --mute: #6e645a;
+      --line: #d4c9bb;
+      --op: #9a3412;
+      --op-edge: #7c2d12;
+      --leaf: #0f5c57;
+      --leaf-edge: #0b4a46;
+      --edge: #8a7d72;
+      --yes: #166534;
+      --no: #9f1239;
+      --card: #fffaf3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
+    }
+    main {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      margin: 0 0 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .back a { color: var(--op); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    h1, h2 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-weight: 700;
+      line-height: 1.12;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.1rem);
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: clamp(1.45rem, 3.4vw, 2rem);
+      margin-bottom: 1rem;
+    }
+    .lead {
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+      color: var(--mute);
+      max-width: 34ch;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+    }
+    .block {
+      padding: 2.2rem 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.2rem;
+      text-align: center;
+    }
+    .block h2 { max-width: 22ch; margin-inline: auto; }
+    .one {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--mute);
+      max-width: 36ch;
+      line-height: 1.35;
+      margin-inline: auto;
+    }
+    .figure {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.05rem 0.95rem 0.9rem;
+      box-shadow: 0 10px 28px rgba(28, 22, 18, 0.07);
+      width: 28rem;
+      max-width: 100%;
+      min-width: 0;
+      margin-inline: auto;
+    }
+    svg.diag {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    details {
+      max-width: 32rem;
+      margin: 0.8rem auto 0;
+      text-align: left;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.8rem 1.1rem;
+      font-size: 0.92rem;
+    }
+    summary {
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--op);
+    }
+    details p {
+      margin-top: 0.6rem;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .to-top {
+      margin: 0.4rem 0 0;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .to-top a { color: var(--op); text-decoration: none; }
+    .sources {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--mute);
+      text-align: center;
+    }
+    .sources a { color: var(--op); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/eli5/">← ELI5</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Design · AI</p>
+    <h1>Agentic Loops</h1>
+    <p class="lead">How an AI tries, learns from mistakes, and keeps going until done.</p>
+
+    <!-- SECTION 1 -->
+    <section class="block">
+      <h2>1. Asking vs Doing</h2>
+      <p class="one">A simple chatbot waits for you to type every move; a loop keeps working toward the goal on its own.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="20" width="165" height="50" rx="6" fill="#ffffff" stroke="#d4c9bb" stroke-width="1.2"/>
+          <text x="102" y="42" font-size="10" font-weight="bold" fill="#6e645a" text-anchor="middle">Chatbot (Single Turn)</text>
+          <text x="102" y="56" font-size="8" fill="#6e645a" text-anchor="middle">Waits for human on every word</text>
+
+          <rect x="215" y="20" width="165" height="50" rx="6" fill="#fffaf3" stroke="#0645ad" stroke-width="1.5"/>
+          <text x="297" y="42" font-size="10" font-weight="bold" fill="#0645ad" text-anchor="middle">Agentic Loop (Multi-Turn)</text>
+          <text x="297" y="56" font-size="8" fill="#0645ad" text-anchor="middle">Drives steps autonomously</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>Why is a loop better?</summary>
+        <p>Complex jobs like fixing broken software require many tiny steps. If you had to approve every line read, you would do all the work yourself.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="block">
+      <h2>2. Learning from the error message</h2>
+      <p class="one">A real loop looks at why an attempt failed and uses that clue to change its next move.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 110" xmlns="http://www.w3.org/2000/svg">
+          <!-- Step 1 -->
+          <rect x="15" y="35" width="90" height="40" rx="5" fill="#fffaf3" stroke="#9a3412" stroke-width="1.2"/>
+          <text x="60" y="55" font-size="10" font-weight="bold" fill="#9a3412" text-anchor="middle">Try Fix A</text>
+          <text x="60" y="67" font-size="8" fill="#6e645a" text-anchor="middle">Run tests</text>
+
+          <path d="M 105 55 L 145 55" stroke="#9f1239" stroke-width="1.5"/>
+
+          <!-- Error -->
+          <rect x="145" y="25" width="105" height="60" rx="6" fill="#ffe4e6" stroke="#9f1239" stroke-width="1.5"/>
+          <text x="197" y="48" font-size="10" font-weight="bold" fill="#9f1239" text-anchor="middle">Test Error ❌</text>
+          <text x="197" y="62" font-size="8" fill="#9f1239" text-anchor="middle">"Syntax error at line 4"</text>
+
+          <path d="M 250 55 L 290 55" stroke="#166534" stroke-width="1.5"/>
+
+          <!-- Step 2 -->
+          <rect x="290" y="35" width="95" height="40" rx="5" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+          <text x="337" y="55" font-size="10" font-weight="bold" fill="#166534" text-anchor="middle">Try Fix B ✅</text>
+          <text x="337" y="67" font-size="8" fill="#166534" text-anchor="middle">Fixes line 4</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>What if it just repeats the mistake?</summary>
+        <p>If the AI repeats the exact same mistake without changing anything, that is a broken retry. A true loop feeds the error back into its thinking context.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="block">
+      <h2>3. The finish line rule</h2>
+      <p class="one">The loop stops only when real tests pass, not when the AI claims it is done.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="25" y="25" width="160" height="45" rx="6" fill="#fffaf3" stroke="#a2a9b1" stroke-width="1.2"/>
+          <text x="105" y="46" font-size="10" font-weight="bold" fill="#1c1612" text-anchor="middle">AI Claims "All Done"</text>
+          <text x="105" y="58" font-size="8" fill="#6e645a" text-anchor="middle">Unverified claim</text>
+
+          <path d="M 185 47 L 225 47" stroke="#166534" stroke-width="1.5"/>
+
+          <rect x="225" y="20" width="150" height="55" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+          <text x="300" y="43" font-size="10" font-weight="bold" fill="#166534" text-anchor="middle">Automated Test Suite</text>
+          <text x="300" y="58" font-size="8" font-weight="bold" fill="#166534" text-anchor="middle">Pass: Exit Loop 🎯</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>Why trust tests over words?</summary>
+        <p>AI models can sound completely convincing while writing broken code. Testing the actual output with a computer compiler prevents hallucinated completions.</p>
+      </details>
+    </section>
+
+    <p class="to-top"><a href="#top">Back to top</a></p>
+
+    <div class="sources">
+      <p>Longer version: <a href="/reference/agentic-loops/">Reference Entry on Agentic Loops</a></p>
+      <p>Sources: Addy Osmani (2026); Lilian Weng (2023); Anthropic Research (2024).</p>
+    </div>
+  </main>
+</body>
+</html>
