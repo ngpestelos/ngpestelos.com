@@ -475,7 +475,162 @@ a:hover {
   color: var(--muted);
 }
 
-/* Writing print: light paper, no dumped URLs */
+/* Writing paper: screen matches print. Homepage stays dark. */
+body:has(main.article),
+body:has(#writing) {
+  --paper: #faf8f4;
+  --ink: #1c1915;
+  --mute: #5c564e;
+  --rule: #d8d2c6;
+  --well: #f3efe6;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  line-height: 1.65;
+  padding: clamp(1.15rem, 3.5vw, 2.25rem) clamp(1.15rem, 5vw, 2rem);
+  overflow-x: clip;
+  overflow-wrap: anywhere;
+  color-scheme: light;
+}
+
+body:has(main.article) main,
+body:has(#writing) main {
+  max-width: 40rem;
+  width: 100%;
+  min-width: 0;
+}
+
+body:has(main.article) a,
+body:has(#writing) a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+  text-decoration-thickness: 0.06em;
+  overflow-wrap: anywhere;
+}
+
+body:has(main.article) a:hover,
+body:has(#writing) a:hover {
+  color: #000;
+}
+
+body:has(main.article) .back,
+body:has(#writing) .back,
+body:has(main.article) .back a,
+body:has(#writing) .back a {
+  color: var(--mute);
+  font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.05rem);
+}
+
+body:has(main.article) h1,
+body:has(#writing) h1 {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: clamp(1.35rem, 1rem + 1.6vw, 2rem);
+  line-height: 1.22;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+body:has(main.article) h2 {
+  color: var(--ink);
+  font-size: clamp(1.12rem, 1rem + 0.55vw, 1.28rem);
+}
+
+body:has(main.article) p,
+body:has(main.article) li {
+  color: var(--ink);
+  font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.2rem);
+  line-height: 1.65;
+}
+
+body:has(main.article) .byline,
+body:has(main.article) .series,
+body:has(main.article) footer.meta,
+body:has(main.article) .to-top,
+body:has(main.article) .to-top a {
+  color: var(--mute);
+}
+
+body:has(main.article) .to-top {
+  border-top-color: var(--rule);
+}
+
+body:has(main.article) .tldr {
+  background: var(--well);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--ink);
+}
+
+body:has(main.article) .tldr .tldr-label {
+  color: var(--mute);
+}
+
+body:has(main.article) pre {
+  background: var(--well);
+  border-color: var(--rule);
+  color: var(--ink);
+}
+
+body:has(main.article) :not(pre) > code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--ink);
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+body:has(main.article) table {
+  min-width: 0;
+  width: 100%;
+}
+
+body:has(main.article) th,
+body:has(main.article) td {
+  color: var(--ink);
+  border-bottom-color: var(--rule);
+  overflow-wrap: anywhere;
+}
+
+body:has(main.article) th:first-child,
+body:has(main.article) td:first-child {
+  color: var(--mute);
+}
+
+body:has(main.article) hr {
+  border-top-color: var(--rule);
+}
+
+body:has(#writing) .next-step {
+  color: var(--ink);
+  font-size: clamp(1.02rem, 0.95rem + 0.35vw, 1.12rem);
+}
+
+body:has(#writing) main:not(.article) li,
+body:has(#writing) main:not(.article) li a {
+  font-size: clamp(1.02rem, 0.95rem + 0.4vw, 1.15rem);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+body:has(#writing) main:not(.article) li::before {
+  color: var(--ink);
+}
+
+body:has(#writing) .pager [aria-current="page"] {
+  color: var(--ink);
+}
+
+body:has(#writing) .pager [aria-disabled="true"] {
+  color: var(--mute);
+}
+
+body:has(main.article) .table-wrap {
+  max-width: 100%;
+}
+
+/* Writing print: same paper; hide chrome; A4 type */
 @media print {
   @page {
     size: A4;
@@ -484,19 +639,9 @@ a:hover {
 
   body:has(main.article),
   body:has(#writing) {
-    background: #faf8f4;
-    color: #1c1915;
     padding: 0;
-    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
     font-size: 11pt;
     line-height: 1.5;
-  }
-
-  body:has(main.article) a,
-  body:has(#writing) a {
-    color: #1c1915;
-    text-decoration: underline;
-    overflow-wrap: anywhere;
   }
 
   body:has(main.article) a[href]::after,
@@ -517,39 +662,23 @@ a:hover {
 
   body:has(main.article) .back,
   body:has(#writing) .back {
-    color: #5c564e;
     font-size: 9pt;
     margin-bottom: 0.8rem;
   }
 
   body:has(main.article) h1,
   body:has(#writing) h1 {
-    color: #1c1915;
     font-size: 18pt;
-    font-weight: 600;
   }
 
   body:has(main.article) h2 {
-    color: #1c1915;
     font-size: 13pt;
     margin: 1.1rem 0 0.45rem;
   }
 
   body:has(main.article) .byline,
   body:has(main.article) .series {
-    color: #5c564e;
     font-size: 10pt;
-  }
-
-  body:has(main.article) .tldr {
-    background: #f3efe6;
-    border: 1px solid #d8d2c6;
-    border-left: 3px solid #1c1915;
-    break-inside: avoid;
-  }
-
-  body:has(main.article) .tldr .tldr-label {
-    color: #5c564e;
   }
 
   body:has(main.article) p,
@@ -558,11 +687,8 @@ a:hover {
     line-height: 1.5;
   }
 
-  body:has(main.article) code,
-  body:has(main.article) pre {
-    background: #f3efe6;
-    border-color: #d8d2c6;
-    color: #1c1915;
+  body:has(main.article) .tldr {
+    break-inside: avoid;
   }
 
   body:has(main.article) pre {
@@ -575,8 +701,6 @@ a:hover {
   }
 
   body:has(main.article) table {
-    min-width: 0;
-    width: 100%;
     table-layout: fixed;
     font-size: 9.5pt;
     break-inside: auto;
@@ -585,17 +709,6 @@ a:hover {
   body:has(main.article) table tr {
     break-inside: avoid;
     page-break-inside: avoid;
-  }
-
-  body:has(main.article) th,
-  body:has(main.article) td {
-    color: #1c1915;
-    border-bottom-color: #d8d2c6;
-    overflow-wrap: anywhere;
-  }
-
-  body:has(main.article) hr {
-    border-top-color: #d8d2c6;
   }
 }
 
