@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time to First Token · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Time to First Token (TTFT) is the duration between sending a prompt to a language model and receiving its first generated token. Metrics, prefill vs decode, and latency optimizations.">
+  <meta property="og:title" content="Time to First Token · Reference">
+  <meta property="og:description" content="Prefill vs decode phases, TPOT, memory bandwidth constraints, and LLM latency metrics.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/time-to-first-token/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/time-to-first-token/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\[', right: '\]', display: true},
+        {left: '\(', right: '\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Engineering · Machine Learning</p>
+    <h1>Time to First Token</h1>
+    <p class="updated">Reference entry · last updated August 26, 2026</p>
+
+    <p class="lede"><strong>Time to First Token (TTFT)</strong> is the latency duration between the moment a client submits a prompt to a language model service and the moment the client receives the first generated response token.<span class="cite">[<a href="#ref1">1</a>]</span> In generative AI systems, TTFT reflects the computational cost of prompt prefill and queuing delays, serving as the primary metric for perceived interactive responsiveness.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TTFT and TPOT Inference Phases">
+        <!-- Request Line -->
+        <line x1="40" y1="75" x2="610" y2="75" stroke="#a2a9b1" stroke-width="2"/>
+
+        <!-- Start Request -->
+        <circle cx="60" cy="75" r="5" fill="#0645ad"/>
+        <text x="60" y="55" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#202122">Prompt Sent</text>
+        <text x="60" y="105" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">\(t = 0\)</text>
+
+        <!-- TTFT Window -->
+        <rect x="60" y="65" width="220" height="20" rx="3" fill="#0645ad" fill-opacity="0.15"/>
+        <text x="170" y="45" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0645ad">TTFT (Prefill Phase)</text>
+        <text x="170" y="105" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Queue + Prompt Processing (Compute Bound)</text>
+
+        <!-- Token 1 -->
+        <circle cx="280" cy="75" r="5" fill="#0645ad"/>
+        <text x="280" y="55" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#0645ad">First Token</text>
+
+        <!-- TPOT Window -->
+        <rect x="280" y="65" width="300" height="20" rx="3" fill="#166534" fill-opacity="0.15"/>
+        <text x="430" y="45" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#166534">TPOT (Decode Phase)</text>
+        <text x="430" y="105" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Autoregressive Generation (Memory Bound)</text>
+
+        <!-- Tokens Stream -->
+        <circle cx="340" cy="75" r="3" fill="#166534"/>
+        <circle cx="400" cy="75" r="3" fill="#166534"/>
+        <circle cx="460" cy="75" r="3" fill="#166534"/>
+        <circle cx="520" cy="75" r="3" fill="#166534"/>
+        <circle cx="580" cy="75" r="5" fill="#166534"/>
+        <text x="580" y="55" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#166534">End Token</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#prefill-vs-decode">The prefill and decode phase division</a></li>
+        <li><a href="#tpot-definition">Time Per Output Token (TPOT)</a></li>
+        <li><a href="#hardware-mechanics">Hardware bottlenecks and arithmetic intensity</a></li>
+        <li><a href="#optimization-techniques">Optimization techniques</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="prefill-vs-decode">The prefill and decode phase division</h2>
+    <p>Large language model inference occurs in two computationally asymmetric stages:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ol>
+      <li><strong>Prefill phase (prompt ingestion)</strong>: The model ingests all \(N_{	ext{in}}\) tokens of the input context in parallel, computing Key and Value tensors for every layer and writing them into the KV cache. Because all tokens are known upfront, this phase executes dense matrix multiplications (GEMM), achieving high arithmetic intensity on GPU tensor cores.</li>
+      <li><strong>Decode phase (generation)</strong>: The model generates completion tokens one by one autoregressively. Each new token requires evaluating the attention mechanism across all previous tokens, reading the entire model weights and KV cache from High Bandwidth Memory (HBM) for every single token step.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    </ol>
+    <p>TTFT measures the duration required to complete network ingress, queuing, and the entire prefill phase.</p>
+
+    <h2 id="tpot-definition">Time Per Output Token (TPOT)</h2>
+    <p>While TTFT evaluates initial response delay, <strong>Time Per Output Token (TPOT)</strong> measures the generation speed of subsequent tokens:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    \[	ext{TPOT} = rac{	ext{Total Latency} - 	ext{TTFT}}{N_{	ext{out}} - 1}\]
+    <p>where \(N_{	ext{out}}\) is the count of generated output tokens. The inverse of TPOT represents generation throughput per user stream (in tokens per second). Total end-to-end latency \(T_{	ext{total}}\) is expressed as:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    \[T_{	ext{total}} = 	ext{TTFT} + (N_{	ext{out}} - 1) 	imes 	ext{TPOT}\]
+
+    <h2 id="hardware-mechanics">Hardware bottlenecks and arithmetic intensity</h2>
+    <p>The operational constraints of TTFT and TPOT derive from the roofline model of computing:<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <ul>
+      <li><strong>Prefill is compute-bound</strong>: High arithmetic intensity (FLOPs per byte of memory access). As prompt context scales, TTFT grows with prompt length \(O(N_{	ext{in}})\) or \(O(N_{	ext{in}}^2)\) in un-optimized attention implementations.</li>
+      <li><strong>Decode is memory-bandwidth bound</strong>: Low arithmetic intensity. During decoding, GPU utilization is limited by the speed at which memory controllers transfer weight matrices from HBM to on-chip SRAM.</li>
+    </ul>
+
+    <h2 id="optimization-techniques">Optimization techniques</h2>
+    <p>Systems employ distinct architectural patterns to minimize TTFT:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Prompt caching</strong>: Storing pre-computed KV cache activations for static prefixes (such as system instructions, tool definitions, and few-shot examples). Reused prefixes bypass prefill computation, reducing TTFT by 50% to 90%.<span class="cite">[<a href="#ref5">5</a>]</span></li>
+      <li><strong>Chunked prefill</strong>: Splitting long prompt prefill tasks into smaller token chunks that are interleaved into decode batches, preventing head-of-line blocking for concurrent users.</li>
+      <li><strong>Speculative decoding</strong>: Using a lightweight draft model to speculate multiple tokens in parallel, which a larger model verifies in a single forward pass, reducing effective TPOT.<span class="cite">[<a href="#ref6">6</a>]</span></li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/throughput/">Throughput</a></li>
+      <li><a href="/reference/tokens/">Tokens and Tokenization</a></li>
+      <li><a href="/reference/autoregressive/">Autoregressive Models</a></li>
+      <li><a href="/reference/llm-gateway/">LLM Gateway</a></li>
+      <li><a href="/reference/semantic-caching/">Semantic Caching</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#prefill-vs-decode">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+      <li id="ref2"><a class="backlink" href="#tpot-definition">↑</a> Pope, Reiner, et al. "Efficiently Scaling Transformer Inference." <em>Proceedings of Machine Learning and Systems (MLSys)</em>, vol. 5, 2023.</li>
+      <li id="ref3"><a class="backlink" href="#prefill-vs-decode">↑</a> Kwon, Woosuk, et al. "Efficient Memory Management for Large Language Model Serving with PagedAttention." <em>SOSP</em>, 2023.</li>
+      <li id="ref4"><a class="backlink" href="#hardware-mechanics">↑</a> Williams, Samuel, Andrew Waterman, and David Patterson. "Roofline: An Insightful Visual Performance Model for Multicore Architectures." <em>Communications of the ACM</em>, vol. 52, no. 4, 2009, pp. 65–76.</li>
+      <li id="ref5"><a class="backlink" href="#optimization-techniques">↑</a> Anthropic. "Prompt Caching in Claude 3.5: Architecture and Latency Benchmarks," 2024.</li>
+      <li id="ref6"><a class="backlink" href="#optimization-techniques">↑</a> Leviathan, Yaniv, Matan Kalman, and Yossi Matias. "Fast Inference from Transformers via Speculative Decoding." <em>ICML</em>, 2023.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

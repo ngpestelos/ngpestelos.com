@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theory of Constraints · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="The Theory of Constraints is a systems management philosophy stating that total system throughput is bounded strictly by its single primary constraint.">
+  <meta property="og:title" content="Theory of Constraints · Reference">
+  <meta property="og:description" content="Five focusing steps, Drum-Buffer-Rope, bottleneck migration, and engineering throughput optimization.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/theory-of-constraints/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/theory-of-constraints/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\[', right: '\]', display: true},
+        {left: '\(', right: '\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Theory · Operations Research</p>
+    <h1>Theory of Constraints</h1>
+    <p class="updated">Reference entry · last updated August 26, 2026</p>
+
+    <p class="lede">The <strong>Theory of Constraints (TOC)</strong> is a management and systems engineering methodology asserting that any manageable system is limited in achieving higher throughput by a very small number of constraints, typically exactly one active bottleneck at any given time.<span class="cite">[<a href="#ref1">1</a>]</span> Formulated by physicist Eliyahu M. Goldratt in 1984, TOC establishes that system optimizations made anywhere other than the active constraint generate excess work-in-progress inventory without increasing finished system output.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pipeline Bottleneck Flow Diagram">
+        <!-- Stage 1 -->
+        <rect x="20" y="45" width="110" height="50" rx="6" fill="#f8f9fa" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="75" y="68" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#202122">1. Authoring</text>
+        <text x="75" y="83" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#166534">Capacity: 100/day</text>
+
+        <path d="M 130 70 L 170 70" stroke="#54595d" stroke-width="1.5"/>
+
+        <!-- Stage 2: Bottleneck -->
+        <rect x="170" y="35" width="130" height="70" rx="6" fill="#ffe4e6" stroke="#9f1239" stroke-width="2"/>
+        <text x="235" y="62" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#9f1239">2. Review &amp; QA</text>
+        <text x="235" y="77" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#9f1239">[THE BOTTLENECK]</text>
+        <text x="235" y="92" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#9f1239">Capacity: 20/day</text>
+
+        <path d="M 300 70 L 340 70" stroke="#54595d" stroke-width="1.5"/>
+
+        <!-- Stage 3 -->
+        <rect x="340" y="45" width="110" height="50" rx="6" fill="#f8f9fa" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="395" y="68" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#202122">3. Deploy</text>
+        <text x="395" y="83" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#166534">Capacity: 80/day</text>
+
+        <path d="M 450 70 L 490 70" stroke="#54595d" stroke-width="1.5"/>
+
+        <!-- System Output -->
+        <rect x="490" y="45" width="140" height="50" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+        <text x="560" y="68" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#166534">System Throughput</text>
+        <text x="560" y="83" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#166534">= 20/day (Strict Bound)</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#core-axioms">Core axioms and accounting definitions</a></li>
+        <li><a href="#five-focusing-steps">The Five Focusing Steps</a></li>
+        <li><a href="#drum-buffer-rope">Drum-Buffer-Rope synchronization</a></li>
+        <li><a href="#software-ai-bottlenecks">Bottleneck migration in software engineering and AI</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="core-axioms">Core axioms and accounting definitions</h2>
+    <p>Goldratt redefined operational performance around three fundamental metrics:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Throughput (\(T\))</strong>: The rate at which the system generates money or finished value through sales and completed deliveries. Value generated but unreleased is not throughput.</li>
+      <li><strong>Investment / Inventory (\(I\))</strong>: All the money and resources currently tied up inside the system (including work-in-progress code, pending pull requests, and un-merged branches).</li>
+      <li><strong>Operating Expense (\(OE\))</strong>: All the money the system spends to turn inventory into throughput.</li>
+    </ul>
+
+    <h2 id="five-focusing-steps">The Five Focusing Steps</h2>
+    <p>TOC outlines a systematic cyclical method to continually expand system capacity:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ol>
+      <li><strong>Identify the constraint</strong>: Locate the specific stage or resource with the lowest capacity that paces the entire system.</li>
+      <li><strong>Exploit the constraint</strong>: Ensure the constraint operates at 100% efficiency without idle time, waste, or performing low-value tasks.</li>
+      <li><strong>Subordinate everything else</strong>: Align the operating pace of all non-constraint stages to the capacity of the constraint. Producing faster than the bottleneck creates harmful inventory build-up.</li>
+      <li><strong>Elevate the constraint</strong>: Invest capital, tooling, or personnel to expand the physical capacity of the bottleneck stage.</li>
+      <li><strong>Prevent inertia (Repeat)</strong>: Once a bottleneck is elevated, the constraint inevitably shifts elsewhere. Return to Step 1 and avoid allowing organizational habit to dictate the new operating model.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+    </ol>
+
+    <h2 id="drum-buffer-rope">Drum-Buffer-Rope synchronization</h2>
+    <p>To control flow and prevent queue explosion, TOC implements the <strong>Drum-Buffer-Rope (DBR)</strong> architecture:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <ul>
+      <li><strong>The Drum</strong>: The constraint stage sets the production beat (tempo) for the entire organization.</li>
+      <li><strong>The Buffer</strong>: A bounded queue of work maintained immediately upstream of the constraint to prevent it from ever starving due to upstream volatility.</li>
+      <li><strong>The Rope</strong>: A signaling mechanism that limits the release of new work into the start of the pipeline strictly to the rate at which the constraint finishes work.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    </ul>
+
+    <h2 id="software-ai-bottlenecks">Bottleneck migration in software engineering and AI</h2>
+    <p>In software delivery pipelines, generative AI coding agents drastically increase authoring speed (upstream production). However, without expanding automated verification and maintainer review capacity (downstream constraint), code generation simply accumulates unreviewed pull requests, increasing cycle times and production error rates.<span class="cite">[<a href="#ref4">4</a>]</span> Real delivery throughput improves only when automated testing and verification tools elevate the review bottleneck.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/throughput/">Throughput</a></li>
+      <li><a href="/reference/amdahls-law/">Amdahl's Law</a></li>
+      <li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#core-axioms">↑</a> Goldratt, Eliyahu M., and Jeff Cox. <em>The Goal: A Process of Ongoing Improvement</em>. North River Press, 1984.</li>
+      <li id="ref2"><a class="backlink" href="#five-focusing-steps">↑</a> Goldratt, Eliyahu M. <em>Theory of Constraints</em>. North River Press, 1990.</li>
+      <li id="ref3"><a class="backlink" href="#drum-buffer-rope">↑</a> Dettmer, H. William. <em>Goldratt's Theory of Constraints: A Systems Approach to Continuous Improvement</em>. ASQ Quality Press, 1997.</li>
+      <li id="ref4"><a class="backlink" href="#software-ai-bottlenecks">↑</a> Faros AI. "The 2026 Engineering Productivity and AI Acceleration Report," 2026.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

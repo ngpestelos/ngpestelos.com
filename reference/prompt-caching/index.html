@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Caching · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Prompt caching preserves pre-computed Key-Value (KV) cache activations for shared token prefixes, reducing LLM prefill latency and token pricing.">
+  <meta property="og:title" content="Prompt Caching · Reference">
+  <meta property="og:description" content="Prefix caching, RadixAttention, KV cache reuse, and prompt structural design for LLM systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/prompt-caching/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/prompt-caching/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Architecture · Artificial Intelligence</p>
+    <h1>Prompt Caching</h1>
+    <p class="updated">Reference entry · last updated August 26, 2026</p>
+
+    <p class="lede"><strong>Prompt caching</strong> is an architectural optimization in large language model inference engines that preserves pre-computed Key-Value (KV) cache tensors for repeated prefix tokens across requests.<span class="cite">[<a href="#ref1">1</a>]</span> By bypassing the redundant prefill computation of static context (such as system instructions, tool schemas, and base documents), prompt caching substantially reduces Time to First Token (TTFT) and token consumption costs.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Prompt Caching Prefix Reuse">
+        <!-- Request 1 -->
+        <rect x="20" y="25" width="220" height="40" rx="4" fill="#0645ad"/>
+        <text x="130" y="49" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">System Prompt &amp; Tools (20k tokens)</text>
+        <rect x="240" y="25" width="100" height="40" rx="4" fill="#54595d"/>
+        <text x="290" y="49" font-family="-apple-system, sans-serif" font-size="10" fill="#ffffff" text-anchor="middle">User Query A</text>
+
+        <!-- Cache Marker -->
+        <rect x="20" y="70" width="220" height="15" rx="3" fill="#166534"/>
+        <text x="130" y="82" font-family="-apple-system, sans-serif" font-size="8" font-weight="bold" fill="#ffffff" text-anchor="middle">Cached KV Tensors in GPU Memory</text>
+
+        <!-- Request 2 -->
+        <rect x="20" y="95" width="220" height="40" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+        <text x="130" y="119" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534" text-anchor="middle">Prefix Reused (0ms Prefill / Discounted)</text>
+        <rect x="240" y="95" width="100" height="40" rx="4" fill="#0645ad"/>
+        <text x="290" y="119" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#ffffff" text-anchor="middle">User Query B</text>
+
+        <!-- Stats Box -->
+        <rect x="380" y="30" width="240" height="100" rx="6" fill="#f8f9fa" stroke="#0645ad" stroke-width="1.5"/>
+        <text x="500" y="55" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0645ad">Operational Impact</text>
+        <text x="500" y="75" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#202122">TTFT Latency: -80%</text>
+        <text x="500" y="95" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#166534">Cached Input Token Cost: -90%</text>
+        <text x="500" y="115" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">GPU Compute Reclaimed</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#how-it-works">Prefix caching mechanics</a></li>
+        <li><a href="#economic-latency-gains">Latency and economic impact</a></li>
+        <li><a href="#prompt-structuring">Structuring prompts for cache stability</a></li>
+        <li><a href="#eviction-isolation">Cache eviction and multi-tenant security</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="how-it-works">Prefix caching mechanics</h2>
+    <p>In standard transformer inference, when a prompt arrives, the model performs matrix multiplications across all input tokens to generate intermediate Key (\(K\)) and Value (\(V\)) activation tensors for every attention head in every layer.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Prompt caching identifies shared token prefixes using hierarchical tree structures (such as Radix Trees in RadixAttention):<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <ol>
+      <li><strong>Prefix hashing</strong>: The engine hashes token ID sequences starting from index 0.</li>
+      <li><strong>KV cache lookup</strong>: If a matching prefix tree node exists in GPU VRAM, the engine loads the pre-computed \(K\) and \(V\) tensors directly into memory without invoking model forward passes.</li>
+      <li><strong>Suffix prefill</strong>: The engine computes attention only for the newly added dynamic tokens at the end of the prompt.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    </ol>
+
+    <h2 id="economic-latency-gains">Latency and economic impact</h2>
+    <p>Prompt caching fundamentally shifts the economics of multi-turn conversational agents and large-document RAG:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ul>
+      <li><strong>Time to First Token (TTFT)</strong>: Bypassing the prefill phase for 10k to 50k tokens reduces TTFT from several seconds to tens of milliseconds.</li>
+      <li><strong>API pricing discounts</strong>: Upstream model providers (including Anthropic, OpenAI, and Google) discount cached input tokens by 50% to 90% compared to uncached input tokens.</li>
+    </ul>
+
+    <h2 id="prompt-structuring">Structuring prompts for cache stability</h2>
+    <p>Because caching relies on exact sequence prefix matching from token index 0, any mutation at the beginning of a prompt invalidates the cache for all subsequent tokens:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Correct layout (cache friendly)</strong>: Place static content first: <code>[System Instructions] → [Tool Definitions] → [Few-Shot Examples] → [Document Context] → [User Input / Timestamps]</code>.</li>
+      <li><strong>Anti-pattern (cache breaking)</strong>: Injecting dynamic data (such as current timestamps, random session IDs, or volatile user state) at the top of the system prompt, which forces a complete cache miss on every request.</li>
+    </ul>
+
+    <h2 id="eviction-isolation">Cache eviction and multi-tenant security</h2>
+    <p>GPU memory is finite. Runtimes manage prompt cache lifecycles using Least Recently Used (LRU) eviction policies with Time-to-Live (TTL) expiration windows.<span class="cite">[<a href="#ref3">3</a>]</span> In multi-tenant systems, prefix keys are partitioned by organization and workspace IDs to prevent unauthorized cross-tenant attention leakage.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/time-to-first-token/">Time to First Token</a></li>
+      <li><a href="/reference/continuous-batching/">Continuous Batching</a></li>
+      <li><a href="/reference/semantic-caching/">Semantic Caching</a></li>
+      <li><a href="/reference/tokens/">Tokens and Tokenization</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#how-it-works">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+      <li id="ref2"><a class="backlink" href="#economic-latency-gains">↑</a> Anthropic. "Prompt Caching Documentation and Best Practices," 2024. <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching">https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching</a></li>
+      <li id="ref3"><a class="backlink" href="#how-it-works">↑</a> Zheng, Lianmin, et al. "SGLang: Efficient Execution of Structured Language Model Programs." <em>arXiv preprint arXiv:2312.07104</em>, 2023.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

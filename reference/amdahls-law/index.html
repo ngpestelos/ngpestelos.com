@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amdahl's Law · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Amdahl's Law establishes the mathematical limit on speedup and throughput when parallelizing workloads, bounded strictly by the serial fraction.">
+  <meta property="og:title" content="Amdahl's Law · Reference">
+  <meta property="og:description" content="Mathematical formulation, serial bottlenecks, multi-core systems, and parallel AI agent fleet scaling.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/amdahls-law/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/amdahls-law/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\[', right: '\]', display: true},
+        {left: '\(', right: '\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Computer Architecture · Parallel Computing</p>
+    <h1>Amdahl's Law</h1>
+    <p class="updated">Reference entry · last updated August 26, 2026</p>
+
+    <p class="lede"><strong>Amdahl's Law</strong> is a mathematical formula that calculates the theoretical maximum speedup achievable by a system when improving or parallelizing a specific fraction of its total workload.<span class="cite">[<a href="#ref1">1</a>]</span> Formulated by computer architect Gene Amdahl in 1967, the law demonstrates that overall performance speedup is strictly bounded by the serial, non-parallelizable portion of the task, regardless of how many parallel processing units are added.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Amdahl's Law Speedup Curves">
+        <!-- Axes -->
+        <line x1="60" y1="130" x2="600" y2="130" stroke="#54595d" stroke-width="1.5"/>
+        <line x1="60" y1="130" x2="60" y2="20" stroke="#54595d" stroke-width="1.5"/>
+
+        <text x="330" y="152" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d">Parallel Processors / Workers (\(N\))</text>
+        <text x="25" y="75" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d" transform="rotate(-90 25 75)">Speedup \(S(N)\)</text>
+
+        <!-- Curve 1: s = 0.05 (20x limit) -->
+        <path d="M 60 130 Q 150 40 600 35" fill="none" stroke="#166534" stroke-width="2.5"/>
+        <text x="500" y="30" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">5% Serial (20x Max Ceiling)</text>
+
+        <!-- Curve 2: s = 0.10 (10x limit) -->
+        <path d="M 60 130 Q 150 70 600 65" fill="none" stroke="#0645ad" stroke-width="2"/>
+        <text x="500" y="60" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#0645ad">10% Serial (10x Max Ceiling)</text>
+
+        <!-- Curve 3: s = 0.25 (4x limit) -->
+        <path d="M 60 130 Q 150 100 600 98" fill="none" stroke="#9f1239" stroke-width="2" stroke-dasharray="3,3"/>
+        <text x="500" y="93" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">25% Serial (4x Max Ceiling)</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#mathematical-formula">Mathematical formulation</a></li>
+        <li><a href="#the-serial-ceiling">The serial fraction ceiling</a></li>
+        <li><a href="#agent-fleets">Amdahl's law in parallel AI agent swarms</a></li>
+        <li><a href="#gustafson-comparison">Comparison with Gustafson's Law</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="mathematical-formula">Mathematical formulation</h2>
+    <p>Let a task have execution time \(T_1\) on a single processor. The task is partitioned into two fractions:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li>\(s\): The fraction of execution time that is strictly serial (\(0 \le s \le 1\)).</li>
+      <li>\(p = 1 - s\): The fraction of execution time that can be perfectly parallelized.</li>
+    </ul>
+    <p>When executed across \(N\) parallel execution units, total runtime \(T_N\) becomes:</p>
+    \[T_N = T_1 \left( s + rac{1 - s}{N} ight)\]
+    <p>The resulting speedup factor \(S(N) = rac{T_1}{T_N}\) is defined as:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    \[S(N) = rac{1}{s + rac{1 - s}{N}}\]
+
+    <h2 id="the-serial-ceiling">The serial fraction ceiling</h2>
+    <p>As the number of parallel processors approaches infinity (\(N 	o \infty\)), the parallel term \(rac{1-s}{N}\) approaches zero, establishing a hard asymptotic ceiling:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    \[\lim_{N 	o \infty} S(N) = rac{1}{s}\]
+    <p>If even 10% of a program cannot be parallelized (\(s = 0.10\)), the maximum possible speedup is 10x, even with millions of processing cores.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="agent-fleets">Amdahl's law in parallel AI agent swarms</h2>
+    <p>Amdahl's Law directly governs the scaling of multi-agent coding swarms and autonomous fleets:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <ul>
+      <li><strong>Parallel fraction (\(p\))</strong>: Independent code authoring, background file audits, unit test generation, and documentation drafting.</li>
+      <li><strong>Serial fraction (\(s\))</strong>: Architectural alignment, task graph decomposition, git branch merge conflict resolution, and final integration verification.</li>
+    </ul>
+    <p>Deploying 16 parallel subagents on a task with 10% serial coordination delivers roughly 9x real throughput, not 16x. Sizing agent swarms requires calculating the serial dependency tail before provisioning large worker pools.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="gustafson-comparison">Comparison with Gustafson's Law</h2>
+    <p>Amdahl's Law assumes a fixed problem size (strong scaling). In contrast, <strong>Gustafson's Law</strong> (1988) addresses weak scaling, where larger parallel systems are used to solve larger problem sizes within the same total time window rather than solving a fixed problem faster.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/throughput/">Throughput</a></li>
+      <li><a href="/reference/agentic-loops/">Agentic Loops</a></li>
+      <li><a href="/reference/agent-harness/">Agent Harness</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#mathematical-formula">↑</a> Amdahl, Gene M. "Validity of the Single Processor Approach to Achieving Large Scale Computing Capabilities." <em>AFIPS Conference Proceedings</em>, vol. 30, 1967, pp. 483–485. <a href="https://doi.org/10.1145/1465482.1465560">https://doi.org/10.1145/1465482.1465560</a></li>
+      <li id="ref2"><a class="backlink" href="#the-serial-ceiling">↑</a> Patterson, David A., and John L. Hennessy. <em>Computer Organization and Design: The Hardware/Software Interface</em>. 6th ed., Morgan Kaufmann, 2020.</li>
+      <li id="ref3"><a class="backlink" href="#agent-fleets">↑</a> Anthropic. "Building Effective Agents: Multi-Agent Workflows and Coordination Overheads," 2024.</li>
+      <li id="ref4"><a class="backlink" href="#gustafson-comparison">↑</a> Gustafson, John L. "Reevaluating Amdahl's Law." <em>Communications of the ACM</em>, vol. 31, no. 5, 1988, pp. 532–533.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
