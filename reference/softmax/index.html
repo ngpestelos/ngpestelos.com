@@ -237,9 +237,9 @@
       <h2>1. Mathematical Formulation</h2>
 
       <h3 id="standard-definition">1.1 Standard Definition</h3>
-      <p>Given an input vector \(\mathbf{z} = (z_1, z_2, \dots, z_K) \in \mathbb{R}^K\), the Softmax function \(\sigma: \mathbb{R}^K 	o (0, 1)^K\) is defined for each component \(i \in \{1, \dots, K\}\) as:</p>
+      <p>Given an input vector \(\mathbf{z} = (z_1, z_2, \dots, z_K) \in \mathbb{R}^K\), the Softmax function \(\sigma: \mathbb{R}^K \to (0, 1)^K\) is defined for each component \(i \in \{1, \dots, K\}\) as:</p>
 
-      \[\sigma(\mathbf{z})_i = rac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}\]
+      \[\sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}\]
 
       <p>The denominator \(\sum_{j=1}^K e^{z_j}\) acts as a normalizing partition function (analogous to the Boltzmann distribution in statistical mechanics), ensuring that the output elements satisfy the Kolmogorov probability axioms.</p>
 
@@ -248,7 +248,7 @@
         <li><strong>Probability Constraints:</strong> For all \(i\), \(\sigma(\mathbf{z})_i > 0\) and \(\sum_{i=1}^K \sigma(\mathbf{z})_i = 1\).</li>
         <li><strong>Strict Monotonicity:</strong> If \(z_a > z_b\), then \(\sigma(\mathbf{z})_a > \sigma(\mathbf{z})_b\), preserving the relative ranking of the input logits.</li>
         <li><strong>Shift Invariance:</strong> Adding an arbitrary constant \(c \in \mathbb{R}\) to every element of \(\mathbf{z}\) does not alter the output probability distribution:
-          \[\sigma(\mathbf{z} + c \mathbf{1})_i = rac{e^{z_i + c}}{\sum_{j=1}^K e^{z_j + c}} = rac{e^c e^{z_i}}{e^c \sum_{j=1}^K e^{z_j}} = \sigma(\mathbf{z})_i\]
+          \[\sigma(\mathbf{z} + c \mathbf{1})_i = \frac{e^{z_i + c}}{\sum_{j=1}^K e^{z_j + c}} = \frac{e^c e^{z_i}}{e^c \sum_{j=1}^K e^{z_j}} = \sigma(\mathbf{z})_i\]
         </li>
         <li><strong>Differentiability:</strong> The function is smooth and continuously differentiable everywhere on \(\mathbb{R}^K\), making it ideal for gradient-based optimization via backpropagation [2].</li>
       </ul>
@@ -261,37 +261,36 @@
       <p>Direct evaluation of \(\sigma(\mathbf{z})_i\) using standard IEEE 754 floating-point representations (such as FP32, FP16, or BF16) is numerically unstable:</p>
       <ul>
         <li><strong>Overflow:</strong> For float32 values, \(e^z\) overflows to positive infinity whenever \(z \ge 88.72\), resulting in <code>NaN</code> outputs upon division.</li>
-        <li><strong>Underflow:</strong> When all logits are large negative numbers, all exponentials underflow to zero, causing division by zero (\(rac{0}{0} 	o 	ext{NaN}\)).</li>
+        <li><strong>Underflow:</strong> When all logits are large negative numbers, all exponentials underflow to zero, causing division by zero (\(\frac{0}{0} \to \text{NaN}\)).</li>
       </ul>
 
       <h3 id="subtract-max-trick">2.2 The Subtract-Max Invariance Trick</h3>
       <p>Using the shift-invariance property, production implementations subtract the maximum element \(m = \max_j(z_j)\) from the logit vector before computing the exponential:</p>
 
-      \[\sigma(\mathbf{z})_i = rac{e^{z_i - \max_j(z_j)}}{\sum_{k=1}^K e^{z_k - \max_j(z_j)}}\]
+      \[\sigma(\mathbf{z})_i = \frac{e^{z_i - \max_j(z_j)}}{\sum_{k=1}^K e^{z_k - \max_j(z_j)}}\]
 
       <p>Because \(z_i - \max_j(z_j) \le 0\) for all \(i\), every exponent is bounded in \((-\infty, 0]\), ensuring that \(e^{z_i - m} \in (0, 1]\). Overflow is mathematically eliminated, and at least one term in the denominator equals \(e^0 = 1\), preventing division by zero [3].</p>
 
       <h3 id="log-softmax">2.3 Log-Softmax Formulation</h3>
       <p>When computing loss functions, calculating \(\log(\sigma(\mathbf{z})_i)\) directly from Softmax outputs introduces precision loss. Deep learning frameworks implement the <code>LogSoftmax</code> primitive via the Log-Sum-Exp operator:</p>
 
-      \[\log \sigma(\mathbf{z})_i = z_i - 	ext{LSE}(\mathbf{z}) = z_i - \left( m + \log \sum_{j=1}^K e^{z_j - m} 
-ight)\]
+      \[\log \sigma(\mathbf{z})_i = z_i - \text{LSE}(\mathbf{z}) = z_i - \left( m + \log \sum_{j=1}^K e^{z_j - m} \right)\]
     </section>
 
     <section id="temperature-scaling">
       <h2>3. Temperature Scaling</h2>
       <p><strong>Temperature scaling</strong> introduces a strictly positive hyperparameter \(T > 0\) into the logit arguments:</p>
 
-      \[\sigma(\mathbf{z}, T)_i = rac{e^{z_i / T}}{\sum_{j=1}^K e^{z_j / T}}\]
+      \[\sigma(\mathbf{z}, T)_i = \frac{e^{z_i / T}}{\sum_{j=1}^K e^{z_j / T}}\]
 
       <p>Temperature modulates the entropy (flatness vs. sharpness) of the resulting probability distribution:</p>
       <ul>
         <li><strong>Standard Temperature (\(T = 1\)):</strong> The standard Softmax distribution.</li>
-        <li><strong>High Temperature (\(T 	o \infty\)):</strong> Logit differences are compressed (\(z_i / T 	o 0\)), causing the distribution to approach a uniform distribution:
-          \[\lim_{T 	o \infty} \sigma(\mathbf{z}, T)_i = rac{1}{K}\]
+        <li><strong>High Temperature (\(T \to \infty\)):</strong> Logit differences are compressed (\(z_i / T \to 0\)), causing the distribution to approach a uniform distribution:
+          \[\lim_{T \to \infty} \sigma(\mathbf{z}, T)_i = \frac{1}{K}\]
         </li>
-        <li><strong>Low Temperature (\(T 	o 0^+\)):</strong> Logit differences are magnified, causing the distribution to collapse to a deterministic one-hot vector centered on the argmax logit:
-          \[\lim_{T 	o 0^+} \sigma(\mathbf{z}, T)_i = egin{cases} 1 & 	ext{if } z_i = \max_j(z_j) \ 0 & 	ext{otherwise} \end{cases}\]
+        <li><strong>Low Temperature (\(T \to 0^+\)):</strong> Logit differences are magnified, causing the distribution to collapse to a deterministic one-hot vector centered on the argmax logit:
+          \[\lim_{T \to 0^+} \sigma(\mathbf{z}, T)_i = \begin{cases} 1 & \text{if } z_i = \max_j(z_j) \ 0 & \text{otherwise} \end{cases}\]
         </li>
       </ul>
       <p>In post-processing, temperature scaling is also used to calibrate confidence probabilities in neural network classifiers without altering class rankings [4].</p>
@@ -303,18 +302,18 @@ ight)\]
       <h3 id="jacobian-matrix">4.1 Jacobian Matrix</h3>
       <p>The derivative of the \(i\)-th Softmax output \(\sigma_i\) with respect to the \(j\)-th input logit \(z_j\) is given by the quotient rule:</p>
 
-      \[rac{\partial \sigma_i}{\partial z_j} = \sigma_i (\delta_{ij} - \sigma_j) = egin{cases} \sigma_i (1 - \sigma_i) & 	ext{if } i = j \ -\sigma_i \sigma_j & 	ext{if } i 
+      \[\frac{\partial \sigma_i}{\partial z_j} = \sigma_i (\delta_{ij} - \sigma_j) = \begin{cases} \sigma_i (1 - \sigma_i) & \text{if } i = j \ -\sigma_i \sigma_j & \text{if } i 
 eq j \end{cases}\]
 
-      <p>where \(\delta_{ij}\) is the Kronecker delta. In vector form, the Jacobian matrix \(J \in \mathbb{R}^{K 	imes K}\) is:</p>
+      <p>where \(\delta_{ij}\) is the Kronecker delta. In vector form, the Jacobian matrix \(J \in \mathbb{R}^{K \times K}\) is:</p>
 
-      \[J = 	ext{diag}(\sigma) - \sigma \sigma^T\]
+      \[J = \text{diag}(\sigma) - \sigma \sigma^T\]
 
       <h3 id="cross-entropy-gradient">4.2 Combined Softmax and Cross-Entropy Loss</h3>
       <p>In classification and autoregressive language modeling, Softmax is paired with categorical Cross-Entropy loss \(\mathcal{L} = -\sum_{k=1}^K y_k \log(\hat{y}_k)\), where \(\mathbf{y}\) is the ground-truth one-hot target vector and \(\hat{\mathbf{y}} = \sigma(\mathbf{z})\).</p>
       <p>Applying the chain rule produces an elegant, numerically stable gradient with respect to the pre-activation logit \(z_i\):</p>
 
-      \[rac{\partial \mathcal{L}}{\partial z_i} = \sum_{k=1}^K rac{\partial \mathcal{L}}{\partial \hat{y}_k} rac{\partial \hat{y}_k}{\partial z_i} = \hat{y}_i - y_i\]
+      \[\frac{\partial \mathcal{L}}{\partial z_i} = \sum_{k=1}^K \frac{\partial \mathcal{L}}{\partial \hat{y}_k} \frac{\partial \hat{y}_k}{\partial z_i} = \hat{y}_i - y_i\]
 
       <p>The gradient is simply the signed residual error between the predicted probability distribution and the true target [2].</p>
     </section>
@@ -325,26 +324,25 @@ eq j \end{cases}\]
       <h3 id="transformer-attention">5.1 Scaled Dot-Product Attention in Transformers</h3>
       <p>In the transformer architecture [5], Softmax computes dynamic attention weights between query matrix \(Q\) and key matrix \(K\):</p>
 
-      \[	ext{Attention}(Q, K, V) = 	ext{softmax}\left(rac{QK^T}{\sqrt{d_k}}
-ight)V\]
+      \[\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V\]
 
-      <p>The scaling factor \(rac{1}{\sqrt{d_k}}\) prevents dot products from growing excessively large in high dimensions, which would otherwise push the Softmax function into regions with near-zero gradients (the vanishing gradient regime).</p>
+      <p>The scaling factor \(\frac{1}{\sqrt{d_k}}\) prevents dot products from growing excessively large in high dimensions, which would otherwise push the Softmax function into regions with near-zero gradients (the vanishing gradient regime).</p>
 
       <h3 id="moe-gating">5.2 Sparse Mixture-of-Experts Gating</h3>
       <p>In Mixture-of-Experts (MoE) architectures (such as DeepSeek-V4-Flash and Llama 4), a Softmax gating router determines which feed-forward expert networks process each token [6]:</p>
 
-      \[G(x) = 	ext{softmax}(	ext{TopK}(H(x), k))\]
+      \[G(x) = \text{softmax}(\text{TopK}(H(x), k))\]
 
       <h3 id="generation-sampling">5.3 Autoregressive Decoding and Sampling</h3>
-      <p>Autoregressive language models project the final hidden state \(h_t\) across the vocabulary matrix \(W_v\) to produce vocabulary logits \(\mathbf{z}_t \in \mathbb{R}^{|V|}\). Softmax converts these logits into the next-token probability distribution \(P(w_{t+1} \mid w_{1:t}) = 	ext{softmax}(\mathbf{z}_t / T)\), which is subsequently filtered via Top-\(p\) (nucleus) or Top-\(k\) truncation prior to stochastic sampling [7].</p>
+      <p>Autoregressive language models project the final hidden state \(h_t\) across the vocabulary matrix \(W_v\) to produce vocabulary logits \(\mathbf{z}_t \in \mathbb{R}^{|V|}\). Softmax converts these logits into the next-token probability distribution \(P(w_{t+1} \mid w_{1:t}) = \text{softmax}(\mathbf{z}_t / T)\), which is subsequently filtered via Top-\(p\) (nucleus) or Top-\(k\) truncation prior to stochastic sampling [7].</p>
     </section>
 
     <section id="variants-and-alternatives">
       <h2>6. Variants and Continuous Relaxations</h2>
       <ul>
         <li><strong>Gumbel-Softmax (Concrete Distribution):</strong> A continuous, differentiable relaxation of discrete categorical sampling. Enables backpropagation through stochastic discrete choices via the reparameterization trick:
-          \[y_i = rac{e^{(z_i + g_i) / 	au}}{\sum_{j=1}^K e^{(z_j + g_j) / 	au}}\]
-          where \(g_i \sim 	ext{Gumbel}(0, 1)\) and \(	au\) is a temperature parameter [8].</li>
+          \[y_i = \frac{e^{(z_i + g_i) / \tau}}{\sum_{j=1}^K e^{(z_j + g_j) / \tau}}\]
+          where \(g_i \sim \text{Gumbel}(0, 1)\) and \(\tau\) is a temperature parameter [8].</li>
         <li><strong>Sparsemax:</strong> An alternative activation function based on Euclidean projection onto the probability simplex, yielding exact zero probabilities for low-ranked classes to produce truly sparse attention maps [9].</li>
         <li><strong>Hierarchical and Adaptive Softmax:</strong> Tree-structured and cluster-based factorizations designed to reduce computational complexity from \(O(|V|)\) to \(O(\log |V|)\) or \(O(\sqrt{|V|})\) across massive vocabularies [10].</li>
       </ul>

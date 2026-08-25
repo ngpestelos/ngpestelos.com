@@ -234,7 +234,7 @@
       <h3 id="definition-and-scaling">1.1 Definition and Scaling Laws</h3>
       <p>The term <em>frontier model</em> refers to state-of-the-art foundation models that operate at the performance boundary of artificial intelligence [1]. These models are typically trained using distributed supercomputing clusters consuming between \(10^{25}\) and \(10^{27}\) total floating-point operations (FLOPs) [2]. Representative frontier systems include OpenAI's GPT-4o, Anthropic's Claude 3.5 Opus and Sonnet, Google's Gemini 2.0/3.7 Pro, Moonshot AI's Kimi K3, and DeepSeek's V4 series.</p>
       
-      <p>The development of frontier models is guided by empirical scaling laws formulated by Kaplan et al. [3] and revised by Chinchilla compute-optimal scaling guidelines [4]. Under the Chinchilla formulation, given a compute budget \(C pprox 6 N D\) (where \(N\) is parameter count and \(D\) is the number of training tokens), model size and dataset size must be scaled in equal proportion:</p>
+      <p>The development of frontier models is guided by empirical scaling laws formulated by Kaplan et al. [3] and revised by Chinchilla compute-optimal scaling guidelines [4]. Under the Chinchilla formulation, given a compute budget \(C \approx 6 N D\) (where \(N\) is parameter count and \(D\) is the number of training tokens), model size and dataset size must be scaled in equal proportion:</p>
       
       \[N_{opt} \propto C^{0.5}, \quad D_{opt} \propto C^{0.5}\]
       
@@ -255,11 +255,11 @@
       <p>A <strong>Sparse Mixture-of-Experts (MoE)</strong> architecture decouples total parameter capacity from per-token compute by replacing dense feed-forward network (FFN) layers with multiple independent "expert" sub-networks and a parameterized gating router [8].</p>
       <p>For a token representation vector \(x\), the gating network computes a sparse routing distribution \(G(x)\) over \(E\) total experts:</p>
 
-      \[G(x) = 	ext{Softmax}(	ext{TopK}(H(x), k)), \quad H(x)_i = (x \cdot W_g)_i + \epsilon\]
+      \[G(x) = \text{Softmax}(\text{TopK}(H(x), k)), \quad H(x)_i = (x \cdot W_g)_i + \epsilon\]
 
       <p>The layer output \(y\) is the weighted sum of the activations from the \(k\) selected experts (where \(k \ll E\)):</p>
 
-      \[y = \sum_{i \in 	ext{TopK}} G(x)_i \cdot 	ext{Expert}_i(x)\]
+      \[y = \sum_{i \in \text{TopK}} G(x)_i \cdot \text{Expert}_i(x)\]
 
       <p>For instance, DeepSeek-V4-Flash utilizes 284 billion total parameters across its expert pool, but activates only 13 billion parameters per token (\(k=8\)). Similarly, Meta's Llama 4 Scout routes tokens across 16 experts (17B active / 109B total), while Llama 4 Maverick routes across 128 experts (17B active / 400B total). Sparse MoE enables massive memorization capacity and domain specialization while maintaining the inference latency of a compact model [9].</p>
 
@@ -295,9 +295,9 @@
       </ul>
 
       <h3 id="kv-cache-and-prompt-caching">3.3 KV Cache Scaling and Prompt Caching Economics</h3>
-      <p>During autoregressive decoding, recomputing the attention key (\(K\)) and value (\(V\)) vectors for past tokens at each step is computationally prohibitive. Models maintain a <strong>KV Cache</strong> in GPU high-bandwidth memory (HBM). The memory footprint \(M_{	ext{KV}}\) for a standard Multi-Head Attention transformer with context length \(L\), layer count \(n_{	ext{layers}}\), hidden dimension \(d_{	ext{model}}\), and batch size \(B\) scales as:</p>
+      <p>During autoregressive decoding, recomputing the attention key (\(K\)) and value (\(V\)) vectors for past tokens at each step is computationally prohibitive. Models maintain a <strong>KV Cache</strong> in GPU high-bandwidth memory (HBM). The memory footprint \(M_{\text{KV}}\) for a standard Multi-Head Attention transformer with context length \(L\), layer count \(n_{\text{layers}}\), hidden dimension \(d_{\text{model}}\), and batch size \(B\) scales as:</p>
 
-      \[M_{	ext{KV}} = 2 	imes B 	imes L 	imes n_{	ext{layers}} 	imes d_{	ext{model}} 	imes 	ext{BytesPerElement}\]
+      \[M_{\text{KV}} = 2 \times B \times L \times n_{\text{layers}} \times d_{\text{model}} \times \text{BytesPerElement}\]
 
       <p>For a 1-million-token context, raw KV cache memory can exceed tens of gigabytes per concurrent user. Modern inference engines employ <strong>Prompt Caching</strong> (e.g., prefix caching in vLLM, DeepSeek API, Anthropic API, and Google Gemini API). When sequential requests share an identical prefix (such as system instructions, codebase indexes, or persistent agent memory), the engine reuses the precomputed KV tensors directly from memory [15].</p>
       <p>Prompt caching reduces input latency by up to 80% and reduces API billing rates by 75% to 95% on cached tokens (e.g., DeepSeek-V4-Flash cache hits cost $0.007 per 1M tokens versus $0.22 per 1M tokens on cache misses).</p>

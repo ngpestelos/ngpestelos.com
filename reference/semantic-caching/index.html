@@ -210,7 +210,7 @@
     <ol>
       <li><strong>Vectorization</strong>: The input query is passed through a lightweight embedding model to generate a dense semantic vector.</li>
       <li><strong>Similarity search</strong>: The vector is queried against an index of stored prompts using distance metrics (typically cosine similarity or Euclidean distance).<span class="cite">[<a href="#ref2">2</a>]</span></li>
-      <li><strong>Threshold evaluation</strong>: If the similarity score exceeds a configured threshold (for example, \(	ext{sim} \ge 0.92\)), the stored completion is returned immediately.</li>
+      <li><strong>Threshold evaluation</strong>: If the similarity score exceeds a configured threshold (for example, \(\text{sim} \ge 0.92\)), the stored completion is returned immediately.</li>
       <li><strong>Asynchronous insertion</strong>: On a cache miss, the request passes to the primary LLM, and the resulting prompt-response pair is embedded and indexed in the background.</li>
     </ol>
 

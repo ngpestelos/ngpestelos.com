@@ -218,21 +218,21 @@
     <h2 id="prefill-vs-decode">The prefill and decode phase division</h2>
     <p>Large language model inference occurs in two computationally asymmetric stages:<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <ol>
-      <li><strong>Prefill phase (prompt ingestion)</strong>: The model ingests all \(N_{	ext{in}}\) tokens of the input context in parallel, computing Key and Value tensors for every layer and writing them into the KV cache. Because all tokens are known upfront, this phase executes dense matrix multiplications (GEMM), achieving high arithmetic intensity on GPU tensor cores.</li>
+      <li><strong>Prefill phase (prompt ingestion)</strong>: The model ingests all \(N_{\text{in}}\) tokens of the input context in parallel, computing Key and Value tensors for every layer and writing them into the KV cache. Because all tokens are known upfront, this phase executes dense matrix multiplications (GEMM), achieving high arithmetic intensity on GPU tensor cores.</li>
       <li><strong>Decode phase (generation)</strong>: The model generates completion tokens one by one autoregressively. Each new token requires evaluating the attention mechanism across all previous tokens, reading the entire model weights and KV cache from High Bandwidth Memory (HBM) for every single token step.<span class="cite">[<a href="#ref3">3</a>]</span></li>
     </ol>
     <p>TTFT measures the duration required to complete network ingress, queuing, and the entire prefill phase.</p>
 
     <h2 id="tpot-definition">Time Per Output Token (TPOT)</h2>
     <p>While TTFT evaluates initial response delay, <strong>Time Per Output Token (TPOT)</strong> measures the generation speed of subsequent tokens:<span class="cite">[<a href="#ref2">2</a>]</span></p>
-    \[	ext{TPOT} = rac{	ext{Total Latency} - 	ext{TTFT}}{N_{	ext{out}} - 1}\]
-    <p>where \(N_{	ext{out}}\) is the count of generated output tokens. The inverse of TPOT represents generation throughput per user stream (in tokens per second). Total end-to-end latency \(T_{	ext{total}}\) is expressed as:<span class="cite">[<a href="#ref2">2</a>]</span></p>
-    \[T_{	ext{total}} = 	ext{TTFT} + (N_{	ext{out}} - 1) 	imes 	ext{TPOT}\]
+    \[\text{TPOT} = \frac{\text{Total Latency} - \text{TTFT}}{N_{\text{out}} - 1}\]
+    <p>where \(N_{\text{out}}\) is the count of generated output tokens. The inverse of TPOT represents generation throughput per user stream (in tokens per second). Total end-to-end latency \(T_{\text{total}}\) is expressed as:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    \[T_{\text{total}} = \text{TTFT} + (N_{\text{out}} - 1) \times \text{TPOT}\]
 
     <h2 id="hardware-mechanics">Hardware bottlenecks and arithmetic intensity</h2>
     <p>The operational constraints of TTFT and TPOT derive from the roofline model of computing:<span class="cite">[<a href="#ref4">4</a>]</span></p>
     <ul>
-      <li><strong>Prefill is compute-bound</strong>: High arithmetic intensity (FLOPs per byte of memory access). As prompt context scales, TTFT grows with prompt length \(O(N_{	ext{in}})\) or \(O(N_{	ext{in}}^2)\) in un-optimized attention implementations.</li>
+      <li><strong>Prefill is compute-bound</strong>: High arithmetic intensity (FLOPs per byte of memory access). As prompt context scales, TTFT grows with prompt length \(O(N_{\text{in}})\) or \(O(N_{\text{in}}^2)\) in un-optimized attention implementations.</li>
       <li><strong>Decode is memory-bandwidth bound</strong>: Low arithmetic intensity. During decoding, GPU utilization is limited by the speed at which memory controllers transfer weight matrices from HBM to on-chip SRAM.</li>
     </ul>
 

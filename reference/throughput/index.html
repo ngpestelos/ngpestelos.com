@@ -210,7 +210,7 @@
 
     <h2 id="first-principles">First principles and definitions</h2>
     <p>At its core, throughput \(X\) measures flow rate through a bounded system over time duration \(T\):</p>
-    \[X = rac{C}{T}\]
+    \[X = \frac{C}{T}\]
     <p>where \(C\) represents the count of successfully completed work units. The specific unit of measurement varies by domain:<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <ul>
       <li><strong>Telecommunications</strong>: Bits per second (bps) or packets per second (pps).</li>
@@ -235,26 +235,26 @@
       <li>\(W\) is the average time an item spends inside the system (mean residence time or total latency).</li>
     </ul>
     <p>Little's Law establishes that throughput is strictly constrained by concurrency and latency:</p>
-    \[\lambda = rac{L}{W}\]
+    \[\lambda = \frac{L}{W}\]
     <p>To increase throughput, a system must either increase concurrency \(L\) (processing more items in parallel) or decrease residence time \(W\) (processing each item faster). If \(W\) increases due to internal queuing delays while \(L\) remains fixed, throughput \(\lambda\) must drop.<span class="cite">[<a href="#ref3">3</a>]</span></p>
 
     <h2 id="latency-tradeoff">The throughput-latency relationship</h2>
     <p>The relationship between offered load, throughput, and latency exhibits three distinct operational regimes:<span class="cite">[<a href="#ref4">4</a>]</span></p>
     <ol>
-      <li><strong>Linear regime (low load)</strong>: When arrival rate is low, resources remain underutilized. Throughput scales linearly with offered load, and latency remains near the baseline processing time (\(W pprox W_{	ext{service}}\)).</li>
+      <li><strong>Linear regime (low load)</strong>: When arrival rate is low, resources remain underutilized. Throughput scales linearly with offered load, and latency remains near the baseline processing time (\(W \approx W_{\text{service}}\)).</li>
       <li><strong>Knee of the curve (optimal utilization)</strong>: As load reaches resource saturation (\(N^*\)), throughput reaches its maximum ceiling (\(X_{\max}\)). Hardware utilization approaches 100%, and processing pipelines run at peak efficiency without accumulating significant queues.<span class="cite">[<a href="#ref4">4</a>]</span></li>
-      <li><strong>Queuing saturation regime (overload)</strong>: Adding load beyond the knee creates queue backlogs. Throughput stays flat or degrades due to context-switching overhead, while latency increases non-linearly. According to Kingman's formula for single-server queues, wait time diverges toward infinity as utilization \(ho 	o 1\):<span class="cite">[<a href="#ref5">5</a>]</span></li>
+      <li><strong>Queuing saturation regime (overload)</strong>: Adding load beyond the knee creates queue backlogs. Throughput stays flat or degrades due to context-switching overhead, while latency increases non-linearly. According to Kingman's formula for single-server queues, wait time diverges toward infinity as utilization \(\rho \to 1\):<span class="cite">[<a href="#ref5">5</a>]</span></li>
     </ol>
-    \[W_q pprox \left(rac{ho}{1 - ho}ight) \left(rac{C_a^2 + C_s^2}{2}ight) 	au\]
+    \[W_q \approx \left(\frac{\rho}{1 - \rho}\right) \left(\frac{C_a^2 + C_s^2}{2}\right) \tau\]
 
     <h2 id="scaling-limits">Concurrency limits and scaling laws</h2>
     <p>Adding parallel processing units does not scale throughput indefinitely due to communication overhead and serial bottlenecks.<span class="cite">[<a href="#ref6">6</a>]</span></p>
     <p><strong>Amdahl's Law</strong> defines the maximum speedup \(S(N)\) achievable by adding \(N\) parallel processors when a fraction \(s\) of the work must execute serially:<span class="cite">[<a href="#ref6">6</a>]</span></p>
-    \[S(N) = rac{1}{s + rac{1 - s}{N}}\]
-    <p>As \(N 	o \infty\), maximum throughput is bounded strictly by \(rac{1}{s}\). If 5% of a workload is strictly serial (\(s = 0.05\)), the maximum possible speedup is 20x, regardless of how many parallel cores or agent workers are provisioned.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    \[S(N) = \frac{1}{s + \frac{1 - s}{N}}\]
+    <p>As \(N \to \infty\), maximum throughput is bounded strictly by \(\frac{1}{s}\). If 5% of a workload is strictly serial (\(s = 0.05\)), the maximum possible speedup is 20x, regardless of how many parallel cores or agent workers are provisioned.<span class="cite">[<a href="#ref6">6</a>]</span></p>
     <p><strong>Gunther's Universal Scalability Law (USL)</strong> extends Amdahl's Law by accounting for inter-worker coherence penalties (such as lock contention and cache invalidation protocols):<span class="cite">[<a href="#ref7">7</a>]</span></p>
-    \[C(N) = rac{N}{1 + lpha(N - 1) + eta N(N - 1)}\]
-    <p>where \(lpha\) represents contention (serialization) and \(eta\) represents cross-node coherence overhead. When \(eta &gt; 0\), scaling past an optimal node count causes throughput to decline (retrograde scalability).<span class="cite">[<a href="#ref7">7</a>]</span></p>
+    \[C(N) = \frac{N}{1 + \alpha(N - 1) + \beta N(N - 1)}\]
+    <p>where \(\alpha\) represents contention (serialization) and \(\beta\) represents cross-node coherence overhead. When \(\beta &gt; 0\), scaling past an optimal node count causes throughput to decline (retrograde scalability).<span class="cite">[<a href="#ref7">7</a>]</span></p>
 
     <h2 id="computing-ai">Throughput in computer architecture and AI inference</h2>
     <p>Modern machine learning serving systems illustrate the architectural mechanics of throughput:<span class="cite">[<a href="#ref8">8</a>]</span></p>

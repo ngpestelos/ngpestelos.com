@@ -211,13 +211,13 @@
       <li>\(p = 1 - s\): The fraction of execution time that can be perfectly parallelized.</li>
     </ul>
     <p>When executed across \(N\) parallel execution units, total runtime \(T_N\) becomes:</p>
-    \[T_N = T_1 \left( s + rac{1 - s}{N} ight)\]
-    <p>The resulting speedup factor \(S(N) = rac{T_1}{T_N}\) is defined as:<span class="cite">[<a href="#ref1">1</a>]</span></p>
-    \[S(N) = rac{1}{s + rac{1 - s}{N}}\]
+    \[T_N = T_1 \left( s + \frac{1 - s}{N} \right)\]
+    <p>The resulting speedup factor \(S(N) = \frac{T_1}{T_N}\) is defined as:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    \[S(N) = \frac{1}{s + \frac{1 - s}{N}}\]
 
     <h2 id="the-serial-ceiling">The serial fraction ceiling</h2>
-    <p>As the number of parallel processors approaches infinity (\(N 	o \infty\)), the parallel term \(rac{1-s}{N}\) approaches zero, establishing a hard asymptotic ceiling:<span class="cite">[<a href="#ref2">2</a>]</span></p>
-    \[\lim_{N 	o \infty} S(N) = rac{1}{s}\]
+    <p>As the number of parallel processors approaches infinity (\(N \to \infty\)), the parallel term \(\frac{1-s}{N}\) approaches zero, establishing a hard asymptotic ceiling:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    \[\lim_{N \to \infty} S(N) = \frac{1}{s}\]
     <p>If even 10% of a program cannot be parallelized (\(s = 0.10\)), the maximum possible speedup is 10x, even with millions of processing cores.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 
     <h2 id="agent-fleets">Amdahl's law in parallel AI agent swarms</h2>

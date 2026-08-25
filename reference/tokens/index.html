@@ -235,7 +235,7 @@
       <h2>1. Tokenization Fundamentals</h2>
 
       <h3 id="definition-and-vocabulary">1.1 Vocabulary Representation</h3>
-      <p>A tokenizer operates as a bijective lookup between a finite vocabulary of subwords \(V\) and integer identifiers \(\{0, 1, \dots, |V|-1\}\). Modern vocabulary sizes typically range from \(|V| = 32,000\) (Llama 2) to \(|V| = 128,256\) (Llama 3/4) and \(|V| = 256,000\) (Gemma). Each token index corresponds to an embedding vector in the model's input projection matrix \(W_e \in \mathbb{R}^{|V| 	imes d_{	ext{model}}}\).</p>
+      <p>A tokenizer operates as a bijective lookup between a finite vocabulary of subwords \(V\) and integer identifiers \(\{0, 1, \dots, |V|-1\}\). Modern vocabulary sizes typically range from \(|V| = 32,000\) (Llama 2) to \(|V| = 128,256\) (Llama 3/4) and \(|V| = 256,000\) (Gemma). Each token index corresponds to an embedding vector in the model's input projection matrix \(W_e \in \mathbb{R}^{|V| \times d_{\text{model}}}\).</p>
       <p>In standard English text corpora, 1,000 tokens represent approximately 750 words (an average compression ratio of 1.33 tokens per word, or roughly 4 characters per token) [1].</p>
 
       <h3 id="algorithms">1.2 Subword Tokenization Algorithms</h3>
@@ -276,9 +276,9 @@
       <h3 id="kv-memory-footprint">3.1 Memory Footprint Formulation</h3>
       <p>To avoid recomputing self-attention projections for past tokens at each decode step, models store the Key (\(K\)) and Value (\(V\)) tensors in a dynamic <strong>KV Cache</strong>. For a standard Multi-Head Attention (MHA) model, the memory required for the KV cache scales linearly with sequence length \(L\) [8]:</p>
 
-      \[M_{	ext{KV}} = 2 	imes B 	imes L 	imes n_{	ext{layers}} 	imes d_{	ext{model}} 	imes 	ext{BytesPerElement}\]
+      \[M_{\text{KV}} = 2 \times B \times L \times n_{\text{layers}} \times d_{\text{model}} \times \text{BytesPerElement}\]
 
-      <p>where \(B\) is batch size, \(L\) is context length, \(n_{	ext{layers}}\) is the number of transformer layers, \(d_{	ext{model}}\) is the hidden dimension, and the factor of 2 accounts for both \(K\) and \(V\) matrices. In FP16 precision (2 bytes per element), a 70B parameter model with a 128,000-token context requires approximately 160 GB of dedicated memory solely for a single user's KV cache.</p>
+      <p>where \(B\) is batch size, \(L\) is context length, \(n_{\text{layers}}\) is the number of transformer layers, \(d_{\text{model}}\) is the hidden dimension, and the factor of 2 accounts for both \(K\) and \(V\) matrices. In FP16 precision (2 bytes per element), a 70B parameter model with a 128,000-token context requires approximately 160 GB of dedicated memory solely for a single user's KV cache.</p>
 
       <h3 id="attention-variants">3.2 Attention Architectures: MHA, MQA, and GQA</h3>
       <p>To mitigate the memory scaling bottleneck of Multi-Head Attention, modern architectures compress the key and value heads [9]:</p>
