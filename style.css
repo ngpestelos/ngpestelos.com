@@ -508,8 +508,10 @@ a:hover {
   body:has(main.article) .next-step,
   body:has(main.article) .to-top,
   body:has(main.article) footer.meta,
+  body:has(main.article) .print,
   body:has(#writing) .pager,
-  body:has(#writing) .next-step {
+  body:has(#writing) .next-step,
+  body:has(#writing) .print {
     display: none;
   }
 
