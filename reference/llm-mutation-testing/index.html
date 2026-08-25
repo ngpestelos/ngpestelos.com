@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Mutation Testing · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="LLM mutation testing is an evaluation methodology that injects synthetic errors and contextual perturbations into evaluation datasets to measure judge sensitivity and retrieval robustness.">
+  <meta property="og:title" content="LLM Mutation Testing · Reference">
+  <meta property="og:description" content="Synthetic error injection, mutation operators, LLM-as-a-judge sensitivity, and evaluation benchmark calibration.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/llm-mutation-testing/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/llm-mutation-testing/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Software Testing · AI Evaluation</p>
+    <h1>LLM Mutation Testing</h1>
+    <p class="updated">Reference entry · last updated August 25, 2026</p>
+
+    <p class="lede"><strong>LLM mutation testing</strong> is an evaluation methodology that introduces synthetic faults, factual perturbations, or contextual contradictions into prompts and retrieved context to measure the detection sensitivity of LLM evaluators, automated judges, and test suites.<span class="cite">[<a href="#ref1">1</a>]</span> Adapted from classical mutation testing in software engineering, the technique assesses whether evaluation harnesses catch subtle errors rather than rubber-stamping plausible-sounding hallucinations.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LLM Mutation Testing Workflow">
+        <rect x="15" y="40" width="130" height="60" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="80" y="65" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#202122">Golden Dataset</text>
+        <text x="80" y="82" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Verified Prompt &amp; Context</text>
+
+        <path d="M 145 70 L 195 70" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="195" y="25" width="150" height="90" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="1.5"/>
+        <text x="270" y="50" font-family="-apple-system, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#9a3412">Mutation Operator</text>
+        <text x="270" y="70" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Inject Fact Flip</text>
+        <text x="270" y="85" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Perturb Number / Code</text>
+        <text x="270" y="100" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Generate "Mutant"</text>
+
+        <path d="M 345 70 L 395 70" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="395" y="25" width="130" height="90" rx="6" fill="#f8f9fa" stroke="#0645ad" stroke-width="1.5"/>
+        <text x="460" y="50" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0645ad">Judge / Test Suite</text>
+        <text x="460" y="70" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Evaluates Mutant</text>
+        <text x="460" y="90" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Pass or Fail?</text>
+
+        <path d="M 525 70 L 565 70" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="565" y="35" width="70" height="70" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+        <text x="600" y="65" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534" text-anchor="middle">Score</text>
+        <text x="600" y="82" font-family="-apple-system, sans-serif" font-size="9" fill="#166534" text-anchor="middle">Kill Rate</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#the-evaluation-gap">The evaluation gap in LLM systems</a></li>
+        <li><a href="#mutation-operators">Mutation operators for language data</a></li>
+        <li><a href="#mutation-score">Mutation score calculation</a></li>
+        <li><a href="#judge-calibration">LLM-as-a-judge calibration</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="the-evaluation-gap">The evaluation gap in LLM systems</h2>
+    <p>Static benchmark datasets suffer from data contamination and evaluation bias. Automated evaluators (such as LLM-as-a-judge prompts or semantic similarity scorers) frequently reward fluent, confident responses even when factual assertions are subtly inverted.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Without intentional fault injection, engineers cannot determine whether a high evaluation score reflects genuine system accuracy or an overly permissive, uncalibrated evaluation judge.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="mutation-operators">Mutation operators for language data</h2>
+    <p>Mutation operators alter golden test cases to produce synthetic "mutants" that should trigger failure:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Factual contradiction mutation</strong>: Inverting a single factual claim in retrieved RAG context (e.g. changing "Revenue increased by 14%" to "Revenue declined by 14%") to test whether the generation or judge detects the contradiction.</li>
+      <li><strong>Entity and numeric drift</strong>: Swapping entity names, dates, or numerical units to probe whether evaluators verify exact values rather than generic structure.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+      <li><strong>Instruction contradiction</strong>: Injecting conflicting instructions into system prompts to evaluate whether guardrails fail closed.</li>
+      <li><strong>Syntactic code injection</strong>: Introducing subtle off-by-one errors or typo bugs into code completion contexts to test whether code judges catch compilation and logical faults.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+    </ul>
+
+    <h2 id="mutation-score">Mutation score calculation</h2>
+    <p>The effectiveness of an evaluation suite is quantified using the <strong>mutation score</strong> (or kill rate):</p>
+    <p style="text-align: center; font-style: italic; margin: 1.2rem 0;">
+      Mutation Score = (Killed Mutants / Total Mutants) × 100%
+    </p>
+    <p>A mutant is considered <em>killed</em> when the evaluation suite or LLM judge correctly flags the injected fault as a failure. A mutant <em>survives</em> when the evaluation suite incorrectly scores the faulty output as passing. A low mutation score indicates that the evaluation suite is ineffective at preventing regressions.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="judge-calibration">LLM-as-a-judge calibration</h2>
+    <p>Mutation testing is routinely applied to calibrate LLM judges before deploying them to production pipelines. By measuring a judge's mutation score against controlled datasets with known fault distributions, engineers refine judge system prompts, temperature settings, and rubric criteria until the kill rate reaches acceptable thresholds.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/fail-closed/">Fail-closed</a></li>
+      <li><a href="/reference/retrieval-augmented-generation/">Retrieval-augmented generation</a></li>
+      <li><a href="/reference/tokens/">Tokens</a></li>
+      <li><a href="/eli5/llm-mutation-testing/">LLM Mutation Testing (ELI5 explainer)</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#the-evaluation-gap">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+      <li id="ref2"><a class="backlink" href="#the-evaluation-gap">↑</a> Zheng, L., et al. "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena." <em>NeurIPS</em>, 2023.</li>
+      <li id="ref3"><a class="backlink" href="#mutation-operators">↑</a> Jia, R., and Liang, P. "Adversarial Examples for Evaluating Reading Comprehension Systems." <em>EMNLP</em>, 2017.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

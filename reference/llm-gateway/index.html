@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Gateway · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="An LLM gateway is a specialized reverse proxy that brokers, standardizes, secures, and observes traffic between client applications and large language model providers.">
+  <meta property="og:title" content="LLM Gateway · Reference">
+  <meta property="og:description" content="Architecture, resilience patterns, rate limiting, and telemetry for LLM reverse proxies.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/llm-gateway/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/llm-gateway/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Architecture · Artificial Intelligence</p>
+    <h1>LLM Gateway</h1>
+    <p class="updated">Reference entry · last updated August 25, 2026</p>
+
+    <p class="lede">An <strong>LLM gateway</strong> is a specialized reverse proxy that brokers, standardizes, secures, and observes traffic between client applications and downstream large language model providers.<span class="cite">[<a href="#ref1">1</a>]</span> Unlike traditional API gateways designed for deterministic REST services, an LLM gateway manages non-deterministic generation, token-based cost tracking, streaming responses, and automated failover across heterogeneous model APIs.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LLM Gateway Architecture Diagram">
+        <rect x="10" y="60" width="110" height="60" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="65" y="95" font-family="-apple-system, sans-serif" font-size="12" text-anchor="middle" fill="#202122">Clients &amp; Apps</text>
+
+        <path d="M 120 90 L 170 90" stroke="#54595d" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <rect x="170" y="20" width="280" height="140" rx="8" fill="#f8f9fa" stroke="#0645ad" stroke-width="1.5"/>
+        <text x="310" y="45" font-family="-apple-system, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#0645ad">LLM Gateway Layer</text>
+        <text x="310" y="70" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d">Auth · Rate Limits · Semantic Cache</text>
+        <text x="310" y="95" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d">Model Router · Circuit Breaker</text>
+        <text x="310" y="120" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d">Token Cost Tracker · Telemetry</text>
+
+        <path d="M 450 60 L 520 40" stroke="#54595d" stroke-width="1.5"/>
+        <path d="M 450 90 L 520 90" stroke="#54595d" stroke-width="1.5"/>
+        <path d="M 450 120 L 520 140" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="520" y="20" width="140" height="35" rx="5" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.2"/>
+        <text x="590" y="42" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#202122">Frontier Model API</text>
+
+        <rect x="520" y="72" width="140" height="35" rx="5" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.2"/>
+        <text x="590" y="94" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#202122">Fast Cloud SLM</text>
+
+        <rect x="520" y="125" width="140" height="35" rx="5" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.2"/>
+        <text x="590" y="147" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#202122">Local/Private Host</text>
+
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#54595d"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#core-functions">Core functions</a></li>
+        <li><a href="#resilience-patterns">Resilience and failover</a></li>
+        <li><a href="#cost-and-traffic">Traffic governance and cost controls</a></li>
+        <li><a href="#observability">Observability and metrics</a></li>
+        <li><a href="#comparison">Comparison with generic API gateways</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="core-functions">Core functions</h2>
+    <p>Direct integration with upstream model provider SDKs introduces tight coupling. If an application embeds provider-specific client libraries across multiple microservices, changing vendors or updating API versions requires widespread code refactoring. An LLM gateway exposes a standardized endpoint (often adopting the OpenAI Chat Completions schema as a de facto protocol) and handles downstream translation.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Core responsibilities include:</p>
+    <ul>
+      <li><strong>Protocol normalization</strong>: Translating unified request payloads into vendor-specific API structures.</li>
+      <li><strong>Credential management</strong>: Centralizing API keys in the proxy layer so client applications never touch third-party secrets.</li>
+      <li><strong>Request and response streaming</strong>: Brokering Server-Sent Events (SSE) connections while monitoring token counts in real time.</li>
+    </ul>
+
+    <h2 id="resilience-patterns">Resilience and failover</h2>
+    <p>Upstream foundation model APIs suffer from rate limits (HTTP 429), capacity saturation (HTTP 503), and unpredictable latency spikes. An LLM gateway implements resilience patterns adapted for probabilistic systems:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p><strong>Tiered model fallbacks</strong>: When a primary frontier model times out or errors, the gateway transparently retries against a secondary tier before reporting failure to the client. A typical fallback chain progresses from high-capability frontier models down to lower-latency small language models (SLMs) or self-hosted instances.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p><strong>Circuit breakers</strong>: If error rates on a specific model provider exceed a configured threshold, the circuit trips to an open state, shedding load immediately and routing all traffic to healthy fallbacks until probe requests confirm recovery.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="cost-and-traffic">Traffic governance and cost controls</h2>
+    <p>Unlike fixed-cost compute infrastructure, LLM expenses scale directly with input and output token consumption. An LLM gateway enforces multi-tenant fiscal guardrails:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Token-bucket rate limiting</strong>: Enforces limits on Tokens Per Minute (TPM) and Requests Per Minute (RPM) per user, workspace, or API key.</li>
+      <li><strong>Cost-based throttling</strong>: Tracks rolling dollar expenditures and throttles or downgrades model tiers when approaching predetermined budget caps.</li>
+      <li><strong>Semantic caching</strong>: Intercepts incoming prompts and checks a vector database for semantically equivalent past queries. If similarity exceeds a target threshold, cached responses return instantly at zero upstream token cost.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+    </ul>
+
+    <h2 id="observability">Observability and metrics</h2>
+    <p>Standard HTTP metrics (such as status code and total duration) fail to capture the operational health of streaming generation. An LLM gateway records domain-specific telemetry:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ul>
+      <li><strong>Time to First Token (TTFT)</strong>: Duration between sending the request and receiving the initial streaming chunk. Reflects prompt processing overhead.</li>
+      <li><strong>Time Per Output Token (TPOT)</strong>: Inter-token generation latency. Measures sustained generation throughput.</li>
+      <li><strong>Token accounting</strong>: Exact counts of prompt tokens, cached tokens, and completion tokens per request.</li>
+    </ul>
+
+    <h2 id="comparison">Comparison with generic API gateways</h2>
+    <p>Traditional API gateways (such as Kong, Traefik, or AWS API Gateway) optimize for high-throughput, low-latency request-response cycles measured in milliseconds. LLM gateways handle long-lived HTTP connections lasting tens of seconds, inspect unstructured text payloads, compute vector embeddings for caching, and calculate costs dynamically from response metadata.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/fail-closed/">Fail-closed</a></li>
+      <li><a href="/reference/exponential-backoff/">Exponential backoff</a></li>
+      <li><a href="/reference/retrieval-augmented-generation/">Retrieval-augmented generation</a></li>
+      <li><a href="/eli5/llm-gateway/">LLM Gateway (ELI5 explainer)</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#core-functions">↑</a> Berntsen, A., et al. "Architectural Patterns for Foundation Model Operations." <em>ACM Queue</em>, vol. 22, no. 3, 2024.</li>
+      <li id="ref2"><a class="backlink" href="#resilience-patterns">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+      <li id="ref3"><a class="backlink" href="#resilience-patterns">↑</a> Cloud Native Computing Foundation (CNCF). "AI Gateway Architecture &amp; Use Cases Working Group Report," 2025.</li>
+      <li id="ref4"><a class="backlink" href="#cost-and-traffic">↑</a> Bang, G., et al. "GPTCache: An Open-Source Semantic Cache for LLM Applications." <em>arXiv preprint arXiv:2311.01723</em>, 2023.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

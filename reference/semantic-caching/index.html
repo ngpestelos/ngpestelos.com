@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semantic Caching · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Semantic caching is a data-caching technique that matches incoming queries to stored results based on vector embedding similarity rather than exact string equality.">
+  <meta property="og:title" content="Semantic Caching · Reference">
+  <meta property="og:description" content="Vector similarity thresholds, embedding distance, and multi-tiered caching for LLM systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/semantic-caching/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/semantic-caching/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Information Retrieval · Systems Architecture</p>
+    <h1>Semantic Caching</h1>
+    <p class="updated">Reference entry · last updated August 25, 2026</p>
+
+    <p class="lede"><strong>Semantic caching</strong> is a caching strategy that evaluates vector embedding similarity to serve previously generated responses for conceptually equivalent queries, rather than requiring exact string matches.<span class="cite">[<a href="#ref1">1</a>]</span> By mapping natural language requests into dense vector spaces, a semantic cache identifies when a new query shares intent with a cached entry, reducing redundant calls to foundation models.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Semantic Caching Process Flow">
+        <rect x="10" y="55" width="120" height="50" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="70" y="80" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#202122">Incoming Query</text>
+        <text x="70" y="95" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">"How do I reset pw?"</text>
+
+        <path d="M 130 80 L 175 80" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="175" y="45" width="130" height="70" rx="6" fill="#f8f9fa" stroke="#0645ad" stroke-width="1.5"/>
+        <text x="240" y="70" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#0645ad">Embedding Model</text>
+        <text x="240" y="90" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Vector: [0.12, -0.84, ...]</text>
+
+        <path d="M 305 80 L 350 80" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="350" y="35" width="140" height="90" rx="6" fill="#f8f9fa" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="420" y="58" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#202122">Vector Index</text>
+        <text x="420" y="78" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Cosine Sim: 0.94</text>
+        <text x="420" y="98" font-family="-apple-system, sans-serif" font-size="9" font-weight="bold" text-anchor="middle" fill="#0645ad">Threshold &gt; 0.90</text>
+
+        <path d="M 490 60 L 535 40" stroke="#0645ad" stroke-width="1.5"/>
+        <path d="M 490 100 L 535 120" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="535" y="20" width="105" height="40" rx="5" fill="#ffffff" stroke="#0645ad" stroke-width="1.2"/>
+        <text x="587" y="45" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#0645ad">Cache Hit (0ms)</text>
+
+        <rect x="535" y="100" width="105" height="40" rx="5" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.2"/>
+        <text x="587" y="125" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#54595d">LLM Fallback</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#operational-mechanism">Operational mechanism</a></li>
+        <li><a href="#cache-hierarchy">The three-tier caching hierarchy</a></li>
+        <li><a href="#stampede-mitigation">Stampede prevention</a></li>
+        <li><a href="#tradeoffs">Trade-offs and failure modes</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="operational-mechanism">Operational mechanism</h2>
+    <p>Traditional web caches use cryptographic hashes (such as SHA-256) of the request body. In natural language systems, two prompts with identical meaning (such as "What is the capital of France?" and "Tell me France's capital city") produce completely different hashes, causing cache misses.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>A semantic cache executes the following sequence:</p>
+    <ol>
+      <li><strong>Vectorization</strong>: The input query is passed through a lightweight embedding model to generate a dense semantic vector.</li>
+      <li><strong>Similarity search</strong>: The vector is queried against an index of stored prompts using distance metrics (typically cosine similarity or Euclidean distance).<span class="cite">[<a href="#ref2">2</a>]</span></li>
+      <li><strong>Threshold evaluation</strong>: If the similarity score exceeds a configured threshold (for example, \(	ext{sim} \ge 0.92\)), the stored completion is returned immediately.</li>
+      <li><strong>Asynchronous insertion</strong>: On a cache miss, the request passes to the primary LLM, and the resulting prompt-response pair is embedded and indexed in the background.</li>
+    </ol>
+
+    <h2 id="cache-hierarchy">The three-tier caching hierarchy</h2>
+    <p>Production LLM architectures arrange caching in three progressive layers to balance speed, cost, and hit rates:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <ul>
+      <li><strong>Exact match cache (Tier 1)</strong>: An in-memory key-value store (such as Redis) keyed on prompt hash. Resolves in &lt;5 milliseconds at zero embedding cost.</li>
+      <li><strong>Semantic vector cache (Tier 2)</strong>: Evaluates cosine similarity over embedding spaces. Incurs 20–50 milliseconds of embedding latency, but captures rephrased queries.</li>
+      <li><strong>Proactive cache (Tier 3)</strong>: Pre-computes and pre-warms responses for anticipated user questions or top-tier documentation items before users ask them.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    </ul>
+
+    <h2 id="stampede-mitigation">Stampede prevention</h2>
+    <p>When multiple users ask identical or semantically equivalent questions simultaneously (such as during breaking news or a service outage), standard caches suffer from a cache stampede: every concurrent request misses the cache and triggers an expensive backend LLM call.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p><strong>Coalesce caching</strong> (or request collapsing) tracks in-flight requests. When a second identical request arrives while the first is still generating, the gateway blocks the second request and multiplexes the streamed response to both clients once received.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="tradeoffs">Trade-offs and failure modes</h2>
+    <p>Semantic caching introduces architectural risks that must be managed:</p>
+    <ul>
+      <li><strong>Semantic drift / false hits</strong>: If the similarity threshold is set too low (e.g. &lt;0.85), queries with subtle but critical differences (such as "How to install Python on Windows" vs "How to install Python on Linux") will return incorrect cached answers.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+      <li><strong>Temporal staleness</strong>: Caching time-sensitive answers (such as "What is the stock price of Apple?") yields stale outputs unless scoped with short Time-to-Live (TTL) policies or metadata invalidation tags.</li>
+      <li><strong>Embedding compute overhead</strong>: Generating embeddings for short queries incurs compute and latency costs that must remain significantly lower than direct LLM inference to justify the cache layer.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/llm-gateway/">LLM Gateway</a></li>
+      <li><a href="/reference/tokens/">Tokens</a></li>
+      <li><a href="/reference/retrieval-augmented-generation/">Retrieval-augmented generation</a></li>
+      <li><a href="/eli5/semantic-caching/">Semantic Caching (ELI5 explainer)</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#operational-mechanism">↑</a> Bang, G., et al. "GPTCache: An Open-Source Semantic Cache for LLM Applications." <em>arXiv preprint arXiv:2311.01723</em>, 2023.</li>
+      <li id="ref2"><a class="backlink" href="#operational-mechanism">↑</a> Redis Ltd. "Vector Similarity Search and Semantic Caching in Redis Enterprise," 2024.</li>
+      <li id="ref3"><a class="backlink" href="#cache-hierarchy">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Semantic Caching · ELI5 · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A picture-book explainer of semantic caching. How computers remember answers to questions asked in different words.">
+  <meta property="og:title" content="Semantic Caching · ELI5">
+  <meta property="og:description" content="A picture-book explainer of semantic caching for AI.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/semantic-caching/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/semantic-caching/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --paper: #f4eee4;
+      --ink: #1c1612;
+      --mute: #6e645a;
+      --line: #d4c9bb;
+      --op: #9a3412;
+      --op-edge: #7c2d12;
+      --leaf: #0f5c57;
+      --leaf-edge: #0b4a46;
+      --edge: #8a7d72;
+      --yes: #166534;
+      --no: #9f1239;
+      --card: #fffaf3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
+    }
+    main {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      margin: 0 0 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .back a { color: var(--op); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    h1, h2 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-weight: 700;
+      line-height: 1.12;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.1rem);
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: clamp(1.45rem, 3.4vw, 2rem);
+      margin-bottom: 1rem;
+    }
+    .lead {
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+      color: var(--mute);
+      max-width: 34ch;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+    }
+    .block {
+      padding: 2.2rem 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.2rem;
+      text-align: center;
+    }
+    .block h2 { max-width: 22ch; margin-inline: auto; }
+    .one {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--mute);
+      max-width: 36ch;
+      line-height: 1.35;
+      margin-inline: auto;
+    }
+    .figure {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.05rem 0.95rem 0.9rem;
+      box-shadow: 0 10px 28px rgba(28, 22, 18, 0.07);
+      width: 28rem;
+      max-width: 100%;
+      min-width: 0;
+      margin-inline: auto;
+    }
+    svg.diag {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    details {
+      max-width: 32rem;
+      margin: 0.8rem auto 0;
+      text-align: left;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.8rem 1.1rem;
+      font-size: 0.92rem;
+    }
+    summary {
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--op);
+    }
+    details p {
+      margin-top: 0.6rem;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .to-top {
+      margin: 0.4rem 0 0;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .to-top a { color: var(--op); text-decoration: none; }
+    .sources {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--mute);
+      text-align: center;
+    }
+    .sources a { color: var(--op); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/eli5/">← ELI5</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Design · AI</p>
+    <h1>Semantic Caching</h1>
+    <p class="lead">Remembering answers by meaning instead of exact words.</p>
+
+    <!-- SECTION 1 -->
+    <section class="block">
+      <h2>1. Old caches look at letters</h2>
+      <p class="one">Normal caches only reuse an answer if the words match letter for letter.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 110" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="15" width="160" height="35" rx="5" fill="#ffffff" stroke="#d4c9bb" stroke-width="1.2"/>
+          <text x="100" y="37" font-size="11" fill="#1c1612" text-anchor="middle">"What is the weather?"</text>
+
+          <rect x="20" y="60" width="160" height="35" rx="5" fill="#ffffff" stroke="#d4c9bb" stroke-width="1.2"/>
+          <text x="100" y="82" font-size="11" fill="#1c1612" text-anchor="middle">"Is it raining outside?"</text>
+
+          <path d="M 190 32 L 250 32" stroke="#166534" stroke-width="1.5"/>
+          <text x="310" y="36" font-size="10" font-weight="bold" fill="#166534">Stored in Cache</text>
+
+          <path d="M 190 77 L 250 77" stroke="#9f1239" stroke-width="1.5"/>
+          <text x="310" y="81" font-size="10" font-weight="bold" fill="#9f1239">Miss: Words Differ</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>Why is this bad for AI?</summary>
+        <p>Humans ask the same question in hundreds of different ways. Traditional caches miss almost every time, forcing the expensive AI model to run again.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="block">
+      <h2>2. Semantic caches look at meaning</h2>
+      <p class="one">A semantic cache turns questions into points on a map to see if they mean the same thing.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="100" cy="60" r="45" fill="#fffaf3" stroke="#9a3412" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <circle cx="85" cy="50" r="5" fill="#0f5c57"/>
+          <text x="85" y="38" font-size="9" fill="#0f5c57" text-anchor="middle">Q1: "Reset code"</text>
+
+          <circle cx="115" cy="70" r="5" fill="#0f5c57"/>
+          <text x="115" y="92" font-size="9" fill="#0f5c57" text-anchor="middle">Q2: "Forgot pass"</text>
+
+          <path d="M 160 60 L 230 60" stroke="#166534" stroke-width="2"/>
+          <polygon points="230,55 240,60 230,65" fill="#166534"/>
+
+          <rect x="250" y="40" width="130" height="40" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+          <text x="315" y="65" font-size="11" font-weight="bold" fill="#166534" text-anchor="middle">Same Topic: Match! ✅</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>How does the map work?</summary>
+        <p>The computer converts text into a list of numbers called an embedding. Sentences with similar meaning end up close together on the mathematical map.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="block">
+      <h2>3. Instant answers for zero dollars</h2>
+      <p class="one">When a match is close enough, the cache returns the stored answer immediately.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 80" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="20" width="100" height="40" rx="6" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
+          <text x="80" y="45" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">New User</text>
+
+          <path d="M 140 40 L 190 40" stroke="#8a7d72" stroke-width="1.5"/>
+          <polygon points="190,36 200,40 190,44" fill="#8a7d72"/>
+
+          <rect x="210" y="20" width="150" height="40" rx="6" fill="#fffaf3" stroke="#9a3412" stroke-width="1.5"/>
+          <text x="285" y="38" font-size="11" font-weight="bold" fill="#9a3412" text-anchor="middle">Instant Cache Hit</text>
+          <text x="285" y="52" font-size="9" fill="#6e645a" text-anchor="middle">&lt;20ms · $0.00 cost</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>What if questions are slightly different?</summary>
+        <p>Engineers set a threshold score. If questions are 92% similar, it reuses the answer. If lower, it asks the model to generate a fresh answer.</p>
+      </details>
+    </section>
+
+    <p class="to-top"><a href="#top">Back to top</a></p>
+
+    <div class="sources">
+      <p>Longer version: <a href="/reference/semantic-caching/">Reference Entry on Semantic Caching</a></p>
+      <p>Sources: Bang et al., <em>GPTCache</em> (2023); Mitra, <em>System Design for the LLM Era</em> (2026).</p>
+    </div>
+  </main>
+</body>
+</html>

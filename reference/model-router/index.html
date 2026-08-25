@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Router · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A model router is an architectural component that dynamically classifies queries and dispatches them to the optimal model tier based on complexity, latency, and cost.">
+  <meta property="og:title" content="Model Router · Reference">
+  <meta property="og:description" content="Dynamic model routing, task classification, cascading fallbacks, and cost optimization for LLM systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/model-router/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/model-router/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Architecture · Machine Learning</p>
+    <h1>Model Router</h1>
+    <p class="updated">Reference entry · last updated August 25, 2026</p>
+
+    <p class="lede">A <strong>model router</strong> is an architectural component that classifies incoming prompts by task complexity, intent, or latency constraints to dispatch them dynamically to the most cost-effective and capable model tier.<span class="cite">[<a href="#ref1">1</a>]</span> By routing simple queries to lightweight models and reserving expensive frontier models for complex reasoning, a model router reduces operational expenses while preserving generation quality.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Model Router Classification Diagram">
+        <rect x="15" y="60" width="110" height="50" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="70" y="85" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#202122">Prompt Input</text>
+        <text x="70" y="100" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Raw User Task</text>
+
+        <path d="M 125 85 L 180 85" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="180" y="35" width="160" height="100" rx="8" fill="#f8f9fa" stroke="#0645ad" stroke-width="1.5"/>
+        <text x="260" y="60" font-family="-apple-system, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#0645ad">Model Router</text>
+        <text x="260" y="80" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#54595d">Classifier / Embeddings</text>
+        <text x="260" y="100" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Heuristics &amp; Complexity</text>
+        <text x="260" y="120" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Budget &amp; SLA Check</text>
+
+        <path d="M 340 60 L 420 35" stroke="#54595d" stroke-width="1.5"/>
+        <path d="M 340 85 L 420 85" stroke="#54595d" stroke-width="1.5"/>
+        <path d="M 340 110 L 420 135" stroke="#54595d" stroke-width="1.5"/>
+
+        <rect x="420" y="15" width="200" height="38" rx="5" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.2"/>
+        <text x="520" y="34" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#202122">Tier 1: Fast SLM</text>
+        <text x="520" y="47" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Summaries, classification ($)</text>
+
+        <rect x="420" y="66" width="200" height="38" rx="5" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.2"/>
+        <text x="520" y="85" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#202122">Tier 2: Mid-Tier Cloud LLM</text>
+        <text x="520" y="98" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Standard Q&amp;A, tool calling ($$)</text>
+
+        <rect x="420" y="117" width="200" height="38" rx="5" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.2"/>
+        <text x="520" y="136" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#202122">Tier 3: Frontier Reasoning LLM</text>
+        <text x="520" y="149" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Multi-step math, code synthesis ($$$)</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#classification-methods">Classification methods</a></li>
+        <li><a href="#routing-tiers">Model routing tiers</a></li>
+        <li><a href="#cascading">Cascading and speculative routing</a></li>
+        <li><a href="#cost-economics">Cost and latency economics</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="classification-methods">Classification methods</h2>
+    <p>A router evaluates request complexity before invoking a foundation model. Common classification strategies include:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Rule-based heuristics</strong>: Lightweight deterministic rules based on token count, keyword matching, user subscription tier, or targeted endpoint (e.g. routing code completion to specialized models).</li>
+      <li><strong>Embedding classifier</strong>: Computing vector representations of the prompt and running a lightweight multi-layer perceptron (MLP) or logistic regression classifier to predict task difficulty.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+      <li><strong>Small language model (SLM) judge</strong>: Using a fast, quantized model (such as a 1B–3B parameter SLM) to categorize prompt intent within 20 milliseconds before dispatching to the main engine.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    </ul>
+
+    <h2 id="routing-tiers">Model routing tiers</h2>
+    <p>A production router categorizes available models into structured performance and cost bands:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ol>
+      <li><strong>Lightweight SLM tier</strong>: Local or serverless small models (e.g. Llama-3-8B, GPT-4o mini) for sentiment analysis, keyword extraction, and simple JSON parsing.</li>
+      <li><strong>General-purpose instruction tier</strong>: Balanced cloud models for standard conversational chat, multi-document synthesis, and basic tool execution.</li>
+      <li><strong>Frontier reasoning tier</strong>: High-parameter models (e.g. Claude 3.5 Sonnet, GPT-4o, OpenAI o1) reserved for multi-file code editing, advanced mathematical reasoning, and ambiguous planning tasks.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+    </ol>
+
+    <h2 id="cascading">Cascading and speculative routing</h2>
+    <p>Rather than making a one-shot routing decision, cascading routers execute an optimistic progression:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>The system first dispatches the request to the cheapest model tier. An automated verification step (such as schema validation, unit test execution, or confidence scoring) evaluates the generated output. If the response passes validation, it is returned immediately; if it fails, the request escalates to a higher-capability frontier model.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="cost-economics">Cost and latency economics</h2>
+    <p>Empirical studies on production traffic show that 60% to 80% of real-world user queries do not require frontier-grade model capacity. Routing these non-complex queries to smaller models reduces blended operational costs by 50% to 75% while simultaneously decreasing average time-to-first-token latency.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/llm-gateway/">LLM Gateway</a></li>
+      <li><a href="/reference/frontier-models/">Frontier models</a></li>
+      <li><a href="/reference/tokens/">Tokens</a></li>
+      <li><a href="/eli5/model-router/">Model Router (ELI5 explainer)</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#classification-methods">↑</a> Ong, I., et al. "RouteLLM: Learning to Route LLMs with Preference Data." <em>arXiv preprint arXiv:2406.18665</em>, 2024.</li>
+      <li id="ref2"><a class="backlink" href="#routing-tiers">↑</a> Chen, L., et al. "FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance." <em>Transactions on Machine Learning Research</em>, 2023.</li>
+      <li id="ref3"><a class="backlink" href="#classification-methods">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

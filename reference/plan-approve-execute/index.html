@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan-Approve-Execute · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Plan-approve-execute is an architectural pattern for autonomous software agents that separates plan generation from gated, authorized tool execution.">
+  <meta property="og:title" content="Plan-Approve-Execute · Reference">
+  <meta property="og:description" content="Blast-radius containment, agent gating, human-in-the-loop authorization, and execution boundaries.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/plan-approve-execute/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/plan-approve-execute/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Software Architecture · AI Safety</p>
+    <h1>Plan-Approve-Execute</h1>
+    <p class="updated">Reference entry · last updated August 25, 2026</p>
+
+    <p class="lede"><strong>Plan-approve-execute</strong> is a control-plane pattern for autonomous software agents that divides task processing into an exploratory planning phase, an explicit human or policy approval gate, and an isolated execution phase.<span class="cite">[<a href="#ref1">1</a>]</span> By disallowing unconstrained side effects during reasoning loops, the pattern constrains excessive agency and bounds the blast radius of agent errors.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Plan Approve Execute Lifecycle">
+        <!-- Phase 1 -->
+        <rect x="15" y="35" width="160" height="70" rx="6" fill="#f8f9fa" stroke="#0645ad" stroke-width="1.5"/>
+        <text x="95" y="58" font-family="-apple-system, sans-serif" font-size="12" font-weight="bold" fill="#0645ad">1. Plan Generation</text>
+        <text x="95" y="78" font-family="-apple-system, sans-serif" font-size="10" fill="#54595d">Read-Only Tools</text>
+        <text x="95" y="93" font-family="-apple-system, sans-serif" font-size="9" fill="#54595d">Inspect Code &amp; Context</text>
+
+        <path d="M 175 70 L 230 70" stroke="#54595d" stroke-width="1.5"/>
+
+        <!-- Phase 2 Gate -->
+        <rect x="230" y="25" width="160" height="90" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
+        <text x="310" y="52" font-family="-apple-system, sans-serif" font-size="12" font-weight="bold" fill="#9a3412">2. Approval Gate</text>
+        <text x="310" y="72" font-family="-apple-system, sans-serif" font-size="10" fill="#54595d">Human Review / Policy</text>
+        <text x="310" y="92" font-family="-apple-system, sans-serif" font-size="9" font-weight="bold" fill="#166534">Explicit Authorization</text>
+
+        <path d="M 390 70 L 445 70" stroke="#166534" stroke-width="1.5"/>
+
+        <!-- Phase 3 -->
+        <rect x="445" y="35" width="160" height="70" rx="6" fill="#f8f9fa" stroke="#166534" stroke-width="1.5"/>
+        <text x="525" y="58" font-family="-apple-system, sans-serif" font-size="12" font-weight="bold" fill="#166534">3. Execution</text>
+        <text x="525" y="78" font-family="-apple-system, sans-serif" font-size="10" fill="#54595d">Side-Effect Tools</text>
+        <text x="525" y="93" font-family="-apple-system, sans-serif" font-size="9" fill="#54595d">Mutate Files &amp; DBs</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#excessive-agency">Excessive agency risks</a></li>
+        <li><a href="#lifecycle">Three-phase lifecycle</a></li>
+        <li><a href="#tool-classification">Tool classification and sandboxing</a></li>
+        <li><a href="#fail-closed-integration">Integration with fail-closed control planes</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="excessive-agency">Excessive agency risks</h2>
+    <p>Autonomous LLM agents operating in ReAct (Reason + Act) loops generate tool calls dynamically based on conversational context. When agents are granted direct access to destructive tools (such as file modifications, shell execution, or financial transactions), hallucinations or prompt injections can trigger catastrophic unauthorized mutations.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Excessive agency manifests in two primary failure modes:</p>
+    <ul>
+      <li><strong>Unintended tool cascading</strong>: A minor error in an intermediate reasoning step prompts the agent to attempt destructive rollbacks (such as dropping database tables or deleting files) to fix the issue.</li>
+      <li><strong>Side-effect sprawl</strong>: Mutating shared external state before verifying whether the proposed solution satisfies the original requirement.</li>
+    </ul>
+
+    <h2 id="lifecycle">Three-phase lifecycle</h2>
+    <p>The pattern enforces three distinct operational boundaries:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ol>
+      <li><strong>Plan generation (read-only)</strong>: The agent inspects documentation, searches codebases, and produces a structured, human-readable execution plan. No mutating tools are available during this phase.</li>
+      <li><strong>Approval gate (policy checkpoint)</strong>: The generated plan is presented to a human operator or an automated policy validator. The system remains blocked until explicit approval is registered.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+      <li><strong>Deterministic execution (authorized write)</strong>: The system executes only the specific actions detailed in the approved plan. Any deviation or unlisted tool call triggers an immediate fault.</li>
+    </ol>
+
+    <h2 id="tool-classification">Tool classification and sandboxing</h2>
+    <p>Systems implement role-based access control (RBAC) over agent tooling by categorizing tools into tiered risk classes:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Safe / read-only tools</strong>: Directory listing, file reading, semantic search, and web fetching. Freely accessible during planning.</li>
+      <li><strong>Idempotent mutation tools</strong>: Ephemeral scratchpad writes and local sandbox execution. Subject to automated quotas.</li>
+      <li><strong>Destructive / high-blast-radius tools</strong>: Production database updates, external API webhooks, git pushes, and file deletions. Strictly gated behind authorization checkpoints.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+    </ul>
+
+    <h2 id="fail-closed-integration">Integration with fail-closed control planes</h2>
+    <p>Plan-approve-execute operationalizes the fail-closed security principle. If an approval token expires, a network partition occurs, or an ambiguity arises during execution, the agent terminates execution immediately rather than guessing.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/fail-closed/">Fail-closed</a></li>
+      <li><a href="/reference/agents/">Agents</a></li>
+      <li><a href="/reference/toctou-race-condition/">TOCTOU race condition</a></li>
+      <li><a href="/eli5/plan-approve-execute/">Plan-Approve-Execute (ELI5 explainer)</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#lifecycle">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+      <li id="ref2"><a class="backlink" href="#excessive-agency">↑</a> OWASP Foundation. "OWASP Top 10 for Large Language Model Applications," 2025. Item LLM08: Excessive Agency.</li>
+      <li id="ref3"><a class="backlink" href="#fail-closed-integration">↑</a> Shinn, N., et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." <em>NeurIPS</em>, 2023.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

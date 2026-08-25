@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model Router · ELI5 · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A picture-book explainer of model routers. How systems choose between fast cheap AI and big smart AI.">
+  <meta property="og:title" content="Model Router · ELI5">
+  <meta property="og:description" content="A picture-book explainer of model routing in AI systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/model-router/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/model-router/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --paper: #f4eee4;
+      --ink: #1c1612;
+      --mute: #6e645a;
+      --line: #d4c9bb;
+      --op: #9a3412;
+      --op-edge: #7c2d12;
+      --leaf: #0f5c57;
+      --leaf-edge: #0b4a46;
+      --edge: #8a7d72;
+      --yes: #166534;
+      --no: #9f1239;
+      --card: #fffaf3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
+    }
+    main {
+      max-width: 52rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      margin: 0 0 1.6rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .back a { color: var(--op); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--mute);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    h1, h2 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-weight: 700;
+      line-height: 1.12;
+    }
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.1rem);
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-size: clamp(1.45rem, 3.4vw, 2rem);
+      margin-bottom: 1rem;
+    }
+    .lead {
+      font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+      color: var(--mute);
+      max-width: 34ch;
+      line-height: 1.35;
+      margin-bottom: 0.4rem;
+    }
+    .block {
+      padding: 2.2rem 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.2rem;
+      text-align: center;
+    }
+    .block h2 { max-width: 22ch; margin-inline: auto; }
+    .one {
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--mute);
+      max-width: 36ch;
+      line-height: 1.35;
+      margin-inline: auto;
+    }
+    .figure {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.05rem 0.95rem 0.9rem;
+      box-shadow: 0 10px 28px rgba(28, 22, 18, 0.07);
+      width: 28rem;
+      max-width: 100%;
+      min-width: 0;
+      margin-inline: auto;
+    }
+    svg.diag {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    details {
+      max-width: 32rem;
+      margin: 0.8rem auto 0;
+      text-align: left;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.8rem 1.1rem;
+      font-size: 0.92rem;
+    }
+    summary {
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--op);
+    }
+    details p {
+      margin-top: 0.6rem;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .to-top {
+      margin: 0.4rem 0 0;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .to-top a { color: var(--op); text-decoration: none; }
+    .sources {
+      margin-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--mute);
+      text-align: center;
+    }
+    .sources a { color: var(--op); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/eli5/">← ELI5</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Design · AI</p>
+    <h1>Model Router</h1>
+    <p class="lead">Sending simple chores to small bikes and heavy cargo to big trucks.</p>
+
+    <!-- SECTION 1 -->
+    <section class="block">
+      <h2>1. Not every question needs a supercomputer</h2>
+      <p class="one">Asking for a synonym does not need a giant model that costs five cents per query.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+          <rect x="25" y="25" width="150" height="50" rx="6" fill="#fffaf3" stroke="#0f5c57" stroke-width="1.5"/>
+          <text x="100" y="47" font-size="11" font-weight="bold" fill="#0f5c57" text-anchor="middle">Small Model</text>
+          <text x="100" y="63" font-size="9" fill="#6e645a" text-anchor="middle">Fast · Fractions of a cent</text>
+
+          <rect x="225" y="25" width="150" height="50" rx="6" fill="#fffaf3" stroke="#9a3412" stroke-width="1.5"/>
+          <text x="300" y="47" font-size="11" font-weight="bold" fill="#9a3412" text-anchor="middle">Frontier Model</text>
+          <text x="300" y="63" font-size="9" fill="#6e645a" text-anchor="middle">Deep Logic · Heavy Cost</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>Why have different sizes?</summary>
+        <p>Big models can solve complex math, but they are slow and expensive. Small models can format text or answer simple facts in a fraction of a second for almost nothing.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="block">
+      <h2>2. The traffic sorter</h2>
+      <p class="one">The router inspects the question and picks the cheapest model that will do the job well.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg">
+          <rect x="15" y="45" width="90" height="40" rx="6" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
+          <text x="60" y="70" font-size="11" font-weight="bold" fill="#ffffff" text-anchor="middle">Question</text>
+
+          <path d="M 105 65 L 145 65" stroke="#8a7d72" stroke-width="1.5"/>
+          <polygon points="145,61 155,65 145,69" fill="#8a7d72"/>
+
+          <!-- Router -->
+          <rect x="155" y="30" width="100" height="70" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
+          <text x="205" y="60" font-size="12" font-weight="bold" fill="#9a3412" text-anchor="middle">Router</text>
+          <text x="205" y="80" font-size="9" fill="#6e645a" text-anchor="middle">Check Difficulty</text>
+
+          <!-- Diverging -->
+          <path d="M 255 50 L 295 30" stroke="#166534" stroke-width="1.5"/>
+          <polygon points="293,26 303,28 298,34" fill="#166534"/>
+          <rect x="305" y="15" width="80" height="30" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.2"/>
+          <text x="345" y="34" font-size="10" fill="#166534" text-anchor="middle">Easy → Small</text>
+
+          <path d="M 255 80 L 295 100" stroke="#9a3412" stroke-width="1.5"/>
+          <polygon points="298,96 303,102 293,104" fill="#9a3412"/>
+          <rect x="305" y="85" width="80" height="30" rx="4" fill="#fffaf3" stroke="#9a3412" stroke-width="1.2"/>
+          <text x="345" y="104" font-size="10" fill="#9a3412" text-anchor="middle">Hard → Giant</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>How does the router know?</summary>
+        <p>A quick mathematical check or tiny classifier reads the structure of the prompt. If it spots multi-step code, it sends it to the expert.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="block">
+      <h2>3. The escalation ladder</h2>
+      <p class="one">Try the fast model first; if the answer fails automated checks, call the expert.</p>
+
+      <div class="figure">
+        <svg class="diag" viewBox="0 0 400 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="25" width="95" height="40" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="1.2"/>
+          <text x="67" y="45" font-size="10" font-weight="bold" fill="#166534" text-anchor="middle">1. Fast Model</text>
+          <text x="67" y="57" font-size="8" fill="#166534" text-anchor="middle">Answers task</text>
+
+          <path d="M 115 45 L 165 45" stroke="#8a7d72" stroke-width="1.5"/>
+          <polygon points="165,41 175,45 165,49" fill="#8a7d72"/>
+
+          <rect x="175" y="25" width="90" height="40" rx="6" fill="#fffaf3" stroke="#8a7d72" stroke-width="1.2"/>
+          <text x="220" y="45" font-size="10" font-weight="bold" fill="#1c1612" text-anchor="middle">2. Auto Check</text>
+          <text x="220" y="57" font-size="8" fill="#6e645a" text-anchor="middle">Did it pass?</text>
+
+          <path d="M 265 45 L 305 45" stroke="#9a3412" stroke-width="1.5"/>
+          <polygon points="305,41 315,45 305,49" fill="#9a3412"/>
+
+          <rect x="315" y="25" width="70" height="40" rx="6" fill="#fffaf3" stroke="#9a3412" stroke-width="1.5"/>
+          <text x="350" y="45" font-size="10" font-weight="bold" fill="#9a3412" text-anchor="middle">3. Escalate</text>
+          <text x="350" y="57" font-size="8" fill="#9a3412" text-anchor="middle">Call Giant</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>Why not always use the giant model?</summary>
+        <p>Because most requests succeed on step 1. You get 90% of your answers ten times faster for a tiny fraction of the bill.</p>
+      </details>
+    </section>
+
+    <p class="to-top"><a href="#top">Back to top</a></p>
+
+    <div class="sources">
+      <p>Longer version: <a href="/reference/model-router/">Reference Entry on Model Router</a></p>
+      <p>Sources: Ong et al., <em>RouteLLM</em> (2024); Chen et al., <em>FrugalGPT</em> (2023).</p>
+    </div>
+  </main>
+</body>
+</html>
