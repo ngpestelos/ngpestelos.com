@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Throughput · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Throughput is the rate at which a system processes, produces, or delivers discrete units of output over time. Mathematical principles, Little's Law, queuing dynamics, scaling laws, and LLM inference.">
+  <meta property="og:title" content="Throughput · Reference">
+  <meta property="og:description" content="First principles, Little's Law, queuing theory, Amdahl's Law, and LLM serving throughput.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/throughput/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/throughput/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\[', right: '\]', display: true},
+        {left: '\(', right: '\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Systems Engineering · Computer Science · Operations Research</p>
+    <h1>Throughput</h1>
+    <p class="updated">Reference entry · last updated August 26, 2026</p>
+
+    <p class="lede"><strong>Throughput</strong> is the rate at which a system processes, produces, or delivers discrete units of output over a given interval of time.<span class="cite">[<a href="#ref1">1</a>]</span> Across computer architecture, telecommunications, queuing networks, and industrial operations, throughput measures the productive capacity of a pipeline per unit of time, expressed mathematically as completed units divided by total observation time.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Throughput and Latency Load Curve">
+        <!-- Axes -->
+        <line x1="60" y1="140" x2="600" y2="140" stroke="#54595d" stroke-width="1.5"/>
+        <line x1="60" y1="140" x2="60" y2="20" stroke="#54595d" stroke-width="1.5"/>
+
+        <text x="330" y="165" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d">Offered Load / Concurrency (\(N\))</text>
+        <text x="25" y="80" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d" transform="rotate(-90 25 80)">Performance</text>
+
+        <!-- Throughput Curve (Blue) -->
+        <path d="M 60 140 Q 200 40 320 40 L 580 40" fill="none" stroke="#0645ad" stroke-width="2.5"/>
+        <text x="500" y="32" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0645ad">Throughput (Saturation Ceiling)</text>
+
+        <!-- Latency Curve (Red) -->
+        <path d="M 60 125 Q 320 120 420 80 Q 500 40 580 22" fill="none" stroke="#9f1239" stroke-width="2" stroke-dasharray="4,3"/>
+        <text x="480" y="115" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" fill="#9f1239">Latency (Queuing Explosion)</text>
+
+        <!-- Knee of Curve Marker -->
+        <line x1="320" y1="140" x2="320" y2="35" stroke="#54595d" stroke-width="1" stroke-dasharray="2,2"/>
+        <circle cx="320" cy="40" r="4" fill="#0645ad"/>
+        <text x="320" y="22" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#202122">Knee of Curve (\(N^*\))</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#littles-law">Little's Law and queuing dynamics</a></li>
+        <li><a href="#latency-tradeoff">The throughput-latency relationship</a></li>
+        <li><a href="#scaling-limits">Concurrency limits and scaling laws</a></li>
+        <li><a href="#computing-ai">Throughput in computer architecture and AI inference</a></li>
+        <li><a href="#theory-of-constraints">Theory of Constraints and workflow throughput</a></li>
+        <li><a href="#measurement-pitfalls">Measurement pitfalls and honest capacity planning</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p>At its core, throughput \(X\) measures flow rate through a bounded system over time duration \(T\):</p>
+    \[X = rac{C}{T}\]
+    <p>where \(C\) represents the count of successfully completed work units. The specific unit of measurement varies by domain:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Telecommunications</strong>: Bits per second (bps) or packets per second (pps).</li>
+      <li><strong>Transactional databases</strong>: Transactions per second (TPS) or queries per second (QPS).</li>
+      <li><strong>Processor microarchitecture</strong>: Instructions per cycle (IPC) or floating-point operations per second (FLOPS).</li>
+      <li><strong>Large language model serving</strong>: Tokens per second (TPS) or requests per minute (RPM).</li>
+      <li><strong>Manufacturing and software delivery</strong>: Units shipped per day or pull requests merged per week.</li>
+    </ul>
+    <p>Throughput is distinct from two related concepts:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ul>
+      <li><strong>Latency</strong> (or response time): The elapsed time required for a single unit of work to traverse the system from arrival to completion.</li>
+      <li><strong>Bandwidth</strong> (or maximum capacity): The theoretical upper limit on throughput that a system channel can sustain under ideal, contention-free conditions. Bandwidth represents potential capacity; throughput represents realized delivery.</li>
+    </ul>
+
+    <h2 id="littles-law">Little's Law and queuing dynamics</h2>
+    <p>In queuing theory, John D. C. Little proved the foundational mathematical identity governing all stable, conservative systems in equilibrium:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    \[L = \lambda W\]
+    <p>where:</p>
+    <ul>
+      <li>\(L\) is the average number of items inside the system concurrently (concurrency, inventory, or work-in-progress).</li>
+      <li>\(\lambda\) is the long-term average arrival and departure rate (throughput).</li>
+      <li>\(W\) is the average time an item spends inside the system (mean residence time or total latency).</li>
+    </ul>
+    <p>Little's Law establishes that throughput is strictly constrained by concurrency and latency:</p>
+    \[\lambda = rac{L}{W}\]
+    <p>To increase throughput, a system must either increase concurrency \(L\) (processing more items in parallel) or decrease residence time \(W\) (processing each item faster). If \(W\) increases due to internal queuing delays while \(L\) remains fixed, throughput \(\lambda\) must drop.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="latency-tradeoff">The throughput-latency relationship</h2>
+    <p>The relationship between offered load, throughput, and latency exhibits three distinct operational regimes:<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <ol>
+      <li><strong>Linear regime (low load)</strong>: When arrival rate is low, resources remain underutilized. Throughput scales linearly with offered load, and latency remains near the baseline processing time (\(W pprox W_{	ext{service}}\)).</li>
+      <li><strong>Knee of the curve (optimal utilization)</strong>: As load reaches resource saturation (\(N^*\)), throughput reaches its maximum ceiling (\(X_{\max}\)). Hardware utilization approaches 100%, and processing pipelines run at peak efficiency without accumulating significant queues.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+      <li><strong>Queuing saturation regime (overload)</strong>: Adding load beyond the knee creates queue backlogs. Throughput stays flat or degrades due to context-switching overhead, while latency increases non-linearly. According to Kingman's formula for single-server queues, wait time diverges toward infinity as utilization \(ho 	o 1\):<span class="cite">[<a href="#ref5">5</a>]</span></li>
+    </ol>
+    \[W_q pprox \left(rac{ho}{1 - ho}ight) \left(rac{C_a^2 + C_s^2}{2}ight) 	au\]
+
+    <h2 id="scaling-limits">Concurrency limits and scaling laws</h2>
+    <p>Adding parallel processing units does not scale throughput indefinitely due to communication overhead and serial bottlenecks.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <p><strong>Amdahl's Law</strong> defines the maximum speedup \(S(N)\) achievable by adding \(N\) parallel processors when a fraction \(s\) of the work must execute serially:<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    \[S(N) = rac{1}{s + rac{1 - s}{N}}\]
+    <p>As \(N 	o \infty\), maximum throughput is bounded strictly by \(rac{1}{s}\). If 5% of a workload is strictly serial (\(s = 0.05\)), the maximum possible speedup is 20x, regardless of how many parallel cores or agent workers are provisioned.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <p><strong>Gunther's Universal Scalability Law (USL)</strong> extends Amdahl's Law by accounting for inter-worker coherence penalties (such as lock contention and cache invalidation protocols):<span class="cite">[<a href="#ref7">7</a>]</span></p>
+    \[C(N) = rac{N}{1 + lpha(N - 1) + eta N(N - 1)}\]
+    <p>where \(lpha\) represents contention (serialization) and \(eta\) represents cross-node coherence overhead. When \(eta &gt; 0\), scaling past an optimal node count causes throughput to decline (retrograde scalability).<span class="cite">[<a href="#ref7">7</a>]</span></p>
+
+    <h2 id="computing-ai">Throughput in computer architecture and AI inference</h2>
+    <p>Modern machine learning serving systems illustrate the architectural mechanics of throughput:<span class="cite">[<a href="#ref8">8</a>]</span></p>
+    <p>Large language model inference is divided into two distinct computational phases with opposing bottlenecks:<span class="cite">[<a href="#ref9">9</a>]</span></p>
+    <ul>
+      <li><strong>Prefill phase (prompt ingestion)</strong>: Processes all input tokens in parallel. This phase is compute-bound, maximizing Matrix Multiplication (GEMM) utilization on GPU Tensor Cores to deliver high Time-to-First-Token (TTFT) throughput.</li>
+      <li><strong>Decode phase (autoregressive token generation)</strong>: Generates one token at a time sequentially per active request. This phase is memory-bandwidth bound, reading entire multi-gigabyte weight tensors from High Bandwidth Memory (HBM) into SRAM for every single generated token.<span class="cite">[<a href="#ref9">9</a>]</span></li>
+    </ul>
+    <p>To maximize total serving throughput, modern runtimes employ specific architectural optimizations:<span class="cite">[<a href="#ref8">8</a>]</span></p>
+    <ul>
+      <li><strong>Continuous / iteration-level batching</strong>: Rather than waiting for an entire batch to complete, requests are dynamically injected and retired at every token iteration step.</li>
+      <li><strong>PagedAttention</strong>: Partitions the Key-Value (KV) cache into non-contiguous virtual memory blocks, eliminating internal fragmentation and increasing concurrent batch capacity by 2x to 4x.<span class="cite">[<a href="#ref8">8</a>]</span></li>
+      <li><strong>Chunked prefill</strong>: Interleaves long prompt prefill chunks into decode batches to prevent single long prompts from stalling streaming decode throughput for concurrent users.</li>
+    </ul>
+
+    <h2 id="theory-of-constraints">Theory of Constraints and workflow throughput</h2>
+    <p>In operations research, Eliyahu M. Goldratt formalized throughput in organizational systems via the <strong>Theory of Constraints</strong>:<span class="cite">[<a href="#ref10">10</a>]</span></p>
+    <ol>
+      <li>Every system contains exactly one primary constraint (bottleneck) that limits overall throughput.</li>
+      <li>Total system throughput is strictly determined by the capacity of the bottleneck stage.</li>
+      <li>Any local optimization made at a non-bottleneck stage produces excess inventory (WIP) without increasing finished throughput.<span class="cite">[<a href="#ref10">10</a>]</span></li>
+    </ol>
+    <p>In software engineering pipelines, speeding up code generation (via AI coding agents) without expanding human review or automated testing capacity shifts the bottleneck downstream, creating review backlogs without increasing deployed production throughput.<span class="cite">[<a href="#ref11">11</a>]</span></p>
+
+    <h2 id="measurement-pitfalls">Measurement pitfalls and honest capacity planning</h2>
+    <p>Evaluating system capacity requires avoiding common measurement errors:<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <ul>
+      <li><strong>Single-user microbenchmarking</strong>: Measuring single-stream performance on an idle system reports minimum latency, not maximum throughput. Real throughput must be evaluated across concurrent load sweeps.</li>
+      <li><strong>Ignoring operation quality</strong>: Comparing raw operation counts without accounting for error rates, retries, or code churn produces false throughput signals. High-throughput generation that fails downstream verification decreases net effective throughput.</li>
+      <li><strong>Ignoring tail latency</strong>: Sizing systems to average throughput leaves them vulnerable to queue collapse during traffic bursts. Capacity planning must evaluate throughput under 95th and 99th percentile load distributions.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/tokens/">Tokens and Tokenization</a></li>
+      <li><a href="/reference/autoregressive/">Autoregressive Models</a></li>
+      <li><a href="/reference/agentic-loops/">Agentic Loops</a></li>
+      <li><a href="/reference/agent-harness/">Agent Harness</a></li>
+      <li><a href="/reference/exponential-backoff/">Exponential Backoff</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#first-principles">↑</a> Patterson, David A., and John L. Hennessy. <em>Computer Organization and Design: The Hardware/Software Interface</em>. 6th ed., Morgan Kaufmann, 2020. Ch. 1: "Computer Abstractions and Technology."</li>
+      <li id="ref2"><a class="backlink" href="#first-principles">↑</a> Kurose, James F., and Keith W. Ross. <em>Computer Networking: A Top-Down Approach</em>. 8th ed., Pearson, 2021. Ch. 1: "Throughput in Computer Networks."</li>
+      <li id="ref3"><a class="backlink" href="#littles-law">↑</a> Little, John D. C. "A Proof for the Queuing Formula: \(L = \lambda W\)." <em>Operations Research</em>, vol. 9, no. 3, 1961, pp. 383–387. <a href="https://doi.org/10.1287/opre.9.3.383">https://doi.org/10.1287/opre.9.3.383</a></li>
+      <li id="ref4"><a class="backlink" href="#latency-tradeoff">↑</a> Gregg, Brendan. <em>Systems Performance: Enterprise and the Cloud</em>. 2nd ed., Addison-Wesley, 2020. Ch. 2: "Methodologies and Concepts."</li>
+      <li id="ref5"><a class="backlink" href="#latency-tradeoff">↑</a> Kingman, J. F. C. "The Single Server Queue in Heavy Traffic." <em>Mathematical Proceedings of the Cambridge Philosophical Society</em>, vol. 57, no. 4, 1961, pp. 902–904.</li>
+      <li id="ref6"><a class="backlink" href="#scaling-limits">↑</a> Amdahl, Gene M. "Validity of the Single Processor Approach to Achieving Large Scale Computing Capabilities." <em>AFIPS Conference Proceedings</em>, vol. 30, 1967, pp. 483–485. <a href="https://doi.org/10.1145/1465482.1465560">https://doi.org/10.1145/1465482.1465560</a></li>
+      <li id="ref7"><a class="backlink" href="#scaling-limits">↑</a> Gunther, Neil J. <em>Guerrilla Capacity Planning: A Tactical Approach to Planning for Highly Scalable Applications and Services</em>. Springer, 2007.</li>
+      <li id="ref8"><a class="backlink" href="#computing-ai">↑</a> Kwon, Woosuk, et al. "Efficient Memory Management for Large Language Model Serving with PagedAttention." <em>Proceedings of the 29th ACM Symposium on Operating Systems Principles (SOSP)</em>, 2023. <a href="https://doi.org/10.1145/3600006.3613165">https://doi.org/10.1145/3600006.3613165</a></li>
+      <li id="ref9"><a class="backlink" href="#computing-ai">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
+      <li id="ref10"><a class="backlink" href="#theory-of-constraints">↑</a> Goldratt, Eliyahu M., and Jeff Cox. <em>The Goal: A Process of Ongoing Improvement</em>. North River Press, 1984.</li>
+      <li id="ref11"><a class="backlink" href="#theory-of-constraints">↑</a> Faros AI. "The 2026 Engineering Productivity and AI Acceleration Report," 2026.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
