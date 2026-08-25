@@ -475,3 +475,125 @@ a:hover {
   color: var(--muted);
 }
 
+/* Writing print: light paper, no dumped URLs */
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm 16mm 18mm;
+  }
+
+  body:has(main.article),
+  body:has(#writing) {
+    background: #faf8f4;
+    color: #1c1915;
+    padding: 0;
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  body:has(main.article) a,
+  body:has(#writing) a {
+    color: #1c1915;
+    text-decoration: underline;
+    overflow-wrap: anywhere;
+  }
+
+  body:has(main.article) a[href]::after,
+  body:has(#writing) a[href]::after {
+    content: none !important;
+  }
+
+  body:has(main.article) .pager,
+  body:has(main.article) .next-step,
+  body:has(main.article) .to-top,
+  body:has(main.article) footer.meta,
+  body:has(#writing) .pager,
+  body:has(#writing) .next-step {
+    display: none;
+  }
+
+  body:has(main.article) .back,
+  body:has(#writing) .back {
+    color: #5c564e;
+    font-size: 9pt;
+    margin-bottom: 0.8rem;
+  }
+
+  body:has(main.article) h1,
+  body:has(#writing) h1 {
+    color: #1c1915;
+    font-size: 18pt;
+    font-weight: 600;
+  }
+
+  body:has(main.article) h2 {
+    color: #1c1915;
+    font-size: 13pt;
+    margin: 1.1rem 0 0.45rem;
+  }
+
+  body:has(main.article) .byline,
+  body:has(main.article) .series {
+    color: #5c564e;
+    font-size: 10pt;
+  }
+
+  body:has(main.article) .tldr {
+    background: #f3efe6;
+    border: 1px solid #d8d2c6;
+    border-left: 3px solid #1c1915;
+    break-inside: avoid;
+  }
+
+  body:has(main.article) .tldr .tldr-label {
+    color: #5c564e;
+  }
+
+  body:has(main.article) p,
+  body:has(main.article) li {
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  body:has(main.article) code,
+  body:has(main.article) pre {
+    background: #f3efe6;
+    border-color: #d8d2c6;
+    color: #1c1915;
+  }
+
+  body:has(main.article) pre {
+    white-space: pre-wrap;
+    overflow: visible;
+  }
+
+  body:has(main.article) .table-wrap {
+    overflow: visible;
+  }
+
+  body:has(main.article) table {
+    min-width: 0;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 9.5pt;
+    break-inside: auto;
+  }
+
+  body:has(main.article) table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  body:has(main.article) th,
+  body:has(main.article) td {
+    color: #1c1915;
+    border-bottom-color: #d8d2c6;
+    overflow-wrap: anywhere;
+  }
+
+  body:has(main.article) hr {
+    border-top-color: #d8d2c6;
+  }
+}
+
