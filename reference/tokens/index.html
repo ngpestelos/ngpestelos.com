@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tokens and Tokenization — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on tokens in artificial intelligence: tokenization algorithms (BPE, WordPiece, Unigram), token lifecycle, KV cache scaling, and prompt caching economics.">
+  <meta property="og:title" content="Tokens and Tokenization — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on tokens in AI: tokenization algorithms (BPE, WordPiece, Unigram), token lifecycle, KV cache scaling, and prompt caching economics.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/tokens/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/tokens/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.4rem 0;
+      font-size: 0.9rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      background: var(--well);
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+      border: 1px solid #e1e4e8;
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      margin: 1.2rem 0;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+    .references {
+      margin-top: 2.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.88rem;
+    }
+    .references ol { padding-left: 1.4rem; }
+    .references li { margin-bottom: 0.5rem; color: var(--mute); }
+    .references a { color: var(--link); word-break: break-all; }
+    .see-also {
+      margin-top: 2rem;
+      padding: 1rem 1.4rem;
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+    .see-also h2 {
+      margin-top: 0;
+      border-bottom: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding-bottom: 0;
+    }
+    .see-also ul { list-style: square; margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="back"><a href="/">← Nestor G Pestelos Jr</a> · <a href="/reference/">Reference</a></p>
+      <p class="kicker">Natural Language Processing & Systems</p>
+      <h1>Tokens and Tokenization</h1>
+      <p class="updated">August 25, 2026</p>
+    </header>
+
+    <p class="lede">A <strong>token</strong> is the fundamental atomic unit of information processed, embedded, and generated by large language models and neural sequence architectures. Rather than processing raw characters or arbitrary words directly, language models employ deterministic tokenizers that segment strings into sequences of discrete subword units mapped to numerical indices within a fixed vocabulary \(V\). Tokens define the resolution of model comprehension, dictate the memory footprint of attention layers via Key-Value (KV) caching, and govern the operational economics of inference.</p>
+
+    <nav class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#tokenization-fundamentals">Tokenization Fundamentals</a>
+          <ol>
+            <li><a href="#definition-and-vocabulary">Vocabulary Representation</a></li>
+            <li><a href="#algorithms">Subword Tokenization Algorithms</a></li>
+          </ol>
+        </li>
+        <li><a href="#token-lifecycle">Token Lifecycle and Processing Phases</a>
+          <ol>
+            <li><a href="#prefill-vs-decode">Prefill (Input) vs. Decode (Output)</a></li>
+            <li><a href="#thinking-tokens">Thinking and Reasoning Tokens</a></li>
+            <li><a href="#special-tokens">Special and Control Tokens</a></li>
+          </ol>
+        </li>
+        <li><a href="#kv-cache-scaling">KV Cache Scaling and Attention Mechanics</a>
+          <ol>
+            <li><a href="#kv-memory-footprint">Memory Footprint Formulation</a></li>
+            <li><a href="#attention-variants">Attention Architectures: MHA, MQA, and GQA</a></li>
+          </ol>
+        </li>
+        <li><a href="#token-economics">Token Economics and Prompt Caching</a>
+          <ol>
+            <li><a href="#pricing-asymmetry">Cost Asymmetry Across Token Types</a></li>
+            <li><a href="#prompt-caching-mechanics">Prefix Prompt Caching</a></li>
+          </ol>
+        </li>
+        <li><a href="#tokenization-artifacts">Tokenizer Failure Modes and Artifacts</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <section id="tokenization-fundamentals">
+      <h2>1. Tokenization Fundamentals</h2>
+
+      <h3 id="definition-and-vocabulary">1.1 Vocabulary Representation</h3>
+      <p>A tokenizer operates as a bijective lookup between a finite vocabulary of subwords \(V\) and integer identifiers \(\{0, 1, \dots, |V|-1\}\). Modern vocabulary sizes typically range from \(|V| = 32,000\) (Llama 2) to \(|V| = 128,256\) (Llama 3/4) and \(|V| = 256,000\) (Gemma). Each token index corresponds to an embedding vector in the model's input projection matrix \(W_e \in \mathbb{R}^{|V| 	imes d_{	ext{model}}}\).</p>
+      <p>In standard English text corpora, 1,000 tokens represent approximately 750 words (an average compression ratio of 1.33 tokens per word, or roughly 4 characters per token) [1].</p>
+
+      <h3 id="algorithms">1.2 Subword Tokenization Algorithms</h3>
+      <p>Modern language models rely on three primary subword segmentation algorithms:</p>
+      <ul>
+        <li><strong>Byte-Pair Encoding (BPE):</strong> Introduced to NLP by Sennrich et al. [2], BPE begins with a base vocabulary of individual characters or bytes. It iteratively counts the most frequent adjacent symbol pairs in the training corpus and merges them into new vocabulary entries until a target vocabulary size \(|V|\) is reached.</li>
+        <li><strong>Byte-Level BPE (BBPE):</strong> Introduced by Radford et al. [3] for GPT-2, BBPE treats input text as an arbitrary sequence of raw bytes (256 base tokens). This guarantees that any Unicode string or binary sequence can be tokenized without generating out-of-vocabulary (<code>&lt;unk&gt;</code>) tokens.</li>
+        <li><strong>WordPiece:</strong> Used in BERT [4], WordPiece chooses pair merges that maximize the likelihood of the training data under a unigram language model, rather than relying solely on raw frequency.</li>
+        <li><strong>Unigram Language Model:</strong> Used in SentencePiece [5] and T5, Unigram starts with an oversized vocabulary and iteratively removes subwords that have the lowest marginal impact on corpus likelihood.</li>
+      </ul>
+    </section>
+
+    <section id="token-lifecycle">
+      <h2>2. Token Lifecycle and Processing Phases</h2>
+
+      <h3 id="prefill-vs-decode">2.1 Prefill (Input) vs. Decode (Output)</h3>
+      <p>Transformer execution splits into two computationally distinct phases [6]:</p>
+      <ul>
+        <li><strong>Prefill Phase (Input Tokens):</strong> All input prompt tokens are processed simultaneously in parallel. The operation is compute-bound, saturating GPU tensor cores (matrix-matrix multiplication, GEMM). During prefill, Key (\(K\)) and Value (\(V\)) activation tensors for all prompt tokens are computed and written to GPU high-bandwidth memory (HBM).</li>
+        <li><strong>Decode Phase (Output Tokens):</strong> Output tokens are generated sequentially, one at a time, autoregressively. Each step requires reading the entire accumulated KV cache from HBM for a single vector-matrix multiplication (GEMV). The decode phase is memory-bandwidth bound, resulting in lower hardware utilization.</li>
+      </ul>
+
+      <h3 id="thinking-tokens">2.2 Thinking and Reasoning Tokens</h3>
+      <p>Hybrid reasoning models (e.g., DeepSeek-R1, Gemini 3.7 Flash Thinking, OpenAI o3) introduce <em>thinking tokens</em>. These are internal chain-of-thought tokens generated during test-time compute prior to emitting final responses [7]. Thinking tokens allow models to explore alternative verification paths, backtrack from logic errors, and perform self-correction. While thinking tokens are generated in the decode phase (and billed at output rates), they are typically hidden or masked from final user-facing text.</p>
+
+      <h3 id="special-tokens">2.3 Special and Control Tokens</h3>
+      <p>Tokenizers include dedicated non-printing control tokens that delineate structural boundaries:</p>
+      <ul>
+        <li><strong>Sequence Boundary:</strong> <code>&lt;|begin_of_text|&gt;</code>, <code>&lt;|end_of_text|&gt;</code>, <code>&lt;|im_start|&gt;</code>, <code>&lt;|im_end|&gt;</code>.</li>
+        <li><strong>Tool Execution:</strong> <code>&lt;|call:tool_name|&gt;</code>, <code>&lt;|start_header_id|&gt;</code>, indicating structured tool invocations.</li>
+        <li><strong>Padding & Masking:</strong> <code>&lt;|pad|&gt;</code> for batch alignment and <code>&lt;|mask|&gt;</code> for masked language modeling.</li>
+      </ul>
+    </section>
+
+    <section id="kv-cache-scaling">
+      <h2>3. KV Cache Scaling and Attention Mechanics</h2>
+
+      <h3 id="kv-memory-footprint">3.1 Memory Footprint Formulation</h3>
+      <p>To avoid recomputing self-attention projections for past tokens at each decode step, models store the Key (\(K\)) and Value (\(V\)) tensors in a dynamic <strong>KV Cache</strong>. For a standard Multi-Head Attention (MHA) model, the memory required for the KV cache scales linearly with sequence length \(L\) [8]:</p>
+
+      \[M_{	ext{KV}} = 2 	imes B 	imes L 	imes n_{	ext{layers}} 	imes d_{	ext{model}} 	imes 	ext{BytesPerElement}\]
+
+      <p>where \(B\) is batch size, \(L\) is context length, \(n_{	ext{layers}}\) is the number of transformer layers, \(d_{	ext{model}}\) is the hidden dimension, and the factor of 2 accounts for both \(K\) and \(V\) matrices. In FP16 precision (2 bytes per element), a 70B parameter model with a 128,000-token context requires approximately 160 GB of dedicated memory solely for a single user's KV cache.</p>
+
+      <h3 id="attention-variants">3.2 Attention Architectures: MHA, MQA, and GQA</h3>
+      <p>To mitigate the memory scaling bottleneck of Multi-Head Attention, modern architectures compress the key and value heads [9]:</p>
+      <ul>
+        <li><strong>Multi-Head Attention (MHA):</strong> Each query head has an independent key and value head (\(h_q = h_k = h_v\)).</li>
+        <li><strong>Multi-Query Attention (MQA):</strong> All query heads share a single key head and a single value head (\(h_k = h_v = 1\)), reducing KV cache memory by a factor of \(h_q\).</li>
+        <li><strong>Grouped-Query Attention (GQA):</strong> Query heads are partitioned into \(g\) groups, with each group sharing one key and value head (\(h_k = h_v = g\)). GQA (used in Llama 3/4, Mistral, and DeepSeek) recovers nearly all MHA representation capacity while reducing KV cache size by 4x to 8x.</li>
+      </ul>
+    </section>
+
+    <section id="token-economics">
+      <h2>4. Token Economics and Prompt Caching</h2>
+
+      <h3 id="pricing-asymmetry">4.1 Cost Asymmetry Across Token Types</h3>
+      <p>API pricing across commercial model providers is structured around the computational cost differential between the prefill and decode phases [10]:</p>
+      <ul>
+        <li><strong>Input Tokens (Cache Miss):</strong> Moderately priced ($0.10 to $3.00 per 1M tokens) due to parallel prefill execution efficiency.</li>
+        <li><strong>Output & Thinking Tokens:</strong> Priced 3x to 5x higher ($0.30 to $15.00 per 1M tokens) due to recurrent memory bandwidth constraints during autoregressive decoding.</li>
+        <li><strong>Cached Input Tokens (Cache Hit):</strong> Discounted by 75% to 95% ($0.007 to $0.30 per 1M tokens) because precomputed KV tensors are retrieved directly from memory without GPU recomputation.</li>
+      </ul>
+
+      <h3 id="prompt-caching-mechanics">4.2 Prefix Prompt Caching</h3>
+      <p><strong>Prompt caching</strong> (implemented via PagedAttention in vLLM [8] and proprietary cloud gateways) identifies exact prefix matches in token sequences. When an agent executes multiple sequential turns sharing an identical system prompt, codebase index, or context history, the inference engine skips the prefill transformer layers entirely for the cached prefix.</p>
+      <p>Prefix caching reduces Time-To-First-Token (TTFT) latency by up to 80% and enables continuous autonomous agent loops to operate with marginal token budgets under $0.01 per turn [10].</p>
+    </section>
+
+    <section id="tokenization-artifacts">
+      <h2>5. Tokenizer Failure Modes and Artifacts</h2>
+      <p>Because tokenizers process subwords rather than raw semantic concepts, several characteristic failure modes emerge in language models [11]:</p>
+      <ul>
+        <li><strong>Arithmetic Degradation:</strong> Numbers are tokenized arbitrarily based on digit frequency (e.g., "12345" may be split as <code>[12, 345]</code> while "12346" is split as <code>[123, 46]</code>). This inconsistent chunking impairs character-level arithmetic and digit alignment.</li>
+        <li><strong>Character and Spelling Blindness:</strong> Tasks such as counting specific letters in a word (e.g., "How many rs in strawberry?") fail frequently because the model receives the entire subword token (<code>["straw", "berry"]</code>) rather than individual constituent letters.</li>
+        <li><strong>Non-Latin Script Token Inflation:</strong> Vocabularies optimized heavily on English corpora tokenize non-Latin scripts (e.g., Cyrillic, Arabic, Tagalog, Japanese) into multiple single-byte tokens per character. This causes a 2x to 5x increase in token consumption and inference cost for identical semantic content.</li>
+        <li><strong>Glitch Tokens:</strong> Vocabulary tokens trained on anomalous internet scrape patterns (e.g., Reddit usernames like <code>SolidGoldMagikarp</code>) occupy ungrounded regions of the embedding space, causing erratic completions when triggered [11].</li>
+      </ul>
+    </section>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/large-language-models/">Large Language Models</a> — Transformer self-attention architecture and sequence generation.</li>
+        <li><a href="/reference/frontier-models/">Frontier Models, Architectures, and Tokens</a> — Overview of frontier compute scale and Mixture-of-Experts.</li>
+        <li><a href="/reference/context-engineering/">Context Engineering</a> — Prompt window structuring and memory optimization.</li>
+        <li><a href="/reference/autoregressive/">Autoregressive Models</a> — Mathematical formulation of next-token prediction.</li>
+        <li><a href="/reference/softmax/">Softmax Function</a> — Probability normalization for next-token vocabulary logits.</li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] OpenAI, "What are Tokens and How to Count Them?," <em>OpenAI Help Center Documentation</em>, 2024. <a href="https://help.openai.com">https://help.openai.com</a></li>
+        <li id="ref-2">[2] R. Sennrich, B. Haddow, and A. Birch, "Neural Machine Translation of Rare Words with Subword Units," in <em>Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (ACL)</em>, 2016, pp. 1715–1725. <a href="https://arxiv.org/abs/1508.07909">https://arxiv.org/abs/1508.07909</a></li>
+        <li id="ref-3">[3] A. Radford, J. Wu, R. Child, D. Luan, D. Amodei, and I. Sutskever, "Language Models are Unsupervised Multitask Learners," <em>OpenAI Technical Report</em>, 2019.</li>
+        <li id="ref-4">[4] J. Devlin, M. Chang, K. Lee, and K. Toutanova, "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding," in <em>NAACL-HLT</em>, 2019. <a href="https://arxiv.org/abs/1810.04805">https://arxiv.org/abs/1810.04805</a></li>
+        <li id="ref-5">[5] T. Kudo, "Subword Regularization: Improving Neural Network Translation Models with Subword Sampling," in <em>ACL</em>, 2018. <a href="https://arxiv.org/abs/1804.10959">https://arxiv.org/abs/1804.10959</a></li>
+        <li id="ref-6">[6] R. Pope, S. Douglas, A. Chowdhery, et al., "Efficiently Scaling Transformer Inference," in <em>MLSys</em>, 2023. <a href="https://arxiv.org/abs/2211.05102">https://arxiv.org/abs/2211.05102</a></li>
+        <li id="ref-7">[7] N. Brown, G. Zhang, S. Feng, et al., "Large Language Models at Test-Time: Scaling Compute via Search and Verification," <em>OpenAI Technical Papers</em>, 2024.</li>
+        <li id="ref-8">[8] W. Kwon, Z. Li, S. Zhuang, Y. Sheng, L. Zheng, C. H. Yu, J. E. Gonzalez, H. Zhang, and I. Stoica, "Efficient Memory Management for Large Language Model Serving with PagedAttention," in <em>SOSP</em>, 2023. <a href="https://arxiv.org/abs/2309.06180">https://arxiv.org/abs/2309.06180</a></li>
+        <li id="ref-9">[9] J. Ainslie, J. Lee, D. de Las Casas, et al., "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints," in <em>EMNLP</em>, 2023. <a href="https://arxiv.org/abs/2305.13245">https://arxiv.org/abs/2305.13245</a></li>
+        <li id="ref-10">[10] DeepSeek-AI, "DeepSeek-V3 Technical Report," <em>arXiv:2412.19437</em>, 2024. <a href="https://arxiv.org/abs/2412.19437">https://arxiv.org/abs/2412.19437</a></li>
+        <li id="ref-11">[11] J. Landgraf, "SolidGoldMagikarp and Other Anomalous Tokens in LLMs," <em>LessWrong Technical Notes</em>, 2023.</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>

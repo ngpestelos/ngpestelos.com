@@ -196,6 +196,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/tokens/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/exponential-backoff/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
