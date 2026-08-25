@@ -547,6 +547,7 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/llm-evaluations/</loc>
+    <loc>https://ngpestelos.com/reference/agent-harness/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -567,6 +568,7 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/eli5/fail-closed/</loc>
+    <loc>https://ngpestelos.com/eli5/agent-harness/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
