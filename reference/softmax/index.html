@@ -181,12 +181,15 @@
       padding-bottom: 0;
     }
     .see-also ul { list-style: square; margin-bottom: 0; }
+    @media print {
+      .back { display: none; }
+    }
   </style>
 </head>
 <body>
   <main>
     <header>
-      <p class="back"><a href="/">← Nestor G Pestelos Jr</a> · <a href="/reference/">Reference</a></p>
+      <p class="back"><a href="/">← Nestor G Pestelos Jr</a> · <a href="/reference/">Reference</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
       <p class="kicker">Mathematics & Machine Learning</p>
       <h1>Softmax Function</h1>
       <p class="updated">August 25, 2026</p>
@@ -271,7 +274,8 @@
       <h3 id="log-softmax">2.3 Log-Softmax Formulation</h3>
       <p>When computing loss functions, calculating \(\log(\sigma(\mathbf{z})_i)\) directly from Softmax outputs introduces precision loss. Deep learning frameworks implement the <code>LogSoftmax</code> primitive via the Log-Sum-Exp operator:</p>
 
-      \[\log \sigma(\mathbf{z})_i = z_i - 	ext{LSE}(\mathbf{z}) = z_i - \left( m + \log \sum_{j=1}^K e^{z_j - m} ight)\]
+      \[\log \sigma(\mathbf{z})_i = z_i - 	ext{LSE}(\mathbf{z}) = z_i - \left( m + \log \sum_{j=1}^K e^{z_j - m} 
+ight)\]
     </section>
 
     <section id="temperature-scaling">
@@ -321,7 +325,8 @@ eq j \end{cases}\]
       <h3 id="transformer-attention">5.1 Scaled Dot-Product Attention in Transformers</h3>
       <p>In the transformer architecture [5], Softmax computes dynamic attention weights between query matrix \(Q\) and key matrix \(K\):</p>
 
-      \[	ext{Attention}(Q, K, V) = 	ext{softmax}\left(rac{QK^T}{\sqrt{d_k}}ight)V\]
+      \[	ext{Attention}(Q, K, V) = 	ext{softmax}\left(rac{QK^T}{\sqrt{d_k}}
+ight)V\]
 
       <p>The scaling factor \(rac{1}{\sqrt{d_k}}\) prevents dot products from growing excessively large in high dimensions, which would otherwise push the Softmax function into regions with near-zero gradients (the vanishing gradient regime).</p>
 

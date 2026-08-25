@@ -211,11 +211,14 @@
       color: var(--mute);
     }
     footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+    @media print {
+      .back { display: none; }
+    }
   </style>
 </head>
 <body>
   <main>
-    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Reference Document</p>
     <h1>Prompt Engineering</h1>
     <p class="subtitle">A citable ground-truth reference on Prompt Engineering: conditioning autoregressive models, in-context learning, reasoning scaffolding (CoT, ToT, ReAct), structured outputs, and prompt security.</p>

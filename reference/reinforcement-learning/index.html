@@ -225,11 +225,14 @@
       color: var(--mute);
     }
     footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
   </style>
 </head>
 <body>
   <main id="top">
-    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Artificial Intelligence</p>
     <h1>Reinforcement Learning</h1>
     <p class="subtitle">A citable reference on Reinforcement Learning (RL): Markov Decision Processes, Bellman optimality equations, value and policy iteration, policy gradient theorems, Actor-Critic methods, PPO, DPO, and GRPO.</p>
@@ -322,12 +325,14 @@
     <ul>
       <li><strong>State-Value Function \(V^\pi(s)\):</strong> Expected return starting from state \(s\) under policy \(\pi\):
         <div class="formula-box">
-          $$V^\pi(s) = \mathbb{E}_\pi \left[ \sum_{k=0}^\infty \gamma^k R_{t+k+1} \;\middle|\; S_t = s ight]$$
+          $$V^\pi(s) = \mathbb{E}_\pi \left[ \sum_{k=0}^\infty \gamma^k R_{t+k+1} \;\middle|\; S_t = s 
+ight]$$
         </div>
       </li>
       <li><strong>Action-Value Function \(Q^\pi(s, a)\):</strong> Expected return taking action \(a\) in state \(s\), then following policy \(\pi\):
         <div class="formula-box">
-          $$Q^\pi(s, a) = \mathbb{E}_\pi \left[ \sum_{k=0}^\infty \gamma^k R_{t+k+1} \;\middle|\; S_t = s, A_t = a ight]$$
+          $$Q^\pi(s, a) = \mathbb{E}_\pi \left[ \sum_{k=0}^\infty \gamma^k R_{t+k+1} \;\middle|\; S_t = s, A_t = a 
+ight]$$
         </div>
       </li>
       <li><strong>Advantage Function \(A^\pi(s, a)\):</strong> The relative value of taking action \(a\) compared to the policy average:
@@ -348,10 +353,12 @@
       For any stationary policy \(\pi\), the value functions satisfy:
     </p>
     <div class="formula-box">
-      $$V^\pi(s) = \sum_{a \in A} \pi(a \mid s) \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma V^\pi(s') ight]$$
+      $$V^\pi(s) = \sum_{a \in A} \pi(a \mid s) \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma V^\pi(s') 
+ight]$$
     </div>
     <div class="formula-box">
-      $$Q^\pi(s, a) = \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma \sum_{a' \in A} \pi(a' \mid s') Q^\pi(s', a') ight]$$
+      $$Q^\pi(s, a) = \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma \sum_{a' \in A} \pi(a' \mid s') Q^\pi(s', a') 
+ight]$$
     </div>
 
     <h3 id="bellman-optimality">2.2 Bellman Optimality Equations</h3>
@@ -359,10 +366,12 @@
       An optimal policy \(\pi^*\) achieves the maximum value across all states: \(V^*(s) = \max_\pi V^\pi(s)\) and \(Q^*(s, a) = \max_\pi Q^\pi(s, a)\). The Bellman optimality equations express these conditions without explicit policy reference:
     </p>
     <div class="formula-box">
-      $$V^*(s) = \max_{a \in A} \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma V^*(s') ight]$$
+      $$V^*(s) = \max_{a \in A} \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma V^*(s') 
+ight]$$
     </div>
     <div class="formula-box">
-      $$Q^*(s, a) = \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma \max_{a' \in A} Q^*(s', a') ight]$$
+      $$Q^*(s, a) = \sum_{s' \in S} P(s' \mid s, a) \left[ R(s, a, s') + \gamma \max_{a' \in A} Q^*(s', a') 
+ight]$$
     </div>
 
     <h3 id="contraction-mapping">2.3 Contraction Mapping and Convergence</h3>
@@ -428,7 +437,8 @@
       In <strong>Q-Learning</strong> (Watkins, 1989), the agent updates action-value estimates off-policy using Temporal Difference (TD) learning:<span class="cite">[<a href="#ref3">3</a>]</span>
     </p>
     <div class="formula-box">
-      $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + lpha \left[ R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t) ight]$$
+      $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + lpha \left[ R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t) 
+ight]$$
     </div>
     <p>
       <strong>Deep Q-Networks (DQN)</strong> (Mnih et al., 2015) scale Q-learning to high-dimensional state spaces using deep neural networks parameterized by \(	heta\).<span class="cite">[<a href="#ref5">5</a>]</span> DQN stabilizes non-linear function approximation through two core mechanisms:
@@ -445,7 +455,8 @@
     <div class="formula-box">
       $$
 abla_	heta J(	heta) = \mathbb{E}_{	au \sim \pi_	heta} \left[ \sum_{t=0}^T 
-abla_	heta \log \pi_	heta(A_t \mid S_t) \, Q^{\pi_	heta}(S_t, A_t) ight]$$
+abla_	heta \log \pi_	heta(A_t \mid S_t) \, Q^{\pi_	heta}(S_t, A_t) 
+ight]$$
     </div>
     <p>
       In the Monte Carlo <strong>REINFORCE</strong> algorithm (Williams, 1992), empirical episode return \(G_t\) serves as an unbiased sample estimate of \(Q(S_t, A_t)\).<span class="cite">[<a href="#ref7">7</a>]</span>
@@ -459,7 +470,9 @@ abla_	heta \log \pi_	heta(A_t \mid S_t) \, Q^{\pi_	heta}(S_t, A_t) ight]$$
       <strong>Proximal Policy Optimization (PPO)</strong> (Schulman et al., 2017) stabilizes policy updates by constraining the step size using a clipped surrogate objective:<span class="cite">[<a href="#ref8">8</a>]</span>
     </p>
     <div class="formula-box">
-      $$L^{	ext{CLIP}}(	heta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(	heta) \hat{A}_t, \, 	ext{clip}(r_t(	heta), 1-\epsilon, 1+\epsilon) \hat{A}_t ight) ight]$$
+      $$L^{	ext{CLIP}}(	heta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(	heta) \hat{A}_t, \, 	ext{clip}(r_t(	heta), 1-\epsilon, 1+\epsilon) \hat{A}_t 
+ight) 
+ight]$$
     </div>
     <p>
       where \(r_t(	heta) = rac{\pi_	heta(a_t \mid s_t)}{\pi_{	heta_{	ext{old}}}(a_t \mid s_t)}\) is the probability ratio and \(\epsilon\) is a clipping parameter (typically \(0.1\) or \(0.2\)).
@@ -474,12 +487,14 @@ abla_	heta \log \pi_	heta(A_t \mid S_t) \, Q^{\pi_	heta}(S_t, A_t) ight]$$
       <li><strong>\(\epsilon\)-Greedy:</strong> Select the highest-value action with probability \(1-\epsilon\), and a uniform random action with probability \(\epsilon\), where \(\epsilon\) is decayed over training.</li>
       <li><strong>Upper Confidence Bound (UCB):</strong> Select actions balancing estimated mean return \(\hat{Q}(a)\) with estimation uncertainty based on visitation counts \(N(a)\):
         <div class="formula-box">
-          $$A_t = rg\max_a \left[ Q_t(a) + c \sqrt{rac{\ln t}{N_t(a)}} ight]$$
+          $$A_t = rg\max_a \left[ Q_t(a) + c \sqrt{rac{\ln t}{N_t(a)}} 
+ight]$$
         </div>
       </li>
       <li><strong>Maximum Entropy RL (Soft Actor-Critic):</strong> Augments the objective with a policy entropy bonus \(\mathcal{H}(\pi(\cdot \mid s))\), encouraging broad state-space coverage and multi-modal policy discovery:<span class="cite">[<a href="#ref9">9</a>]</span>
         <div class="formula-box">
-          $$J(\pi) = \mathbb{E}_{	au \sim \pi} \left[ \sum_{t=0}^\infty \gamma^t \Big( R(S_t, A_t, S_{t+1}) + lpha \mathcal{H}ig(\pi(\cdot \mid S_t)ig) \Big) ight]$$
+          $$J(\pi) = \mathbb{E}_{	au \sim \pi} \left[ \sum_{t=0}^\infty \gamma^t \Big( R(S_t, A_t, S_{t+1}) + lpha \mathcal{H}ig(\pi(\cdot \mid S_t)ig) \Big) 
+ight]$$
         </div>
       </li>
     </ul>
@@ -498,12 +513,14 @@ abla_	heta \log \pi_	heta(A_t \mid S_t) \, Q^{\pi_	heta}(S_t, A_t) ight]$$
       <li>Supervised fine-tuning (SFT) on prompt-response demonstrations.</li>
       <li>Reward model training on pairwise human preference comparisons \((y_w \succ y_l)\) via the Bradley-Terry preference model:
         <div class="formula-box">
-          $$\mathcal{L}_{	ext{RM}}(\psi) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigmaig(r_\psi(x, y_w) - r_\psi(x, y_l)ig) ight]$$
+          $$\mathcal{L}_{	ext{RM}}(\psi) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigmaig(r_\psi(x, y_w) - r_\psi(x, y_l)ig) 
+ight]$$
         </div>
       </li>
       <li>PPO policy optimization maximizing reward while applying a Kullback-Leibler (KL) divergence penalty against the reference model \(\pi_{	ext{ref}}\) to prevent policy collapse:
         <div class="formula-box">
-          $$	ext{obj}(	heta) = \mathbb{E}_{(x, y) \sim \mathcal{D}_{\pi_	heta}} \left[ r_\psi(x, y) - eta D_{	ext{KL}}ig(\pi_	heta(y \mid x) \,\|\, \pi_{	ext{ref}}(y \mid x)ig) ight]$$
+          $$	ext{obj}(	heta) = \mathbb{E}_{(x, y) \sim \mathcal{D}_{\pi_	heta}} \left[ r_\psi(x, y) - eta D_{	ext{KL}}ig(\pi_	heta(y \mid x) \,\|\, \pi_{	ext{ref}}(y \mid x)ig) 
+ight]$$
         </div>
       </li>
     </ol>
@@ -519,7 +536,9 @@ abla_	heta \log \pi_	heta(A_t \mid S_t) \, Q^{\pi_	heta}(S_t, A_t) ight]$$
       Substituting this parameterization directly into the pairwise preference loss eliminates the need for an explicit reward model or online reinforcement learning sampling loop:
     </p>
     <div class="formula-box">
-      $$\mathcal{L}_{	ext{DPO}}(	heta) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma \left( eta \log rac{\pi_	heta(y_w \mid x)}{\pi_{	ext{ref}}(y_w \mid x)} - eta \log rac{\pi_	heta(y_l \mid x)}{\pi_{	ext{ref}}(y_l \mid x)} ight) ight]$$
+      $$\mathcal{L}_{	ext{DPO}}(	heta) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma \left( eta \log rac{\pi_	heta(y_w \mid x)}{\pi_{	ext{ref}}(y_w \mid x)} - eta \log rac{\pi_	heta(y_l \mid x)}{\pi_{	ext{ref}}(y_l \mid x)} 
+ight) 
+ight]$$
     </div>
 
     <h3 id="grpo-rlvr">5.3 GRPO and Verifiable Rewards (RLVR)</h3>
@@ -536,7 +555,11 @@ abla_	heta \log \pi_	heta(A_t \mid S_t) \, Q^{\pi_	heta}(S_t, A_t) ight]$$
       The policy is updated with a clipped objective regularized by a direct token-level KL divergence penalty:
     </p>
     <div class="formula-box">
-      $$\mathcal{J}_{	ext{GRPO}}(	heta) = \mathbb{E}_{q \sim P(Q), \{o_i\}_{i=1}^G \sim \pi_{	heta_{	ext{old}}}} \left[ rac{1}{G} \sum_{i=1}^G \left( \min\left( rac{\pi_	heta(o_i \mid q)}{\pi_{	heta_{	ext{old}}}(o_i \mid q)} \hat{A}_i, \, 	ext{clip}\left(rac{\pi_	heta(o_i \mid q)}{\pi_{	heta_{	ext{old}}}(o_i \mid q)}, 1-\epsilon, 1+\epsilonight) \hat{A}_i ight) - eta D_{	ext{KL}}(\pi_	heta \,\|\, \pi_{	ext{ref}}) ight) ight]$$
+      $$\mathcal{J}_{	ext{GRPO}}(	heta) = \mathbb{E}_{q \sim P(Q), \{o_i\}_{i=1}^G \sim \pi_{	heta_{	ext{old}}}} \left[ rac{1}{G} \sum_{i=1}^G \left( \min\left( rac{\pi_	heta(o_i \mid q)}{\pi_{	heta_{	ext{old}}}(o_i \mid q)} \hat{A}_i, \, 	ext{clip}\left(rac{\pi_	heta(o_i \mid q)}{\pi_{	heta_{	ext{old}}}(o_i \mid q)}, 1-\epsilon, 1+\epsilon
+ight) \hat{A}_i 
+ight) - eta D_{	ext{KL}}(\pi_	heta \,\|\, \pi_{	ext{ref}}) 
+ight) 
+ight]$$
     </div>
 
     <!-- Section 6: References -->

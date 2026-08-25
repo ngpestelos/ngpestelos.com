@@ -181,12 +181,15 @@
       padding-bottom: 0;
     }
     .see-also ul { list-style: square; margin-bottom: 0; }
+    @media print {
+      .back { display: none; }
+    }
   </style>
 </head>
 <body>
   <main>
     <header>
-      <p class="back"><a href="/">← Nestor G Pestelos Jr</a> · <a href="/reference/">Reference</a></p>
+      <p class="back"><a href="/">← Nestor G Pestelos Jr</a> · <a href="/reference/">Reference</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
       <p class="kicker">Natural Language Processing & Systems</p>
       <h1>Tokens and Tokenization</h1>
       <p class="updated">August 25, 2026</p>

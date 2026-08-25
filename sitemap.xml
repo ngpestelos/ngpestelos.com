@@ -146,6 +146,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/kitbashing/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/large-language-models/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

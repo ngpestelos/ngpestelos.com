@@ -148,11 +148,14 @@
       color: var(--mute);
     }
     footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
   </style>
 </head>
 <body>
   <main id="top">
-    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Software Architecture · AI Safety</p>
     <h1>Plan-Approve-Execute</h1>
     <p class="updated">Reference entry · last updated August 25, 2026</p>

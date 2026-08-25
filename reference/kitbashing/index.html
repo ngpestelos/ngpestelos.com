@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitbashing &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Kitbashing is building a new model, prop, or digital asset from parts taken out of existing commercial kits rather than sculpting each piece from raw material. Origin in scale modeling, the Star Wars/ILM greeble history, and its later use in digital 3D and as a metaphor for creative recombination.">
+  <meta property="og:title" content="Kitbashing · Reference">
+  <meta property="og:description" content="Building new models from parts taken out of existing kits. Origin in scale modeling, the Star Wars/ILM greeble history, and its metaphorical use elsewhere.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/kitbashing/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/kitbashing/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Design · Creative Practice</p>
+    <h1>Kitbashing</h1>
+    <p class="updated">Reference entry · last updated August 26, 2026</p>
+
+    <p class="lede"><strong>Kitbashing</strong>, also called model bashing, is the practice of building a new scale model, prop, or digital asset out of pieces taken from existing commercial kits rather than sculpting every part from raw material.<span class="cite">[<a href="#ref1">1</a>]</span> A modeler with no kit for the subject they want cuts one from several kits instead: a hull from one box, a gun turret from another, greebled surface detail from a third. The term later extended past plastic into digital 3D asset libraries, and looser still, into a metaphor for any creative work assembled from borrowed, credited pieces.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#origin">Origin in scale modeling</a></li>
+        <li><a href="#star-wars">Star Wars and Industrial Light &amp; Magic</a></li>
+        <li><a href="#vs-scratch-building">Kitbashing vs. scratch-building</a></li>
+        <li><a href="#digital">Digital and VFX kitbashing</a></li>
+        <li><a href="#metaphor">Use as a metaphor outside modeling</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="origin">Origin in scale modeling</h2>
+    <p>Wikipedia defines kitbashing as the practice of making a new scale model by taking pieces out of kits, added either to a custom project or to another kit.<span class="cite">[<a href="#ref1">1</a>]</span> For hobbyists the appeal is speed: kitbashing a model is faster than scratch-building one from raw styrene, and it is the practical route to modeling a subject, real or imaginary, for which no commercial kit exists. For professional modelmakers building props and miniatures for film and television, the same technique produces detailed concept pieces on a production schedule that scratch-building cannot meet.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Dating the word precisely is harder than defining the practice. The Oxford English Dictionary's earliest citation for "kitbash" is dated 1972, in <em>Railroad Model Craftsman</em>.<span class="cite">[<a href="#ref2">2</a>]</span> A 2023 FineScale Modeler search for earlier usage found the word functioning as a title term two to three years before that: "Kit-bashing Business Cars" by John Archer Morton in the February 1969 <em>Model Railroader</em>, and "Kitbashed 60-foot Boxcars" by David W. Messer in the June 1970 issue. Whether either article is the actual point of origin, or an editor's title using a term already circulating among modelers, is not resolved by that search.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Not every modeler adopted the word. Art Curren, a well-known HO-scale modeler at Kalmbach Publishing, avoided it as "too violent and imprecise a term" for what he did, preferring to call the same practice "kit mingling."<span class="cite">[<a href="#ref3">3</a>]</span> "Kitbashing" won out as the standard term regardless.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="star-wars">Star Wars and Industrial Light &amp; Magic</h2>
+    <p>Kitbashing existed before <em>Star Wars</em>, but the film is why the term reached people who had never built a model. Wikipedia credits the fine modelwork in <em>Thunderbirds</em>, <em>Star Trek</em>, <em>2001: A Space Odyssey</em>, and <em>Star Wars Episode IV: A New Hope</em> with bringing kitbashing to a wider public, with many of the spaceship miniatures incorporating parts from tank, speedboat, and car kits.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>George Lucas coined a companion term for the surface detail that kitbashed parts produced: "greeble," a word for something that otherwise defies description, according to Frank Burton, a department head on <em>The Empire Strikes Back</em>. Fon Davis, another ILM modelmaker, describes greebles as the tiny tubes and mechanical-looking parts that break up a miniature's surface and make it read as a real, working machine. On the original trilogy, ILM's model shop kept a room stocked on one side with sheet and rod styrene and on the other with commercial kits chosen for their small, plausible-looking mechanical parts, sourced from World War II flak cannons, US Navy battleships, fighter planes, T-34 tanks, and submarines.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>One part recurred often enough that ILM modelmaker Adam Savage gave it a name: the "universal greeblie," a small domed piece with four raised pips, sourced from a commercial kit of the Krupp K5 rail cannon, a World War II-era German artillery piece. In Savage's account, "the universal greeblie &ndash; the UG &ndash; was on, I think, every single Industrial Light and Magic model almost ever."<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="vs-scratch-building">Kitbashing vs. scratch-building</h2>
+    <p>Scratch-building is the opposite discipline: constructing a model entirely from raw materials, without commercial kit parts. Kitbashing sits between scratch-building and building a kit unmodified out of the box. It draws on manufactured components, the way scratch-building doesn't, but it reassembles and recombines them into something the original kits didn't depict, the way an unmodified build doesn't.<span class="cite">[<a href="#ref1">1</a>]</span> The two are not mutually exclusive within one model: a kitbashed hull can carry scratch-built greebles, and vice versa.</p>
+
+    <h2 id="digital">Digital and VFX kitbashing</h2>
+    <p>The technique moved from styrene to polygons as visual-effects and game production shifted to computer graphics. Digital kitbashing follows the same three moves as the physical version: an artist selects existing 3D model pieces from a personal or licensed asset library, modifies, scales, or combines them to fit the project's look, and composes the result with attention to visual coherence, rather than modeling every prop, building, or vehicle from a blank scene.<span class="cite">[<a href="#ref5">5</a>]</span> The appeal carries over unchanged from the plastic version: it is faster than building every asset from nothing, which matters most in concept and previsualization work where a scene needs to look plausible before it needs to be final.<span class="cite">[<a href="#ref5">5</a>]</span> Commercial 3D kit libraries, sold specifically for this purpose, are now a normal part of film and game production pipelines.</p>
+
+    <h2 id="metaphor">Use as a metaphor outside modeling</h2>
+    <p>Outside modeling and VFX, "kitbashing" gets used loosely as a metaphor for creative work built from existing, borrowed pieces rather than invented whole cloth. Writers reuse it as shorthand for combinatorial creativity generally, the way Tiago Forte opens a chapter on remixing one's own notes and work product with the Adam Savage "universal greeblie" story.<span class="cite">[<a href="#ref6">6</a>]</span> That usage trades on the modeling image without claiming kitbashing is a formal term of art in those fields. The nearer formal term in software is <em>code reuse</em>: using existing source code, via copy-paste, shared libraries, or frameworks, instead of writing new code. At least one 3D-modeling explainer draws the comparison directly, calling the two "conceptually similar."<span class="cite">[<a href="#ref7">7</a>]</span> No source was found establishing "kitbashing" itself as standardized terminology inside software engineering; the connection currently rests on analogy, not shared vocabulary.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/writing/credit-cures-plagiarism-not-permission/">Credit Cures Plagiarism, Not Permission</a> (essay opening from the same Adam Savage/ILM anecdote, on citing what you borrow)</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#origin">↑</a> Wikipedia, "Kitbashing." <a href="https://en.wikipedia.org/wiki/Kitbashing">https://en.wikipedia.org/wiki/Kitbashing</a></li>
+      <li id="ref2"><a class="backlink" href="#origin">↑</a> Oxford English Dictionary, entry "kitbashing, n.," earliest evidence 1972, <em>Railroad Model Craftsman</em>, as quoted in FineScale Modeler's etymology research (ref. 3); the OED entry itself sits behind a subscription.</li>
+      <li id="ref3"><a class="backlink" href="#origin">↑</a> FineScale Modeler, "The history of the word kitbashing," October 2023. <a href="https://finescale.com/online-extras/2023/10/the-history-of-the-word-kitbashing/">https://finescale.com/online-extras/2023/10/the-history-of-the-word-kitbashing/</a></li>
+      <li id="ref4"><a class="backlink" href="#star-wars">↑</a> Den of Geek, "Greebles: How Tiny Details Make a Huge Star Wars Universe," interviews with Frank Burton, Fon Davis, and Adam Savage. <a href="https://www.denofgeek.com/movies/greebles-how-tiny-details-make-a-huge-star-wars-universe/">https://www.denofgeek.com/movies/greebles-how-tiny-details-make-a-huge-star-wars-universe/</a></li>
+      <li id="ref5"><a class="backlink" href="#digital">↑</a> RenderHub, "Exploring the World of Kitbashing in 3D: Unleashing Creativity." <a href="https://www.renderhub.com/blog/exploring-the-world-of-kitbashing-in-3d-unleashing-creativity">https://www.renderhub.com/blog/exploring-the-world-of-kitbashing-in-3d-unleashing-creativity</a></li>
+      <li id="ref6"><a class="backlink" href="#metaphor">↑</a> Tiago Forte, <em>Building a Second Brain</em> (Atria, 2022), Ch. 7 "Express — Show Your Work"; Nestor G. Pestelos Jr., "Credit Cures Plagiarism, Not Permission." <a href="https://ngpestelos.com/writing/credit-cures-plagiarism-not-permission/">https://ngpestelos.com/writing/credit-cures-plagiarism-not-permission/</a></li>
+      <li id="ref7"><a class="backlink" href="#metaphor">↑</a> Devopedia, "Code Reuse"; comparison to kitbashing noted in general 3D-modeling coverage of the term. <a href="https://devopedia.org/code-reuse">https://devopedia.org/code-reuse</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>

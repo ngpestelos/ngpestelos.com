@@ -185,11 +185,14 @@
       color: var(--mute);
     }
     footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+    @media print {
+      .back { display: none; }
+    }
   </style>
 </head>
 <body>
   <main>
-    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Reference Document</p>
     <h1>Artificial Intelligence</h1>
     <p class="subtitle">A citable reference on Artificial Intelligence (AI): the rational agent paradigm, historical taxonomy, statistical foundation models, and autonomy bounds.</p>
