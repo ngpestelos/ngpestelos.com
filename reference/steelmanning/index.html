@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steelmanning — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Steelmanning is the practice of constructing the strongest possible version of an argument, typically one held by an opponent, before evaluating or responding to it. Covers its origin, its debt to the principle of charity, the manual and LLM-assisted methods, and the iron man fallacy it can produce when misapplied.">
+  <meta property="og:title" content="Steelmanning — Reference">
+  <meta property="og:description" content="The practice of constructing the strongest version of an opposing argument before responding to it. Origin, method, and the fallacy it produces when misapplied.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/steelmanning/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/steelmanning/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Philosophy</p>
+    <h1>Steelmanning</h1>
+    <p class="updated">Reference entry &middot; last updated August 25, 2026</p>
+
+    <p class="lede"><strong>Steelmanning</strong> is the practice of constructing the strongest possible version of an argument, typically one held by an opponent, before evaluating or responding to it.<span class="cite">[<a href="#ref1">1</a>]</span> It is named as the deliberate inverse of the straw man, a fallacy in which an arguer substitutes a weaker version of an opponent's position for the position actually held.<span class="cite">[<a href="#ref2">2</a>]</span> This entry covers the term's origin, its debt to the older philosophical idea of the principle of charity, the manual and AI-assisted methods used to do it, and the fallacy it produces when a position is strengthened beyond what its holder would recognize or endorse.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#etymology">Etymology</a></li>
+        <li><a href="#principle-of-charity">Relationship to the principle of charity</a></li>
+        <li><a href="#steel-man-vs-straw-man">The steel man and the straw man</a></li>
+        <li><a href="#method">Method</a>
+          <ol>
+            <li><a href="#manual-protocol">Manual protocol</a></li>
+            <li><a href="#ideological-turing-test">The ideological Turing test</a></li>
+            <li><a href="#llm-assisted">LLM-assisted protocol</a></li>
+          </ol>
+        </li>
+        <li><a href="#applications">Applications</a></li>
+        <li><a href="#limitations">Limitations</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="etymology">Etymology</h2>
+    <p>The word combines <em>steel</em> with the suffix <em>-man</em>, formed as the deliberate inverse of <em>straw man</em>: a figure built of straw is weak and easy to knock down, one built of steel is not. The earliest documented use in something close to its current sense appears in a footnote to a 2011 essay on disagreement by Luke Muehlhauser, published on the community blog LessWrong: "Sometimes the term 'steel man' is used to refer to a position's or argument's improved form&nbsp;&hellip; a 'steel man' is an improvement of someone's position or argument that is harder to defeat than their originally stated position or argument."<span class="cite">[<a href="#ref1">1</a>]</span> The footnote's phrasing, "sometimes the term is used," suggests the word was already circulating before the essay rather than being introduced there for the first time.</p>
+    <p class="unattributed">No earlier documented use has been established; some secondary sources attribute coinage to other individuals, but none point to a primary source that predates or corroborates that claim, so it is not repeated here.</p>
+
+    <h2 id="principle-of-charity">Relationship to the principle of charity</h2>
+    <p>Steelmanning descends from an older idea in the philosophy of language: the principle of charity, the interpretive norm that a speaker's statements should be understood as more likely rational and true than a hostile or overly literal reading would suggest. The idea is sometimes traced to a 1959 paper by Neil L. Wilson on reference, and it plays a role in W. V. O. Quine's account of radical translation, where assuming a speaker is broadly rational becomes a precondition for translating them at all.<span class="cite">[<a href="#ref3">3</a>]</span> Donald Davidson gave the principle its most influential statement: for Davidson, charity is not a matter of politeness toward a speaker but a condition for interpretation to succeed in the first place, since without assuming a speaker is largely rational and largely right, no coherent meaning can be assigned to their words at all.<span class="cite">[<a href="#ref4">4</a>]</span><span class="cite">[<a href="#ref5">5</a>]</span> Steelmanning applies the same interpretive move specifically to argument evaluation: charity toward what a position could mean, extended to charity toward the strongest case that position could make.</p>
+
+    <h2 id="steel-man-vs-straw-man">The steel man and the straw man</h2>
+    <p>In informal logic, the straw man is a well-documented fallacy: an arguer distorts, oversimplifies, or substitutes a weaker version of an opponent's position, refutes that substitute, and treats the refutation as if it applied to the position actually held.<span class="cite">[<a href="#ref2">2</a>]</span> Scott Aikin and John Casey's influential treatment identifies three related distortions along the same axis: the straw man proper (misrepresenting the position), the weak man (accurately representing one of an opponent's actual positions, but a weak or unrepresentative one, and treating it as the position), and the hollow man (attacking a position no identifiable person actually holds).<span class="cite">[<a href="#ref2">2</a>]</span> Steelmanning is defined by moving in the opposite direction along all three axes at once: toward the most accurate, the strongest, and the most genuinely held version of the position under discussion.</p>
+
+    <h2 id="method">Method</h2>
+
+    <h3 id="manual-protocol">Manual protocol</h3>
+    <p>A common form of the practice runs in five steps: listen to the position without formulating a rebuttal first; ask what the strongest evidence for it is and under what conditions its holder would consider it wrong; summarize the position back in its strongest form; check that summary against the position's actual holder, adjusting until they agree it is fair, or until the exact point of disagreement is isolated; and only then respond to that strengthened version, not an earlier or weaker one.</p>
+    <p class="unattributed">No single named source documents this exact five-step sequence; it is a synthesis of the practice as commonly described, not a citation to one text.</p>
+
+    <h3 id="ideological-turing-test">The ideological Turing test</h3>
+    <p>Economist Bryan Caplan proposed a specific test of steelmanning ability by analogy with the Turing test for machine intelligence: a person passes an "ideological Turing test" for a position they disagree with if their stated version of that position is indistinguishable, to a neutral judge, from a version stated by someone who actually holds it.<span class="cite">[<a href="#ref6">6</a>]</span> Caplan introduced the test in response to a claim that people on one side of a political divide understand the other side's arguments better than the reverse is true, arguing that the ability to state an opposing view as clearly and persuasively as its own proponents is itself "a genuine symptom of objectivity and wisdom."<span class="cite">[<a href="#ref6">6</a>]</span></p>
+
+    <h3 id="llm-assisted">LLM-assisted protocol</h3>
+    <p>A language model can be used to generate the opposing case directly: build the strongest version of one argument first, then, in a separate session or a different model given only the argument itself and not the reasoning that produced it, prompt for the strongest possible opposite case. Keeping the second step in a fresh context matters in practice, because a model (or person) that helped construct the original argument tends to defend it even under an explicit instruction to attack it, while a reader encountering only the finished argument has no such investment.</p>
+    <p class="unattributed">No external source found for this specific fresh-context requirement as a named technique; it is a practical extension of the general method above, not a documented finding.</p>
+
+    <h2 id="applications">Applications</h2>
+    <p><a href="/reference/adversarial-agent-review/">Adversarial review</a>, a pattern in AI agent systems where an agent's output is checked by a separate process instructed to find fault with it rather than confirm it, is a structured, repeatable version of the same underlying move: engaging the strongest available case against a claim instead of the first available one. Formal debate between AI systems is a further step in the same direction. Irving, Christiano, and Amodei propose training two AI agents to argue opposing sides of a question in front of a human or AI judge, on the premise that finding a flaw in an opponent's argument is an easier problem to solve than constructing a correct answer unassisted, and that a debate format therefore surfaces a stronger case on each side than either side would produce alone.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+
+    <h2 id="limitations">Limitations</h2>
+    <p><strong>The iron man fallacy.</strong> Aikin and Casey identify a failure mode on the other side of steelmanning: reconstructing a position as stronger than any version its actual holder has stated or would endorse, then treating a response to that invented, stronger version as if it settled the debate. They term this the iron man fallacy. It misrepresents the opponent's position just as the straw man does, in the opposite direction, and can make a debater's eventual concession look more generous, or an opponent's actual position look weaker, than either is.<span class="cite">[<a href="#ref8">8</a>]</span></p>
+    <p><strong>"Steelmanning your own argument" is a different thing.</strong> Steelmanning targets an opposing position; strengthening one's own existing claim, or explaining away evidence against it, is not the same activity even when it borrows the name. Motivated reasoning research finds that a reasoner's motivation to reach a particular conclusion changes which evidence and which reasoning strategies get used, while the reasoner still experiences the process as appropriately rigorous throughout.<span class="cite">[<a href="#ref9">9</a>]</span> A search for reasons a position is right, run only in that direction, is difficult to distinguish from motivated reasoning by introspection alone; genuine steelmanning is checked externally, against the actual opposing case, not against how convincing the exercise feels from the inside.</p>
+    <p><strong>Scope.</strong> The practice presumes the argument under reconstruction is a genuine, good-faith position capable of a stronger form. Applied to a deliberately manipulative or bad-faith argument, strengthening it produces a more effective piece of manipulation.</p>
+    <p class="unattributed">No external source found for this specific scope limitation as a named finding; it follows from the definition of steelmanning as an act of good-faith interpretation, not from a documented study.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/adversarial-agent-review/">Reference: Adversarial Review</a> &mdash; the structured, repeatable version of the same underlying move, applied to AI agent output</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Luke Muehlhauser ("lukeprog"), "Better Disagreement," <em>LessWrong</em>, October 24, 2011 &mdash; <a href="https://www.lesswrong.com/posts/FhH8m5n8qGSSHsAgG/better-disagreement">https://www.lesswrong.com/posts/FhH8m5n8qGSSHsAgG/better-disagreement</a></li>
+      <li id="ref2"><span class="backlink">^</span> Scott F. Aikin &amp; John Casey, "Straw Men, Weak Men, and Hollow Men," <em>Argumentation</em> 25(1), 87&ndash;105 (2011). DOI: <a href="https://doi.org/10.1007/s10503-010-9199-y">10.1007/s10503-010-9199-y</a></li>
+      <li id="ref3"><span class="backlink">^</span> W. V. O. Quine, <em>Word and Object</em> (MIT Press, 1960)</li>
+      <li id="ref4"><span class="backlink">^</span> Donald Davidson, "Radical Interpretation," <em>Dialectica</em> 27(3&ndash;4), 313&ndash;328 (1973). DOI: <a href="https://doi.org/10.1111/j.1746-8361.1973.tb00623.x">10.1111/j.1746-8361.1973.tb00623.x</a>. Free full text: <a href="https://www.marcellodibello.com/commonground/readings/DavidsonRadicalInt.pdf">marcellodibello.com (PDF)</a></li>
+      <li id="ref5"><span class="backlink">^</span> "Donald Davidson," <em>Stanford Encyclopedia of Philosophy</em> &mdash; <a href="https://plato.stanford.edu/entries/davidson/">https://plato.stanford.edu/entries/davidson/</a></li>
+      <li id="ref6"><span class="backlink">^</span> Bryan Caplan, "The Ideological Turing Test," <em>EconLog</em>, June 20, 2011 &mdash; <a href="https://www.econlib.org/archives/2011/06/the_ideological.html">https://www.econlib.org/archives/2011/06/the_ideological.html</a></li>
+      <li id="ref7"><span class="backlink">^</span> Geoffrey Irving, Paul Christiano, Dario Amodei, "AI Safety via Debate" (2018). arXiv: <a href="https://arxiv.org/abs/1805.00899">1805.00899</a></li>
+      <li id="ref8"><span class="backlink">^</span> Scott F. Aikin &amp; John P. Casey, "Straw Men, Iron Men, and Argumentative Virtue," <em>Topoi</em> 35, 431&ndash;440 (2016). DOI: <a href="https://doi.org/10.1007/s11245-015-9308-5">10.1007/s11245-015-9308-5</a></li>
+      <li id="ref9"><span class="backlink">^</span> Ziva Kunda, "The Case for Motivated Reasoning," <em>Psychological Bulletin</em> 108(3), 480&ndash;498 (1990). DOI: <a href="https://doi.org/10.1037/0033-2909.108.3.480">10.1037/0033-2909.108.3.480</a>. Free full text: <a href="https://fbaum.unc.edu/teaching/articles/Psych-Bulletin-1990-Kunda.pdf">fbaum.unc.edu (PDF)</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
