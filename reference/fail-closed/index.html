@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fail-Closed · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Fail-closed is a failure mode that withholds an action when the system cannot tell that the action is permitted or safe. Relation to fail-secure, Saltzer fail-safe defaults, and last-known-good.">
+  <meta property="og:title" content="Fail-Closed · Reference">
+  <meta property="og:description" content="A failure mode that withholds an action under uncertainty. Fail-secure, fail-safe defaults, last-known-good.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/fail-closed/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/fail-closed/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="kicker">Software Engineering · Safety</p>
+    <h1>Fail-Closed</h1>
+    <p class="updated">Reference entry · last updated August 25, 2026</p>
+
+    <p class="lede"><strong>Fail-closed</strong> is a failure mode in which a system withholds a requested action when it cannot determine that the action is permitted or safe. The default under uncertainty is to deny or stop. The term is engineering speech, not an IETF headword. The nearest recommended glossary term is <em>fail-secure</em>: a shutdown that preserves a secure state.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#fail-secure">Fail-secure and fail-safe</a></li>
+        <li><a href="#defaults">Fail-safe defaults</a></li>
+        <li><a href="#last-known-good">Last-known-good</a></li>
+        <li><a href="#agents">Software agents</a></li>
+        <li><a href="#not">What it is not</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="fail-secure">Fail-secure and fail-safe</h2>
+    <p>RFC 4949 (Internet Security Glossary, Version 2) defines <em>fail-secure</em> as a mode of termination that prevents loss of a secure state when a failure occurs or is detected. Damage to some resource may still happen. It defines <em>fail-safe</em> two ways: as a synonym of fail-secure, and as a mode that prevents damage to specified resources (data, property, life) even if a security compromise still occurs. Those two senses oppose each other. The glossary tells authors not to use <em>fail-safe</em> without a local definition, and to prefer <em>fail-secure</em> when the intent is to keep a secure state.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The NIST CSRC glossary repeats those definitions and cites CNSSI 4009-2015 from RFC 4949.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>In practice, <em>fail-closed</em> is used for the fail-secure choice: if the decision cannot be made, the door stays locked, the request is denied, the process stops. <em>Fail-open</em> is the other choice: if the decision service is down, the request is allowed.</p>
+
+    <h2 id="defaults">Fail-safe defaults</h2>
+    <p>Jerome Saltzer and Michael Schroeder stated the access-control form in 1975 as <em>fail-safe defaults</em>: base access decisions on permission rather than exclusion. The default situation is lack of access. The protection scheme lists the conditions under which access is permitted. They credit the principle to E. Glaser (1965).<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>A conservative design argues why an object should be accessible. It does not argue why it should be refused and then miss a case. When an authorization check cannot complete, Saltzer's default is to refuse.</p>
+
+    <h2 id="last-known-good">Last-known-good</h2>
+    <p><em>Last-known-good</em> is a related recovery, not a synonym of fail-closed. Instead of stopping, the system keeps a previously validated configuration and falls back to it when a new configuration fails to load or validate.</p>
+    <p>The Kubernetes Node API documents this as <code>status.config.lastKnownGood</code> on <code>NodeConfigStatus</code>. The node falls back to that checkpoint when it cannot use the assigned config. Assigned becomes last-known-good after a soak period in which it has been active without error. If the config source is cleared, last-known-good is cleared too, because local defaults are treated as good.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>The dynamic kubelet-config feature that populated that field is deprecated in Kubernetes 1.22. The field remains the documented example of a last-known-good fallback in the API.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>Fail-closed refuses the new action. Last-known-good continues with an older validated state. Both avoid applying an unvalidated new state. They differ on whether work stops or continues on the last good copy.</p>
+
+    <h2 id="agents">Software agents</h2>
+    <p>This site uses <em>fail-closed</em> for an agent that stops or escalates when the next action is not licensed by policy or evidence, rather than guessing. That usage applies Saltzer's default and RFC 4949 fail-secure to a tool-calling loop. It is not a separate standard term.</p>
+    <p>A public example is the guest-stay agent demo: act, escalate to a host, or stop. The split is the product of the control plane, not a prompt vibe.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="not">What it is not</h2>
+    <p>Exponential backoff is a retry schedule after a failed attempt. It can sit next to a fail-closed policy (retry a transient 429, stop when the action is not allowed). It is not the same decision.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <p>Fail-soft, in RFC 4949, is selective termination of non-essential functions. The system keeps running in a reduced form. Fail-closed on a given action may still leave other functions running; fail-soft is about which functions are dropped, not about whether an uncertain action is permitted.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>A circuit that retries without a stop rule is fail-open under uncertainty. A demo that always produces an answer when evidence is missing is the same choice.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/agents/">Agents</a></li>
+      <li><a href="/reference/exponential-backoff/">Exponential backoff</a></li>
+      <li><a href="/reference/toctou-race-condition/">TOCTOU race condition</a></li>
+      <li><a href="/reference/adversarial-agent-review/">Adversarial review</a></li>
+      <li><a href="https://guest-agent-demo.ngpcloud.org/">Play: guest-stay agent</a> (worked example of stop and escalate)</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#fail-secure">↑</a> R. Shirey, <em>Internet Security Glossary, Version 2</em>, RFC 4949, August 2007. Entries <em>fail-safe</em>, <em>fail-secure</em>, <em>fail-soft</em>, <em>failure control</em>. <a href="https://www.rfc-editor.org/rfc/rfc4949.html">https://www.rfc-editor.org/rfc/rfc4949.html</a></li>
+      <li id="ref2"><a class="backlink" href="#fail-secure">↑</a> NIST Computer Security Resource Center, glossary term <em>fail secure</em>, citing CNSSI 4009-2015 from IETF RFC 4949 Ver 2. <a href="https://csrc.nist.gov/glossary/term/fail_secure">https://csrc.nist.gov/glossary/term/fail_secure</a></li>
+      <li id="ref3"><a class="backlink" href="#defaults">↑</a> Jerome H. Saltzer and Michael D. Schroeder, “The Protection of Information in Computer Systems,” 1975. Principle: fail-safe defaults. Teaching copy: <a href="https://www.cs.virginia.edu/~evans/cs551/saltzer/">https://www.cs.virginia.edu/~evans/cs551/saltzer/</a></li>
+      <li id="ref4"><a class="backlink" href="#last-known-good">↑</a> Kubernetes, <em>Node</em> API, <code>NodeConfigStatus.lastKnownGood</code>. Dynamic kubelet configuration that used this field is deprecated since 1.22. <a href="https://kubernetes.io/docs/reference/kubernetes-api/core/node-v1/">https://kubernetes.io/docs/reference/kubernetes-api/core/node-v1/</a></li>
+      <li id="ref5"><a class="backlink" href="#agents">↑</a> Guest-stay agent demo (public Play). Act, escalate, host override, stop. <a href="https://guest-agent-demo.ngpcloud.org/">https://guest-agent-demo.ngpcloud.org/</a>. Source: <a href="https://github.com/ngpestelos/guest-stay-agent">https://github.com/ngpestelos/guest-stay-agent</a></li>
+      <li id="ref6"><a class="backlink" href="#not">↑</a> Nestor G. Pestelos Jr., “Exponential backoff,” reference entry. <a href="https://ngpestelos.com/reference/exponential-backoff/">https://ngpestelos.com/reference/exponential-backoff/</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+</body>
+</html>
