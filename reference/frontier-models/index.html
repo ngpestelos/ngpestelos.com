@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontier Models, Architectures, and Tokens — Reference — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on frontier artificial intelligence models, structural model architectures (dense, Mixture-of-Experts, hybrid reasoning), and tokenization mechanics.">
+  <meta property="og:title" content="Frontier Models, Architectures, and Tokens — Reference">
+  <meta property="og:description" content="A citable ground-truth reference on frontier AI models, structural model architectures (dense, Mixture-of-Experts, hybrid reasoning), and tokenization mechanics.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/frontier-models/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/frontier-models/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.4rem 0;
+      font-size: 0.9rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      background: var(--well);
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+      border: 1px solid #e1e4e8;
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      margin: 1.2rem 0;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+    .references {
+      margin-top: 2.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.88rem;
+    }
+    .references ol { padding-left: 1.4rem; }
+    .references li { margin-bottom: 0.5rem; color: var(--mute); }
+    .references a { color: var(--link); word-break: break-all; }
+    .see-also {
+      margin-top: 2rem;
+      padding: 1rem 1.4rem;
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+    .see-also h2 {
+      margin-top: 0;
+      border-bottom: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding-bottom: 0;
+    }
+    .see-also ul { list-style: square; margin-bottom: 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="back"><a href="/">← Nestor G Pestelos Jr</a> · <a href="/reference/">Reference</a></p>
+      <p class="kicker">Artificial Intelligence & Computation</p>
+      <h1>Frontier Models, Architectures, and Tokens</h1>
+      <p class="updated">August 25, 2026</p>
+    </header>
+
+    <p class="lede"><strong>Frontier models</strong> are large-scale artificial intelligence systems trained at the technological edge of compute capacity, data volume, and algorithmic complexity, exhibiting cross-domain reasoning, multimodal processing, and autonomous tool-execution capabilities. Understanding the operation, deployment economics, and capabilities of these systems requires examining their underlying structural architectures (dense transformers, sparse Mixture-of-Experts, and test-time reasoning systems) as well as the fundamental unit of machine cognition: the token.</p>
+
+    <nav class="toc">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#frontier-models">Frontier Models</a>
+          <ol>
+            <li><a href="#definition-and-scaling">Definition and Scaling Laws</a></li>
+            <li><a href="#capabilities-and-orchestration">Capability Regimes and Agentic Orchestration</a></li>
+          </ol>
+        </li>
+        <li><a href="#model-architectures">Model Architectures</a>
+          <ol>
+            <li><a href="#dense-transformers">Dense Transformers</a></li>
+            <li><a href="#mixture-of-experts">Sparse Mixture-of-Experts (MoE)</a></li>
+            <li><a href="#latent-and-hybrid-moe">Latent MoE and Compressed Attention</a></li>
+            <li><a href="#hybrid-reasoning">Test-Time Compute and Hybrid Reasoning Models</a></li>
+            <li><a href="#small-language-models">Small Language Models (SLMs) and Edge Variants</a></li>
+          </ol>
+        </li>
+        <li><a href="#tokens-and-tokenization">Tokens and Tokenization</a>
+          <ol>
+            <li><a href="#token-definition">Token Definition and Byte-Pair Encoding</a></li>
+            <li><a href="#token-lifecycle">Input, Output, and Thinking Tokens</a></li>
+            <li><a href="#kv-cache-and-prompt-caching">KV Cache Scaling and Prompt Caching Economics</a></li>
+          </ol>
+        </li>
+        <li><a href="#architectural-comparison">Comparative Taxonomy</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <section id="frontier-models">
+      <h2>1. Frontier Models</h2>
+      
+      <h3 id="definition-and-scaling">1.1 Definition and Scaling Laws</h3>
+      <p>The term <em>frontier model</em> refers to state-of-the-art foundation models that operate at the performance boundary of artificial intelligence [1]. These models are typically trained using distributed supercomputing clusters consuming between \(10^{25}\) and \(10^{27}\) total floating-point operations (FLOPs) [2]. Representative frontier systems include OpenAI's GPT-4o, Anthropic's Claude 3.5 Opus and Sonnet, Google's Gemini 2.0/3.7 Pro, Moonshot AI's Kimi K3, and DeepSeek's V4 series.</p>
+      
+      <p>The development of frontier models is guided by empirical scaling laws formulated by Kaplan et al. [3] and revised by Chinchilla compute-optimal scaling guidelines [4]. Under the Chinchilla formulation, given a compute budget \(C pprox 6 N D\) (where \(N\) is parameter count and \(D\) is the number of training tokens), model size and dataset size must be scaled in equal proportion:</p>
+      
+      \[N_{opt} \propto C^{0.5}, \quad D_{opt} \propto C^{0.5}\]
+      
+      <p>Frontier models have transitioned from single-modality text predictors into natively multimodal systems capable of ingesting text, high-resolution imagery, audio, and video directly within their attention mechanisms [5].</p>
+
+      <h3 id="capabilities-and-orchestration">1.2 Capability Regimes and Agentic Orchestration</h3>
+      <p>Frontier models are characterized by emergent capabilities, including formal multi-step deduction, code synthesis, long-horizon plan formulation, and tool orchestration. In modern agentic software systems (e.g., Hermes Agent, Claude Code), frontier models primarily operate in an <strong>Advisor-Executor</strong> configuration: high-parameter frontier models formulate global architecture, define invariants, and verify safety constraints, while high-throughput, low-cost models execute localized tasks [6].</p>
+    </section>
+
+    <section id="model-architectures">
+      <h2>2. Model Architectures</h2>
+
+      <h3 id="dense-transformers">2.1 Dense Transformers</h3>
+      <p>A <strong>dense transformer</strong> is an autoregressive neural network architecture based on the multi-head self-attention mechanism [7], in which every parameter is activated during every forward pass for every token. If a dense model contains \(N\) parameters, processing a single token requires approximately \(2N\) floating-point operations (FLOPs) during inference.</p>
+      <p>Examples of dense architectures include original GPT-3 (175B), Llama 3.3 (70B), and standard bidirectional encoders. While dense models provide uniform representation capacity, their computational cost scales linearly with total parameter count, imposing severe hardware and memory bandwidth constraints at frontier scale.</p>
+
+      <h3 id="mixture-of-experts">2.2 Sparse Mixture-of-Experts (MoE)</h3>
+      <p>A <strong>Sparse Mixture-of-Experts (MoE)</strong> architecture decouples total parameter capacity from per-token compute by replacing dense feed-forward network (FFN) layers with multiple independent "expert" sub-networks and a parameterized gating router [8].</p>
+      <p>For a token representation vector \(x\), the gating network computes a sparse routing distribution \(G(x)\) over \(E\) total experts:</p>
+
+      \[G(x) = 	ext{Softmax}(	ext{TopK}(H(x), k)), \quad H(x)_i = (x \cdot W_g)_i + \epsilon\]
+
+      <p>The layer output \(y\) is the weighted sum of the activations from the \(k\) selected experts (where \(k \ll E\)):</p>
+
+      \[y = \sum_{i \in 	ext{TopK}} G(x)_i \cdot 	ext{Expert}_i(x)\]
+
+      <p>For instance, DeepSeek-V4-Flash utilizes 284 billion total parameters across its expert pool, but activates only 13 billion parameters per token (\(k=8\)). Similarly, Meta's Llama 4 Scout routes tokens across 16 experts (17B active / 109B total), while Llama 4 Maverick routes across 128 experts (17B active / 400B total). Sparse MoE enables massive memorization capacity and domain specialization while maintaining the inference latency of a compact model [9].</p>
+
+      <h3 id="latent-and-hybrid-moe">2.3 Latent MoE and Compressed Attention</h3>
+      <p>Modern MoE systems employ advanced routing and compression techniques to overcome communication bottlenecks across distributed GPU clusters. Key innovations include:</p>
+      <ul>
+        <li><strong>Multi-Head Latent Attention (MLA):</strong> Low-rank key-value joint compression that compresses the KV cache into a compact latent vector during inference, reducing memory footprints by over 80% relative to standard Multi-Head Attention [10].</li>
+        <li><strong>Fine-Grained Expert Segmentation:</strong> Partitioning large monolithic experts into smaller sub-experts (e.g., 64 or 128 sub-units) with dedicated shared experts that are continuously active across all tokens to preserve cross-domain general knowledge [10].</li>
+        <li><strong>Compressed Sparse Attention (CSA):</strong> Combining local sliding-window attention with sparse global key retrieval to maintain linear scaling across context windows exceeding one million tokens.</li>
+      </ul>
+
+      <h3 id="hybrid-reasoning">2.4 Test-Time Compute and Hybrid Reasoning Models</h3>
+      <p><strong>Test-time compute scaling</strong> represents a paradigm shift where models allocate dynamic computation during inference through structured internal reasoning ("thinking tokens") prior to producing a user-facing answer [11].</p>
+      <p>Reinforcement learning algorithms, such as Group Relative Policy Optimization (GRPO) and Process Reward Models (PRMs), train models to generate self-correction traces, backtrack along dead ends, and explore multiple solution hypotheses [12]. Models such as Gemini 3.7 Flash and DeepSeek-R1 allow users to dynamically adjust the thinking budget (e.g., from zero to 32,000 reasoning tokens), trading higher latency and token volume for verified mathematical and logical precision.</p>
+
+      <h3 id="small-language-models">2.5 Small Language Models (SLMs) and Edge Variants</h3>
+      <p><strong>Small Language Models (SLMs)</strong> are compact models ranging from 1 billion to 8 billion parameters, optimized via distillation, synthetic data generation, and heavy quantization (e.g., 4-bit GGUF, AWQ) [13]. SLMs (such as Microsoft's Phi-4, Qwen 2.5 3B/7B, and Llama 3.2 1B/3B) execute locally on consumer hardware and edge devices, serving as dedicated worker agents in sandboxed terminal environments.</p>
+    </section>
+
+    <section id="tokens-and-tokenization">
+      <h2>3. Tokens and Tokenization</h2>
+
+      <h3 id="token-definition">3.1 Token Definition and Byte-Pair Encoding</h3>
+      <p>A <strong>token</strong> is the fundamental atomic unit of data processed by a large language model. In natural language processing, text is not read as characters or words directly; instead, a deterministic tokenizer maps input strings into numerical token IDs drawn from a fixed vocabulary \(V\) (typically \(32,000 \le |V| \le 256,000\)) [14].</p>
+      <p>The dominant algorithm is <strong>Byte-Pair Encoding (BPE)</strong>, which iteratively merges the most frequent adjacent character or byte pairs in a corpus into single subword tokens. In standard English text, 1,000 tokens correspond to approximately 750 words (an average ratio of 1.33 tokens per word).</p>
+
+      <h3 id="token-lifecycle">3.2 Input, Output, and Thinking Tokens</h3>
+      <p>Language model billing and resource allocation are structured around three distinct token categories:</p>
+      <ul>
+        <li><strong>Input Tokens (Prompt Context):</strong> The initial context, system instructions, document attachments, and conversational history passed into the model. Input tokens are processed in parallel during the prefill phase.</li>
+        <li><strong>Output Tokens (Completion Generation):</strong> Generated autoregressively one token at a time during the decode phase. Output tokens require recurrent memory bandwidth accesses and are priced 3x to 5x higher than input tokens.</li>
+        <li><strong>Thinking Tokens (Internal Reasoning):</strong> Intermediate chain-of-thought tokens generated by hybrid reasoning models during test-time compute. While billed at output token rates, thinking tokens are typically masked from final end-user responses.</li>
+      </ul>
+
+      <h3 id="kv-cache-and-prompt-caching">3.3 KV Cache Scaling and Prompt Caching Economics</h3>
+      <p>During autoregressive decoding, recomputing the attention key (\(K\)) and value (\(V\)) vectors for past tokens at each step is computationally prohibitive. Models maintain a <strong>KV Cache</strong> in GPU high-bandwidth memory (HBM). The memory footprint \(M_{	ext{KV}}\) for a standard Multi-Head Attention transformer with context length \(L\), layer count \(n_{	ext{layers}}\), hidden dimension \(d_{	ext{model}}\), and batch size \(B\) scales as:</p>
+
+      \[M_{	ext{KV}} = 2 	imes B 	imes L 	imes n_{	ext{layers}} 	imes d_{	ext{model}} 	imes 	ext{BytesPerElement}\]
+
+      <p>For a 1-million-token context, raw KV cache memory can exceed tens of gigabytes per concurrent user. Modern inference engines employ <strong>Prompt Caching</strong> (e.g., prefix caching in vLLM, DeepSeek API, Anthropic API, and Google Gemini API). When sequential requests share an identical prefix (such as system instructions, codebase indexes, or persistent agent memory), the engine reuses the precomputed KV tensors directly from memory [15].</p>
+      <p>Prompt caching reduces input latency by up to 80% and reduces API billing rates by 75% to 95% on cached tokens (e.g., DeepSeek-V4-Flash cache hits cost $0.007 per 1M tokens versus $0.22 per 1M tokens on cache misses).</p>
+    </section>
+
+    <section id="architectural-comparison">
+      <h2>4. Comparative Taxonomy</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Model Class</th>
+            <th>Primary Architecture</th>
+            <th>Active / Total Params</th>
+            <th>Typical Context</th>
+            <th>Primary Use Case</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Frontier Flagship</strong> (e.g., Kimi K3, Claude 3.5 Opus)</td>
+            <td>Dense / Large Latent MoE</td>
+            <td>Hundreds of Billions to Trillions</td>
+            <td>1M+ tokens</td>
+            <td>Architectural planning, complex deduction, deep multimodal analysis</td>
+          </tr>
+          <tr>
+            <td><strong>High-Throughput MoE</strong> (e.g., DeepSeek-V4-Flash, Llama 4 Scout)</td>
+            <td>Sparse MoE (Fine-grained)</td>
+            <td>13B–17B active / 109B–400B total</td>
+            <td>128k–1M tokens</td>
+            <td>Autonomous agent loops, batch linting, background code execution</td>
+          </tr>
+          <tr>
+            <td><strong>Hybrid Reasoning</strong> (e.g., Gemini 3.7 Flash, o3-mini)</td>
+            <td>RL-Tuned Transformer + Thinking</td>
+            <td>Variable test-time compute</td>
+            <td>128k–1M tokens</td>
+            <td>Formal math proofs, competitive coding, multi-step debugging</td>
+          </tr>
+          <tr>
+            <td><strong>Edge / SLM</strong> (e.g., Phi-4, Qwen 2.5 7B)</td>
+            <td>Dense Transformer (Quantized)</td>
+            <td>1B–8B (100% active)</td>
+            <td>32k–128k tokens</td>
+            <td>Local terminal execution, offline privacy, specialized single-task filtering</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/large-language-models/">Large Language Models</a> — Foundational transformer mechanics, attention layers, and training regimes.</li>
+        <li><a href="/reference/autoregressive/">Autoregressive Models</a> — Mathematical formulation of next-token probability prediction.</li>
+        <li><a href="/reference/context-engineering/">Context Engineering</a> — Techniques for structured prompt construction and KV cache management.</li>
+        <li><a href="/reference/deep-neural-networks/">Deep Neural Networks</a> — Multi-layer perceptrons, backpropagation, and optimization gradients.</li>
+        <li><a href="/reference/reinforcement-learning/">Reinforcement Learning</a> — Policy optimization, reward modeling, and test-time alignment.</li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] Anthropic, "Core Views on AI Safety: When and How Frontier AI Safety Risks Will Arise," <em>Anthropic Research</em>, 2023. <a href="https://www.anthropic.com/research/frontier-safety-framework">https://www.anthropic.com/research/frontier-safety-framework</a></li>
+        <li id="ref-2">[2] Epoch AI, "Trends in the Compute Cost of AI Training," <em>Epoch Research</em>, 2024. <a href="https://epochai.org/data/trends">https://epochai.org/data/trends</a></li>
+        <li id="ref-3">[3] J. Kaplan, S. McCandlish, T. Henighan, T. B. Brown, B. Chess, R. Child, S. Gray, A. Radford, J. Wu, and D. Amodei, "Scaling Laws for Neural Language Models," <em>arXiv:2001.08361</em>, 2020. <a href="https://arxiv.org/abs/2001.08361">https://arxiv.org/abs/2001.08361</a></li>
+        <li id="ref-4">[4] J. Hoffmann, S. Borgeaud, A. Mensch, E. Buchatskaya, T. Cai, E. Rutherford, D. de Las Casas, L. A. Hendricks, J. Welbl, A. Clark, et al., "Training Compute-Optimal Large Language Models," <em>arXiv:2203.15556</em>, 2022. <a href="https://arxiv.org/abs/2203.15556">https://arxiv.org/abs/2203.15556</a></li>
+        <li id="ref-5">[5] Google DeepMind, "Gemini: A Family of Highly Capable Multimodal Models," <em>arXiv:2312.11805</em>, 2023. <a href="https://arxiv.org/abs/2312.11805">https://arxiv.org/abs/2312.11805</a></li>
+        <li id="ref-6">[6] Nous Research, "Hermes Agent Architecture and Multi-Tier Orchestration," <em>Nous Research Publications</em>, 2025. <a href="https://nousresearch.com">https://nousresearch.com</a></li>
+        <li id="ref-7">[7] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser, and I. Polosukhin, "Attention Is All You Need," <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, vol. 30, 2017. <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+        <li id="ref-8">[8] D. Lepikhin, H. Lee, Y. Xu, D. Chen, O. Firat, Y. Huang, M. Krikun, N. Shazeer, and Z. Chen, "GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding," <em>arXiv:2006.16668</em>, 2020. <a href="https://arxiv.org/abs/2006.16668">https://arxiv.org/abs/2006.16668</a></li>
+        <li id="ref-9">[9] Meta AI, "The Llama 4 Herd of Models," <em>Meta AI Research Technical Report</em>, 2025. <a href="https://ai.meta.com/llama">https://ai.meta.com/llama</a></li>
+        <li id="ref-10">[10] DeepSeek-AI, "DeepSeek-V3 Technical Report," <em>arXiv:2412.19437</em>, 2024. <a href="https://arxiv.org/abs/2412.19437">https://arxiv.org/abs/2412.19437</a></li>
+        <li id="ref-11">[11] N. Brown, G. Zhang, S. Feng, et al., "Large Language Models at Test-Time: Scaling Compute via Search and Verification," <em>OpenAI Technical Papers</em>, 2024. <a href="https://openai.com/research">https://openai.com/research</a></li>
+        <li id="ref-12">[12] DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning," <em>arXiv:2501.12948</em>, 2025. <a href="https://arxiv.org/abs/2501.12948">https://arxiv.org/abs/2501.12948</a></li>
+        <li id="ref-13">[13] M. Javaheripi and S. Bubeck, "Phi-4 Technical Report: Compact Models for Reasoning and Multimodal Synthesis," <em>Microsoft Research</em>, 2024. <a href="https://arxiv.org/abs/2412.08905">https://arxiv.org/abs/2412.08905</a></li>
+        <li id="ref-14">[14] R. Sennrich, B. Haddow, and A. Birch, "Neural Machine Translation of Rare Words with Subword Units," <em>ACL</em>, 2016. <a href="https://arxiv.org/abs/1508.07909">https://arxiv.org/abs/1508.07909</a></li>
+        <li id="ref-15">[15] W. Kwon, Z. Li, S. Zhuang, Y. Sheng, L. Zheng, C. H. Yu, J. E. Gonzalez, H. Zhang, and I. Stoica, "Efficient Memory Management for Large Language Model Serving with PagedAttention," <em>SOSP</em>, 2023. <a href="https://arxiv.org/abs/2309.06180">https://arxiv.org/abs/2309.06180</a></li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>
