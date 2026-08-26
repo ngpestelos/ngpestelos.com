@@ -158,11 +158,20 @@
       color: var(--mute);
     }
     footer.meta a { color: var(--link); }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    @media print {
+      .back { display: none; }
+    }
   </style>
 </head>
 <body>
   <main id="top">
-    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Systems Theory · Operations Research</p>
     <h1>Theory of Constraints</h1>
     <p class="updated">Reference entry · last updated August 26, 2026</p>
@@ -206,6 +215,7 @@
         <li><a href="#core-axioms">Core axioms and accounting definitions</a></li>
         <li><a href="#five-focusing-steps">The Five Focusing Steps</a></li>
         <li><a href="#drum-buffer-rope">Drum-Buffer-Rope synchronization</a></li>
+        <li><a href="#thinking-processes">Thinking Processes</a></li>
         <li><a href="#software-ai-bottlenecks">Bottleneck migration in software engineering and AI</a></li>
         <li><a href="#see-also">See also</a></li>
         <li><a href="#references">References</a></li>
@@ -213,12 +223,13 @@
     </nav>
 
     <h2 id="core-axioms">Core axioms and accounting definitions</h2>
-    <p>Goldratt redefined operational performance around three fundamental metrics:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Goldratt measures a plant against three quantities, not against local efficiency:<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <ul>
-      <li><strong>Throughput (\(T\))</strong>: The rate at which the system generates money or finished value through sales and completed deliveries. Value generated but unreleased is not throughput.</li>
-      <li><strong>Investment / Inventory (\(I\))</strong>: All the money and resources currently tied up inside the system (including work-in-progress code, pending pull requests, and un-merged branches).</li>
-      <li><strong>Operating Expense (\(OE\))</strong>: All the money the system spends to turn inventory into throughput.</li>
+      <li><strong>Throughput (\(T\))</strong>: the rate at which the system generates money through sales. Product made and not sold is not throughput.</li>
+      <li><strong>Inventory (\(I\))</strong>: money invested in things the system intends to sell. Work-in-process counts as inventory.</li>
+      <li><strong>Operating expense (\(OE\))</strong>: money spent to turn inventory into throughput.</li>
     </ul>
+    <p>A local gain that does not raise \(T\), or that raises \(I\) or \(OE\) without a matching rise in \(T\), does not improve the system. Applying those labels to pull requests or unmerged branches is an analogy. It is not a definition from <em>The Goal</em>.</p>
 
     <h2 id="five-focusing-steps">The Five Focusing Steps</h2>
     <p>TOC outlines a systematic cyclical method to continually expand system capacity:<span class="cite">[<a href="#ref2">2</a>]</span></p>
@@ -227,7 +238,7 @@
       <li><strong>Exploit the constraint</strong>: Ensure the constraint operates at 100% efficiency without idle time, waste, or performing low-value tasks.</li>
       <li><strong>Subordinate everything else</strong>: Align the operating pace of all non-constraint stages to the capacity of the constraint. Producing faster than the bottleneck creates harmful inventory build-up.</li>
       <li><strong>Elevate the constraint</strong>: Invest capital, tooling, or personnel to expand the physical capacity of the bottleneck stage.</li>
-      <li><strong>Prevent inertia (Repeat)</strong>: Once a bottleneck is elevated, the constraint inevitably shifts elsewhere. Return to Step 1 and avoid allowing organizational habit to dictate the new operating model.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+      <li><strong>Repeat</strong>: after the constraint is broken, a different one limits the system. Return to Identify. Goldratt warns against inertia: do not keep running the old policy after the constraint has moved.<span class="cite">[<a href="#ref2">2</a>]</span></li>
     </ol>
 
     <h2 id="drum-buffer-rope">Drum-Buffer-Rope synchronization</h2>
@@ -238,22 +249,35 @@
       <li><strong>The Rope</strong>: A signaling mechanism that limits the release of new work into the start of the pipeline strictly to the rate at which the constraint finishes work.<span class="cite">[<a href="#ref3">3</a>]</span></li>
     </ul>
 
+    <h2 id="thinking-processes">Thinking Processes</h2>
+    <p>Goldratt later added a set of cause-and-effect diagrams called the Thinking Processes. They answer three questions: what to change, what to change to, and how to cause the change.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <ul>
+      <li><strong>Current Reality Tree</strong>: traces undesirable effects back to a few root causes.</li>
+      <li><strong>Evaporating Cloud</strong>: states a conflict and looks for an injection that dissolves it.</li>
+      <li><strong>Future Reality Tree</strong>: checks that the injection produces the wanted effects without new ones that are worse.</li>
+      <li><strong>Strategy and Tactics Tree</strong>: turns the future state into sequenced actions. Later presentations use this in place of the older Prerequisite Tree.</li>
+    </ul>
+    <p class="unattributed">This page did not re-read Goldratt's 1990 monograph cover to cover. The three questions and the tree names follow a secondary manufacturing summary that matches the published TOC toolkit.</p>
+
     <h2 id="software-ai-bottlenecks">Bottleneck migration in software engineering and AI</h2>
-    <p>In software delivery pipelines, generative AI coding agents drastically increase authoring speed (upstream production). However, without expanding automated verification and maintainer review capacity (downstream constraint), code generation simply accumulates unreviewed pull requests, increasing cycle times and production error rates.<span class="cite">[<a href="#ref4">4</a>]</span> Real delivery throughput improves only when automated testing and verification tools elevate the review bottleneck.</p>
+    <p>If authoring gets faster and review or test capacity does not, finished delivery stays paced by review. Extra generated code then sits as work-in-process: open pull requests, longer queues, more defects reaching production. Faros AI's 2026 engineering telemetry study reports that pattern as "acceleration whiplash."<span class="cite">[<a href="#ref4">4</a>]</span> The TOC claim is the same as on a plant floor: raise the constraint, or extra upstream speed only raises inventory.</p>
 
     <h2 id="see-also">See also</h2>
     <ul>
       <li><a href="/reference/throughput/">Throughput</a></li>
       <li><a href="/reference/amdahls-law/">Amdahl's Law</a></li>
+      <li><a href="/reference/acceleration-whiplash/">Acceleration whiplash</a></li>
       <li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li>
+      <li><a href="/writing/triage-system-not-your-toolbox/">Triage the system, not your toolbox</a> (essay: identifying the constraint vs acting on it)</li>
     </ul>
 
     <h2 id="references">References</h2>
     <ol>
-      <li id="ref1"><a class="backlink" href="#core-axioms">↑</a> Goldratt, Eliyahu M., and Jeff Cox. <em>The Goal: A Process of Ongoing Improvement</em>. North River Press, 1984.</li>
-      <li id="ref2"><a class="backlink" href="#five-focusing-steps">↑</a> Goldratt, Eliyahu M. <em>Theory of Constraints</em>. North River Press, 1990.</li>
-      <li id="ref3"><a class="backlink" href="#drum-buffer-rope">↑</a> Dettmer, H. William. <em>Goldratt's Theory of Constraints: A Systems Approach to Continuous Improvement</em>. ASQ Quality Press, 1997.</li>
-      <li id="ref4"><a class="backlink" href="#software-ai-bottlenecks">↑</a> Faros AI. "The 2026 Engineering Productivity and AI Acceleration Report," 2026.</li>
+      <li id="ref1"><a class="backlink" href="#core-axioms">↑</a> Eliyahu M. Goldratt and Jeff Cox, <em>The Goal: A Process of Ongoing Improvement</em>, North River Press, 1984.</li>
+      <li id="ref2"><a class="backlink" href="#five-focusing-steps">↑</a> Eliyahu M. Goldratt, <em>What is this Thing Called Theory of Constraints and How Should It Be Implemented?</em>, North River Press, 1990. Publisher page: <a href="https://www.toc-goldratt.com/en/product/what-is-this-thing-called-theory-of-constraints">https://www.toc-goldratt.com/en/product/what-is-this-thing-called-theory-of-constraints</a></li>
+      <li id="ref3"><a class="backlink" href="#drum-buffer-rope">↑</a> H. William Dettmer, <em>Goldratt's Theory of Constraints: A Systems Approach to Continuous Improvement</em>, ASQ Quality Press, 1997.</li>
+      <li id="ref4"><a class="backlink" href="#software-ai-bottlenecks">↑</a> Faros AI, "The Acceleration Whiplash" / AI Engineering Report 2026. <a href="https://www.faros.ai/research/ai-acceleration-whiplash">https://www.faros.ai/research/ai-acceleration-whiplash</a></li>
+      <li id="ref5"><a class="backlink" href="#thinking-processes">↑</a> Vorne / Lean Production, "Theory of Constraints (TOC)." Secondary summary of the Five Focusing Steps, Thinking Processes, and Throughput Accounting. <a href="https://www.leanproduction.com/theory-of-constraints/">https://www.leanproduction.com/theory-of-constraints/</a></li>
     </ol>
 
     <footer class="meta">
