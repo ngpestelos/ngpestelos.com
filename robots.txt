@@ -1,25 +1,41 @@
 User-agent: GPTBot
 Allow: /
+Disallow: /symplehost-mission
+Disallow: /symplehost-mission/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /symplehost-mission
+Disallow: /symplehost-mission/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /symplehost-mission
+Disallow: /symplehost-mission/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /symplehost-mission
+Disallow: /symplehost-mission/
 
 User-agent: Amazonbot
 Allow: /
+Disallow: /symplehost-mission
+Disallow: /symplehost-mission/
 
 User-agent: CCBot
 Allow: /
+Disallow: /symplehost-mission
+Disallow: /symplehost-mission/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /symplehost-mission
+Disallow: /symplehost-mission/
 
 User-agent: *
 Allow: /
+Disallow: /symplehost-mission
+Disallow: /symplehost-mission/
 
 Sitemap: https://ngpestelos.com/sitemap.xml
