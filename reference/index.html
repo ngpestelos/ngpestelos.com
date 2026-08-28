@@ -34,7 +34,11 @@
       --link-visited: #795cb2;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
     body {
       background: var(--bg);
       color: var(--ink);
@@ -66,26 +70,86 @@
       font-size: 0.98rem;
       color: var(--mute);
       max-width: 40ch;
-      margin-bottom: 2rem;
+      margin-bottom: 1.4rem;
+    }
+    .alpha-nav {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.6rem 0.8rem;
+      margin-bottom: 1.8rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.55rem;
+      justify-content: center;
+      align-items: center;
+    }
+    .alpha-nav a {
+      color: var(--link);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.1rem 0.25rem;
+      border-radius: 3px;
+    }
+    .alpha-nav a:hover {
+      background: #eaecf0;
+      text-decoration: underline;
+    }
+    .alpha-nav a:visited {
+      color: var(--link-visited);
+    }
+    .alpha-nav .empty {
+      color: #c8ccd1;
+      font-weight: 400;
+      padding: 0.1rem 0.25rem;
+      cursor: default;
+      user-select: none;
     }
     #reference {
       background: var(--well);
       border: 1px solid var(--line);
       border-radius: 4px;
-      padding: 1rem 1.4rem;
+      padding: 1.2rem 1.4rem;
+    }
+    .letter-group {
+      margin-bottom: 1.4rem;
+    }
+    .letter-group:last-child {
+      margin-bottom: 0;
+    }
+    .letter-heading {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--ink);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.25rem;
+      margin-bottom: 0.5rem;
     }
     #reference ul {
       list-style: none;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     }
     #reference li {
-      padding: 0.55rem 0;
-      border-bottom: 1px solid var(--line);
+      padding: 0.45rem 0;
+      border-bottom: 1px solid rgba(162, 169, 177, 0.4);
     }
-    #reference li:last-child { border-bottom: none; }
-    #reference a { color: var(--link); text-decoration: none; font-size: 1.02rem; }
-    #reference a:hover { text-decoration: underline; }
-    #reference a:visited { color: var(--link-visited); }
+    #reference li:last-child {
+      border-bottom: none;
+    }
+    #reference a {
+      color: var(--link);
+      text-decoration: none;
+      font-size: 1.02rem;
+    }
+    #reference a:hover {
+      text-decoration: underline;
+    }
+    #reference a:visited {
+      color: var(--link-visited);
+    }
   </style>
 </head>
 <body>
@@ -96,8 +160,39 @@
       <p class="next-step">Sourced pages I point people and agents to instead of explaining from scratch.</p>
     </header>
 
+    <nav class="alpha-nav" aria-label="Alphabetical index">
+      <a href="#A">A</a>
+      <span class="empty">B</span>
+      <a href="#C">C</a>
+      <a href="#D">D</a>
+      <a href="#E">E</a>
+      <a href="#F">F</a>
+      <span class="empty">G</span>
+      <span class="empty">H</span>
+      <span class="empty">I</span>
+      <span class="empty">J</span>
+      <a href="#K">K</a>
+      <a href="#L">L</a>
+      <a href="#M">M</a>
+      <a href="#N">N</a>
+      <a href="#O">O</a>
+      <a href="#P">P</a>
+      <span class="empty">Q</span>
+      <a href="#R">R</a>
+      <a href="#S">S</a>
+      <a href="#T">T</a>
+      <a href="#U">U</a>
+      <span class="empty">V</span>
+      <span class="empty">W</span>
+      <span class="empty">X</span>
+      <span class="empty">Y</span>
+      <a href="#Z">Z</a>
+    </nav>
+
     <section id="reference">
-      <ul>
+      <div class="letter-group" id="A">
+        <h2 class="letter-heading">A</h2>
+        <ul>
         <li><a href="/reference/acceleration-whiplash/">Acceleration Whiplash</a></li>
         <li><a href="/reference/adversarial-agent-review/">Adversarial Review</a></li>
         <li><a href="/reference/agent-harness/">Agent Harness</a></li>
@@ -107,46 +202,137 @@
         <li><a href="/reference/amdahls-law/">Amdahl's Law</a></li>
         <li><a href="/reference/artificial-intelligence/">Artificial Intelligence</a></li>
         <li><a href="/reference/autoregressive/">Autoregressive Models</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="C">
+        <h2 class="letter-heading">C</h2>
+        <ul>
         <li><a href="/reference/context-engineering/">Context Engineering</a></li>
         <li><a href="/reference/continuous-batching/">Continuous Batching</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="D">
+        <h2 class="letter-heading">D</h2>
+        <ul>
         <li><a href="/reference/deep-neural-networks/">Deep Neural Networks</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="E">
+        <h2 class="letter-heading">E</h2>
+        <ul>
         <li><a href="/reference/eastern-han/">Eastern Han</a></li>
         <li><a href="/reference/epistemology/">Epistemology</a></li>
         <li><a href="/reference/exponential-backoff/">Exponential Backoff</a></li>
         <li><a href="/reference/exponential-decay/">Exponential Decay</a></li>
         <li><a href="/reference/exponential-growth/">Exponential Growth</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="F">
+        <h2 class="letter-heading">F</h2>
+        <ul>
         <li><a href="/reference/fail-closed/">Fail-Closed</a></li>
         <li><a href="/reference/firewall-llm/">Firewall LLM</a></li>
         <li><a href="/reference/frontier-models/">Frontier Models, Architectures, and Tokens</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="K">
+        <h2 class="letter-heading">K</h2>
+        <ul>
         <li><a href="/reference/kitbashing/">Kitbashing</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="L">
+        <h2 class="letter-heading">L</h2>
+        <ul>
         <li><a href="/reference/large-language-models/">Large Language Models</a></li>
         <li><a href="/reference/llm-evaluations/">LLM Evaluations</a></li>
         <li><a href="/reference/llm-gateway/">LLM Gateway</a></li>
         <li><a href="/reference/llm-mutation-testing/">LLM Mutation Testing</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="M">
+        <h2 class="letter-heading">M</h2>
+        <ul>
         <li><a href="/reference/machine-learning/">Machine Learning</a></li>
         <li><a href="/reference/model-router/">Model Router</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="N">
+        <h2 class="letter-heading">N</h2>
+        <ul>
         <li><a href="/reference/natural-language-processing/">Natural Language Processing</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="O">
+        <h2 class="letter-heading">O</h2>
+        <ul>
         <li><a href="/reference/online-payments/">Online Payments</a></li>
         <li><a href="/reference/ooda-loop/">OODA Loop</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="P">
+        <h2 class="letter-heading">P</h2>
+        <ul>
         <li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li>
         <li><a href="/reference/prompt-caching/">Prompt Caching</a></li>
         <li><a href="/reference/prompt-engineering/">Prompt Engineering</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="R">
+        <h2 class="letter-heading">R</h2>
+        <ul>
         <li><a href="/reference/recursion/">Recursion</a></li>
         <li><a href="/reference/reinforcement-learning/">Reinforcement Learning</a></li>
         <li><a href="/reference/retrieval-augmented-generation/">Retrieval-Augmented Generation</a></li>
         <li><a href="/reference/romance-of-the-three-kingdoms/">Romance of the Three Kingdoms</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="S">
+        <h2 class="letter-heading">S</h2>
+        <ul>
         <li><a href="/reference/semantic-caching/">Semantic Caching</a></li>
         <li><a href="/reference/softmax/">Softmax Function</a></li>
         <li><a href="/reference/steelmanning/">Steelmanning</a></li>
         <li><a href="/reference/sycophancy/">Sycophancy</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="T">
+        <h2 class="letter-heading">T</h2>
+        <ul>
         <li><a href="/reference/theory-of-constraints/">Theory of Constraints</a></li>
         <li><a href="/reference/throughput/">Throughput</a></li>
         <li><a href="/reference/time-to-first-token/">Time to First Token</a></li>
         <li><a href="/reference/toctou-race-condition/">TOCTOU Race Condition</a></li>
         <li><a href="/reference/tokens/">Tokens and Tokenization</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="U">
+        <h2 class="letter-heading">U</h2>
+        <ul>
         <li><a href="/reference/url-urn-uri/">URL vs URN vs URI</a></li>
+        </ul>
+      </div>
+
+      <div class="letter-group" id="Z">
+        <h2 class="letter-heading">Z</h2>
+        <ul>
         <li><a href="/reference/zhuge-liang/">Zhuge Liang</a></li>
-      </ul>
+        </ul>
+      </div>
     </section>
 
   </main>
