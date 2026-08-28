@@ -232,14 +232,14 @@
           <rect x="20" y="206" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
           <text x="85" y="233" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fins? (0)</text>
 
-          <!-- Weight lines precisely connecting box right edge (x=150) to circle perimeter -->
-          <line x1="150" y1="52" x2="283" y2="117" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
+          <!-- Weight lines precisely touching circle perimeter -->
+          <line x1="150" y1="52" x2="286" y2="118" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
           <text x="205" y="76" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.4 (Weight)</text>
 
-          <line x1="150" y1="140" x2="278" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="150" y1="140" x2="280" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
           <text x="205" y="133" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.8 (Weight)</text>
 
-          <line x1="150" y1="228" x2="283" y2="163" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="150" y1="228" x2="286" y2="162" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
           <text x="205" y="204" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; -0.9 (Weight)</text>
 
           <!-- Summation & Bias Circle -->
@@ -248,7 +248,7 @@
           <text x="330" y="155" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Total = 1.1</text>
 
           <!-- Activation Arrow -->
-          <line x1="380" y1="140" x2="452" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="380" y1="140" x2="460" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
 
           <!-- Activation Filter -->
           <rect x="460" y="105" width="110" height="70" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
@@ -256,7 +256,7 @@
           <text x="515" y="156" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Is sum &gt; 0?</text>
 
           <!-- Output Arrow -->
-          <line x1="570" y1="140" x2="622" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="570" y1="140" x2="630" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
 
           <!-- Output -->
           <rect x="630" y="118" width="70" height="44" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
@@ -282,72 +282,75 @@
 
       <div class="figure">
         <svg viewBox="0 0 720 270" role="img" aria-label="Diagram showing input layer finding edges, hidden layer finding parts, and output layer finding objects.">
-          <!-- Layer 1: Input -->
-          <g>
-            <rect x="30" y="20" width="150" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="105" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Input Layer</text>
-            <text x="105" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Raw Pixels</text>
+          <!-- Background container cards -->
+          <rect x="30" y="20" width="150" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="105" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Input Layer</text>
+          <text x="105" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Raw Pixels</text>
 
-            <circle cx="105" cy="95" r="16" fill="#f4eee4" stroke="#0f5c57" stroke-width="2"/>
-            <circle cx="105" cy="140" r="16" fill="#f4eee4" stroke="#0f5c57" stroke-width="2"/>
-            <circle cx="105" cy="185" r="16" fill="#f4eee4" stroke="#0f5c57" stroke-width="2"/>
-          </g>
+          <rect x="270" y="20" width="180" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="360" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Hidden Layer</text>
+          <text x="360" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Edges &amp; Textures</text>
 
-          <!-- Connectors Layer 1 (x=121) to Layer 2 (x=344) -->
+          <rect x="540" y="20" width="150" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="615" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Output Layer</text>
+          <text x="615" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Final Decision</text>
+
+          <!-- ALL CONNECTORS DRAWN CENTER-TO-CENTER UNDERNEATH THE NODES -->
+          <!-- Layer 1 (x=105) to Layer 2 (x=360) -->
           <g stroke="#d4c9bb" stroke-width="1.5">
-            <line x1="121" y1="95" x2="344" y2="75"/>
-            <line x1="121" y1="95" x2="344" y2="118"/>
-            <line x1="121" y1="95" x2="344" y2="162"/>
-            <line x1="121" y1="95" x2="344" y2="205"/>
+            <line x1="105" y1="95" x2="360" y2="75"/>
+            <line x1="105" y1="95" x2="360" y2="118"/>
+            <line x1="105" y1="95" x2="360" y2="162"/>
+            <line x1="105" y1="95" x2="360" y2="205"/>
 
-            <line x1="121" y1="140" x2="344" y2="75"/>
-            <line x1="121" y1="140" x2="344" y2="118"/>
-            <line x1="121" y1="140" x2="344" y2="162"/>
-            <line x1="121" y1="140" x2="344" y2="205"/>
+            <line x1="105" y1="140" x2="360" y2="75"/>
+            <line x1="105" y1="140" x2="360" y2="118"/>
+            <line x1="105" y1="140" x2="360" y2="162"/>
+            <line x1="105" y1="140" x2="360" y2="205"/>
 
-            <line x1="121" y1="185" x2="344" y2="75"/>
-            <line x1="121" y1="185" x2="344" y2="118"/>
-            <line x1="121" y1="185" x2="344" y2="162"/>
-            <line x1="121" y1="185" x2="344" y2="205"/>
+            <line x1="105" y1="185" x2="360" y2="75"/>
+            <line x1="105" y1="185" x2="360" y2="118"/>
+            <line x1="105" y1="185" x2="360" y2="162"/>
+            <line x1="105" y1="185" x2="360" y2="205"/>
           </g>
 
-          <!-- Layer 2: Hidden -->
-          <g>
-            <rect x="270" y="20" width="180" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="360" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Hidden Layer</text>
-            <text x="360" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Edges &amp; Textures</text>
-
-            <circle cx="360" cy="75" r="16" fill="#f4eee4" stroke="#9a3412" stroke-width="2"/>
-            <circle cx="360" cy="118" r="16" fill="#f4eee4" stroke="#9a3412" stroke-width="2"/>
-            <circle cx="360" cy="162" r="16" fill="#f4eee4" stroke="#9a3412" stroke-width="2"/>
-            <circle cx="360" cy="205" r="16" fill="#f4eee4" stroke="#9a3412" stroke-width="2"/>
-          </g>
-
-          <!-- Connectors Layer 2 (x=376) to Layer 3 buttons (x=565) -->
+          <!-- Layer 2 (x=360) to Layer 3 Buttons (x=615) -->
           <g stroke="#d4c9bb" stroke-width="1.5">
-            <line x1="376" y1="75" x2="565" y2="114"/>
-            <line x1="376" y1="75" x2="565" y2="174"/>
+            <line x1="360" y1="75" x2="615" y2="114"/>
+            <line x1="360" y1="75" x2="615" y2="174"/>
 
-            <line x1="376" y1="118" x2="565" y2="114"/>
-            <line x1="376" y1="118" x2="565" y2="174"/>
+            <line x1="360" y1="118" x2="615" y2="114"/>
+            <line x1="360" y1="118" x2="615" y2="174"/>
 
-            <line x1="376" y1="162" x2="565" y2="114"/>
-            <line x1="376" y1="162" x2="565" y2="174"/>
+            <line x1="360" y1="162" x2="615" y2="114"/>
+            <line x1="360" y1="162" x2="615" y2="174"/>
 
-            <line x1="376" y1="205" x2="565" y2="114"/>
-            <line x1="376" y1="205" x2="565" y2="174"/>
+            <line x1="360" y1="205" x2="615" y2="114"/>
+            <line x1="360" y1="205" x2="615" y2="174"/>
           </g>
 
-          <!-- Layer 3: Output -->
+          <!-- NODES DRAWN ON TOP WITH OPAQUE FILLS -->
+          <!-- Layer 1 Nodes -->
           <g>
-            <rect x="540" y="20" width="150" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="615" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Output Layer</text>
-            <text x="615" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Final Decision</text>
+            <circle cx="105" cy="95" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+            <circle cx="105" cy="140" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+            <circle cx="105" cy="185" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+          </g>
 
+          <!-- Layer 2 Nodes -->
+          <g>
+            <circle cx="360" cy="75" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="360" cy="118" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="360" cy="162" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="360" cy="205" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+          </g>
+
+          <!-- Layer 3 Output Buttons -->
+          <g>
             <rect x="565" y="95" width="100" height="38" rx="6" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
             <text x="615" y="119" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#ffffff">Dog (92%)</text>
 
-            <rect x="565" y="155" width="100" height="38" rx="6" fill="#f4eee4" stroke="#d4c9bb" stroke-width="1.5"/>
+            <rect x="565" y="155" width="100" height="38" rx="6" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
             <text x="615" y="179" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#6e645a">Cat (8%)</text>
           </g>
         </svg>
