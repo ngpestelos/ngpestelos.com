@@ -245,6 +245,8 @@
     <div class="companion-box">
       <h2>See Also &amp; Related References</h2>
       <ul>
+        <li>📖 <a href="/reference/neural-networks/"><strong>Reference: Neural Networks</strong></a> — Foundations of artificial neurons, activation functions, and perceptrons.</li>
+        <li>📖 <a href="/reference/machine-learning/"><strong>Reference: Machine Learning</strong></a> — Empirical risk minimization, learning paradigms, and optimization.</li>
         <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a> — Deep transformer decoders and scale dynamics.</li>
         <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a> — Sequential factorization and causal generation.</li>
         <li>📖 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> — Context window dynamics and token management.</li>
@@ -266,7 +268,7 @@
     <!-- Section 1: Definition -->
     <h2 id="definition">1. Definition &amp; Mathematical Formulation</h2>
     <p>
-      A <strong>Deep Neural Network (DNN)</strong> is an artificial neural network with multiple hidden layers (\(L \ge 2\)) between its input and output layers. Mathematically, a DNN is a nested composite function that maps an input vector \(x \in \mathbb{R}^{d_{in}}\) to an output vector \(y \in \mathbb{R}^{d_{out}}\):
+      A <strong>Deep Neural Network (DNN)</strong> is an <a href="/reference/neural-networks/">artificial neural network</a> with multiple hidden layers (\(L \ge 2\)) between its input and output layers. Mathematically, a DNN is a nested composite function that maps an input vector \(x \in \mathbb{R}^{d_{in}}\) to an output vector \(y \in \mathbb{R}^{d_{out}}\):
     </p>
     <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
       $$y = f(x; \theta) = f_L\Big(f_{L-1}\big(\dots f_1(x; W_1, b_1)\dots; W_{L-1}, b_{L-1}\big); W_L, b_L\Big)$$
@@ -328,7 +330,7 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Multilayer Perceptrons (MLPs)</strong></td>
+          <td><strong><a href="/reference/neural-networks/">Multilayer Perceptrons (MLPs)</a></strong></td>
           <td>Fully-connected dense linear transformations.</td>
           <td>Tabular data, classification heads, inner projection blocks.</td>
         </tr>
@@ -359,7 +361,7 @@
         <li>Rumelhart, Hinton, and Williams (1986): <a href="https://www.nature.com/articles/323533a0" target="_blank" rel="noopener">Learning Representations by Back-Propagating Errors</a> (Nature 323, 533–536)</li>
       </ul>
       <p style="margin-top: 1rem;">
-        Related: <a href="/reference/large-language-models/">Large Language Models Reference</a> &middot; <a href="/reference/autoregressive/">Autoregressive Models Reference</a>
+        Related: <a href="/reference/neural-networks/">Neural Networks Reference</a> &middot; <a href="/reference/machine-learning/">Machine Learning Reference</a> &middot; <a href="/reference/large-language-models/">Large Language Models Reference</a> &middot; <a href="/reference/autoregressive/">Autoregressive Models Reference</a> &middot; <a href="/reference/softmax/">Softmax Function</a>
       </p>
     </footer>
   </main>
