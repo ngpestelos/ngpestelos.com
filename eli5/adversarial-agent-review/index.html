@@ -237,6 +237,44 @@
         padding: 0.85rem 0.7rem;
       }
     }
+      .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--card, #fffaf3);
+      color: var(--ink, #1c1612);
+      border: 1px solid var(--line, #d4c9bb);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--paper, #f4eee4);
+      border-color: var(--op, #9a3412);
+      color: var(--op, #9a3412);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--op, #9a3412);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -412,5 +450,24 @@
     <p class="sources"><strong>Sources:</strong> Ethan Perez et al., "<a href="https://arxiv.org/abs/2202.03286">Red Teaming Language Models with Language Models</a>," 2022 (using one model to find failures in another). Mrinank Sharma et al., "<a href="https://arxiv.org/abs/2310.13548">Towards Understanding Sycophancy in Language Models</a>," 2023 (why a single reviewing pass tends to agree; more at <a href="/reference/sycophancy/">Reference: Sycophancy</a>). Longer, more technical version: <a href="/reference/adversarial-agent-review/">Reference: Adversarial Review (Agents)</a>.</p>
     <p class="to-top"><a href="#top">Back to top</a></p>
   </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
