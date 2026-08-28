@@ -213,57 +213,62 @@
     <section class="block">
       <h2>1. The Artificial Neuron: A tiny math vote</h2>
       <p class="one">A single neuron takes in numbers, multiplies each by an importance dial, adds them up, and decides whether to shout its own number forward.</p>
-
       <div class="figure">
-        <svg viewBox="0 0 720 280" role="img" aria-label="Diagram of a single artificial neuron showing inputs, weights, a summation circle, and an activation trigger.">
+        <svg viewBox="0 0 760 300" role="img" aria-label="Diagram of a single artificial neuron showing inputs, weights on badge pills, a summation circle, and an activation trigger.">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 1 L 10 5 L 0 9 z" fill="#8a7d72"/>
             </marker>
           </defs>
 
-          <!-- Inputs -->
-          <rect x="20" y="30" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="85" y="57" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fur? (1)</text>
+          <!-- Input Boxes -->
+          <rect x="20" y="25" width="130" height="46" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="85" y="53" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fur? (1)</text>
 
-          <rect x="20" y="118" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="85" y="145" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Barks? (1)</text>
+          <rect x="20" y="127" width="130" height="46" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="85" y="155" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Barks? (1)</text>
 
-          <rect x="20" y="206" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="85" y="233" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fins? (0)</text>
+          <rect x="20" y="229" width="130" height="46" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="85" y="257" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fins? (0)</text>
 
-          <!-- Weight lines precisely touching circle perimeter -->
-          <line x1="150" y1="52" x2="286" y2="118" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
-          <text x="205" y="76" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.4 (Weight)</text>
+          <!-- Lines from inputs (x=150) to center of summation circle (360, 150) -->
+          <line x1="150" y1="48" x2="360" y2="150" stroke="#8a7d72" stroke-width="2"/>
+          <line x1="150" y1="150" x2="360" y2="150" stroke="#8a7d72" stroke-width="2"/>
+          <line x1="150" y1="252" x2="360" y2="150" stroke="#8a7d72" stroke-width="2"/>
 
-          <line x1="150" y1="140" x2="280" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
-          <text x="205" y="133" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.8 (Weight)</text>
+          <!-- Weight Badges (centered on lines with opaque background) -->
+          <g>
+            <rect x="180" y="67" width="95" height="26" rx="13" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="227" y="85" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.4 (Weight)</text>
 
-          <line x1="150" y1="228" x2="286" y2="162" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
-          <text x="205" y="204" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; -0.9 (Weight)</text>
+            <rect x="180" y="137" width="95" height="26" rx="13" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="227" y="155" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.8 (Weight)</text>
 
-          <!-- Summation & Bias Circle -->
-          <circle cx="330" cy="140" r="50" fill="#fffaf3" stroke="#1c1612" stroke-width="2"/>
-          <text x="330" y="133" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Sum + Bias</text>
-          <text x="330" y="155" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Total = 1.1</text>
+            <rect x="180" y="207" width="95" height="26" rx="13" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="227" y="225" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; -0.9 (Weight)</text>
+          </g>
+
+          <!-- Summation & Bias Circle (drawn on top to cover line intersection) -->
+          <circle cx="360" cy="150" r="54" fill="#fffaf3" stroke="#1c1612" stroke-width="2.5"/>
+          <text x="360" y="142" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Sum + Bias</text>
+          <text x="360" y="165" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Total = 1.1</text>
 
           <!-- Activation Arrow -->
-          <line x1="380" y1="140" x2="460" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="414" y1="150" x2="484" y2="150" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
 
-          <!-- Activation Filter -->
-          <rect x="460" y="105" width="110" height="70" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
-          <text x="515" y="136" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#9a3412">Activation</text>
-          <text x="515" y="156" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Is sum &gt; 0?</text>
+          <!-- Activation Filter Box -->
+          <rect x="490" y="112" width="115" height="76" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
+          <text x="547" y="145" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#9a3412">Activation</text>
+          <text x="547" y="167" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Is sum &gt; 0?</text>
 
           <!-- Output Arrow -->
-          <line x1="570" y1="140" x2="630" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
+          <line x1="605" y1="150" x2="654" y2="150" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow)"/>
 
-          <!-- Output -->
-          <rect x="630" y="118" width="70" height="44" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
-          <text x="665" y="145" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#ffffff">YES</text>
+          <!-- Output Box -->
+          <rect x="660" y="127" width="80" height="46" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
+          <text x="700" y="155" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#ffffff">YES</text>
         </svg>
       </div>
-
       <details class="more">
         <summary>Why each piece exists</summary>
         <ul>
@@ -279,83 +284,80 @@
     <section class="block">
       <h2>2. Layers: Passing notes from simple to complex</h2>
       <p class="one">One neuron can only separate things with a straight cut. Stacking them in layers lets early neurons spot lines, while deep neurons combine those lines into eyes, wheels, or letters.</p>
-
       <div class="figure">
-        <svg viewBox="0 0 720 270" role="img" aria-label="Diagram showing input layer finding edges, hidden layer finding parts, and output layer finding objects.">
+        <svg viewBox="0 0 760 280" role="img" aria-label="Diagram showing input layer finding edges, hidden layer finding parts, and output layer finding objects.">
           <!-- Background container cards -->
-          <rect x="30" y="20" width="150" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="105" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Input Layer</text>
-          <text x="105" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Raw Pixels</text>
+          <rect x="20" y="20" width="160" height="240" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="100" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Input Layer</text>
+          <text x="100" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Raw Pixels</text>
 
-          <rect x="270" y="20" width="180" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="360" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Hidden Layer</text>
-          <text x="360" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Edges &amp; Textures</text>
+          <rect x="280" y="20" width="190" height="240" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="375" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Hidden Layer</text>
+          <text x="375" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Edges &amp; Textures</text>
 
-          <rect x="540" y="20" width="150" height="230" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="615" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Output Layer</text>
-          <text x="615" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Final Decision</text>
+          <rect x="560" y="20" width="180" height="240" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="650" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Output Layer</text>
+          <text x="650" y="68" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Final Decision</text>
 
-          <!-- ALL CONNECTORS DRAWN CENTER-TO-CENTER UNDERNEATH THE NODES -->
-          <!-- Layer 1 (x=105) to Layer 2 (x=360) -->
+          <!-- CONNECTORS UNDERNEATH NODES (Layer 1 x=100 to Layer 2 x=375) -->
           <g stroke="#d4c9bb" stroke-width="1.5">
-            <line x1="105" y1="95" x2="360" y2="75"/>
-            <line x1="105" y1="95" x2="360" y2="118"/>
-            <line x1="105" y1="95" x2="360" y2="162"/>
-            <line x1="105" y1="95" x2="360" y2="205"/>
+            <line x1="100" y1="95" x2="375" y2="75"/>
+            <line x1="100" y1="95" x2="375" y2="120"/>
+            <line x1="100" y1="95" x2="375" y2="165"/>
+            <line x1="100" y1="95" x2="375" y2="210"/>
 
-            <line x1="105" y1="140" x2="360" y2="75"/>
-            <line x1="105" y1="140" x2="360" y2="118"/>
-            <line x1="105" y1="140" x2="360" y2="162"/>
-            <line x1="105" y1="140" x2="360" y2="205"/>
+            <line x1="100" y1="140" x2="375" y2="75"/>
+            <line x1="100" y1="140" x2="375" y2="120"/>
+            <line x1="100" y1="140" x2="375" y2="165"/>
+            <line x1="100" y1="140" x2="375" y2="210"/>
 
-            <line x1="105" y1="185" x2="360" y2="75"/>
-            <line x1="105" y1="185" x2="360" y2="118"/>
-            <line x1="105" y1="185" x2="360" y2="162"/>
-            <line x1="105" y1="185" x2="360" y2="205"/>
+            <line x1="100" y1="185" x2="375" y2="75"/>
+            <line x1="100" y1="185" x2="375" y2="120"/>
+            <line x1="100" y1="185" x2="375" y2="165"/>
+            <line x1="100" y1="185" x2="375" y2="210"/>
           </g>
 
-          <!-- Layer 2 (x=360) to Layer 3 Buttons (x=615) -->
+          <!-- Layer 2 (x=375) to Layer 3 (x=650) -->
           <g stroke="#d4c9bb" stroke-width="1.5">
-            <line x1="360" y1="75" x2="615" y2="114"/>
-            <line x1="360" y1="75" x2="615" y2="174"/>
+            <line x1="375" y1="75" x2="650" y2="115"/>
+            <line x1="375" y1="75" x2="650" y2="180"/>
 
-            <line x1="360" y1="118" x2="615" y2="114"/>
-            <line x1="360" y1="118" x2="615" y2="174"/>
+            <line x1="375" y1="120" x2="650" y2="115"/>
+            <line x1="375" y1="120" x2="650" y2="180"/>
 
-            <line x1="360" y1="162" x2="615" y2="114"/>
-            <line x1="360" y1="162" x2="615" y2="174"/>
+            <line x1="375" y1="165" x2="650" y2="115"/>
+            <line x1="375" y1="165" x2="650" y2="180"/>
 
-            <line x1="360" y1="205" x2="615" y2="114"/>
-            <line x1="360" y1="205" x2="615" y2="174"/>
+            <line x1="375" y1="210" x2="650" y2="115"/>
+            <line x1="375" y1="210" x2="650" y2="180"/>
           </g>
 
-          <!-- NODES DRAWN ON TOP WITH OPAQUE FILLS -->
+          <!-- NODES DRAWN ON TOP -->
           <!-- Layer 1 Nodes -->
           <g>
-            <circle cx="105" cy="95" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
-            <circle cx="105" cy="140" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
-            <circle cx="105" cy="185" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+            <circle cx="100" cy="95" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+            <circle cx="100" cy="140" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+            <circle cx="100" cy="185" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
           </g>
 
           <!-- Layer 2 Nodes -->
           <g>
-            <circle cx="360" cy="75" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
-            <circle cx="360" cy="118" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
-            <circle cx="360" cy="162" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
-            <circle cx="360" cy="205" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="375" cy="75" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="375" cy="120" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="375" cy="165" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="375" cy="210" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
           </g>
 
           <!-- Layer 3 Output Buttons -->
           <g>
-            <rect x="565" y="95" width="100" height="38" rx="6" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
-            <text x="615" y="119" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#ffffff">Dog (92%)</text>
+            <rect x="590" y="95" width="120" height="40" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
+            <text x="650" y="120" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#ffffff">Dog (92%)</text>
 
-            <rect x="565" y="155" width="100" height="38" rx="6" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="615" y="179" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#6e645a">Cat (8%)</text>
+            <rect x="590" y="160" width="120" height="40" rx="8" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="650" y="185" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#6e645a">Cat (8%)</text>
           </g>
         </svg>
       </div>
-
       <details class="more">
         <summary>How information builds up</summary>
         <ul>
@@ -370,9 +372,8 @@
     <section class="block">
       <h2>3. Training: Guessing, measuring, and nudging the dials</h2>
       <p class="one">The network begins with random dials. With every practice example, it measures how far off its guess was and nudges each dial slightly in the direction that reduces error.</p>
-
       <div class="figure">
-        <svg viewBox="0 0 720 220" role="img" aria-label="Diagram showing the training loop: Forward guess, Loss calculation, and Backprop adjustment.">
+        <svg viewBox="0 0 760 250" role="img" aria-label="Diagram showing the training loop: Forward guess, Loss calculation, and Backprop adjustment.">
           <defs>
             <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
               <path d="M 0 1 L 10 5 L 0 9 z" fill="#0f5c57"/>
@@ -386,37 +387,37 @@
           </defs>
 
           <!-- Step 1: Forward -->
-          <rect x="30" y="40" width="180" height="130" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="120" y="75" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">1. Forward Pass</text>
-          <text x="120" y="105" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Show picture of a cat</text>
-          <text x="120" y="128" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Network guesses "Dog"</text>
+          <rect x="20" y="30" width="200" height="135" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="120" y="65" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">1. Forward Pass</text>
+          <text x="120" y="98" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Show picture of a cat</text>
+          <text x="120" y="122" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Network guesses "Dog"</text>
 
-          <!-- Forward arrow 1 to 2 -->
-          <line x1="210" y1="80" x2="262" y2="80" stroke="#0f5c57" stroke-width="2.5" marker-end="url(#arrow-green)"/>
-          <text x="240" y="68" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#0f5c57">Guess &rarr;</text>
+          <!-- Forward arrow 1 to 2 with badge -->
+          <line x1="220" y1="80" x2="272" y2="80" stroke="#0f5c57" stroke-width="2.5" marker-end="url(#arrow-green)"/>
 
           <!-- Step 2: Loss -->
-          <rect x="270" y="40" width="180" height="130" rx="10" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
-          <text x="360" y="75" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#9a3412">2. Measure Error</text>
-          <text x="360" y="105" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Compare to true label</text>
-          <text x="360" y="128" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Error Score = 0.85</text>
+          <rect x="280" y="30" width="200" height="135" rx="10" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
+          <text x="380" y="65" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#9a3412">2. Measure Error</text>
+          <text x="380" y="98" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Compare to true label</text>
+          <text x="380" y="122" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Error Score = 0.85</text>
 
-          <!-- Forward arrow 2 to 3 -->
-          <line x1="450" y1="80" x2="502" y2="80" stroke="#9a3412" stroke-width="2.5" marker-end="url(#arrow-orange)"/>
-          <text x="480" y="68" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#9a3412">Loss &rarr;</text>
+          <!-- Forward arrow 2 to 3 with badge -->
+          <line x1="480" y1="80" x2="532" y2="80" stroke="#9a3412" stroke-width="2.5" marker-end="url(#arrow-orange)"/>
 
           <!-- Step 3: Backward -->
-          <rect x="510" y="40" width="180" height="130" rx="10" fill="#fffaf3" stroke="#1d4ed8" stroke-width="2"/>
-          <text x="600" y="75" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1d4ed8">3. Backpropagation</text>
-          <text x="600" y="105" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Calculate blame</text>
-          <text x="600" y="128" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Nudge dials backward</text>
+          <rect x="540" y="30" width="200" height="135" rx="10" fill="#fffaf3" stroke="#1d4ed8" stroke-width="2"/>
+          <text x="640" y="65" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1d4ed8">3. Backpropagation</text>
+          <text x="640" y="98" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Calculate blame</text>
+          <text x="640" y="122" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Nudge dials backward</text>
 
-          <!-- Bottom backward return line pointing LEFT -->
-          <path d="M 510 135 L 218 135" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-blue)"/>
-          <text x="360" y="155" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1d4ed8">&larr; Send error signal back to adjust all dials</text>
+          <!-- Bottom backward return loop path pointing LEFT -->
+          <path d="M 640 165 C 640 215, 120 215, 120 172" fill="none" stroke="#1d4ed8" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#arrow-blue)"/>
+          <g>
+            <rect x="250" y="202" width="260" height="26" rx="13" fill="#fffaf3" stroke="#1d4ed8" stroke-width="1.5"/>
+            <text x="380" y="220" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1d4ed8">&larr; Send error signal back to adjust all dials</text>
+          </g>
         </svg>
       </div>
-
       <details class="more">
         <summary>Why small nudges matter</summary>
         <ul>
