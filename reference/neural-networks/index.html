@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Networks &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Neural Networks: artificial neurons, activation functions, multilayer perceptrons, backpropagation, and architectures.">
+  <meta property="og:title" content="Neural Networks &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Neural Networks: artificial neurons, activation functions, multilayer perceptrons, backpropagation, and architectures.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/neural-networks/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/neural-networks/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.5rem;
+    }
+    .lede {
+      font-size: 1.08rem;
+      line-height: 1.65;
+      margin-bottom: 1.4rem;
+    }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin: 1.5rem 0 2rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .toc ol {
+      padding-left: 1.4rem;
+      margin: 0;
+    }
+    .toc li {
+      margin-bottom: 0.3rem;
+    }
+    .toc a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    .toc a:hover {
+      text-decoration: underline;
+    }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2.2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.6rem;
+    }
+    p {
+      margin-bottom: 0.9rem;
+    }
+    ul, ol {
+      margin-bottom: 0.9rem;
+    }
+    a {
+      color: var(--link);
+    }
+    a:visited {
+      color: var(--link-visited);
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a {
+      text-decoration: none;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    table.data-table th, table.data-table td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    table.data-table th {
+      background: var(--well);
+      font-weight: 600;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li {
+      margin-bottom: 0.5rem;
+    }
+    #references {
+      font-size: 0.95rem;
+    }
+    #references .backlink {
+      margin-right: 0.3rem;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Machine Learning &middot; Computer Science</p>
+    <h1>Neural Networks</h1>
+    <p class="updated">Reference entry &middot; last updated August 29, 2026</p>
+
+    <p class="lede"><strong>Neural networks</strong> (also termed artificial neural networks or ANNs) are computational learning models composed of interconnected processing units called artificial neurons.<span class="cite">[<a href="#ref1">1</a>]</span> Inspired by biological neural networks, ANNs map complex, non-linear relationships between inputs and outputs by adjusting connection weights through gradient optimization on training data.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#historical-development">Historical foundations</a></li>
+        <li><a href="#neuron-model">Artificial neuron mathematical model</a></li>
+        <li><a href="#activation-functions">Activation functions</a></li>
+        <li><a href="#feedforward-architecture">Multilayer architectures</a></li>
+        <li><a href="#backpropagation">Learning and backpropagation</a></li>
+        <li><a href="#universal-approximation">Universal Approximation Theorem</a></li>
+        <li><a href="#architectural-taxonomy">Architectural taxonomy</a></li>
+        <li><a href="#regularization">Generalization and regularization</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="historical-development">Historical foundations</h2>
+    <p>The mathematical study of artificial neural networks developed across four distinct phases:</p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li style="margin-bottom: 0.4rem;"><strong>Threshold Logic (1943):</strong> Warren McCulloch and Walter Pitts formulated the first mathematical model of a biological neuron as a binary threshold device computing logical propositions (AND, OR, NOT).<span class="cite">[<a href="#ref1">1</a>]</span></li>
+      <li style="margin-bottom: 0.4rem;"><strong>The Perceptron (1958):</strong> Frank Rosenblatt introduced the single-layer perceptron, adding real-valued learnable synaptic weights updated iteratively on classification errors.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+      <li style="margin-bottom: 0.4rem;"><strong>Linear Separability Bounds (1969):</strong> Marvin Minsky and Seymour Papert demonstrated that single-layer perceptrons cannot solve linearly non-separable functions such as the exclusive-OR (XOR) logic gate.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+      <li style="margin-bottom: 0.4rem;"><strong>Multilayer Backpropagation (1986):</strong> David Rumelhart, Geoffrey Hinton, and Ronald Williams popularized the generalized delta rule (backpropagation), enabling efficient end-to-end gradient descent training through hidden layers with non-linear activations.<span class="cite">[<a href="#ref5">5</a>]</span></li>
+    </ul>
+
+    <h2 id="neuron-model">Artificial neuron mathematical model</h2>
+    <p>An artificial neuron receives an input vector \(\mathbf{x} = [x_1, x_2, \dots, x_d]^T \in \mathbb{R}^d\), computes a weighted linear combination offset by a scalar bias \(b \in \mathbb{R}\), and applies an activation function \(\sigma\):<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <p>The pre-activation net input \(z\) is defined as:</p>
+    \[z = \mathbf{w}^T \mathbf{x} + b = \sum_{i=1}^{d} w_i x_i + b\]
+
+    <p>The post-activation output scalar \(a\) is:</p>
+    \[a = \sigma(z) = \sigma\left(\mathbf{w}^T \mathbf{x} + b\right)\]
+
+    <p>The weight vector \(\mathbf{w}\) determines the orientation and slope of the decision boundary, while the bias \(b\) translates the boundary away from the coordinate origin.</p>
+
+    <h2 id="activation-functions">Activation functions</h2>
+    <p>Without non-linear activation functions, a neural network with arbitrary depth collapses into a single linear transformation \(\mathbf{y} = \mathbf{W}_{\text{total}} \mathbf{x} + \mathbf{b}_{\text{total}}\). Non-linear activations introduce the curvature required to separate complex data manifolds.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Activation Function</th>
+          <th>Mathematical Formulation</th>
+          <th>Output Range</th>
+          <th>Key Characteristic</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Sigmoid (Logistic)</strong></td>
+          <td>\(\sigma(z) = \frac{1}{1 + e^{-z}}\)</td>
+          <td>\((0, 1)\)</td>
+          <td>Interpretable probability; saturates gradients for \(|z| \gg 0\).</td>
+        </tr>
+        <tr>
+          <td><strong>Hyperbolic Tangent (\(\tanh\))</strong></td>
+          <td>\(\tanh(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}\)</td>
+          <td>\((-1, 1)\)</td>
+          <td>Zero-centered output; reduces directional gradient bias.</td>
+        </tr>
+        <tr>
+          <td><strong>ReLU (Rectified Linear Unit)</strong></td>
+          <td>\(f(z) = \max(0, z)\)</td>
+          <td>\([0, \infty)\)</td>
+          <td>Constant unit derivative for \(z > 0\); eliminates vanishing gradients.</td>
+        </tr>
+        <tr>
+          <td><strong>Leaky ReLU</strong></td>
+          <td>\(f(z) = \max(\alpha z, z), \; \alpha \approx 0.01\)</td>
+          <td>\((-\infty, \infty)\)</td>
+          <td>Prevents dead neurons by sustaining non-zero gradient for \(z < 0\).</td>
+        </tr>
+        <tr>
+          <td><strong>Softmax</strong></td>
+          <td>\(\text{Softmax}(z_i) = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}\)</td>
+          <td>\((0, 1), \; \sum a_i = 1\)</td>
+          <td>Normalizes a logits vector into a valid probability distribution.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="feedforward-architecture">Multilayer architectures</h2>
+    <p>A Multilayer Perceptron (MLP) structures neurons into sequential layers: an input layer, one or more intermediate hidden layers, and an output layer.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <p>For layer \(l \in \{1, 2, \dots, L\}\) with weight matrix \(\mathbf{W}^{[l]} \in \mathbb{R}^{n_l \times n_{l-1}}\) and bias vector \(\mathbf{b}^{[l]} \in \mathbb{R}^{n_l}\), the vectorized forward pass operates as:</p>
+    \[\mathbf{z}^{[l]} = \mathbf{W}^{[l]} \mathbf{a}^{[l-1]} + \mathbf{b}^{[l]}\]
+    \[\mathbf{a}^{[l]} = \sigma^{[l]}\left(\mathbf{z}^{[l]}\right)\]
+    <p>where \(\mathbf{a}^{[0]} = \mathbf{x}\) is the input vector and \(\hat{\mathbf{y}} = \mathbf{a}^{[L]}\) is the network prediction.</p>
+
+    <h2 id="backpropagation">Learning and backpropagation</h2>
+    <p>Training a neural network consists of minimizing a scalar loss function \(\mathcal{L}(\hat{\mathbf{y}}, \mathbf{y})\) over the training dataset through iterative gradient descent updates.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h3 id="loss-formulations">Canonical loss functions</h3>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Mean Squared Error (Regression):</strong>
+        \[\mathcal{L}_{\text{MSE}} = \frac{1}{2n} \sum_{i=1}^n \left\| \hat{\mathbf{y}}_i - \mathbf{y}_i \right\|^2\]
+      </li>
+      <li><strong>Categorical Cross-Entropy (Multi-class Classification):</strong>
+        \[\mathcal{L}_{\text{CE}} = -\sum_{k=1}^K y_k \log \hat{y}_k\]
+      </li>
+    </ul>
+
+    <h3 id="gradient-derivation">The chain rule and error backpropagation</h3>
+    <p>Backpropagation computes exact partial derivatives of \(\mathcal{L}\) with respect to all internal parameters by applying the calculus chain rule in reverse topological order from output layer \(L\) back to input layer \(1\):<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <p>For the output layer \(L\), the error vector \(\boldsymbol{\delta}^{[L]}\) is:</p>
+    \[\boldsymbol{\delta}^{[L]} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{[L]}} = \nabla_{\mathbf{a}^{[L]}} \mathcal{L} \odot {\sigma^{[L]}}'\left(\mathbf{z}^{[L]}\right)\]
+
+    <p>For each preceding hidden layer \(l = L-1, L-2, \dots, 1\), error propagates backward:</p>
+    \[\boldsymbol{\delta}^{[l]} = \left( (\mathbf{W}^{[l+1]})^T \boldsymbol{\delta}^{[l+1]} \right) \odot {\sigma^{[l]}}'\left(\mathbf{z}^{[l]}\right)\]
+
+    <p>The parameter gradients are then computed via outer products:</p>
+    \[\frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}} = \boldsymbol{\delta}^{[l]} (\mathbf{a}^{[l-1]})^T, \quad \frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[l]}} = \boldsymbol{\delta}^{[l]}\]
+
+    <p>Parameters update according to learning rate \(\eta > 0\):</p>
+    \[\mathbf{W}^{[l]} \leftarrow \mathbf{W}^{[l]} - \eta \frac{\partial \mathcal{L}}{\partial \mathbf{W}^{[l]}}, \quad \mathbf{b}^{[l]} \leftarrow \mathbf{b}^{[l]} - \eta \frac{\partial \mathcal{L}}{\partial \mathbf{b}^{[l]}}\]
+
+    <h2 id="universal-approximation">Universal Approximation Theorem</h2>
+    <p>The <strong>Universal Approximation Theorem</strong>, proven by George Cybenko (1989) for sigmoidal activations and generalized by Kurt Hornik (1991) for arbitrary non-constant bounded continuous activations, establishes the theoretical representational capacity of neural networks:<span class="cite">[<a href="#ref6">6</a>, <a href="#ref7">7</a>]</span></p>
+
+    <blockquote>
+      <p style="font-style: italic; color: var(--mute); border-left: 3px solid var(--line); padding-left: 1rem; margin: 1rem 0;">A standard feedforward neural network with a single hidden layer containing a finite number of neurons can approximate any continuous function \(f: \mathbb{R}^d \to \mathbb{R}^m\) on compact subsets of \(\mathbb{R}^d\) to arbitrary precision \(\epsilon > 0\), given appropriate parameters.</p>
+    </blockquote>
+
+    <p>While the theorem proves the existence of a single-layer network capable of representation, it does not guarantee that gradient descent can efficiently learn the weights, nor does it bound the required number of hidden neurons, which can scale exponentially with input dimensionality.</p>
+
+    <h2 id="architectural-taxonomy">Architectural taxonomy</h2>
+    <p>Specialized neural network architectures incorporate inductive biases tailored to distinct data geometries:<span class="cite">[<a href="#ref8">8</a>]</span></p>
+
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li style="margin-bottom: 0.4rem;"><strong>Feedforward Neural Networks (FNN / MLP):</strong> Fully connected acyclic graphs used primarily for tabular data, regression, and discrete classification.</li>
+      <li style="margin-bottom: 0.4rem;"><strong>Convolutional Neural Networks (CNN):</strong> Exploit translation invariance and spatial locality through discrete convolutions, weight sharing, and pooling layers (e.g. LeNet, ResNet).</li>
+      <li style="margin-bottom: 0.4rem;"><strong>Recurrent Neural Networks (RNN, LSTM, GRU):</strong> Maintain an internal recurrent hidden state \(h_t = f(h_{t-1}, x_t)\) to process sequential time-series and token streams.</li>
+      <li style="margin-bottom: 0.4rem;"><strong>Transformer Architectures:</strong> Replace recurrence entirely with multi-head self-attention mechanisms, enabling parallel computation across long-range token contexts.<span class="cite">[<a href="#ref9">9</a>]</span></li>
+      <li style="margin-bottom: 0.4rem;"><strong>Autoencoders:</strong> Bottleneck architectures that learn compressed latent representations by reconstructing their own input signals under dimensionality or sparsity constraints.</li>
+    </ul>
+
+    <h2 id="regularization">Generalization and regularization</h2>
+    <p>Overparameterized neural networks possess sufficient capacity to memorize training labels. Preventing overfitting requires empirical regularization techniques:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Weight Decay (\(L_2\) Regularization):</strong> Penalizes large parameter norms by adding \(\frac{\lambda}{2} \|\mathbf{W}\|_2^2\) to the loss objective, driving weights toward smaller magnitudes.</li>
+      <li><strong>Dropout:</strong> Randomly deactivates a fraction \(p\) of neuron activations during each forward training step, preventing co-adaptation of features.<span class="cite">[<a href="#ref10">10</a>]</span></li>
+      <li><strong>Normalization Layers:</strong> Batch Normalization and Layer Normalization stabilize internal covariate shifts and smooth optimization loss landscapes.</li>
+      <li><strong>Early Stopping:</strong> Halts gradient updates once loss on a held-out validation dataset begins to diverge from training loss.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/deep-neural-networks/">Deep Neural Networks</a>: deep architectures, depth scaling, and representation learning</li>
+      <li><a href="/reference/machine-learning/">Machine Learning</a>: statistical learning paradigms, bias-variance tradeoff, and evaluation metrics</li>
+      <li><a href="/reference/artificial-intelligence/">Artificial Intelligence</a>: theoretical foundations and agentic systems</li>
+      <li><a href="/reference/softmax/">Softmax Function</a>: normalized exponential transformation for categorical probability</li>
+      <li><a href="/reference/continuous-batching/">Continuous Batching</a>: dynamic iteration-level scheduling for neural inference engines</li>
+      <li><a href="/reference/autoregressive/">Autoregressive Models</a>: sequential token generation and conditional likelihood estimation</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Warren S. McCulloch &amp; Walter Pitts, "A Logical Calculus of the Ideas Immanent in Nervous Activity," <em>Bulletin of Mathematical Biophysics</em> 5(4), 115&ndash;133 (1943). DOI: <a href="https://doi.org/10.1007/BF02478259">10.1007/BF02478259</a>.</li>
+      <li id="ref2"><span class="backlink">^</span> Ian Goodfellow, Yoshua Bengio, &amp; Aaron Courville, <em>Deep Learning</em> (MIT Press, 2016). Free online: <a href="https://www.deeplearningbook.org/">deeplearningbook.org</a>.</li>
+      <li id="ref3"><span class="backlink">^</span> Frank Rosenblatt, "The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain," <em>Psychological Review</em> 65(6), 386&ndash;408 (1958). DOI: <a href="https://doi.org/10.1037/h0042519">10.1037/h0042519</a>.</li>
+      <li id="ref4"><span class="backlink">^</span> Marvin Minsky &amp; Seymour Papert, <em>Perceptrons: An Introduction to Computational Geometry</em> (MIT Press, 1969).</li>
+      <li id="ref5"><span class="backlink">^</span> David E. Rumelhart, Geoffrey E. Hinton, &amp; Ronald J. Williams, "Learning Representations by Back-Propagating Errors," <em>Nature</em> 323(6088), 533&ndash;536 (1986). DOI: <a href="https://doi.org/10.1038/323533a0">10.1038/323533a0</a>.</li>
+      <li id="ref6"><span class="backlink">^</span> George Cybenko, "Approximation by Superpositions of a Sigmoidal Function," <em>Mathematics of Control, Signals and Systems</em> 2(4), 303&ndash;314 (1989). DOI: <a href="https://doi.org/10.1007/BF02551274">10.1007/BF02551274</a>.</li>
+      <li id="ref7"><span class="backlink">^</span> Kurt Hornik, "Approximation Capabilities of Multilayer Feedforward Networks," <em>Neural Networks</em> 4(2), 251&ndash;257 (1991). DOI: <a href="https://doi.org/10.1016/0893-6080(91)90009-T">10.1016/0893-6080(91)90009-T</a>.</li>
+      <li id="ref8"><span class="backlink">^</span> Yann LeCun, Yoshua Bengio, &amp; Geoffrey Hinton, "Deep Learning," <em>Nature</em> 521(7553), 436&ndash;444 (2015). DOI: <a href="https://doi.org/10.1038/nature14539">10.1038/nature14539</a>.</li>
+      <li id="ref9"><span class="backlink">^</span> Ashish Vaswani, Noam Shazeer, Niki Parmar, et al., "Attention Is All You Need," in <em>Advances in Neural Information Processing Systems</em> 30 (NeurIPS 2017). arXiv: <a href="https://arxiv.org/abs/1706.03762">1706.03762</a>.</li>
+      <li id="ref10"><span class="backlink">^</span> Nitish Srivastava, Geoffrey Hinton, Alex Krizhevsky, Ilya Sutskever, &amp; Ruslan Salakhutdinov, "Dropout: A Simple Way to Prevent Neural Networks from Overfitting," <em>Journal of Machine Learning Research</em> 15(56), 1929&ndash;1958 (2014).</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
