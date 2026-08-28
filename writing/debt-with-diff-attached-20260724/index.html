@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debt With a Diff Attached — Nestor G Pestelos Jr</title>
+  <meta name="description" content="AI made contributing free, so volume no longer signals effort. Judge a contribution by whether it removes uncertainty for the next person or dumps cost on them…">
+  <meta property="og:title" content="Debt With a Diff Attached">
+  <meta property="og:description" content="AI made contributing free, so volume no longer signals effort. Judge a contribution by whether it removes uncertainty for the next person or dumps cost on them…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/debt-with-diff-attached-20260724/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/debt-with-diff-attached-20260724/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260825s">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
+    <h1>Debt With a Diff Attached</h1>
+<p class="byline">Published July 24, 2026</p>
+
+<p><em>This is the July 24, 2026 text. The current essay is at <a href="https://ngpestelos.com/writing/debt-with-diff-attached/">Debt With a Diff Attached</a>.</em></p>
+
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>AI made contributing free, so volume no longer signals effort. Judge a contribution by whether it removes uncertainty for the next person or dumps cost on them, and filter with effort-based intake, not gatekeeping that also blocks newcomers.</p></div>
+
+<hr>
+
+<p>In 2025 researchers gave the phenomenon a name: AI-DDoS. In <a href="https://arxiv.org/abs/2607.04003">&quot;AI Slop is DDoSing Open Source&quot;</a>, Sadia Afroz and colleagues describe &quot;a denial-of-service effect in which plausible but low-quality AI-generated contributions overwhelm OSS community capacity.&quot; That is not just a paper&#x27;s framing. The security engineer Seth Larson, working on curl and Python, spent the year asking people to stop pointing language models at bug bounties, because the reports looked real and wasted maintainer hours proving they were not.</p>
+
+<p>Something broke, and it is worth being precise about what. For decades the cost of producing a pull request or filing an issue was itself the filter. The time to understand a codebase and prepare a decent contribution ensured that contributors had enough investment to produce thoughtful work, and it capped the volume a maintainer had to handle. Effort was expensive, so a high volume of contributions signaled real investment. AI dropped the cost of production close to zero. Now volume signals nothing.</p>
+
+<h2 id="one-question-replaces-the-filter">One question replaces the filter</h2>
+
+<p><a href="https://x.com/hnshah/status/2066761276945211442">Hiten Shah</a> offers the cleanest replacement I have seen: judge a contribution by whether it removes uncertainty for the next person or pushes the cost of resolving it onto whoever has to review, merge, or maintain it. An agent-written pull request that saves one person ten minutes and costs someone else an hour is &quot;debt with a diff attached.&quot;</p>
+
+<p>The real problem with AI slop is not that a machine wrote it but that it transfers a cost. A sloppy issue takes seconds to file and hands the maintainer its full ambiguity to sort out.</p>
+
+<p>And the cost is not flat. A defect gets more expensive the further downstream it is caught, from roughly 1x at design to 100x after release (<em>Beyond Legacy Code</em>), so ambiguity a contributor will not absorb compounds as it travels. Maintenance is worse: a carrying cost, in David Bryant Copeland&#x27;s phrase from <em>Sustainable Rails</em>, is one you pay all the time, every time.</p>
+
+<h2 id="the-bar-is-concrete">The bar is concrete</h2>
+
+<p>There is a corollary here for anyone worried the bar is now out of reach. Production is the part that got commoditized. Bill Kennedy draws the line between coding and engineering. Coding translates a specification into syntax, which AI now does. Engineering is the part before that: deciding what to build, what will break, what to test. The retained human value is judgment, and judgment is what a good contribution carries.</p>
+
+<p>So the bar is concrete. Bring context the maintainer lacks. Describe the behavior. Name the failure mode. Show an example someone can run. That is real work even when no code is written, because it changes the quality of a decision.</p>
+
+<h2 id="a-lens-not-a-gate">A lens, not a gate</h2>
+
+<p>The danger is turning the test into an automatic gate. As a rule for judging one contribution it is sound; as a filter that rejects at volume it backfires, and measurably so. In the same AI-DDoS study, projects that tightened review to protect capacity saw first-time contributors&#x27; merge ratio fall 18.18% below expected, the sharpest effect the authors found. They call it a rigidity trap: a project looks stable while its contributor pipeline erodes, and the cheapest defenses narrow pathways built over decades.</p>
+
+<p>So the test stays a judgment you apply one contribution at a time. A filter tuned to reject transferred uncertainty also rejects the newcomer who would have learned to absorb it, and today&#x27;s clumsy first pull request is often next year&#x27;s maintainer. Hard gating carries a cost that lands later, in fewer of them.</p>
+
+<p>The way through is a defense that filters on effort, not identity. <a href="https://www.chiark.greenend.org.uk/~sgtatham/bugs.html">Simon Tatham</a> wrote the canonical version in 1999: a bug report exists to let the programmer see the failure, so the reporter&#x27;s job is to spell out how to reproduce it. An issue template, a required reproducible example, a reproduction path each make the contributor absorb the ambiguity in a standardized, learnable form. Anyone willing to do the work can meet a template, a first-timer included, where a wall only filters on who you already are. Structured intake stops the transfer without closing the door, and teaches the format on the way in.</p>
+
+<p>Much of this automates, which invites the objection that bots already solve it. A bot that bounces a bare report back for reproduction steps is structured intake at machine speed, and the right kind of filter, because it sorts on effort. But no bot supplies the judgment the contribution was meant to carry; automation can route the ambiguity back to its author without doing that author&#x27;s thinking.</p>
+
+<h2 id="where-the-test-does-not-fire">Where the test does not fire</h2>
+
+<p>One boundary keeps it honest. The test is about cost pushed onto someone who did not opt in. It is not an argument for polishing everything before you ship. The <a href="https://www.dreamsongs.com/RiseOfWorseIsBetter.html">&quot;Worse Is Better&quot;</a> tradition, from Richard Gabriel to Jamie Zawinski&#x27;s Netscape years, is right that a working, imperfect thing in users&#x27; hands often beats a perfect thing still in development. You are not there to write code, Zawinski said, you are there to ship products. That holds precisely because the person shipping carries their own downstream cost and the users chose to try it. Ship rough when you are the one who pays for it. The test only fires when the bill goes to someone who did not.</p>
+
+<p>Strip it to what a contributor and a maintainer can each hold onto:</p>
+
+<ul>
+
+<li>If you are contributing, do the work of resolving the ambiguity before you hand it off. Context, the failure you saw, an example someone can run.</li>
+
+<li>If you are receiving, ask for reproduction, not credentials. Effort is something a newcomer can supply; standing is not.</li>
+
+<li>And keep the question a lens. The moment it becomes an automatic gate, it starts rejecting the people you most want to keep.</li>
+
+</ul>
+
+<p>I did not arrive at this as a spectator. It is the test I hold my own contributions to before they reach anyone else: remove the uncertainty, or do not send it.</p>
+
+<p>Anyone can produce a contribution now. The ones worth keeping carry the judgment someone already spent, instead of leaving you the bill.</p>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+
+<li>Sadia Afroz, Courtney Miller, Tyler Menezes, Edward Gilmour, Anita Sarma &amp; Zixuan Feng, <a href="https://arxiv.org/abs/2607.04003">&quot;AI Slop is DDoSing Open Source&quot;</a>, arXiv 2607.04003 (2026)</li>
+
+<li>Hiten Shah, <a href="https://x.com/hnshah/status/2066761276945211442">&quot;I Don&#x27;t Read Code. That&#x27;s Why I&#x27;m Learning GitHub.&quot;</a></li>
+
+<li>Simon Tatham, <a href="https://www.chiark.greenend.org.uk/~sgtatham/bugs.html">&quot;How to Report Bugs Effectively&quot;</a> (1999)</li>
+
+<li>Richard P. Gabriel, <a href="https://www.dreamsongs.com/RiseOfWorseIsBetter.html">&quot;The Rise of Worse is Better&quot;</a></li>
+
+<li>Jamie Zawinski, in <em>Coders at Work</em> (Peter Seibel, 2009)</li>
+
+<li>Bill Kennedy (Ardan Labs), on the coding-versus-engineering distinction</li>
+
+<li>David Bryant Copeland, <em>Sustainable Rails</em> (carrying costs)</li>
+
+<li>David Bernstein, <em>Beyond Legacy Code</em> (defect-cost escalation)</li>
+
+</ul>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+</body>
+</html>
