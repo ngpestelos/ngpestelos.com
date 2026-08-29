@@ -114,7 +114,7 @@
     .figure svg {
       width: 100%;
       height: auto;
-      max-width: 46rem;
+      max-width: 48rem;
       display: block;
     }
     .more {
@@ -213,68 +213,68 @@
     <section class="block">
       <h2>1. The Artificial Neuron: A tiny math vote</h2>
       <p class="one">A single neuron takes in numbers, multiplies each by an importance dial, adds them up, and decides whether to shout its own number forward.</p>
+
       <div class="figure">
-        <svg viewBox="0 0 760 280" role="img" aria-label="Diagram of a single artificial neuron showing inputs, weights on badge pills, a summation circle, and an activation trigger.">
+        <svg viewBox="0 0 800 320" role="img" aria-label="Diagram of a single artificial neuron showing inputs, weights on compact badge pills, a summation circle, and an activation trigger.">
           <!-- Input Boxes -->
-          <rect x="20" y="20" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="85" y="47" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fur? (1)</text>
+          <rect x="20" y="25" width="140" height="52" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="90" y="56" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fur? (1)</text>
 
-          <rect x="20" y="118" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="85" y="145" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Barks? (1)</text>
+          <rect x="20" y="134" width="140" height="52" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="90" y="165" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Barks? (1)</text>
 
-          <rect x="20" y="216" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="85" y="243" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fins? (0)</text>
+          <rect x="20" y="243" width="140" height="52" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="90" y="274" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fins? (0)</text>
 
-          <!-- Input Connection Lines & Explicit Arrowheads -->
+          <!-- Input Connection Lines -->
           <g stroke="#8a7d72" stroke-width="1.8">
-            <line x1="150" y1="42" x2="304" y2="114"/>
-            <line x1="150" y1="140" x2="298" y2="140"/>
-            <line x1="150" y1="238" x2="304" y2="166"/>
+            <line x1="160" y1="51" x2="315" y2="129"/>
+            <line x1="160" y1="160" x2="310" y2="160"/>
+            <line x1="160" y1="269" x2="315" y2="191"/>
           </g>
+          <!-- Arrowheads into Circle -->
           <g fill="#8a7d72">
-            <!-- Top arrowhead pointing toward (360, 140) -->
-            <polygon points="313,118 301,110 306,120"/>
-            <!-- Middle arrowhead -->
-            <polygon points="308,140 296,135 296,145"/>
-            <!-- Bottom arrowhead -->
-            <polygon points="313,162 306,160 301,170"/>
+            <polygon points="327,135 313,126 319,137"/>
+            <polygon points="326,160 314,155 314,165"/>
+            <polygon points="327,185 319,183 313,194"/>
           </g>
 
-          <!-- Weight Badges -->
+          <!-- Weight Badges (Compact & Clean) -->
           <g>
-            <rect x="175" y="67" width="105" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="227.5" y="84" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.4 (Weight)</text>
+            <rect x="210" y="78" width="68" height="26" rx="13" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="244" y="96" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#9a3412">&times; 0.4</text>
 
-            <rect x="175" y="128" width="105" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="227.5" y="145" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.8 (Weight)</text>
+            <rect x="210" y="147" width="68" height="26" rx="13" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="244" y="165" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#9a3412">&times; 0.8</text>
 
-            <rect x="175" y="189" width="105" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="227.5" y="206" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; -0.9 (Weight)</text>
+            <rect x="210" y="216" width="68" height="26" rx="13" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="244" y="234" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#9a3412">&times; -0.9</text>
           </g>
 
-          <!-- Summation & Bias Circle -->
-          <circle cx="360" cy="140" r="52" fill="#fffaf3" stroke="#1c1612" stroke-width="2"/>
-          <text x="360" y="132" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Sum + Bias</text>
-          <text x="360" y="154" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Total = 1.1</text>
+          <!-- Summation & Bias Circle (Radius 64 for roomy text) -->
+          <circle cx="390" cy="160" r="64" fill="#fffaf3" stroke="#1c1612" stroke-width="2"/>
+          <text x="390" y="152" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Sum + Bias</text>
+          <text x="390" y="176" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Total = 1.1</text>
 
           <!-- Circle to Activation Line & Arrowhead -->
-          <line x1="412" y1="140" x2="478" y2="140" stroke="#8a7d72" stroke-width="1.8"/>
-          <polygon points="490,140 478,135 478,145" fill="#8a7d72"/>
+          <line x1="454" y1="160" x2="518" y2="160" stroke="#8a7d72" stroke-width="1.8"/>
+          <polygon points="530,160 518,155 518,165" fill="#8a7d72"/>
 
           <!-- Activation Filter Box -->
-          <rect x="490" y="104" width="115" height="72" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
-          <text x="547" y="134" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#9a3412">Activation</text>
-          <text x="547" y="156" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Is sum &gt; 0?</text>
+          <rect x="530" y="115" width="130" height="90" rx="10" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
+          <text x="595" y="152" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#9a3412">Activation</text>
+          <text x="595" y="176" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Is sum &gt; 0?</text>
 
           <!-- Activation to Output Line & Arrowhead -->
-          <line x1="605" y1="140" x2="648" y2="140" stroke="#8a7d72" stroke-width="1.8"/>
-          <polygon points="660,140 648,135 648,145" fill="#8a7d72"/>
+          <line x1="660" y1="160" x2="698" y2="160" stroke="#8a7d72" stroke-width="1.8"/>
+          <polygon points="710,160 698,155 698,165" fill="#8a7d72"/>
 
           <!-- Output Box -->
-          <rect x="660" y="118" width="80" height="44" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
-          <text x="700" y="145" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#ffffff">YES</text>
+          <rect x="710" y="134" width="70" height="52" rx="10" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
+          <text x="745" y="166" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="16" fill="#ffffff">YES</text>
         </svg>
       </div>
+
       <details class="more">
         <summary>Why each piece exists</summary>
         <ul>
@@ -290,80 +290,82 @@
     <section class="block">
       <h2>2. Layers: Passing notes from simple to complex</h2>
       <p class="one">One neuron can only separate things with a straight cut. Stacking them in layers lets early neurons spot lines, while deep neurons combine those lines into eyes, wheels, or letters.</p>
+
       <div class="figure">
-        <svg viewBox="0 0 760 320" role="img" aria-label="Diagram showing input layer finding edges, hidden layer finding parts, and output layer finding objects with generous header clearance.">
+        <svg viewBox="0 0 800 340" role="img" aria-label="Diagram showing input layer finding edges, hidden layer finding parts, and output layer finding objects with generous header clearance.">
           <!-- Background container cards -->
-          <rect x="20" y="20" width="160" height="280" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="100" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Input Layer</text>
-          <text x="100" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Raw Pixels</text>
+          <rect x="20" y="20" width="170" height="300" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="105" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Input Layer</text>
+          <text x="105" y="74" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Raw Pixels</text>
 
-          <rect x="280" y="20" width="190" height="280" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="375" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Hidden Layer</text>
-          <text x="375" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Edges &amp; Textures</text>
+          <rect x="290" y="20" width="220" height="300" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="400" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Hidden Layer</text>
+          <text x="400" y="74" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Edges &amp; Textures</text>
 
-          <rect x="560" y="20" width="180" height="280" rx="10" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="650" y="48" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#1c1612">Output Layer</text>
-          <text x="650" y="70" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Final Decision</text>
+          <rect x="610" y="20" width="170" height="300" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+          <text x="695" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Output Layer</text>
+          <text x="695" y="74" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Final Decision</text>
 
-          <!-- CONNECTORS UNDERNEATH NODES (Layer 1 x=100 to Layer 2 x=375) -->
+          <!-- CONNECTORS UNDERNEATH NODES (Layer 1 x=105 to Layer 2 x=400) -->
           <g stroke="#d4c9bb" stroke-width="1.5">
-            <line x1="100" y1="115" x2="375" y2="105"/>
-            <line x1="100" y1="115" x2="375" y2="150"/>
-            <line x1="100" y1="115" x2="375" y2="195"/>
-            <line x1="100" y1="115" x2="375" y2="240"/>
+            <line x1="105" y1="125" x2="400" y2="120"/>
+            <line x1="105" y1="125" x2="400" y2="165"/>
+            <line x1="105" y1="125" x2="400" y2="210"/>
+            <line x1="105" y1="125" x2="400" y2="255"/>
 
-            <line x1="100" y1="170" x2="375" y2="105"/>
-            <line x1="100" y1="170" x2="375" y2="150"/>
-            <line x1="100" y1="170" x2="375" y2="195"/>
-            <line x1="100" y1="170" x2="375" y2="240"/>
+            <line x1="105" y1="185" x2="400" y2="120"/>
+            <line x1="105" y1="185" x2="400" y2="165"/>
+            <line x1="105" y1="185" x2="400" y2="210"/>
+            <line x1="105" y1="185" x2="400" y2="255"/>
 
-            <line x1="100" y1="225" x2="375" y2="105"/>
-            <line x1="100" y1="225" x2="375" y2="150"/>
-            <line x1="100" y1="225" x2="375" y2="195"/>
-            <line x1="100" y1="225" x2="375" y2="240"/>
+            <line x1="105" y1="245" x2="400" y2="120"/>
+            <line x1="105" y1="245" x2="400" y2="165"/>
+            <line x1="105" y1="245" x2="400" y2="210"/>
+            <line x1="105" y1="245" x2="400" y2="255"/>
           </g>
 
-          <!-- Layer 2 (x=375) to Layer 3 (x=650) -->
+          <!-- Layer 2 (x=400) to Layer 3 (x=695) -->
           <g stroke="#d4c9bb" stroke-width="1.5">
-            <line x1="375" y1="105" x2="650" y2="146"/>
-            <line x1="375" y1="105" x2="650" y2="216"/>
+            <line x1="400" y1="120" x2="695" y2="162"/>
+            <line x1="400" y1="120" x2="695" y2="237"/>
 
-            <line x1="375" y1="150" x2="650" y2="146"/>
-            <line x1="375" y1="150" x2="650" y2="216"/>
+            <line x1="400" y1="165" x2="695" y2="162"/>
+            <line x1="400" y1="165" x2="695" y2="237"/>
 
-            <line x1="375" y1="195" x2="650" y2="146"/>
-            <line x1="375" y1="195" x2="650" y2="216"/>
+            <line x1="400" y1="210" x2="695" y2="162"/>
+            <line x1="400" y1="210" x2="695" y2="237"/>
 
-            <line x1="375" y1="240" x2="650" y2="146"/>
-            <line x1="375" y1="240" x2="650" y2="216"/>
+            <line x1="400" y1="255" x2="695" y2="162"/>
+            <line x1="400" y1="255" x2="695" y2="237"/>
           </g>
 
           <!-- NODES DRAWN ON TOP WITH GENEROUS CLEARANCE -->
           <!-- Layer 1 Nodes -->
           <g>
-            <circle cx="100" cy="115" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
-            <circle cx="100" cy="170" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
-            <circle cx="100" cy="225" r="16" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+            <circle cx="105" cy="125" r="18" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+            <circle cx="105" cy="185" r="18" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
+            <circle cx="105" cy="245" r="18" fill="#fffaf3" stroke="#0f5c57" stroke-width="2.5"/>
           </g>
 
-          <!-- Layer 2 Nodes (Spaced from y=105 to y=240, zero overlap with header) -->
+          <!-- Layer 2 Nodes (Spaced from y=120 to y=255, 28px clearance from header) -->
           <g>
-            <circle cx="375" cy="105" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
-            <circle cx="375" cy="150" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
-            <circle cx="375" cy="195" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
-            <circle cx="375" cy="240" r="16" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="400" cy="120" r="18" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="400" cy="165" r="18" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="400" cy="210" r="18" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
+            <circle cx="400" cy="255" r="18" fill="#fffaf3" stroke="#9a3412" stroke-width="2.5"/>
           </g>
 
           <!-- Layer 3 Output Buttons -->
           <g>
-            <rect x="590" y="125" width="120" height="42" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
-            <text x="650" y="151" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#ffffff">Dog (92%)</text>
+            <rect x="635" y="140" width="120" height="44" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.5"/>
+            <text x="695" y="167" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#ffffff">Dog (92%)</text>
 
-            <rect x="590" y="195" width="120" height="42" rx="8" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="650" y="221" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="13" fill="#6e645a">Cat (8%)</text>
+            <rect x="635" y="215" width="120" height="44" rx="8" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="695" y="242" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#6e645a">Cat (8%)</text>
           </g>
         </svg>
       </div>
+
       <details class="more">
         <summary>How information builds up</summary>
         <ul>
@@ -378,49 +380,51 @@
     <section class="block">
       <h2>3. Training: Guessing, measuring, and nudging the dials</h2>
       <p class="one">The network begins with random dials. With every practice example, it measures how far off its guess was and nudges each dial slightly in the direction that reduces error.</p>
+
       <div class="figure">
-        <svg viewBox="0 0 720 290" role="img" aria-label="A 4-stage circular diagram showing the complete training loop: Forward pass, Prediction, Loss evaluation, and Backpropagation adjustment.">
+        <svg viewBox="0 0 800 320" role="img" aria-label="A 4-stage circular diagram showing the complete training loop: Forward pass, Prediction, Loss evaluation, and Backpropagation adjustment.">
           <!-- Card 1: Forward Pass (Top Left) -->
-          <rect x="30" y="20" width="290" height="95" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="50" y="50" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">1. Forward Pass</text>
-          <text x="50" y="74" font-family="sans-serif" font-size="13" fill="#1c1612">Input: picture of a cat</text>
-          <text x="50" y="94" font-family="sans-serif" font-size="12" fill="#6e645a">Signals travel through layers</text>
+          <rect x="30" y="20" width="330" height="110" rx="12" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="55" y="52" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">1. Forward Pass</text>
+          <text x="55" y="78" font-family="sans-serif" font-size="13" fill="#1c1612">Input: picture of a cat</text>
+          <text x="55" y="100" font-family="sans-serif" font-size="12" fill="#6e645a">Signals propagate through network</text>
 
           <!-- Arrow 1 -> 2 (Top Horizontal, Right) -->
-          <line x1="320" y1="67" x2="388" y2="67" stroke="#0f5c57" stroke-width="2"/>
-          <polygon points="400,67 388,62 388,72" fill="#0f5c57"/>
+          <line x1="360" y1="75" x2="428" y2="75" stroke="#0f5c57" stroke-width="2"/>
+          <polygon points="440,75 428,70 428,80" fill="#0f5c57"/>
 
           <!-- Card 2: Prediction (Top Right) -->
-          <rect x="400" y="20" width="290" height="95" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="420" y="50" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">2. Network Prediction</text>
-          <text x="420" y="74" font-family="sans-serif" font-size="13" fill="#1c1612">Guess: "Dog" (92% confidence)</text>
-          <text x="420" y="94" font-family="sans-serif" font-size="12" fill="#6e645a">Raw guess before verification</text>
+          <rect x="440" y="20" width="330" height="110" rx="12" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="465" y="52" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">2. Network Prediction</text>
+          <text x="465" y="78" font-family="sans-serif" font-size="13" fill="#1c1612">Guess: "Dog" (92% confidence)</text>
+          <text x="465" y="100" font-family="sans-serif" font-size="12" fill="#6e645a">Raw output before verification</text>
 
           <!-- Arrow 2 -> 3 (Right Vertical, Down) -->
-          <line x1="545" y1="115" x2="545" y2="163" stroke="#9a3412" stroke-width="2"/>
-          <polygon points="545,175 540,163 550,163" fill="#9a3412"/>
+          <line x1="605" y1="130" x2="605" y2="178" stroke="#9a3412" stroke-width="2"/>
+          <polygon points="605,190 600,178 610,178" fill="#9a3412"/>
 
           <!-- Card 3: Measure Loss (Bottom Right) -->
-          <rect x="400" y="175" width="290" height="95" rx="10" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
-          <text x="420" y="205" font-family="sans-serif" font-weight="700" font-size="15" fill="#9a3412">3. Measure Error (Loss)</text>
-          <text x="420" y="229" font-family="sans-serif" font-size="13" fill="#1c1612">Compare with true label ("Cat")</text>
-          <text x="420" y="249" font-family="sans-serif" font-size="12" fill="#6e645a">Error Score = 0.85 (High mistake)</text>
+          <rect x="440" y="190" width="330" height="110" rx="12" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
+          <text x="465" y="222" font-family="sans-serif" font-weight="700" font-size="15" fill="#9a3412">3. Measure Error (Loss)</text>
+          <text x="465" y="248" font-family="sans-serif" font-size="13" fill="#1c1612">Compare with true label ("Cat")</text>
+          <text x="465" y="270" font-family="sans-serif" font-size="12" fill="#6e645a">Error Score = 0.85 (High mistake)</text>
 
           <!-- Arrow 3 -> 4 (Bottom Horizontal, Left) -->
-          <line x1="400" y1="222" x2="332" y2="222" stroke="#1d4ed8" stroke-width="2"/>
-          <polygon points="320,222 332,217 332,227" fill="#1d4ed8"/>
+          <line x1="440" y1="245" x2="372" y2="245" stroke="#1d4ed8" stroke-width="2"/>
+          <polygon points="360,245 372,240 372,250" fill="#1d4ed8"/>
 
           <!-- Card 4: Backpropagation (Bottom Left) -->
-          <rect x="30" y="175" width="290" height="95" rx="10" fill="#fffaf3" stroke="#1d4ed8" stroke-width="2"/>
-          <text x="50" y="205" font-family="sans-serif" font-weight="700" font-size="15" fill="#1d4ed8">4. Backpropagation</text>
-          <text x="50" y="229" font-family="sans-serif" font-size="13" fill="#1c1612">Trace error back through layers</text>
-          <text x="50" y="249" font-family="sans-serif" font-size="12" fill="#6e645a">Nudge dials toward correct guess</text>
+          <rect x="30" y="190" width="330" height="110" rx="12" fill="#fffaf3" stroke="#1d4ed8" stroke-width="2"/>
+          <text x="55" y="222" font-family="sans-serif" font-weight="700" font-size="15" fill="#1d4ed8">4. Backpropagation</text>
+          <text x="55" y="248" font-family="sans-serif" font-size="13" fill="#1c1612">Trace error back through layers</text>
+          <text x="55" y="270" font-family="sans-serif" font-size="12" fill="#6e645a">Nudge dials toward correct guess</text>
 
           <!-- Arrow 4 -> 1 (Left Vertical, Up) -->
-          <line x1="175" y1="175" x2="175" y2="127" stroke="#1d4ed8" stroke-width="2"/>
-          <polygon points="175,115 170,127 180,127" fill="#1d4ed8"/>
+          <line x1="195" y1="190" x2="195" y2="142" stroke="#1d4ed8" stroke-width="2"/>
+          <polygon points="195,130 190,142 200,142" fill="#1d4ed8"/>
         </svg>
       </div>
+
       <details class="more">
         <summary>Why small nudges matter</summary>
         <ul>
