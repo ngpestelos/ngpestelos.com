@@ -256,7 +256,7 @@
       <li><strong>Raw LLM = CPU</strong>: A fast, stateless reasoning engine capable of transformation but possessing no intrinsic state between calls.</li>
       <li><strong>Context window = RAM</strong>: Fast, high-bandwidth memory with strict capacity constraints that suffers from performance degradation (context rot) when saturated.</li>
       <li><strong>Filesystem / database = Disk storage</strong>: Long-term persistent storage (repositories, notes, vector databases).</li>
-      <li><strong>Tools / MCP servers = Device drivers</strong>: Standardized interfaces connecting compute to external peripherals and web services.</li>
+      <li><strong>Tools / <a href="/reference/model-context-protocol/">MCP</a> servers = Device drivers</strong>: Standardized interfaces connecting compute to external peripherals and web services.</li>
       <li><strong>The harness = Operating system</strong>: The runtime coordinator that allocates memory, schedules execution cycles, manages I/O, and enforces security boundaries.<span class="cite">[<a href="#ref3">3</a>]</span></li>
     </ul>
 
@@ -289,6 +289,7 @@
     <h2 id="see-also">See also</h2>
     <ul>
       <li><a href="/reference/agents/">Agents</a></li>
+      <li><a href="/reference/model-context-protocol/">Model Context Protocol</a></li>
       <li><a href="/reference/llm-gateway/">LLM Gateway</a></li>
       <li><a href="/reference/fail-closed/">Fail-closed</a></li>
       <li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li>
