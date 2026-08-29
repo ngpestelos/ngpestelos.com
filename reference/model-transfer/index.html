@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Transfer · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Model transfer (transfer learning) is a machine learning technique where knowledge gained while solving a source task is reused to improve performance on a target task.">
+  <meta property="og:title" content="Model Transfer · Reference">
+  <meta property="og:description" content="Machine learning technique where representations learned on a source task are transferred to accelerate learning and improve accuracy on a target task.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/model-transfer/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/model-transfer/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Machine Learning · Deep Learning · Artificial Intelligence</p>
+    <h1>Model Transfer</h1>
+    <p class="updated">Reference entry · last updated August 30, 2026</p>
+
+    <p class="lede"><strong>Model transfer</strong> (often termed <em>transfer learning</em>) is a machine learning paradigm in which parameters, representations, or statistical features acquired while training on a source task are transferred to improve learning efficiency and predictive accuracy on a distinct target task.<span class="cite">[<a href="#ref1">1</a>]</span> By reusing pre-trained representations, model transfer circumvents the need to train deep architectures from scratch for every novel problem domain.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#formal-definition">Mathematical framework</a></li>
+        <li><a href="#taxonomy">Core transfer categories</a></li>
+        <li><a href="#mechanisms">Mechanisms and fine-tuning techniques</a></li>
+        <li><a href="#modern-foundation-models">Pre-training in foundation models</a></li>
+        <li><a href="#failure-modes">Failure modes and negative transfer</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="formal-definition">Mathematical framework</h2>
+    <p>Following the formalization by Sinno Jialin Pan and Qiang Yang, transfer learning operates over domains and tasks.<span class="cite">[<a href="#ref1">1</a>]</span> A domain \( \mathcal{D} = \{\mathcal{X}, P(X)\} \) consists of a feature space \( \mathcal{X} \) and a marginal probability distribution \( P(X) \), where \( X = \{x_1, \dots, x_n\} \in \mathcal{X} \).</p>
+    <p>Given a specific domain \( \mathcal{D} \), a task \( \mathcal{T} = \{\mathcal{Y}, f(\cdot)\} \) consists of a label space \( \mathcal{Y} \) and an objective predictive function \( f(\cdot) \), learned from training pairs \( \{x_i, y_i\} \) with \( x_i \in \mathcal{X}, y_i \in \mathcal{Y} \).</p>
+    <p>Transfer learning aims to improve the learning of the target predictive function \( f_T(\cdot) \) in target domain \( \mathcal{D}_T \) using knowledge gained from source domain \( \mathcal{D}_S \) and source task \( \mathcal{T}_S \), where \( \mathcal{D}_S \neq \mathcal{D}_T \) or \( \mathcal{T}_S \neq \mathcal{T}_T \).<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="taxonomy">Core transfer categories</h2>
+    <p>Transfer learning methods are generally categorized by the availability of labeled data across source and target domains:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Inductive transfer learning</strong>: The target task differs from the source task (\( \mathcal{T}_T \neq \mathcal{T}_S \)), regardless of whether source and target domains match. Labeled data in the target domain is required to adapt the model.</li>
+      <li><strong>Transductive transfer learning (domain adaptation)</strong>: The source and target tasks are identical (\( \mathcal{T}_T = \mathcal{T}_S \)), but the domains differ (\( \mathcal{D}_S \neq \mathcal{D}_T \)). Labeled data is available only in the source domain.</li>
+      <li><strong>Unsupervised transfer learning</strong>: No labeled data is available in either source or target domains during transfer. The model transfers latent clustering or representation spaces.</li>
+    </ul>
+
+    <h2 id="mechanisms">Mechanisms and fine-tuning techniques</h2>
+    <p>In deep neural networks, lower layers learn general features (such as edge detectors in computer vision or token embeddings in language models), while upper layers capture task-specific abstractions.<span class="cite">[<a href="#ref3">3</a>]</span> Practitioners employ several common adaptation strategies:</p>
+    <ul>
+      <li><strong>Feature extraction</strong>: The weights of the pre-trained backbone are frozen. Feature representations from intermediate layers are passed to a new, lightweight classification head trained on the target task.</li>
+      <li><strong>Full fine-tuning</strong>: All weights across the entire network are updated using a small target dataset with a low learning rate.</li>
+      <li><strong>Parameter-Efficient Fine-Tuning (PEFT)</strong>: The original model weights remain frozen, and lightweight adapter modules or low-rank decomposition matrices (such as LoRA) are inserted to minimize computational overhead and memory usage.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+    </ul>
+
+    <h2 id="modern-foundation-models">Pre-training in foundation models</h2>
+    <p>Transfer learning forms the architectural backbone of modern artificial intelligence.<span class="cite">[<a href="#ref5">5</a>]</span> In the pre-train and fine-tune paradigm, large foundation models (such as BERT, GPT, and modern vision transformers) are trained on massive, unlabelled datasets using self-supervised objectives (such as masked language modeling or next-token prediction).<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <p>Once pre-trained, the model transfers linguistic and world knowledge to downstream specialized tasks with minimal supervision, including few-shot and zero-shot in-context transfer without updating weight matrices.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+
+    <h2 id="failure-modes">Failure modes and negative transfer</h2>
+    <p>Transfer learning does not guarantee performance gains. Key engineering challenges include:</p>
+    <ul>
+      <li><strong>Negative transfer</strong>: When the source and target domains share minimal mutual information or exhibit conflicting causal structures, transferring weights can degrade performance relative to training from scratch.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+      <li><strong>Catastrophic forgetting</strong>: Updating model weights on a new target dataset can overwrite representations needed for the original source task.<span class="cite">[<a href="#ref8">8</a>]</span></li>
+      <li><strong>Domain shift</strong>: Changes in input distributions between training and deployment environments can degrade transferred representations over time.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/deep-neural-networks/">Deep Neural Networks</a></li>
+      <li><a href="/reference/neural-networks/">Neural Networks</a></li>
+      <li><a href="/reference/machine-learning/">Machine Learning</a></li>
+      <li><a href="/reference/large-language-models/">Large Language Models</a></li>
+      <li><a href="/reference/model-router/">Model Router</a></li>
+      <li><a href="/reference/reinforcement-learning/">Reinforcement Learning</a></li>
+      <li><a href="/reference/retrieval-augmented-generation/">Retrieval-Augmented Generation</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#formal-definition">↑</a> Sinno Jialin Pan and Qiang Yang, “A Survey on Transfer Learning,” <em>IEEE Transactions on Knowledge and Data Engineering</em>, vol. 22, no. 10, pp. 1345–1359, 2010. DOI: 10.1109/TKDE.2009.191.</li>
+      <li id="ref2"><a class="backlink" href="#formal-definition">↑</a> Chuanqi Tan, Fuchun Sun, Tao Kong, Wenchang Zhang, Chao Yang, and Chunfang Liu, “A Survey on Deep Transfer Learning,” in <em>Artificial Neural Networks and Machine Learning – ICANN 2018</em>, Springer, 2018, pp. 270–279.</li>
+      <li id="ref3"><a class="backlink" href="#mechanisms">↑</a> Jason Yosinski, Jeff Clune, Yoshua Bengio, and Hod Lipson, “How transferable are features in deep neural networks?,” in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, vol. 27, 2014.</li>
+      <li id="ref4"><a class="backlink" href="#mechanisms">↑</a> Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu Wang, and Weizhu Chen, “LoRA: Low-Rank Adaptation of Large Language Models,” in <em>International Conference on Learning Representations (ICLR)</em>, 2022.</li>
+      <li id="ref5"><a class="backlink" href="#modern-foundation-models">↑</a> Rishi Bommasani et al., “On the Opportunities and Risks of Foundation Models,” <em>arXiv preprint arXiv:2108.07258</em>, 2021.</li>
+      <li id="ref6"><a class="backlink" href="#modern-foundation-models">↑</a> Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova, “BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding,” in <em>NAACL-HLT</em>, 2019, pp. 4171–4186.</li>
+      <li id="ref7"><a class="backlink" href="#modern-foundation-models">↑</a> Tom B. Brown et al., “Language Models are Few-Shot Learners,” in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, vol. 33, 2020, pp. 1877–1901.</li>
+      <li id="ref8"><a class="backlink" href="#failure-modes">↑</a> Michael McCloskey and Neal J. Cohen, “Catastrophic Interference in Connectionist Networks: The Sequential Learning Problem,” in <em>Psychology of Learning and Motivation</em>, vol. 24, Academic Press, 1989, pp. 109–165.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
