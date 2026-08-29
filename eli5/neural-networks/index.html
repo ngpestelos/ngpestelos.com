@@ -215,21 +215,6 @@
       <p class="one">A single neuron takes in numbers, multiplies each by an importance dial, adds them up, and decides whether to shout its own number forward.</p>
       <div class="figure">
         <svg viewBox="0 0 760 280" role="img" aria-label="Diagram of a single artificial neuron showing inputs, weights on badge pills, a summation circle, and an activation trigger.">
-          <defs>
-            <marker id="arrow-neutral" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 1 2 L 7 5 L 1 8 Z" fill="#8a7d72"/>
-            </marker>
-            <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 1 2 L 7 5 L 1 8 Z" fill="#0f5c57"/>
-            </marker>
-            <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 1 2 L 7 5 L 1 8 Z" fill="#9a3412"/>
-            </marker>
-            <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 1 2 L 7 5 L 1 8 Z" fill="#1d4ed8"/>
-            </marker>
-          </defs>
-
           <!-- Input Boxes -->
           <rect x="20" y="20" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
           <text x="85" y="47" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fur? (1)</text>
@@ -240,12 +225,22 @@
           <rect x="20" y="216" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
           <text x="85" y="243" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fins? (0)</text>
 
-          <!-- Weight lines connecting input box right edge (x=150) to circle perimeter with arrowheads -->
-          <line x1="150" y1="42" x2="313" y2="118" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
-          <line x1="150" y1="140" x2="308" y2="140" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
-          <line x1="150" y1="238" x2="313" y2="162" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
+          <!-- Input Connection Lines & Explicit Arrowheads -->
+          <g stroke="#8a7d72" stroke-width="1.8">
+            <line x1="150" y1="42" x2="304" y2="114"/>
+            <line x1="150" y1="140" x2="298" y2="140"/>
+            <line x1="150" y1="238" x2="304" y2="166"/>
+          </g>
+          <g fill="#8a7d72">
+            <!-- Top arrowhead pointing toward (360, 140) -->
+            <polygon points="313,118 301,110 306,120"/>
+            <!-- Middle arrowhead -->
+            <polygon points="308,140 296,135 296,145"/>
+            <!-- Bottom arrowhead -->
+            <polygon points="313,162 306,160 301,170"/>
+          </g>
 
-          <!-- Weight Badges (centered directly on the line coordinates) -->
+          <!-- Weight Badges -->
           <g>
             <rect x="175" y="67" width="105" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
             <text x="227.5" y="84" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.4 (Weight)</text>
@@ -262,16 +257,18 @@
           <text x="360" y="132" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Sum + Bias</text>
           <text x="360" y="154" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Total = 1.1</text>
 
-          <!-- Activation Arrow -->
-          <line x1="412" y1="140" x2="490" y2="140" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
+          <!-- Circle to Activation Line & Arrowhead -->
+          <line x1="412" y1="140" x2="478" y2="140" stroke="#8a7d72" stroke-width="1.8"/>
+          <polygon points="490,140 478,135 478,145" fill="#8a7d72"/>
 
           <!-- Activation Filter Box -->
           <rect x="490" y="104" width="115" height="72" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
           <text x="547" y="134" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#9a3412">Activation</text>
           <text x="547" y="156" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Is sum &gt; 0?</text>
 
-          <!-- Output Arrow -->
-          <line x1="605" y1="140" x2="660" y2="140" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
+          <!-- Activation to Output Line & Arrowhead -->
+          <line x1="605" y1="140" x2="648" y2="140" stroke="#8a7d72" stroke-width="1.8"/>
+          <polygon points="660,140 648,135 648,145" fill="#8a7d72"/>
 
           <!-- Output Box -->
           <rect x="660" y="118" width="80" height="44" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
@@ -383,29 +380,15 @@
       <p class="one">The network begins with random dials. With every practice example, it measures how far off its guess was and nudges each dial slightly in the direction that reduces error.</p>
       <div class="figure">
         <svg viewBox="0 0 760 230" role="img" aria-label="Diagram showing the training loop: Forward guess, Loss calculation, and Backpropagation dial adjustments.">
-          <defs>
-            <marker id="arrow-neutral" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 1 2 L 7 5 L 1 8 Z" fill="#8a7d72"/>
-            </marker>
-            <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 1 2 L 7 5 L 1 8 Z" fill="#0f5c57"/>
-            </marker>
-            <marker id="arrow-orange" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 1 2 L 7 5 L 1 8 Z" fill="#9a3412"/>
-            </marker>
-            <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M 1 2 L 7 5 L 1 8 Z" fill="#1d4ed8"/>
-            </marker>
-          </defs>
-
           <!-- Step 1: Forward Pass Card -->
           <rect x="20" y="20" width="205" height="120" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
           <text x="122" y="52" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">1. Forward Pass</text>
           <text x="122" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Show picture of a cat</text>
           <text x="122" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Network guesses "Dog"</text>
 
-          <!-- Forward arrow 1 -> 2 (flush from Card 1 x=225 to Card 2 x=278) -->
-          <line x1="225" y1="80" x2="278" y2="80" stroke="#0f5c57" stroke-width="2.2" marker-end="url(#arrow-green)"/>
+          <!-- Forward arrow 1 -> 2 (Explicit line & polygon) -->
+          <line x1="225" y1="80" x2="266" y2="80" stroke="#0f5c57" stroke-width="2"/>
+          <polygon points="278,80 266,75 266,85" fill="#0f5c57"/>
 
           <!-- Step 2: Loss Card -->
           <rect x="278" y="20" width="205" height="120" rx="10" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
@@ -413,8 +396,9 @@
           <text x="380" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Compare to true label</text>
           <text x="380" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Error Score = 0.85</text>
 
-          <!-- Forward arrow 2 -> 3 (flush from Card 2 x=483 to Card 3 x=535) -->
-          <line x1="483" y1="80" x2="535" y2="80" stroke="#9a3412" stroke-width="2.2" marker-end="url(#arrow-orange)"/>
+          <!-- Forward arrow 2 -> 3 (Explicit line & polygon) -->
+          <line x1="483" y1="80" x2="523" y2="80" stroke="#9a3412" stroke-width="2"/>
+          <polygon points="535,80 523,75 523,85" fill="#9a3412"/>
 
           <!-- Step 3: Backprop Card -->
           <rect x="535" y="20" width="205" height="120" rx="10" fill="#fffaf3" stroke="#1d4ed8" stroke-width="2"/>
@@ -422,8 +406,10 @@
           <text x="637" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Calculate dial adjustments</text>
           <text x="637" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Trace gradients backward</text>
 
-          <!-- Crisp Orthogonal Return Track with Rounded Corners (flush into Card 1 bottom at y=140) -->
-          <path d="M 637 140 L 637 185 Q 637 195 627 195 L 132 195 Q 122 195 122 185 L 122 140" fill="none" stroke="#1d4ed8" stroke-width="2" marker-end="url(#arrow-blue)"/>
+          <!-- Crisp Orthogonal Return Track with Rounded Corners -->
+          <path d="M 637 140 L 637 185 Q 637 195 627 195 L 132 195 Q 122 195 122 185 L 122 152" fill="none" stroke="#1d4ed8" stroke-width="2"/>
+          <!-- Explicit upward arrowhead docking flush into Card 1 bottom at (122, 140) -->
+          <polygon points="122,140 117,152 127,152" fill="#1d4ed8"/>
 
           <!-- Centered Return Badge -->
           <g>
