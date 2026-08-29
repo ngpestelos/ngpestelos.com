@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spaced Repetition · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Spaced repetition is an evidence-based learning technique that reviews material at increasing intervals to counteract the psychological forgetting curve.">
+  <meta property="og:title" content="Spaced Repetition · Reference">
+  <meta property="og:description" content="Evidence-based learning technique that schedules reviews at increasing intervals to optimize long-term memory retention.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/spaced-repetition/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/spaced-repetition/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\[', right: '\]', display: true},
+        {left: '\(', right: '\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Cognitive Psychology · Learning Science · Memory Systems</p>
+    <h1>Spaced Repetition</h1>
+    <p class="updated">Reference entry · last updated August 30, 2026</p>
+
+    <p class="lede"><strong>Spaced repetition</strong> is an evidence-based learning and memory technique that schedules reviews of information at increasing intervals over time.<span class="cite">[<a href="#ref1">1</a>]</span> By exploiting the psychological spacing effect, the technique minimizes total study time while maximizing long-term retention compared to concentrated massed practice.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#forgetting-curve">The spacing effect and the forgetting curve</a></li>
+        <li><a href="#algorithms">Scheduling systems and algorithmic models</a></li>
+        <li><a href="#cognitive-mechanisms">Underlying cognitive mechanisms</a></li>
+        <li><a href="#applications">Modern applications and the mnemonic medium</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="forgetting-curve">The spacing effect and the forgetting curve</h2>
+    <p>The empirical foundation of spaced repetition dates to German psychologist Hermann Ebbinghaus's 1885 study on memory retention.<span class="cite">[<a href="#ref3">3</a>]</span> Ebbinghaus observed that newly learned information decays along an exponential forgetting curve:</p>
+    <p>$$R = e^{-\frac{t}{S}}$$</p>
+    <p>In this equation, \( R \) represents memory retrievability (the probability of recalling information at a given moment), \( t \) denotes the time elapsed since the last review, and \( S \) represents memory stability (the strength of the memory trace).<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>Without review, retrievability drops sharply within the first 24 to 48 hours. However, when information is successfully retrieved shortly before it is forgotten, memory stability \( S \) increases substantially. Consequently, subsequent forgetting curves flatten, permitting progressively wider intervals between subsequent review sessions.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="algorithms">Scheduling systems and algorithmic models</h2>
+    <p>Practitioners and researchers developed several mechanical and computational systems to automate review scheduling:</p>
+    <ul>
+      <li><strong>Leitner box system (1972)</strong>: German science journalist Sebastian Leitner introduced a physical cardboard container divided into numbered compartments.<span class="cite">[<a href="#ref5">5</a>]</span> Flashcards answered correctly advance to a higher compartment reviewed less frequently (for example, weekly or monthly), while failed cards return to the first compartment for daily review.</li>
+      <li><strong>SuperMemo algorithms (1985–present)</strong>: Polish researcher Piotr Woźniak developed algorithmic spacing models (SM-0 through SM-18).<span class="cite">[<a href="#ref4">4</a>]</span> The widely adopted SM-2 algorithm calculates the next interval \( I(n) \) using an item difficulty rating termed the E-Factor (Ease Factor):
+        <p>$$I(1) = 1, \quad I(2) = 6, \quad I(n) = I(n-1) \times \text{EF}$$</p>
+      </li>
+      <li><strong>Modern adaptive systems</strong>: Software tools such as Anki and modern Free Spaced Repetition Scheduler (FSRS) engines employ machine learning models to calibrate review intervals dynamically against individual recall history.</li>
+    </ul>
+
+    <h2 id="cognitive-mechanisms">Underlying cognitive mechanisms</h2>
+    <p>Spaced repetition derives its efficacy from several core psychological principles:</p>
+    <ul>
+      <li><strong>Desirable difficulties</strong>: Cognitive scientists Robert Bjork and Elizabeth Bjork demonstrated that learning conditions that require active, effortful mental processing create more durable storage strength than passive review.<span class="cite">[<a href="#ref6">6</a>]</span> Delaying a review until recall requires effort forces deeper cognitive reconstruction.</li>
+      <li><strong>Testing effect (active recall)</strong>: Retrieving an item from memory actively modifies and reinforces neural representations, producing greater retention gains than re-reading or passive highlighting.<span class="cite">[<a href="#ref7">7</a>]</span></li>
+      <li><strong>Synaptic consolidation</strong>: Spacing allows biological memory consolidation to occur between study episodes, stabilizing synaptic connections during sleep and periods of rest.</li>
+    </ul>
+
+    <h2 id="applications">Modern applications and the mnemonic medium</h2>
+    <p>While historically applied to factual flashcards in language acquisition and medical education, modern researchers expanded spaced repetition into complex conceptual domains.<span class="cite">[<a href="#ref8">8</a>]</span></p>
+    <p>Software researcher <a href="/reference/andy-matuschak/">Andy Matuschak</a> and physicist Michael Nielsen designed the <em>mnemonic medium</em>, which embeds interactive spaced review prompts directly inside narrative non-fiction text.<span class="cite">[<a href="#ref8">8</a>]</span> In their quantum computing project <em>Quantum Country</em>, spaced repetition prompts serve as structural scaffolds for conceptual reasoning rather than isolated rote facts.<span class="cite">[<a href="#ref8">8</a>]</span></p>
+    <p>Modern knowledge management workflows also integrate spaced repetition prompts directly with <a href="/reference/atomic-note/">atomic notes</a> and <a href="/reference/evergreen-notes/">evergreen notes</a>, systematically reviewing core claims across personal knowledge bases.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/andy-matuschak/">Andy Matuschak</a></li>
+      <li><a href="/reference/evergreen-notes/">Evergreen notes</a></li>
+      <li><a href="/reference/atomic-note/">Atomic note</a></li>
+      <li><a href="/reference/how-to-take-smart-notes/">How to Take Smart Notes</a></li>
+      <li><a href="/reference/zettelkasten/">Zettelkasten</a></li>
+      <li><a href="/reference/epistemology/">Epistemology</a></li>
+      <li><a href="/reference/recursion/">Recursion</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#forgetting-curve">↑</a> Nicholas J. Cepeda, Edward Vul, Doug Rohrer, John T. Wixted, and Harold Pashler, “Spacing effects in learning: A temporal ridgeline of optimal retention,” <em>Psychological Science</em>, vol. 19, no. 11, pp. 1095–1102, 2008.</li>
+      <li id="ref2"><a class="backlink" href="#forgetting-curve">↑</a> Nicholas J. Cepeda, Harold Pashler, Edward Vul, John T. Wixted, and Doug Rohrer, “Distributed practice in verbal recall tasks: A review and quantitative synthesis,” <em>Psychological Bulletin</em>, vol. 132, no. 3, pp. 354–380, 2006.</li>
+      <li id="ref3"><a class="backlink" href="#forgetting-curve">↑</a> Hermann Ebbinghaus, <em>Über das Gedächtnis: Untersuchungen zur experimentellen Psychologie</em>, Duncker &amp; Humblot, Leipzig, 1885. (English translation: <em>Memory: A Contribution to Experimental Psychology</em>, Teachers College, Columbia University, 1913).</li>
+      <li id="ref4"><a class="backlink" href="#algorithms">↑</a> Piotr A. Woźniak and Edward J. Gorzelańczyk, “Optimization of repetition spacing in computer-assisted learning,” <em>Acta Neurobiologiae Experimentalis</em>, vol. 54, pp. 59–62, 1994.</li>
+      <li id="ref5"><a class="backlink" href="#algorithms">↑</a> Sebastian Leitner, <em>So lernt man lernen: Der Weg zum Erfolg</em>, Herder, Freiburg, 1972.</li>
+      <li id="ref6"><a class="backlink" href="#cognitive-mechanisms">↑</a> Robert A. Bjork and Elizabeth L. Bjork, “A new theory of disuse and an old theory of stimulus fluctuation,” in <em>From Learning Processes to Cognitive Processes: Essays in Honor of William K. Estes</em>, vol. 2, A. Healy, S. Kosslyn, and R. Shiffrin, Eds. Hillsdale, NJ: Erlbaum, 1992, pp. 35–67.</li>
+      <li id="ref7"><a class="backlink" href="#cognitive-mechanisms">↑</a> Henry L. Roediger III and Jeffrey D. Karpicke, “The power of testing memory: Basic research and implications for educational practice,” <em>Perspectives on Psychological Science</em>, vol. 1, no. 3, pp. 181–210, 2006.</li>
+      <li id="ref8"><a class="backlink" href="#applications">↑</a> Andy Matuschak and Michael Nielsen, “Augmenting Long-term Memory,” <em>Cognitive Technologies Research</em>, 2019. <a href="https://quantum.country/qcvc">https://quantum.country/qcvc</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
