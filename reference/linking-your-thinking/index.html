@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Linking Your Thinking · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Linking Your Thinking (LYT) is a personal knowledge management system developed by Nick Milo that organizes notes through fluid associative linking and curated hub notes.">
+  <meta property="og:title" content="Linking Your Thinking · Reference">
+  <meta property="og:description" content="A personal knowledge management framework based on fluid associative linking, Maps of Content, and the ARC workflow.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/linking-your-thinking/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/linking-your-thinking/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Knowledge Management · Systems</p>
+    <h1>Linking Your Thinking</h1>
+    <p class="updated">Reference entry · last updated August 30, 2026</p>
+
+    <p class="lede"><strong>Linking Your Thinking</strong> (<strong>LYT</strong>) is a personal knowledge management framework developed by Nick Milo that organizes notes through fluid associative linking and curated hub notes rather than rigid folder taxonomies.<span class="cite">[<a href="#ref1">1</a>]</span> The system prioritizes bottom-up concept emergence and sensemaking over static archival storage.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#principles">Core philosophy and design principles</a></li>
+        <li><a href="#moc-role">Maps of Content as the primary navigational layer</a></li>
+        <li><a href="#arc">The ARC workflow</a></li>
+        <li><a href="#comparisons">Comparison with other methodologies</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="principles">Core philosophy and design principles</h2>
+    <p>Traditional digital filing systems force information into mutually exclusive hierarchical folders. In practice, this produces categorization anxiety (hesitating over where a note belongs) and folder sprawl (creating excessive nested directories that hide content).<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Linking Your Thinking replaces rigid hierarchies with three core tenets:</p>
+    <ul>
+      <li><strong>Fluid structure</strong>: Notes reside in shallow folders, while semantic relationships are expressed through bidirectional links.</li>
+      <li><strong>Non-destructive organization</strong>: An idea can connect to multiple concepts without copying files or creating fragile symlinks.</li>
+      <li><strong>Thinking over filing</strong>: The organizational process itself is treated as a cognitive act that develops understanding.</li>
+    </ul>
+
+    <h2 id="moc-role">Maps of Content as the primary navigational layer</h2>
+    <p>The central mechanism of the LYT framework is the Map of Content (MOC). An MOC is a dedicated note that acts as a curated index and workbench for a specific cluster of atomic notes.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Within LYT, MOCs operate across multiple levels of abstraction:</p>
+    <ul>
+      <li><strong>Home note</strong>: The top-level launchpad linking to major life domains and core interests.</li>
+      <li><strong>Domain MOCs</strong>: High-level overviews mapping broad subject areas (such as Psychology, Engineering, or Philosophy).</li>
+      <li><strong>Topic and Project MOCs</strong>: Tightly scoped maps curating focused inquiries, arguments, or creative deliverables.</li>
+    </ul>
+
+    <h2 id="arc">The ARC workflow</h2>
+    <p>LYT structures knowledge lifecycle management around three sequential phases, termed the ARC framework:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <ul>
+      <li><strong>Add</strong>: Ingesting raw source materials, highlights, and fleeting observations into an inbox space without immediate categorization pressure.</li>
+      <li><strong>Relate</strong>: Synthesizing raw inputs into concise atomic notes, linking them to existing notes, and organizing them into relevant Maps of Content.</li>
+      <li><strong>Communicate</strong>: Leveraging assembled MOC clusters to draft articles, design products, or make informed decisions.</li>
+    </ul>
+
+    <h2 id="comparisons">Comparison with other methodologies</h2>
+    <p>LYT occupies a distinct position among personal knowledge management methodologies:</p>
+    <ul>
+      <li><strong>Versus PARA (Tiago Forte)</strong>: PARA organizes files strictly by actionability (Projects, Areas, Resources, Archives). LYT organizes notes by associative meaning and conceptual affinity, using MOCs to bridge across project boundaries.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+      <li><strong>Versus Classic Zettelkasten (Niklas Luhmann)</strong>: While both rely on atomic notes and bidirectional links, Luhmann used alphanumeric branching card numbers in a single physical slip-box. LYT adds higher-order MOC hub notes to make digital graph navigation structured and deliberate.<span class="cite">[<a href="#ref5">5</a>]</span></li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/nick-milo/">Nick Milo</a></li>
+      <li><a href="/reference/map-of-content/">Map of content</a></li>
+      <li><a href="/reference/atomic-note/">Atomic note</a></li>
+      <li><a href="/reference/context-engineering/">Context engineering</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#principles">↑</a> Nick Milo, <em>Linking Your Thinking: Concepts and Workflows</em>, 2020–2026. <a href="https://www.linkingyourthinking.com/">https://www.linkingyourthinking.com/</a></li>
+      <li id="ref2"><a class="backlink" href="#principles">↑</a> Nick Milo, “The Joy of Thinking in Maps,” LYT Kit documentation, 2021.</li>
+      <li id="ref3"><a class="backlink" href="#arc">↑</a> Nick Milo, <em>The Ideaverse in Obsidian</em>, official curriculum, 2023.</li>
+      <li id="ref4"><a class="backlink" href="#comparisons">↑</a> Tiago Forte, <em>Building a Second Brain: A Proven Method to Organize Your Digital Life and Unlock Your Creative Potential</em>, Atria Books, 2022.</li>
+      <li id="ref5"><a class="backlink" href="#comparisons">↑</a> Sönke Ahrens, <em>How to Take Smart Notes</em>, CreateSpace, 2017.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
