@@ -240,21 +240,21 @@
           <rect x="20" y="216" width="130" height="44" rx="8" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
           <text x="85" y="243" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="14" fill="#0f5c57">Has fins? (0)</text>
 
-          <!-- Lines from inputs (x=150) to center of summation circle (360, 140) -->
-          <line x1="150" y1="42" x2="360" y2="140" stroke="#8a7d72" stroke-width="1.8"/>
-          <line x1="150" y1="140" x2="360" y2="140" stroke="#8a7d72" stroke-width="1.8"/>
-          <line x1="150" y1="238" x2="360" y2="140" stroke="#8a7d72" stroke-width="1.8"/>
+          <!-- Weight lines connecting input box right edge (x=150) to circle perimeter with arrowheads -->
+          <line x1="150" y1="42" x2="313" y2="118" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
+          <line x1="150" y1="140" x2="308" y2="140" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
+          <line x1="150" y1="238" x2="313" y2="162" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
 
-          <!-- Weight Badges -->
+          <!-- Weight Badges (centered directly on the line coordinates) -->
           <g>
-            <rect x="185" y="60" width="92" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="231" y="77" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.4 (Weight)</text>
+            <rect x="175" y="67" width="105" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="227.5" y="84" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.4 (Weight)</text>
 
-            <rect x="185" y="128" width="92" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="231" y="145" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.8 (Weight)</text>
+            <rect x="175" y="128" width="105" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="227.5" y="145" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; 0.8 (Weight)</text>
 
-            <rect x="185" y="196" width="92" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-            <text x="231" y="213" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; -0.9 (Weight)</text>
+            <rect x="175" y="189" width="105" height="24" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
+            <text x="227.5" y="206" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="12" fill="#9a3412">&times; -0.9 (Weight)</text>
           </g>
 
           <!-- Summation & Bias Circle -->
@@ -263,7 +263,7 @@
           <text x="360" y="154" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Total = 1.1</text>
 
           <!-- Activation Arrow -->
-          <line x1="412" y1="140" x2="484" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow-neutral)"/>
+          <line x1="412" y1="140" x2="490" y2="140" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
 
           <!-- Activation Filter Box -->
           <rect x="490" y="104" width="115" height="72" rx="8" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
@@ -271,7 +271,7 @@
           <text x="547" y="156" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Is sum &gt; 0?</text>
 
           <!-- Output Arrow -->
-          <line x1="605" y1="140" x2="654" y2="140" stroke="#8a7d72" stroke-width="2" marker-end="url(#arrow-neutral)"/>
+          <line x1="605" y1="140" x2="660" y2="140" stroke="#8a7d72" stroke-width="1.8" marker-end="url(#arrow-neutral)"/>
 
           <!-- Output Box -->
           <rect x="660" y="118" width="80" height="44" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="2"/>
