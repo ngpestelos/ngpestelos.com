@@ -379,43 +379,46 @@
       <h2>3. Training: Guessing, measuring, and nudging the dials</h2>
       <p class="one">The network begins with random dials. With every practice example, it measures how far off its guess was and nudges each dial slightly in the direction that reduces error.</p>
       <div class="figure">
-        <svg viewBox="0 0 760 230" role="img" aria-label="Diagram showing the training loop: Forward guess, Loss calculation, and Backpropagation dial adjustments.">
-          <!-- Step 1: Forward Pass Card -->
-          <rect x="20" y="20" width="205" height="120" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
-          <text x="122" y="52" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">1. Forward Pass</text>
-          <text x="122" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Show picture of a cat</text>
-          <text x="122" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Network guesses "Dog"</text>
+        <svg viewBox="0 0 720 290" role="img" aria-label="A 4-stage circular diagram showing the complete training loop: Forward pass, Prediction, Loss evaluation, and Backpropagation adjustment.">
+          <!-- Card 1: Forward Pass (Top Left) -->
+          <rect x="30" y="20" width="290" height="95" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="50" y="50" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">1. Forward Pass</text>
+          <text x="50" y="74" font-family="sans-serif" font-size="13" fill="#1c1612">Input: picture of a cat</text>
+          <text x="50" y="94" font-family="sans-serif" font-size="12" fill="#6e645a">Signals travel through layers</text>
 
-          <!-- Forward arrow 1 -> 2 (Explicit line & polygon) -->
-          <line x1="225" y1="80" x2="266" y2="80" stroke="#0f5c57" stroke-width="2"/>
-          <polygon points="278,80 266,75 266,85" fill="#0f5c57"/>
+          <!-- Arrow 1 -> 2 (Top Horizontal, Right) -->
+          <line x1="320" y1="67" x2="388" y2="67" stroke="#0f5c57" stroke-width="2"/>
+          <polygon points="400,67 388,62 388,72" fill="#0f5c57"/>
 
-          <!-- Step 2: Loss Card -->
-          <rect x="278" y="20" width="205" height="120" rx="10" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
-          <text x="380" y="52" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#9a3412">2. Measure Error</text>
-          <text x="380" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Compare to true label</text>
-          <text x="380" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Error Score = 0.85</text>
+          <!-- Card 2: Prediction (Top Right) -->
+          <rect x="400" y="20" width="290" height="95" rx="10" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
+          <text x="420" y="50" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">2. Network Prediction</text>
+          <text x="420" y="74" font-family="sans-serif" font-size="13" fill="#1c1612">Guess: "Dog" (92% confidence)</text>
+          <text x="420" y="94" font-family="sans-serif" font-size="12" fill="#6e645a">Raw guess before verification</text>
 
-          <!-- Forward arrow 2 -> 3 (Explicit line & polygon) -->
-          <line x1="483" y1="80" x2="523" y2="80" stroke="#9a3412" stroke-width="2"/>
-          <polygon points="535,80 523,75 523,85" fill="#9a3412"/>
+          <!-- Arrow 2 -> 3 (Right Vertical, Down) -->
+          <line x1="545" y1="115" x2="545" y2="163" stroke="#9a3412" stroke-width="2"/>
+          <polygon points="545,175 540,163 550,163" fill="#9a3412"/>
 
-          <!-- Step 3: Backprop Card -->
-          <rect x="535" y="20" width="205" height="120" rx="10" fill="#fffaf3" stroke="#1d4ed8" stroke-width="2"/>
-          <text x="637" y="52" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1d4ed8">3. Backpropagation</text>
-          <text x="637" y="80" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#1c1612">Calculate dial adjustments</text>
-          <text x="637" y="104" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#6e645a">Trace gradients backward</text>
+          <!-- Card 3: Measure Loss (Bottom Right) -->
+          <rect x="400" y="175" width="290" height="95" rx="10" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
+          <text x="420" y="205" font-family="sans-serif" font-weight="700" font-size="15" fill="#9a3412">3. Measure Error (Loss)</text>
+          <text x="420" y="229" font-family="sans-serif" font-size="13" fill="#1c1612">Compare with true label ("Cat")</text>
+          <text x="420" y="249" font-family="sans-serif" font-size="12" fill="#6e645a">Error Score = 0.85 (High mistake)</text>
 
-          <!-- Crisp Orthogonal Return Track with Rounded Corners -->
-          <path d="M 637 140 L 637 185 Q 637 195 627 195 L 132 195 Q 122 195 122 185 L 122 152" fill="none" stroke="#1d4ed8" stroke-width="2"/>
-          <!-- Explicit upward arrowhead docking flush into Card 1 bottom at (122, 140) -->
-          <polygon points="122,140 117,152 127,152" fill="#1d4ed8"/>
+          <!-- Arrow 3 -> 4 (Bottom Horizontal, Left) -->
+          <line x1="400" y1="222" x2="332" y2="222" stroke="#1d4ed8" stroke-width="2"/>
+          <polygon points="320,222 332,217 332,227" fill="#1d4ed8"/>
 
-          <!-- Centered Return Badge -->
-          <g>
-            <rect x="235" y="182" width="290" height="26" rx="13" fill="#fffaf3" stroke="#1d4ed8" stroke-width="1.5"/>
-            <text x="380" y="200" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="11" fill="#1d4ed8">&larr; 4. Update dials across all layers</text>
-          </g>
+          <!-- Card 4: Backpropagation (Bottom Left) -->
+          <rect x="30" y="175" width="290" height="95" rx="10" fill="#fffaf3" stroke="#1d4ed8" stroke-width="2"/>
+          <text x="50" y="205" font-family="sans-serif" font-weight="700" font-size="15" fill="#1d4ed8">4. Backpropagation</text>
+          <text x="50" y="229" font-family="sans-serif" font-size="13" fill="#1c1612">Trace error back through layers</text>
+          <text x="50" y="249" font-family="sans-serif" font-size="12" fill="#6e645a">Nudge dials toward correct guess</text>
+
+          <!-- Arrow 4 -> 1 (Left Vertical, Up) -->
+          <line x1="175" y1="175" x2="175" y2="127" stroke="#1d4ed8" stroke-width="2"/>
+          <polygon points="175,115 170,127 180,127" fill="#1d4ed8"/>
         </svg>
       </div>
       <details class="more">
