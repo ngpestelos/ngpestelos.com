@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map of Content · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A Map of Content (MOC) is a curated hub note that organizes associative links to atomic notes around a central theme, concept, or thesis.">
+  <meta property="og:title" content="Map of Content · Reference">
+  <meta property="og:description" content="A curated hub note organizing associative links to atomic notes around a central theme or publishing thesis.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/map-of-content/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/map-of-content/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--box-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Knowledge Management · Hypertext</p>
+    <h1>Map of Content</h1>
+    <p class="updated">Reference entry · last updated August 30, 2026</p>
+
+    <p class="lede"><strong>Map of content</strong> (<strong>MOC</strong>) is a curated hub note that links and arranges related atomic notes around a central theme, concept, or thesis.<span class="cite">[<a href="#ref1">1</a>]</span> Unlike hierarchical folder taxonomies that restrict a note to a single location on disk, a map of content acts as a fluid navigational layer. A single atomic note can belong simultaneously to multiple maps without data duplication.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#definition">Definition and structure</a></li>
+        <li><a href="#origins">Origins and intellectual lineage</a></li>
+        <li><a href="#two-layer-model">The two-layer topic model</a></li>
+        <li><a href="#publishing-seeds">Publishing seeds and bounded clusters</a></li>
+        <li><a href="#comparison">Comparison with other organizational mechanisms</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="definition">Definition and structure</h2>
+    <p>In personal knowledge management systems, a map of content functions as an index and workbench. It brings together discrete atomic notes to reveal higher-order connections, patterns, and conceptual gaps.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>A typical map of content contains three core components:</p>
+    <ul>
+      <li><strong>Argument or thesis statement</strong>: A framing paragraph stating the central premise or conceptual scope.</li>
+      <li><strong>Curated links</strong>: A structured collection of hyperlinks to individual atomic notes, often accompanied by brief annotations describing their specific contribution to the theme.</li>
+      <li><strong>Gaps and tensions</strong>: Explicitly identified missing pieces, unresolved questions, or counter-evidence that require further investigation.</li>
+    </ul>
+
+    <h2 id="origins">Origins and intellectual lineage</h2>
+    <p>The term was popularized within modern networked note-taking communities by Nick Milo in the Linking Your Thinking framework.<span class="cite">[<a href="#ref1">1</a>]</span> However, the underlying concept descends from early hypertext theory and analog knowledge systems.</p>
+    <p>In the analog slip-box (<em>Zettelkasten</em>) of sociologist Niklas Luhmann, structure notes (<em>Strukturnotizen</em>) served as index cards that compiled references to long branched sequences of individual thought slips.<span class="cite">[<a href="#ref2">2</a>]</span> Earlier, Vannevar Bush described the associative trail in his 1945 essay <em>As We May Think</em>, proposing that human memory operates by association rather than alphabetical or numerical filing.<span class="cite">[<a href="#ref3">3</a>]</span> Ted Nelson formalized this in computer science through the concept of non-linear hypertext.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="two-layer-model">The two-layer topic model</h2>
+    <p>A major design failure in large knowledge bases is taxonomic over-nesting. As a knowledge base grows, users frequently create deep sub-folders to represent increasingly specific ideas (for example, <code>Learning/Skill-Acquisition/Speed/</code>). This causes retrieval friction, filing hesitation, and brittle directory paths.</p>
+    <p>The two-layer topic model resolves this problem by separating storage from curation:</p>
+    <ul>
+      <li><strong>Layer 1 (Flat storage)</strong>: Broad parent folders hold atomic notes in flat directories without arbitrary nesting. Search engines and lexical retrieval handle storage access.</li>
+      <li><strong>Layer 2 (Fluid curation)</strong>: Maps of content provide the semantic structure. Narrower topics are treated as explicit theses represented by MOC notes rather than directory folders on the file system.</li>
+    </ul>
+
+    <h2 id="publishing-seeds">Publishing seeds and bounded clusters</h2>
+    <p>In automated synthesis pipelines and digital gardens, maps of content serve as intermediate staging artifacts between atomic research notes and published articles.</p>
+    <p>Under this pattern, an MOC is constrained to a bounded cluster of 5 to 15 supporting atomic notes anchored around one testable thesis statement. Bounding the cluster prevents unbounded sprawling indices and ensures that every map represents a coherent, publishable argument.</p>
+    <p>Before advancing from seed status to draft composition, the MOC undergoes automated verification loops:</p>
+    <ul>
+      <li><strong>Reinforcement pass</strong>: Searches the knowledge base and external repositories for corroborating primary sources and independent evidence.</li>
+      <li><strong>Falsification pass</strong>: Adversarially tests the thesis by searching for counter-examples, boundary conditions, and disconfirming evidence to ensure intellectual rigor.</li>
+    </ul>
+
+    <h2 id="comparison">Comparison with other organizational mechanisms</h2>
+    <p>Knowledge systems employ several structural tools, each serving distinct cognitive purposes:</p>
+    <ul>
+      <li><strong>Folders</strong>: Enforce mutually exclusive physical containment. Useful for broad domain boundaries, but rigid when ideas span multiple disciplines.</li>
+      <li><strong>Tags</strong>: Provide flat categorical labeling. While flexible, tags lack internal narrative, spatial ordering, and context regarding how items relate to each other.</li>
+      <li><strong>Indexes</strong>: Provide exhaustive alphabetical or chronological listings without argumentative structure.</li>
+      <li><strong>Maps of content</strong>: Provide curated, contextual narrative links with explicit relationships, commentary, and deliberate omission of irrelevant material.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/epistemology/">Epistemology</a></li>
+      <li><a href="/reference/context-engineering/">Context engineering</a></li>
+      <li><a href="/reference/ooda-loop/">OODA loop</a></li>
+      <li><a href="/reference/adversarial-agent-review/">Adversarial review</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#definition">↑</a> Nick Milo, <em>Linking Your Thinking: Maps of Content</em>, 2020. Framework documentation: <a href="https://www.linkingyourthinking.com/">https://www.linkingyourthinking.com/</a></li>
+      <li id="ref2"><a class="backlink" href="#origins">↑</a> Niklas Luhmann, “Kommunikation mit Zettelkästen: Ein Erfahrungsbericht,” in <em>Universität als Milieu: Kleine Schriften</em>, H. Baier, Ed. Bielefeld: Haux, 1992, pp. 53–61.</li>
+      <li id="ref3"><a class="backlink" href="#origins">↑</a> Vannevar Bush, “As We May Think,” <em>The Atlantic Monthly</em>, vol. 176, no. 1, pp. 101–108, July 1945. <a href="https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/">https://www.theatlantic.com/magazine/archive/1945/07/as-we-may-think/303881/</a></li>
+      <li id="ref4"><a class="backlink" href="#origins">↑</a> Theodor H. Nelson, <em>Literary Machines: The Report on, and of, Project Xanadu Concerning Word Processing, Electronic Books, Hypertext, Thinkertoys, Tomorrow's Intellectual Revolution, and Certain Other Topics Including Knowledge, Education and Freedom</em>, Sausalito, CA: Mindful Press, 1981.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
