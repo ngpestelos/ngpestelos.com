@@ -648,6 +648,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/lupang-hinirang/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/eastern-han/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
