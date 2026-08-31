@@ -191,6 +191,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/reward-hacking/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/softmax/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

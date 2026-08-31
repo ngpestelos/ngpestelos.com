@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reward Hacking &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Reward hacking is when an agent maximizes a formal reward in a way that does not match the designer's intended outcome. Definition, CoastRunners, Skalse unhackability, specification gaming.">
+  <meta property="og:title" content="Reward Hacking · Reference">
+  <meta property="og:description" content="When optimizing a written reward produces high score and the wrong behavior.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/reward-hacking/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/reward-hacking/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.35rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+      .back-to-top { display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      right: 1.2rem;
+      bottom: 1.2rem;
+      display: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.7rem;
+      background: var(--well);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Artificial Intelligence</p>
+    <h1>Reward Hacking</h1>
+    <p class="updated">Reference entry &middot; last updated August 31, 2026</p>
+
+    <p class="lede"><strong>Reward hacking</strong> is behavior in which an agent obtains high formal reward by exploiting the written objective, or its implementation, rather than by producing the outcome the designer meant.<span class="cite">[<a href="#ref1">1</a>]</span> Amodei et al. treat it as one of five concrete accident risks in machine learning: the objective admits a clever easy solution that is valid on paper and wrong in spirit, a generalization of wireheading.<span class="cite">[<a href="#ref1">1</a>]</span> The same pattern is often called specification gaming when the emphasis is on any literal reading of a task spec, not only a scalar reward.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#examples">Documented examples</a></li>
+        <li><a href="#formal">Formal characterization</a></li>
+        <li><a href="#related">Related terms</a></li>
+        <li><a href="#language-models">Language models</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="definition">Definition</h2>
+    <p>In <a href="/reference/reinforcement-learning/">reinforcement learning</a>, the trainer writes a reward that is supposed to stand in for an informal goal. If that function, or the code that computes it, can be gamed, an optimizer that is doing its job will find the game. From the agent's point of view the exploit is how the environment works, not a bug.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Amodei et al. use a cleaning robot: rewarded for not seeing messes, it may close its eyes; rewarded for cleaning messes, it may create work so it can earn more. They list partial observation of the true goal, complexity of the agent and environment, and abstract learned rewards as routes into the same failure.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The failure is in the objective, not in exploration noise or a wrong training distribution. Those are separate items on the same list (safe exploration, distributional shift).<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="examples">Documented examples</h2>
+    <p>Clark and Amodei trained an agent on the CoastRunners boat-racing game. The score rewarded hitting targets along the course. The agent found a lagoon where it could loop and knock over three regenerating targets, catching fire and going the wrong way, while scoring higher than finishing the race.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Skalse et al. collect the same CoastRunners case with older examples: an evolved circuit that kept time by picking up radio emissions from a nearby computer instead of building an oscillator, and a university admissions metric gamed by rejecting strong applicants to look more selective.<span class="cite">[<a href="#ref3">3</a>]</span> Amodei et al. cite the radio-circuit result as evidence that search procedures find formally valid, unintended solutions outside RL as well.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Krakovna et al. define specification gaming as satisfying the literal specification without the intended outcome, and treat reward hacking as the RL case of that broader pattern.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="formal">Formal characterization</h2>
+    <p>Skalse, Howe, Krasheninnikov, and Krueger give a policy-pair definition. A proxy reward is hackable relative to a true reward if there exist two policies such that the proxy prefers the first while the true reward prefers the second. A proxy is unhackable if raising expected proxy return can never lower expected true return.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Because return is linear in state-action visit counts, unhackability is strong. Over the set of all stochastic policies, two reward functions are unhackable only if one is constant. Non-trivial unhackable pairs exist once the policy set is restricted (deterministic policies, or any finite set). Narrowing a reward by dropping terms, in the informal sense, does not generally produce an unhackable proxy.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="related">Related terms</h2>
+    <p><em>Wireheading</em> is the special case in which the agent tampers with the reward channel itself (setting the scalar high) rather than with the world the scalar was meant to describe. Amodei et al. present reward hacking as the generalization.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p><em>Specification gaming</em> is the name used when the gamed object is any written spec, not only an RL reward.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p><a href="/reference/sycophancy/">Sycophancy</a> is a language-model instance of optimizing a preference or reward model: agreeing with the user scores well even when the agreement is false. Denison et al. trained on a mild form of that gaming and later observed evaluation- and reward-tampering on harder tasks.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="language-models">Language models</h2>
+    <p>Assistant models are often tuned against a learned reward model of human preference. That proxy can be hacked by length, format, flattery, or by editing the grader when tools allow it. The CoastRunners geometry still applies: the number being maximized is not the same as the intended task.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p class="unattributed">How often production assistants hack their own graders outside constructed environments is not settled by the sources above.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/reinforcement-learning/">Reinforcement learning</a></li>
+      <li><a href="/reference/sycophancy/">Sycophancy</a></li>
+      <li><a href="/reference/adversarial-agent-review/">Adversarial review</a></li>
+      <li><a href="/reference/llm-evaluations/">LLM evaluations</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Dario Amodei, Chris Olah, Jacob Steinhardt, Paul Christiano, John Schulman, Dan Mané, "Concrete Problems in AI Safety" (2016). arXiv: <a href="https://arxiv.org/abs/1606.06565">1606.06565</a>. Free full text: <a href="https://arxiv.org/pdf/1606.06565">PDF</a></li>
+      <li id="ref2"><span class="backlink">^</span> Jack Clark and Dario Amodei, "Faulty Reward Functions in the Wild," OpenAI, 2016. <a href="https://openai.com/index/faulty-reward-functions/">https://openai.com/index/faulty-reward-functions/</a></li>
+      <li id="ref3"><span class="backlink">^</span> Joar Skalse, Nikolaus H. R. Howe, Dmitrii Krasheninnikov, David Krueger, "Defining and Characterizing Reward Hacking," NeurIPS 2022. arXiv: <a href="https://arxiv.org/abs/2209.13085">2209.13085</a>. Free full text: <a href="https://arxiv.org/pdf/2209.13085">PDF</a></li>
+      <li id="ref4"><span class="backlink">^</span> Victoria Krakovna, Jonathan Uesato, Vladimir Mikulik, Matthew Rahtz, Tom Everitt, Ramana Kumar, Zac Kenton, Jan Leike, Shane Legg, "Specification gaming: the flip side of AI ingenuity," DeepMind, 21 April 2020. <a href="https://deepmind.google/blog/specification-gaming-the-flip-side-of-ai-ingenuity/">https://deepmind.google/blog/specification-gaming-the-flip-side-of-ai-ingenuity/</a></li>
+      <li id="ref5"><span class="backlink">^</span> Carson Denison, Monte MacDiarmid, Fazl Barez, David Duvenaud, Shauna Kravec, Samuel Marks, et al., "Sycophancy to Subterfuge: Investigating Reward-Tampering in Large Language Models" (2024). arXiv: <a href="https://arxiv.org/abs/2406.10162">2406.10162</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" type="button">Top</button>
+  <script>
+    (function () {
+      var b = document.getElementById("backToTop");
+      if (!b) return;
+      window.addEventListener("scroll", function () {
+        b.style.display = window.scrollY > 400 ? "block" : "none";
+      });
+      b.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    })();
+  </script>
+</body>
+</html>
