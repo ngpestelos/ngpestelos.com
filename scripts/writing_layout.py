@@ -19,22 +19,6 @@ GOLD_CRUMB = (
     '<a href="#print" onclick="window.print();return false">Print</a></span></p>'
 )
 ESSAY_TO_TOP = '<p class="to-top"><a href="#top">Back to top</a></p>'
-PLACEHOLDERS = (
-    "title",
-    "description",
-    "og_title",
-    "og_description",
-    "og_type",
-    "canonical",
-    "main_attrs",
-    "crumb",
-    "inner",
-    "to_top",
-    "footer",
-    "extra_scripts",
-)
-
-
 def layout_text() -> str:
     return LAYOUT_PATH.read_text(encoding="utf-8")
 
@@ -82,12 +66,13 @@ def _block(text: str) -> str:
     return str(text).strip("\n") + "\n"
 
 
+def _quoted_attr(value: str) -> str:
+    return str(value or "").replace('"', "&quot;")
+
+
 def is_writing_index(page: dict) -> bool:
-    inner = page.get("inner", "")
-    if 'id="writing"' in inner:
-        return True
     path = str(page.get("path") or "").replace("\\", "/")
-    return path.endswith("writing/index.html")
+    return path == "writing/index.html"
 
 
 def split(html: str) -> dict:
@@ -156,11 +141,11 @@ def split(html: str) -> dict:
 def render(page: dict) -> str:
     values = {
         "title": page.get("title", ""),
-        "description": page.get("description", ""),
-        "og_title": page.get("og_title", ""),
-        "og_description": page.get("og_description", ""),
-        "og_type": page.get("og_type", ""),
-        "canonical": page.get("canonical", ""),
+        "description": _quoted_attr(page.get("description", "")),
+        "og_title": _quoted_attr(page.get("og_title", "")),
+        "og_description": _quoted_attr(page.get("og_description", "")),
+        "og_type": _quoted_attr(page.get("og_type", "")),
+        "canonical": _quoted_attr(page.get("canonical", "")),
         "main_attrs": page.get("main_attrs", ""),
         "inner": page.get("inner", ""),
         "extra_scripts": page.get("extra_scripts", ""),
@@ -175,13 +160,13 @@ def render(page: dict) -> str:
         values["to_top"] = _block("    " + ESSAY_TO_TOP)
         values["footer"] = _block(page.get("footer") or "")
 
-    html = layout_text()
-    for key in PLACEHOLDERS:
-        html = html.replace("{{" + key + "}}", values.get(key, ""))
-    leftover = re.findall(r"\{\{[^}]+\}\}", html)
-    if leftover:
-        raise ValueError("leftover placeholders: " + ", ".join(leftover))
-    return html
+    def _replace_placeholder(match: re.Match) -> str:
+        key = match.group(1)
+        if key not in values:
+            raise ValueError("unknown placeholder: " + match.group(0))
+        return values[key]
+
+    return re.sub(r"\{\{([^}]+)\}\}", _replace_placeholder, layout_text())
 
 
 def rebuild(root: Path | None = None) -> list[Path]:
