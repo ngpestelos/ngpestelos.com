@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hanlon's Razor &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Hanlon's Razor is a defeasible rule of thumb for checking unsupported claims about hostile intent.">
+  <meta property="og:title" content="Hanlon's Razor &middot; Reference">
+  <meta property="og:description" content="A reference entry on the meaning, attribution, use, and limits of Hanlon's Razor.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/hanlons-razor/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/hanlons-razor/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+      --box-bg: #f8f9fa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--box-bg);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Epistemology</p>
+    <h1>Hanlon's Razor</h1>
+    <p class="updated">Reference entry &middot; last updated September 2, 2026</p>
+
+    <p class="lede"><strong>Hanlon's Razor</strong> is a defeasible rule of thumb for evaluating claims about hostile intent. Its canonical wording is: “Never attribute to malice that which is adequately explained by stupidity.” It has no force as a law or proof.<span id="cite1a" class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#meaning">Meaning</a></li>
+        <li><a href="#origin-and-attribution">Origin and attribution</a></li>
+        <li><a href="#earlier-precedents">Earlier precedents</a></li>
+        <li><a href="#use">Use</a></li>
+        <li><a href="#limitations">Limitations</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="meaning">Meaning</h2>
+    <p>The razor checks an unsupported inference from harm or failure to hostile intent. Ballantyne and Ditto use <em>stupidity</em> for a broad class of epistemic failures and constraints, including misinformation, poor reasoning, limited evidence, inattention, and adverse circumstances. Using the term as a personal insult misapplies the razor.<span id="cite1b" class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="origin-and-attribution">Origin and attribution</h2>
+    <p>The earliest documented close match for the canonical wording appears under “Hanlon's Razor” on page 52 of Arthur Bloch's 1980 compilation <em>Murphy's Law Book Two</em>.<span id="cite2" class="cite">[<a href="#ref2">2</a>]</span> Quotation researcher Garson O'Toole credits Robert J. Hanlon with the wording. The attribution to Napoleon lacks substantive support.<span id="cite3" class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Joseph E. Bigler reported that Hanlon submitted the line for inclusion in the book and that Bigler selected it.<span id="cite4" class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="earlier-precedents">Earlier precedents</h2>
+    <p>Goethe's 1774 novel <em>The Sorrows of Young Werther</em> is a thematic precedent. It contrasts the harm caused by misunderstanding and lethargy with the rarer harm caused by deceit and malice.<span id="cite5" class="cite">[<a href="#ref5">5</a>]</span> A related theme appears in Robert A. Heinlein's 1941 story “Logic of Empire,” which warns against explaining conditions through villainy when stupidity can account for them.<span id="cite6" class="cite">[<a href="#ref6">6</a>]</span></p>
+
+    <h2 id="use">Use</h2>
+    <p>The razor calls for tests of ordinary error, misunderstanding, incentives, and system conditions before an inference of hostile intent. It can slow premature blame when evidence about motive is weak. Accountability for harmful decisions and outcomes remains.</p>
+
+    <h2 id="limitations">Limitations</h2>
+    <p>The razor cannot establish a person's motives. Malice and error can coexist, and strong evidence of deception overrides the presumption. Habitual use can make a person vulnerable to manipulation. Ballantyne and Ditto treat the razor as a defeasible principle whose value depends on the available evidence.<span id="cite1c" class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/epistemology/">Epistemology</a></li>
+      <li><a href="/reference/steelmanning/">Steelmanning</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#cite1a" aria-label="Back to first citation 1">^a</a><a class="backlink" href="#cite1b" aria-label="Back to second citation 1">^b</a><a class="backlink" href="#cite1c" aria-label="Back to third citation 1">^c</a> Nathan Ballantyne and Peter H. Ditto, “Hanlon's Razor,” <em>Midwest Studies in Philosophy</em> 45 (2021). Penultimate full text: <a href="https://philarchive.org/archive/BALHR">PhilArchive</a>. Published article: <a href="https://www.pdcnet.org/msp/content/msp_2021_0999_9_3_3">Philosophy Documentation Center</a>.</li>
+      <li id="ref2"><a class="backlink" href="#cite2" aria-label="Back to citation 2">^</a> Arthur Bloch, <em>Murphy's Law Book Two</em> (1980), 52.</li>
+      <li id="ref3"><a class="backlink" href="#cite3" aria-label="Back to citation 3">^</a> Garson O'Toole, “Never Attribute to Malice That Which Is Adequately Explained by Stupidity,” <em>Quote Investigator</em>, 2016, updated 2025, <a href="https://quoteinvestigator.com/2016/12/30/not-malice/">quoteinvestigator.com</a>.</li>
+      <li id="ref4"><a class="backlink" href="#cite4" aria-label="Back to citation 4">^</a> Quentin Stafford-Fraser, “Hanlon's Razor,” <em>Status-Q</em>, November 26, 2001, reproducing Joseph E. Bigler's account, <a href="https://statusq.org/archives/2001/11/26/">statusq.org</a>.</li>
+      <li id="ref5"><a class="backlink" href="#cite5" aria-label="Back to citation 5">^</a> Johann Wolfgang von Goethe, <em>The Sorrows of Young Werther</em> (1774), Book I, <a href="https://www.gutenberg.org/cache/epub/2527/pg2527-images.html">Project Gutenberg</a>.</li>
+      <li id="ref6"><a class="backlink" href="#cite6" aria-label="Back to citation 6">^</a> Robert A. Heinlein, “Logic of Empire,” <em>Astounding Science Fiction</em>, March 1941, 38&ndash;39, <a href="https://archive.org/details/Astounding_v27n01_1941-03_Gorgon776">Internet Archive scan</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
