@@ -1,0 +1,408 @@
+[
+  {
+    "slug": "five-checks-against-motivated-reasoning",
+    "title": "Five Checks Against Motivated Reasoning",
+    "date": "2026-08-24",
+    "bucket": "essays",
+    "pin": 1
+  },
+  {
+    "slug": "the-employee-you-cant-stop-managing",
+    "title": "The Employee You Can't Stop Managing",
+    "date": "2026-08-21",
+    "bucket": "systems",
+    "pin": 2
+  },
+  {
+    "slug": "what-actually-buys-you-the-power-to-say-no",
+    "title": "What Actually Buys You the Power to Say No",
+    "date": "2026-08-21",
+    "bucket": "essays",
+    "pin": 2
+  },
+  {
+    "slug": "meat-proxy-problem",
+    "title": "The Meat Proxy Problem",
+    "date": "2026-08-19",
+    "bucket": "systems",
+    "pin": 1
+  },
+  {
+    "slug": "instapay-is-not-ach",
+    "title": "InstaPay Is Not ACH",
+    "date": "2026-08-18",
+    "bucket": "payments",
+    "pin": 1
+  },
+  {
+    "slug": "build-source-of-truth-before-index",
+    "title": "Build the Source of Truth Before the Index",
+    "date": "2026-08-18",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "us-and-philippine-payment-rails",
+    "title": "US and Philippine Payment Rails",
+    "date": "2026-08-18",
+    "bucket": "payments",
+    "pin": 2
+  },
+  {
+    "slug": "payments-glossary",
+    "title": "Payments Glossary",
+    "date": "2026-08-18",
+    "bucket": "payments",
+    "pin": 3
+  },
+  {
+    "slug": "credit-cures-plagiarism-not-permission",
+    "title": "Credit Cures Plagiarism, Not Permission",
+    "date": "2026-08-17",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "metric-already-happened-upstream",
+    "title": "The Metric You're Watching Already Happened Upstream",
+    "date": "2026-08-15",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "positioning-demotes-prediction",
+    "title": "Positioning Doesn't Escape Prediction, It Demotes It",
+    "date": "2026-08-14",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "ledger-that-stayed-empty",
+    "title": "The Ledger That Stayed Empty",
+    "date": "2026-08-14",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "career-ceiling-i-was-worried-about-already-existed",
+    "title": "The Career Ceiling I Was Worried About Already Existed",
+    "date": "2026-08-14",
+    "bucket": "essays",
+    "pin": 3
+  },
+  {
+    "slug": "triffins-dilemma-escape-doesnt-work",
+    "title": "The Only Concrete Escape From Triffin's Dilemma Doesn't Work",
+    "date": "2026-08-14",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "scanner-that-feeds-pipeline",
+    "title": "The Scanner That Feeds the Pipeline",
+    "date": "2026-08-13",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "nine-security-issues-zero-lines-i-wrote",
+    "title": "Nine Security Issues, Zero Lines I Wrote",
+    "date": "2026-08-12",
+    "bucket": "systems",
+    "pin": 4
+  },
+  {
+    "slug": "agency-dims-as-the-timeframe-collapses",
+    "title": "Agency Dims as the Timeframe Collapses",
+    "date": "2026-08-11",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "ai-writes-code-plan-becomes-work",
+    "title": "When the AI Writes the Code, the Plan Becomes the Work",
+    "date": "2026-08-11",
+    "bucket": "systems",
+    "pin": 3
+  },
+  {
+    "slug": "half-agent-infrastructure-depreciating-asset",
+    "title": "Half of Your Agent Infrastructure Is a Depreciating Asset",
+    "date": "2026-08-02",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "agent-didnt-get-dumber-chat-got-contaminated",
+    "title": "The Agent Didn't Get Dumber. The Chat Got Contaminated",
+    "date": "2026-07-31",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "same-tunnel-ships-work-drops-room",
+    "title": "The Same Tunnel That Ships the Work Drops the Room",
+    "date": "2026-07-31",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "urgency-conscientiousness-better-marketing",
+    "title": "Urgency Is Just Conscientiousness With Better Marketing",
+    "date": "2026-07-28",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "most-expensive-avoidance-looks-like-prudence",
+    "title": "The Most Expensive Avoidance Looks Exactly Like Prudence",
+    "date": "2026-07-28",
+    "bucket": "essays",
+    "pin": 5
+  },
+  {
+    "slug": "run-dead-internet-on-purpose",
+    "title": "I Run a Dead Internet on Purpose",
+    "date": "2026-07-26",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "addiction-to-being-right-is-rarer-than-you-think",
+    "title": "The Addiction to Being Right Is Rarer Than You Think",
+    "date": "2026-07-24",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "ai-rerunning-the-nuclear-script",
+    "title": "AI Is Rerunning the Nuclear Script, Not the Part You Think",
+    "date": "2026-07-24",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "debt-with-diff-attached",
+    "title": "Debt With a Diff Attached",
+    "date": "2026-07-24",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "orchestrator-identity",
+    "title": "The Orchestrator Identity",
+    "date": "2026-07-24",
+    "bucket": "essays",
+    "pin": 4
+  },
+  {
+    "slug": "selection-beats-execution-when-games-differ",
+    "title": "Selection Beats Execution Only When the Games Differ",
+    "date": "2026-07-23",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "engineer-the-downside-when-you-cannot-forecast",
+    "title": "Engineer the Downside When You Cannot Forecast the Upside",
+    "date": "2026-07-23",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "triage-system-not-your-toolbox",
+    "title": "Triage the System Not Your Toolbox",
+    "date": "2026-07-23",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "anxiety-present-tense-problem",
+    "title": "Anxiety Is a Present-Tense Problem",
+    "date": "2026-07-21",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "havent-written-a-test-in-a-year",
+    "title": "I Haven't Written a Test in a Year",
+    "date": "2026-07-20",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "bottleneck-is-you",
+    "title": "The Bottleneck Is You",
+    "date": "2026-07-19",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "your-review-checklist-has-never-been-reviewed",
+    "title": "Your Review Checklist Has Never Been Reviewed",
+    "date": "2026-07-14",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "your-living-spec-is-still-lying",
+    "title": "Your Living Spec Is Still Lying",
+    "date": "2026-07-14",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "tell-me-whats-wrong-with-it-isnt-review",
+    "title": "'Tell Me What's Wrong With It' Isn't a Review",
+    "date": "2026-07-13",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "cheap-code-expensive-context",
+    "title": "Cheap Code, Expensive Context",
+    "date": "2026-07-12",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "polish-is-free-thinking-isnt",
+    "title": "Polish Is Free. Thinking Isn't",
+    "date": "2026-07-11",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "capacity-is-your-lowest-ceiling",
+    "title": "Capacity Is Your Lowest Ceiling",
+    "date": "2026-07-11",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "pattern-capture-auto-activating-skill-library",
+    "title": "Pattern Capture - How I Built an Auto-Activating Skill Library",
+    "date": "2026-07-10",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "agent-rail-war-red-herring",
+    "title": "The Agent Rail War Is a Red Herring",
+    "date": "2026-07-08",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "the-bugs-that-hide-between-your-agents",
+    "title": "The Bugs That Hide Between Your Agents",
+    "date": "2026-07-08",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "governing-delegation-scope-creep",
+    "title": "Governing Delegation - Using Architecture to Stop AI Scope Creep",
+    "date": "2026-07-03",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "certainty-wellbeing-variable",
+    "title": "Certainty as a Wellbeing Variable",
+    "date": "2026-07-03",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "second-brain-fails-you",
+    "title": "The Moment Your Second Brain Fails You",
+    "date": "2026-04-09",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "debug-system-not-prompt",
+    "title": "Debug the System Not the Prompt",
+    "date": "2026-03-24",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "pkm-bottleneck-was-never-capture",
+    "title": "The PKM Bottleneck Was Never Capture",
+    "date": "2026-03-24",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "basb-claude-code-setup",
+    "title": "Building a Second Brain with Claude Code - The Setup",
+    "date": "2026-03-19",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "enter-key-problem",
+    "title": "The Enter Key Problem",
+    "date": "2026-03-19",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "agents-plan-b-destroy-data",
+    "title": "Your Agent's Plan B Will Destroy Your Data",
+    "date": "2026-03-25",
+    "bucket": "systems",
+    "pin": 5
+  },
+  {
+    "slug": "deleting-24k-lines-ai-instructions",
+    "title": "Deleting 24K Lines of AI Instructions",
+    "date": "2026-03-17",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "new-art-learning",
+    "title": "The New Art of Learning",
+    "date": "2026-03-08",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "developers-job-judgment-now",
+    "title": "The Developer's Job is Judgment Now",
+    "date": "2026-02-27",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "45",
+    "title": "45",
+    "date": "2026-02-13",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "parallelizing-sftp-downloads-ruby",
+    "title": "Parallelizing SFTP Downloads in Ruby",
+    "date": "2026-02-08",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "when-your-mcp-server-breaks",
+    "title": "When Your MCP Server Breaks",
+    "date": "2026-01-24",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "juanito-p-galvez-1928-2022",
+    "title": "Juanito P. Galvez (1928\u20132022)",
+    "date": "2022-10-26",
+    "bucket": "essays",
+    "pin": null
+  }
+]

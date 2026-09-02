@@ -79,10 +79,9 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         )
         items = load_catalog()
         for item in items:
-            self.assertIn(f'/writing/{item["slug"]}/', html)
             self.assertRegex(
                 html,
-                rf'/writing/{re.escape(item["slug"])}/[^<]*<time datetime="{item["date"]}"',
+                rf'href="/writing/{re.escape(item["slug"])}/">[^<]*</a>\s*<time datetime="{item["date"]}"',
             )
         self.assertGreaterEqual(len(re.findall(r'<li class="pin">', html)), 13)
 
