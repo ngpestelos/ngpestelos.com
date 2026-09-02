@@ -4,10 +4,22 @@
   <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
   <link href="https://ngpestelos.com/writing/"/>
   <id>https://ngpestelos.com/writing/</id>
-  <updated>2026-09-02T22:57:27Z</updated>
+  <updated>2026-09-02T22:58:35Z</updated>
   <author>
     <name>Nestor G Pestelos Jr</name>
   </author>
+  <entry>
+    <id>https://ngpestelos.com/writing/legacy-rails-upgrade-with-agents/</id>
+    <title>A Legacy Rails Upgrade With Agents Under a Human Gate</title>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <link href="https://ngpestelos.com/writing/legacy-rails-upgrade-with-agents/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/upgrade-or-rewrite/</id>
+    <title>Upgrade or Rewrite</title>
+    <updated>2026-09-03T00:00:00Z</updated>
+    <link href="https://ngpestelos.com/writing/upgrade-or-rewrite/"/>
+  </entry>
   <entry>
     <id>https://ngpestelos.com/writing/five-checks-against-motivated-reasoning/</id>
     <title>Five Checks Against Motivated Reasoning</title>

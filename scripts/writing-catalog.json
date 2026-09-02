@@ -400,9 +400,23 @@
   },
   {
     "slug": "juanito-p-galvez-1928-2022",
-    "title": "Juanito P. Galvez (1928\u20132022)",
+    "title": "Juanito P. Galvez (1928–2022)",
     "date": "2022-10-26",
     "bucket": "essays",
+    "pin": null
+  },
+  {
+    "slug": "legacy-rails-upgrade-with-agents",
+    "title": "A Legacy Rails Upgrade With Agents Under a Human Gate",
+    "date": "2026-09-03",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
+    "slug": "upgrade-or-rewrite",
+    "title": "Upgrade or Rewrite",
+    "date": "2026-09-03",
+    "bucket": "systems",
     "pin": null
   }
 ]

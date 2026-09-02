@@ -491,6 +491,16 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/writing/legacy-rails-upgrade-with-agents/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/writing/upgrade-or-rewrite/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/writing/atom.xml</loc>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
