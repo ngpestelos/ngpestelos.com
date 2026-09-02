@@ -1,11 +1,12 @@
 :root {
-  --bg: #111;
-  --fg: #e0e0e0;
-  --accent: #6cb4ee;
-  --muted: #888;
-  --card-bg: #1a1a1a;
-  --border: #333;
+  --bg: #f4efe6;
+  --fg: #1c1915;
+  --accent: #9a3412;
+  --muted: #5c564e;
+  --card-bg: #fffaf3;
+  --border: #d8d2c6;
   --max-width: 680px;
+  color-scheme: light;
 }
 
 * {
@@ -29,7 +30,7 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", Times, serif;
   background: var(--bg);
   color: var(--fg);
   line-height: 1.6;
@@ -59,6 +60,7 @@ h1 {
 }
 
 .header-links {
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
   color: var(--muted);
   font-size: 0.9rem;
   margin-bottom: 1rem;
@@ -81,6 +83,7 @@ h1 {
 
 /* Landing chrome — never apply to essay pages */
 main:not(.article) h2 {
+  font-family: "Segoe UI", Helvetica, Arial, sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -98,6 +101,7 @@ section {
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   border-radius: 4px;
   padding: 1.25rem;
   margin-bottom: 1rem;
@@ -139,11 +143,13 @@ main:not(.article) li::before {
 
 a {
   color: var(--accent);
-  text-decoration: none;
+  text-decoration: underline;
+  text-decoration-thickness: 0.06em;
+  text-underline-offset: 0.14em;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: #7a280e;
 }
 
 #contact p {
@@ -475,7 +481,7 @@ a:hover {
   color: var(--muted);
 }
 
-/* Writing paper: screen matches print. Homepage stays dark. */
+/* Writing paper: screen matches print. Landing uses :root light tokens. */
 body:has(main.article),
 body:has(#writing) {
   --paper: #faf8f4;
