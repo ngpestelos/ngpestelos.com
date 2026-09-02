@@ -44,6 +44,12 @@ def _attr(tag: str, name: str) -> str:
     return m.group(1) if m else ""
 
 
+def _content_attr(tag: str) -> str:
+    # content is last; greedy to the closing quote so inner quotes survive.
+    m = re.search(r'\bcontent="(.*)"', tag, re.S)
+    return m.group(1) if m else ""
+
+
 def _head_tag(html: str, pattern: str) -> str:
     m = re.search(pattern, html)
     return m.group(0) if m else ""
@@ -59,7 +65,7 @@ def _meta_name(html: str, name: str) -> str:
         rf'<meta\b[^>]*\bname="{re.escape(name)}"[^>]*>',
         html,
     )
-    return _attr(m.group(0), "content") if m else ""
+    return _content_attr(m.group(0)) if m else ""
 
 
 def _meta_prop(html: str, prop: str) -> str:
@@ -67,7 +73,7 @@ def _meta_prop(html: str, prop: str) -> str:
         rf'<meta\b[^>]*\bproperty="{re.escape(prop)}"[^>]*>',
         html,
     )
-    return _attr(m.group(0), "content") if m else ""
+    return _content_attr(m.group(0)) if m else ""
 
 
 def _block(text: str) -> str:
@@ -89,10 +95,10 @@ def split(html: str) -> dict:
     if not main_m:
         raise ValueError("no <main> in html")
     main_attrs = main_m.group(1)
-    inner = main_m.group(2)
+    inner = main_m.group(2).lstrip("\n")
 
     crumb = ""
-    crumb_m = re.match(r'\s*(<p class="back"[^>]*>.*?</p>)', inner, re.S)
+    crumb_m = re.match(r'\s*(<p class="back"[^>]*>.*?</p>)\n*', inner, re.S)
     if crumb_m:
         crumb = crumb_m.group(1)
         inner = inner[crumb_m.end() :]
@@ -106,6 +112,8 @@ def split(html: str) -> dict:
     to_top_m = re.search(r'\s*<p class="to-top">.*?</p>\s*$', inner, re.S)
     if to_top_m:
         inner = inner[: to_top_m.start()]
+
+    inner = inner.rstrip() + "\n"
 
     after = html.split("</main>", 1)[1] if "</main>" in html else ""
     after = re.sub(r"</body>\s*</html>\s*$", "", after, flags=re.I | re.S)
