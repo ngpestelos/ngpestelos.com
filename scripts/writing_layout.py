@@ -4,9 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
+
+import writing_catalog
 
 SCRIPTS = Path(__file__).resolve().parent
 ROOT = SCRIPTS.parent
@@ -73,6 +76,33 @@ def _quoted_attr(value: str) -> str:
 def is_writing_index(page: dict) -> bool:
     path = str(page.get("path") or "").replace("\\", "/")
     return path == "writing/index.html"
+
+
+def slug_from_path(path: str) -> str:
+    parts = str(path or "").replace("\\", "/").split("/")
+    if len(parts) >= 3 and parts[0] == "writing" and parts[-1] == "index.html":
+        return parts[-2]
+    return ""
+
+
+def article_json_ld(page: dict, by_slug: dict | None = None) -> str:
+    if is_writing_index(page):
+        return ""
+    headline = page.get("og_title") or page.get("title") or ""
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": headline,
+        "description": page.get("description") or "",
+        "url": page.get("canonical") or "",
+        "author": {"@type": "Person", "name": "Nestor G Pestelos Jr"},
+    }
+    slug = slug_from_path(page.get("path") or "")
+    item = (by_slug if by_slug is not None else writing_catalog.catalog_by_slug()).get(slug)
+    if item and item.get("date"):
+        data["datePublished"] = item["date"]
+    payload = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    return f'  <script type="application/ld+json">\n{payload}\n  </script>\n'
 
 
 def split(html: str) -> dict:
@@ -146,6 +176,7 @@ def render(page: dict) -> str:
         "og_description": _quoted_attr(page.get("og_description", "")),
         "og_type": _quoted_attr(page.get("og_type", "")),
         "canonical": _quoted_attr(page.get("canonical", "")),
+        "json_ld": page["json_ld"] if "json_ld" in page else article_json_ld(page),
         "main_attrs": page.get("main_attrs", ""),
         "inner": page.get("inner", ""),
         "extra_scripts": page.get("extra_scripts", ""),
@@ -172,10 +203,17 @@ def render(page: dict) -> str:
 def rebuild(root: Path | None = None) -> list[Path]:
     base = root or ROOT
     writing = base / "writing"
+    by_slug = writing_catalog.catalog_by_slug()
+    catalog = writing_catalog.load_catalog()
     written: list[Path] = []
     for path in sorted(writing.rglob("index.html")):
         page = split(path.read_text(encoding="utf-8"))
         page["path"] = str(path.relative_to(base))
+        if is_writing_index(page):
+            page["inner"] = writing_catalog.replace_writing_inner(
+                page["inner"], writing_catalog.index_inner_html(catalog)
+            )
+        page["json_ld"] = article_json_ld(page, by_slug)
         path.write_text(render(page), encoding="utf-8")
         written.append(path)
     return written
