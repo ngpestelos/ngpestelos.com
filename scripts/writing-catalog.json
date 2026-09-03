@@ -60,7 +60,7 @@
     "title": "Credit Cures Plagiarism, Not Permission",
     "date": "2026-08-17",
     "bucket": "essays",
-    "pin": null
+    "pin": 4
   },
   {
     "slug": "metric-already-happened-upstream",
@@ -192,8 +192,8 @@
     "slug": "orchestrator-identity",
     "title": "The Orchestrator Identity",
     "date": "2026-07-24",
-    "bucket": "essays",
-    "pin": 4
+    "bucket": "systems",
+    "pin": null
   },
   {
     "slug": "selection-beats-execution-when-games-differ",
