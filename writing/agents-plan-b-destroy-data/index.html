@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Agent&#x27;s Plan B Will Destroy Your Data — Nestor G Pestelos Jr</title>
-  <meta name="description" content="Twenty-four files disappeared from my working tree on a Tuesday afternoon. No error message. No warning. I&#x27;d asked Claude Code to commit some changes, and five git commands later, three days of conversation backups…">
+  <meta name="description" content="An AI agent's locally rational escalation, git stash --include-untracked to unblock a pull, permanently destroyed 24 untracked files. A written rule in markdown was not enough. Only a PreToolUse hook that mechanically blocks the command prevents data loss.">
   <meta property="og:title" content="Your Agent&#x27;s Plan B Will Destroy Your Data">
-  <meta property="og:description" content="Twenty-four files disappeared from my working tree on a Tuesday afternoon. No error message. No warning. I&#x27;d asked Claude Code to commit some changes, and five git commands later, three days of conversation backups…">
+  <meta property="og:description" content="An AI agent's locally rational escalation, git stash --include-untracked to unblock a pull, permanently destroyed 24 untracked files. A written rule in markdown was not enough. Only a PreToolUse hook that mechanically blocks the command prevents data loss.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/writing/agents-plan-b-destroy-data/">
   <link rel="canonical" href="https://ngpestelos.com/writing/agents-plan-b-destroy-data/">
@@ -17,7 +17,6 @@
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="/style.css?v=20260903e">
-  <link rel="alternate" type="application/atom+xml" title="Writing" href="https://ngpestelos.com/writing/atom.xml">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -26,100 +25,91 @@
     gtag('config', 'G-TLBY8P4GG9');
   </script>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"Your Agent's Plan B Will Destroy Your Data","description":"Twenty-four files disappeared from my working tree on a Tuesday afternoon. No error message. No warning. I'd asked Claude Code to commit some changes, and five git commands later, three days of conversation backups…","url":"https://ngpestelos.com/writing/agents-plan-b-destroy-data/","author":{"@type":"Person","name":"Nestor G Pestelos Jr"},"datePublished":"2026-03-25"}
+{"@context":"https://schema.org","@type":"Article","headline":"Your Agent's Plan B Will Destroy Your Data","description":"An AI agent's locally rational escalation, git stash --include-untracked to unblock a pull, permanently destroyed 24 untracked files. A written rule in markdown was not enough. Only a PreToolUse hook that mechanically blocks the command prevents data loss.","url":"https://ngpestelos.com/writing/agents-plan-b-destroy-data/","author":{"@type":"Person","name":"Nestor G Pestelos Jr"},"datePublished":"2026-03-25","dateModified":"2026-09-03"}
   </script>
 </head>
 <body>
   <main class="article">
     <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
     <h1>Your Agent&#x27;s Plan B Will Destroy Your Data</h1>
+<p class="byline">Published March 25, 2026. Revised September 3, 2026.</p>
 
 
-<div class="tldr"><span class="tldr-label">TL;DR</span><p>An AI agent&#x27;s locally-rational escalation, <code>git stash --include-untracked</code> to unblock a pull, permanently destroyed 24 untracked files. A written rule wasn&#x27;t enough; only a PreToolUse hook that mechanically blocks the command prevents it.</p></div>
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>An AI agent's locally rational escalation, <code>git stash --include-untracked</code> to unblock a pull, permanently destroyed 24 untracked files. A written rule in markdown was not enough. Only a PreToolUse hook that mechanically blocks the command prevents data loss.</p></div>
 
 <hr>
 
-<p>Twenty-four files disappeared from my working tree on a Tuesday afternoon. No error message. No warning. I&#x27;d asked Claude Code to commit some changes, and five git commands later, three days of conversation backups were gone forever.</p>
+<p><em>The March 25, 2026 version is at <a href="https://ngpestelos.com/writing/agents-plan-b-destroy-data-20260325/">agents-plan-b-destroy-data-20260325</a>.</em></p>
 
-<p>The root cause wasn&#x27;t a bug. It was an AI agent making a reasonable-sounding but catastrophically wrong decision under routine conditions. This is how it happened and what I built to prevent it.</p>
+<p>Twenty-four files disappeared from my working tree on a Tuesday afternoon without error or warning. I asked Claude Code to commit pending changes in my knowledge vault. Five git commands later, three days of conversation backups and an irreplaceable research note were gone.</p>
 
-<h2>The Setup</h2>
+<p>The root cause was not a software defect. It was an autonomous coding agent executing a locally rational sequence that proved fatal to data. Claude had full context on my vault conventions through instruction files, and committing changes was a daily routine.</p>
 
-<p>I use Claude Code as the operating system for my Obsidian-based Second Brain. Claude has deep context about my vault structure, conventions, and preferences through persistent instruction files.</p>
+<h2 id="what-was-in-the-working-tree">What was in the working tree</h2>
 
-<p>I asked it to commit some pending changes. A routine task I&#x27;ve done hundreds of times before.</p>
-
-<h2>What Was in the Working Tree</h2>
-
-<p>Three groups of uncommitted changes:</p>
+<p>The working tree held three groups of uncommitted files:</p>
 
 <ul>
 
-<li><strong>5 modified files</strong> — Readwise archive documents that had been re-synced with updated content. These were already tracked by git.</li>
+<li><strong>5 modified files</strong>: Readwise archive documents (tracked by git).</li>
 
-<li><strong>1 new file</strong> — A web search about reading difficulty and word skipping. Untracked.</li>
+<li><strong>1 new file</strong>: A research note on reading difficulty (untracked).</li>
 
-<li><strong>23 new files</strong> — Conversation backup transcripts from the past three days. Untracked.</li>
+<li><strong>23 new files</strong>: Conversation transcripts from three days (untracked).</li>
 
 </ul>
 
-<p>Total: 29 files. 24 of them had never been committed to git.</p>
+<p>Total: 29 files, 24 never committed to git.</p>
 
-<h2>The Cascade</h2>
+<h2 id="the-cascade">The cascade</h2>
 
-<p>My vault&#x27;s <code>CLAUDE.md</code> has a rule: before any commit, run <code>git pull --rebase</code> first. This prevents divergence with the remote. Claude followed the rule.</p>
+<p>My instruction file requires running <code>git pull --rebase</code> before every commit to prevent remote divergence. Claude followed that rule.</p>
 
-<p>**Step 1: <code>git pull --rebase</code> fails.**</p>
+<p><strong>Step 1: The rebase fails.</strong></p>
 
 <pre><code>error: cannot pull with rebase: You have unstaged changes.</code></pre>
 
-<p>The 5 modified Readwise files blocked the rebase. Fair enough.</p>
+<p>The five modified Readwise files blocked the rebase.</p>
 
-<p><strong>Step 2: Claude decides to stash.</strong></p>
+<p><strong>Step 2: Claude attempts a standard stash.</strong></p>
 
-<p>The plan: stash the changes, pull, then pop the stash back. A standard git workflow.</p>
+<p>Claude chose a standard git pattern: stash changes, pull, and pop. Because <code>git stash</code> captures tracked files, it created an entry, yet unstaged index states left modified files in the tree.</p>
 
-<p><code>git stash</code> only captures tracked changes. The first attempt stashed one copy of the modified files. But the modified files weren&#x27;t staged, and something about the index state meant they persisted in the working tree after the stash.</p>
+<p>**Step 3: Claude escalates to <code>--include-untracked</code>.**</p>
 
-<p>**Step 3: Claude escalates to <code>git stash --include-untracked</code>.**</p>
-
-<p>Since <code>git stash</code> alone didn&#x27;t clear the working tree, Claude tried <code>git stash --include-untracked</code>. This flag tells git to also capture every untracked file in the repository.</p>
-
-<p>All 24 untracked files got sucked into a stash entry. They were no longer on disk. They existed only inside the stash.</p>
+<p>Because the working tree remained dirty, Claude escalated to <code>git stash --include-untracked</code>. This swept every untracked file into the stash. All 24 untracked files vanished from disk.</p>
 
 <p><strong>Step 4: The pull still fails.</strong></p>
 
-<p>Even after two stash attempts, the modified files somehow remained in the working tree. The pull was still blocked. Two stash entries now existed, both containing copies of the data.</p>
+<p>Modified files still remained in the tree. The pull remained blocked, and two separate stashes now held copies of the data.</p>
 
 <p><strong>Step 5: Claude drops both stashes.</strong></p>
 
 <pre><code>git stash drop stash@{1} &amp;&amp; git stash drop stash@{0}</code></pre>
 
-<p>This is the moment of destruction. When you drop a git stash, the data in it is garbage collected. For tracked files, this doesn&#x27;t matter: the committed versions still exist in the repository&#x27;s object database. But untracked files captured by <code>--include-untracked</code> have <em>no other copy in git</em>. Dropping the stash is the only copy being destroyed.</p>
+<p>This command permanently destroyed the data. Dropping a stash purges unreferenced objects during garbage collection. Committed versions of tracked files remain safe in the repository database. Untracked files captured by <code>--include-untracked</code> have no prior commit. Dropping the stash deletes the only copy in existence.</p>
 
-<p>24 files permanently deleted. No recovery path. No <code>git reflog</code>. No undo.</p>
+<p>Twenty-four files vanished permanently. No recovery path, no <code>git reflog</code>, and no undo.</p>
 
-<h2>The Irony</h2>
+<h2 id="the-unnecessary-escalation">The unnecessary escalation</h2>
 
 <p>**Untracked files never block <code>git pull --rebase</code>.**</p>
 
-<p>Only unstaged changes to tracked files cause that error. The 24 untracked files would have sat there harmlessly through any number of pulls and rebases. They didn&#x27;t need to be stashed. They didn&#x27;t need to be touched at all.</p>
+<p>Only unstaged modifications to tracked files block a rebase. The 24 untracked files would have survived endless pulls. Claude stashed them because <code>--include-untracked</code> was the next escalation in its playbook. It resolved a phantom problem and destroyed real data.</p>
 
-<p>Claude stashed them because <code>git stash --include-untracked</code> was the next escalation in the &quot;clear the working tree&quot; playbook. It solved a problem that didn&#x27;t exist, and destroyed data in the process.</p>
+<h2 id="policy-versus-mechanism">Policy versus mechanism</h2>
 
-<h2>What I Built to Prevent This</h2>
+<p>A written rule in markdown is insufficient; agents overlook instructions when problem-solving. My configuration already prohibited destroying user documents, yet Claude violated the principle through an unexpected side effect.</p>
 
-<p>A CLAUDE.md rule alone isn&#x27;t enough. Rules get overlooked under pressure. The rule to &quot;never overwrite original documents&quot; has been in my CLAUDE.md since day one. This incident violated the same principle: destroying user data through a side effect.</p>
+<h3 id="layer-1-the-policy-rule">Layer 1: The policy rule</h3>
 
-<h3>Layer 1: The Rule</h3>
+<p>I added a strict directive to <code>CLAUDE.md</code> under Safety &amp; Permissions:</p>
 
-<p>Added to <code>~/.claude/CLAUDE.md</code> under Safety &amp; Permissions, deployed via nix-darwin across all machines:</p>
+<p>&gt; Never use <code>git stash --include-untracked</code> or <code>git stash -u</code>. Untracked files in a stash are permanently destroyed on drop or failed pop. If tracked files block rebase, commit them first. Untracked files never block pull or rebase. Leave them alone.</p>
 
-<p>&gt; Never use <code>git stash --include-untracked</code> / <code>git stash -u</code> — untracked files in a stash are permanently destroyed on drop or failed pop. Caused irreversible loss of 24 files (2026-03-18). If tracked files block rebase, commit them first. Untracked files never block pull/rebase — leave them alone.</p>
+<h3 id="layer-2-the-enforcement-hook">Layer 2: The enforcement hook</h3>
 
-<h3>Layer 2: The Hook</h3>
-
-<p>A <code>PreToolUse</code> hook intercepts every Bash tool call <em>before it executes</em> and pattern-matches against dangerous commands:</p>
+<p>Policy informs; mechanisms enforce. I created a <code>PreToolUse</code> hook that intercepts shell tool calls before execution and matches against destructive patterns:</p>
 
 <pre><code>#!/usr/bin/env bash
 set -euo pipefail
@@ -140,43 +130,25 @@ fi
 
 exit 0</code></pre>
 
-<p>Exit code 2 tells Claude Code to reject the tool call. The command never runs. It doesn&#x27;t matter if Claude &quot;forgets&quot; the rule, gets confused under pressure, or decides stashing is the right approach. The hook physically prevents the destructive action.</p>
+<p>Exit code 2 forces Claude Code to abort the tool call. Whether the model forgets the rule, misreads index state, or insists stashing is appropriate, the shell hook blocks execution. Policy states what to avoid; mechanism makes violations impossible.</p>
 
-<p>Policy says don&#x27;t. Mechanism makes it impossible. You need both, but when they conflict, mechanism wins.</p>
+<h2 id="three-failure-modes-of-agent-escalation">Three failure modes of agent escalation</h2>
 
-<h2>The Broader Lesson</h2>
+<p>Agents become dangerous when trying to be helpful. This incident involved no hallucination. Claude recognized that <code>git pull --rebase</code> required a clean working tree, and that <code>git stash</code> temporarily shelves modifications. It escalated to <code>--include-untracked</code> only when the simpler command failed. Every step was locally rational; the cascade was catastrophic.</p>
 
-<p>AI agents are most dangerous when they&#x27;re being helpful. This wasn&#x27;t a hallucination or a misunderstanding. Claude correctly identified that the working tree needed to be clean for <code>git pull --rebase</code>. It correctly knew that <code>git stash</code> is the standard tool for temporarily shelving changes. It escalated to <code>--include-untracked</code> because the simpler version didn&#x27;t work.</p>
-
-<p>Every step was locally rational. The cascade was globally catastrophic.</p>
-
-<p>Yes, I should have committed those 24 files sooner. Three days of untracked files is too long. But the point is: an agent should not destroy data while trying to commit data. The human mistake (not committing) should not become an AI-assisted catastrophe.</p>
-
-<p>And yes, you could argue I shouldn&#x27;t give an AI agent unsupervised access to destructive git operations. That&#x27;s a fair point. The hook is my answer: supervised by mechanism, not by my attention span.</p>
-
-<p>This is the failure mode you should be most worried about with AI coding agents:</p>
+<p>This reveals three hazards in autonomous workflows:</p>
 
 <ol>
 
-<li><strong>Reasonable escalation.</strong> When plan A fails, the agent tries plan B. Plan B has a larger blast radius but still sounds reasonable. Nobody pauses to ask whether the problem being solved actually requires this escalation.</li>
+<li><strong>Uncalibrated escalation</strong>: Plan B expands blast radius without verifying necessity.</li>
+
+<li><strong>Silent destruction</strong>: Files vanished without error codes. Because the command succeeded, the agent assumed safety.</li>
+
+<li><strong>Irreversibility blindness</strong>: Models struggle to separate reversible from irreversible operations. Shelving tracked files is reversible; dropping untracked files is permanent.</li>
 
 </ol>
 
-<ol>
-
-<li><strong>Invisible destruction.</strong> The 24 files disappeared silently. No error. No warning. <code>git stash --include-untracked</code> succeeded. The data loss only became apparent when I later asked about the commit status.</li>
-
-</ol>
-
-<ol>
-
-<li><strong>Irreversibility gaps.</strong> The agent doesn&#x27;t model which operations are reversible. <code>git stash</code> on tracked files is reversible. <code>git stash --include-untracked</code> on never-committed files is irreversible. Same command. Different consequences, depending on whether the files were ever committed.</li>
-
-</ol>
-
-<p>If you use AI coding agents with terminal access, build mechanical safeguards. PreToolUse hooks in Claude Code, custom wrappers in other tools, shell aliases that intercept dangerous patterns. Rules are suggestions. Hooks are laws. Commit early. The gap between &quot;file exists on disk&quot; and &quot;file exists in git&quot; is where data dies.</p>
-
-<p><em>I lost three days of conversation backups and a research note about reading difficulty. The conversation backups will regenerate. The research note won&#x27;t. The preventive hook took 15 minutes to build. The files it protects are irreplaceable.</em></p>
+<p>Human vigilance cannot govern autonomous execution. Build mechanical safeguards: pre-execution tool hooks, shell wrappers, and restricted execution profiles. Written rules are guidance. Executable hooks are boundaries. The gap between a file on disk and a commit in git is where data dies.</p>
     <p class="to-top"><a href="#top">Back to top</a></p>
     <footer class="meta">
       <a href="/privacy.html">Privacy</a>
@@ -189,16 +161,16 @@ exit 0</code></pre>
   </button>
 
   <script>
-    const btt = document.getElementById("backToTop");
-    window.addEventListener("scroll", () => {
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
       if (window.scrollY > 250) {
-        btt.classList.add("visible");
+        btt.classList.add('visible');
       } else {
-        btt.classList.remove("visible");
+        btt.classList.remove('visible');
       }
     }, { passive: true });
-    btt.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
 </body>
