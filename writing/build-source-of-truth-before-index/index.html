@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Build the Source of Truth Before the Index — Nestor G Pestelos Jr</title>
-  <meta name="description" content="The default move for AI memory is a vector database first. Below context-window scale, that is backwards: build a human-readable, editable source of truth, then layer search, graph structure, and…">
+  <meta name="description" content="The default move for AI memory is a vector database first. Below context-window scale, that is backwards. Build a human-readable, editable source of truth, then layer search, graph structure, and agent access on top as rebuildable derivations.">
   <meta property="og:title" content="Build the Source of Truth Before the Index">
-  <meta property="og:description" content="The default move for AI memory is a vector database first. Below context-window scale, that is backwards: build a human-readable, editable source of truth, then layer search, graph structure, and…">
+  <meta property="og:description" content="The default move for AI memory is a vector database first. Below context-window scale, that is backwards. Build a human-readable, editable source of truth, then layer search, graph structure, and agent access on top as rebuildable derivations.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/writing/build-source-of-truth-before-index/">
   <link rel="canonical" href="https://ngpestelos.com/writing/build-source-of-truth-before-index/">
@@ -17,7 +17,6 @@
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="/style.css?v=20260903e">
-  <link rel="alternate" type="application/atom+xml" title="Writing" href="https://ngpestelos.com/writing/atom.xml">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -26,103 +25,111 @@
     gtag('config', 'G-TLBY8P4GG9');
   </script>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"Build the Source of Truth Before the Index","description":"The default move for AI memory is a vector database first. Below context-window scale, that is backwards: build a human-readable, editable source of truth, then layer search, graph structure, and…","url":"https://ngpestelos.com/writing/build-source-of-truth-before-index/","author":{"@type":"Person","name":"Nestor G Pestelos Jr"},"datePublished":"2026-08-18"}
+{"@context":"https://schema.org","@type":"Article","headline":"Build the Source of Truth Before the Index","description":"The default move for AI memory is a vector database first. Below context-window scale, that is backwards. Build a human-readable, editable source of truth, then layer search, graph structure, and agent access on top as rebuildable derivations.","url":"https://ngpestelos.com/writing/build-source-of-truth-before-index/","author":{"@type":"Person","name":"Nestor G Pestelos Jr"},"datePublished":"2026-08-18","dateModified":"2026-09-03"}
   </script>
 </head>
 <body>
   <main class="article">
     <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
     <h1>Build the Source of Truth Before the Index</h1>
-<p class="byline">Published August 18, 2026</p>
+<p class="byline">Published August 18, 2026. Revised September 3, 2026.</p>
 
 
-<div class="tldr"><span class="tldr-label">TL;DR</span><p>The default move for AI memory is a vector database first. Below context-window scale, that is backwards: build a human-readable, editable source of truth, then layer search, graph structure, and agent access on top as rebuildable derivations.</p></div>
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>The default move for AI memory is a vector database first. Below context-window scale, that is backwards. Build a human-readable, editable source of truth, then layer search, graph structure, and agent access on top as rebuildable derivations.</p></div>
 
 <hr>
 
-<p>In 1970, E. F. Codd wrote <a href="https://dl.acm.org/doi/10.1145/362384.362685">the paper that founded the relational database</a>. Section 1.2.2 states: &quot;From an informational standpoint, an index is a redundant component of the data representation.&quot; An index isn&#x27;t central to the system, and it isn&#x27;t authoritative. It&#x27;s a performance artifact, something the system creates and destroys without breaking anything that depends on it.</p>
+<p><em>The August 18, 2026 version is at <a href="https://ngpestelos.com/writing/build-source-of-truth-before-index-20260818/">build-source-of-truth-before-index-20260818</a>.</em></p>
 
-<p>Fifty-six years later, the default move for building AI memory is to skip straight to the redundant component. Chunk everything, embed it, query by similarity, and never build the thing the index was supposed to index.</p>
+<p>In 1970, E. F. Codd wrote <a href="https://dl.acm.org/doi/10.1145/362384.362685">the paper that founded the relational database</a>. Section 1.2.2 establishes that an index is a redundant component of the data representation. An index is not central to the system and not authoritative. It is a performance artifact that the system can create and destroy without breaking anything that depends on it.</p>
+
+<p>Fifty-six years later, the default move for building AI memory is to skip straight to the redundant component: chunk everything, embed it, query by similarity, and never build the substrate the index was supposed to index.</p>
 
 <h2 id="three-traditions-one-architecture">Three traditions, one architecture</h2>
 
-<p>The Pragmatic Programmer&#x27;s <a href="https://pragprog.com/tips/">Tip 25</a> makes the case from software craft: &quot;Keep Knowledge in Plain Text... Plain text won&#x27;t become obsolete.&quot; Plain text stays parseable by tools nobody has invented yet.</p>
+<p>The Pragmatic Programmer&#x27;s <a href="https://pragprog.com/tips/">Tip 25</a> argues from software craft: keep knowledge in plain text because plain text never becomes obsolete. It remains parseable by tools nobody has invented yet.</p>
 
-<p>Doug McIlroy&#x27;s <a href="https://en.wikipedia.org/wiki/Unix_philosophy">three-sentence Unix philosophy</a> ends on a parallel line: &quot;Write programs to handle text streams, because that is a universal interface.&quot; A binary format couples every reader to the program that wrote it. Text carries no such coupling. It can be inspected, filtered, diffed, and repaired by hand when the tooling around it fails.</p>
+<p>Doug McIlroy&#x27;s <a href="https://en.wikipedia.org/wiki/Unix_philosophy">Unix philosophy</a> ends on a parallel principle: write programs to handle text streams because text is a universal interface. Binary formats couple readers to the program that wrote them. Plain text carries no such coupling. It can be inspected, filtered, diffed, and repaired by hand when surrounding tooling fails.</p>
 
-<p>Database theory, software craft, and Unix design point to one architecture: a durable, human-readable, editable substrate, with everything else built on top as a derivation you can throw away and rebuild.</p>
+<p>Database theory, software craft, and Unix design converge on one architecture: a durable, human-readable substrate, with every index built on top as a derivation you can discard and rebuild.</p>
 
-<h2 id="the-build-order-restated-for-2026">The build order, restated for 2026</h2>
+<h2 id="the-build-order-for-2026">The build order for 2026</h2>
 
-<p>shyam&#x27;s <a href="https://x.com/shyamsundar/status/2077215255432974689">lesson from building long-term memory for an AI agent</a> states the 2026 version in one sentence: &quot;Don&#x27;t start with a vector database. Start with a source of truth humans can read and edit. Then add search. Then add graph structure. Then give agents access to it.&quot; A markdown wiki someone can read and edit stays correctable. A vector database seeded with random chunks is a black box nobody can audit.</p>
+<p>shyam&#x27;s <a href="https://x.com/shyamsundar/status/2077215255432974689">lesson from building long-term memory for an AI agent</a> restates the sequence: start with a source of truth humans can read and edit. Next add search. Then add graph structure. Finally give agents access. A markdown wiki remains correctable. A vector database seeded with arbitrary chunks remains an un-auditable black box.</p>
 
-<p>Boris Cherny, who built Claude Code, <a href="https://x.com/aakashgupta/status/2018933856460775597">makes the search half of the same argument</a> from inside a production coding agent, in an account relayed by Aakash Gupta. Simple Unix search, grep, find, ripgrep, beats RAG pipelines for code understanding, because search runs on the source of truth instead of a secondary store that has to stay synchronized with it.</p>
+<p>Boris Cherny, creator of Claude Code, <a href="https://x.com/aakashgupta/status/2018933856460775597">makes the search half of the argument</a> from inside a production coding agent (relayed by Aakash Gupta). Simple Unix search—grep, find, ripgrep—beats RAG pipelines for code comprehension because search inspects the source of truth directly instead of an out-of-sync secondary store.</p>
 
-<p><a href="https://x.com/karpathy/status/2039805659525644595">Andrej Karpathy runs the identical build order</a> for his own knowledge base: raw documents compiled into a markdown wiki, an LLM as maintainer, and no RAG at roughly 100 articles and 400,000 words, because the model&#x27;s context window already holds it all.</p>
+<p><a href="https://x.com/karpathy/status/2039805659525644595">Andrej Karpathy runs the identical build order</a> for his knowledge base: raw documents compiled into a markdown wiki, an LLM as maintainer, and zero RAG at roughly 100 articles and 400,000 words. The model&#x27;s context window already holds the entire corpus.</p>
 
 <h2 id="two-companies-tried-it-backwards">Two companies tried it backwards</h2>
 
-<p>Sourcegraph <a href="https://sourcegraph.com/blog/how-cody-understands-your-codebase">shipped Cody on embeddings, then deprecated them</a> in February 2024. Code had to leave the building for a third party to embed it. The index needed constant upkeep. It grew complex and resource-intensive past 100,000 repositories.</p>
+<p>Sourcegraph <a href="https://sourcegraph.com/blog/how-cody-understands-your-codebase">shipped Cody on embeddings, then deprecated them</a> in February 2024. Code left local perimeters for third-party embedding, the index demanded constant upkeep, and operational complexity grew unsustainable past 100,000 repositories. Sourcegraph replaced embeddings with BM25 search across raw code. The source of truth was sufficient all along; the index was the fragile dependency.</p>
 
-<p>The replacement is search over the code itself, ranked by BM25, because the source of truth had been enough all along and the index was the fragile extra piece.</p>
+<p>Confident AI encountered a separate wall. <a href="https://www.confident-ai.com/blog/why-we-replaced-pinecone-with-pgvector">Pinecone&#x27;s metadata limits forced two-step retrieval</a>, and their separated vector store lacked synchronization mechanisms with the primary data source. They folded vectors back into PostgreSQL, eliminating desync risk by construction. Both accounts are vendor-reported and qualitative, without independent replication.</p>
 
-<p>Confident AI hit a different wall. <a href="https://www.confident-ai.com/blog/why-we-replaced-pinecone-with-pgvector">Pinecone&#x27;s metadata cap forced a two-step retrieval</a>, and the separated vector store, in their own words, &quot;lacks mechanisms to ensure data synchronization with the primary datasource.&quot; They folded the vectors back into their existing Postgres database, removing the desync risk by construction. Both accounts are vendor-run and qualitative, with no independent numbers or replication published.</p>
+<h2 id="where-the-derivation-earns-its-keep">Where the derivation earns its keep</h2>
 
-<h2 id="the-steelman-test">The steelman test</h2>
+<p>The counter-case has measured evidence. <a href="https://cursor.com/blog/semsearch">Cursor recorded semantic search</a> over its embeddings index at 12.5% higher question-answering accuracy than grep alone, with code retention in A/B tests rising 2.6% on repositories over 1,000 files. These numbers are Cursor&#x27;s internal benchmarks without independent confirmation.</p>
 
-<p>The steelman has real numbers behind it. <a href="https://cursor.com/blog/semsearch">Cursor measured semantic search</a> over its own embeddings index at 12.5% higher question-answering accuracy than grep alone, and code retention in A/B tests rose too, up to 2.6% on codebases over 1,000 files. The numbers are Cursor&#x27;s own, on Cursor&#x27;s own benchmark, with no independent replication found.</p>
+<p><a href="https://cursor.com/blog/secure-codebase-indexing">Cursor&#x27;s index is a Merkle tree synchronized with the local working copy</a>. Chunks are cached by hash and evicted immediately when a file changes on disk. This is not an independent data store. It is the disciplined derivation shyam described, fully funded. Sourcegraph and Cursor met the same fork; only Cursor maintained the synchronization engine.</p>
 
-<p><a href="https://cursor.com/blog/secure-codebase-indexing">That index is a Merkle tree kept in sync with the local working copy</a>, chunks cached by hash, a result dropped the moment the client can&#x27;t prove the file is still on disk. None of that is a second, independent store. It&#x27;s the same disciplined derivation shyam described, paid for. Sourcegraph and Cursor ran into the same fork; only one of them kept funding the sync work.</p>
+<p>The architectural boundary is explicit:</p>
 
-<p>The thesis has limits too. A <a href="https://arxiv.org/abs/2501.01880">2025 comparison of long-context models against chunk-based retrieval</a> found long-context models generally beat chunk-based RAG on accuracy. That result should flip once the corpus outgrows the context window: past that size, cost scales directly with input size, and an index stops being optional.</p>
+<ol>
 
-<p>Whole-corpus questions are the other edge. Something like &quot;what are the five biggest themes across everything I&#x27;ve written&quot; needs a <a href="https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/">derived knowledge graph</a>, because no single chunk can answer that kind of question on its own.</p>
+<li><strong>Context-window capacity</strong>: A <a href="https://arxiv.org/abs/2501.01880">2025 study on long-context models versus chunk retrieval</a> found long-context models beat chunk-based RAG on accuracy. That advantage flips once a corpus outgrows the window, where input costs scale linearly and indexing becomes mandatory.</li>
 
-<p>Plain search has its own gap. BM25 catches the exact term a vector search can blur past; a vector search catches the paraphrase BM25 misses. <a href="https://x.com/_avichawla/status/2020747017258217808">Avi Chawla&#x27;s read</a> is that the best search layer runs both and combines the ranks. Add the index and the graph once the questions demand them. Until then, leave them out.</p>
+<li><strong>Whole-corpus synthesis</strong>: Aggregations like &quot;find the top five themes across all notes&quot; require a <a href="https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/">derived knowledge graph</a>, because single chunks cannot answer global questions.</li>
+
+<li><strong>Lexical versus semantic recall</strong>: BM25 catches exact identifiers that embeddings blur, while vector search captures paraphrases BM25 misses. <a href="https://x.com/_avichawla/status/2020747017258217808">Avi Chawla notes</a> that robust retrieval combines both.</li>
+
+</ol>
+
+<p>Add the index and the graph only when query requirements demand them. Until then, leave them out.</p>
 
 <h2 id="before-reaching-for-a-vector-database">Before reaching for a vector database</h2>
 
 <ol>
 
-<li>Does a human-readable, editable version of this knowledge exist anywhere? If not, that is the missing layer.</li>
+<li>Does a human-readable, editable version of this knowledge exist? If not, that is the missing substrate.</li>
 
-<li>Does the corpus fit inside a model&#x27;s context window? If yes, retrieval may not be needed yet.</li>
+<li>Does the corpus fit inside the model&#x27;s context window? If so, retrieval is premature.</li>
 
-<li>Are the questions single-document lookups, or whole-corpus aggregation? Lookups want search. Aggregation wants a graph.</li>
+<li>Do questions target single documents or corpus-wide aggregation? Lookups need search; aggregation needs a graph.</li>
 
-<li>When an index gets added, can it be rebuilt from the source of truth alone, with nothing lost? If not, a second source of truth just got built by accident.</li>
+<li>Can every index be regenerated from raw files with zero data loss? If not, you built an accidental second source of truth.</li>
 
 </ol>
 
-<p>I made this bet in my own notes before any of the X threads above existed. Every file is plain markdown, readable by any editor, diffable by git, correctable by hand. Search runs on top of that, full-text and vector retrieval alike, and gets rebuilt from the files whenever it drifts. Nothing about that is a plan for some future architecture. It is what is running right now, underneath the sentence you are reading.</p>
+<p>In my own vault, every note is plain markdown: readable by any editor, tracked by git, and editable by hand. Full-text and vector indexes run on top, rebuilt from source files whenever they drift. This is not a speculative architecture. It is running right now under the text you are reading.</p>
 
 <h2 id="sources">Sources</h2>
 
 <ul>
 
-<li>E. F. Codd, <a href="https://dl.acm.org/doi/10.1145/362384.362685">&quot;A Relational Model of Data for Large Shared Data Banks,&quot;</a> <em>Communications of the ACM</em> 13(6), 1970</li>
+<li>E. F. Codd, &quot;A Relational Model of Data for Large Shared Data Banks,&quot; <em>Communications of the ACM</em> 13(6), 1970 — https://dl.acm.org/doi/10.1145/362384.362685</li>
 
-<li>David Thomas &amp; Andrew Hunt, <a href="https://pragprog.com/tips/"><em>The Pragmatic Programmer</em></a>, 20th Anniversary Edition, Tip 25</li>
+<li>David Thomas &amp; Andrew Hunt, <em>The Pragmatic Programmer</em>, 20th Anniversary Edition, Tip 25 — https://pragprog.com/tips/</li>
 
-<li>Doug McIlroy, per Peter H. Salus, <a href=<a href="https://danluu.com/mcilroy-unix/">"https://en.wikipedia.org/wiki/Unix_philosophy"</a>><em>A Quarter Century of Unix</em></a> (1994); 1978 original foreword, </li>
+<li>Doug McIlroy, per Peter H. Salus, <em>A Quarter Century of Unix</em> (1994); 1978 original foreword — https://en.wikipedia.org/wiki/Unix_philosophy, https://danluu.com/mcilroy-unix/</li>
 
-<li>shyam (@shyamsundar) on X, <a href="https://x.com/shyamsundar/status/2077215255432974689">&quot;Long-Term Memory System for an AI Agent,&quot;</a> 2026-07-15</li>
+<li>shyam (@shyamsundar) on X, &quot;Long-Term Memory System for an AI Agent,&quot; 2026-07-15 — https://x.com/shyamsundar/status/2077215255432974689</li>
 
-<li>Boris Cherny, cited by Aakash Gupta on X, February 2026 <a href="https://x.com/aakashgupta/status/2018933856460775597">x.com</a></li>
+<li>Boris Cherny, cited by Aakash Gupta on X, February 2026 — https://x.com/aakashgupta/status/2018933856460775597</li>
 
-<li>Andrej Karpathy (@karpathy) on X, 2026-04-02 <a href="https://x.com/karpathy/status/2039805659525644595">x.com</a></li>
+<li>Andrej Karpathy (@karpathy) on X, 2026-04-02 — https://x.com/karpathy/status/2039805659525644595</li>
 
-<li>Alex Isken, <a href="https://sourcegraph.com/blog/how-cody-understands-your-codebase">&quot;How Cody understands your codebase,&quot;</a> Sourcegraph blog, 2024-02-15</li>
+<li>Alex Isken, &quot;How Cody understands your codebase,&quot; Sourcegraph blog, 2024-02-15 — https://sourcegraph.com/blog/how-cody-understands-your-codebase</li>
 
-<li>Jeffrey Ip, <a href="https://www.confident-ai.com/blog/why-we-replaced-pinecone-with-pgvector">&quot;Why We Replaced Pinecone with PGVector,&quot;</a> Confident AI blog, 2025-08-08</li>
+<li>Jeffrey Ip, &quot;Why We Replaced Pinecone with PGVector,&quot; Confident AI blog, 2025-08-08 — https://www.confident-ai.com/blog/why-we-replaced-pinecone-with-pgvector</li>
 
-<li>Heule, Jia &amp; Jain, <a href="https://cursor.com/blog/semsearch">&quot;Improving agent with semantic search,&quot;</a> Cursor blog, 2025-11-06; indexing architecture: Jeremy Stribling, <a href="https://cursor.com/blog/secure-codebase-indexing">&quot;Securely indexing large codebases,&quot;</a> Cursor blog, 2026-01-27</li>
+<li>Heule, Jia &amp; Jain, &quot;Improving agent with semantic search,&quot; Cursor blog, 2025-11-06 — https://cursor.com/blog/semsearch; indexing architecture: Jeremy Stribling, &quot;Securely indexing large codebases,&quot; Cursor blog, 2026-01-27 — https://cursor.com/blog/secure-codebase-indexing</li>
 
-<li>Li et al., <a href="https://arxiv.org/abs/2501.01880">&quot;Long Context vs. RAG for LLMs,&quot;</a> arXiv:2501.01880</li>
+<li>Li et al., &quot;Long Context vs. RAG for LLMs,&quot; arXiv:2501.01880 — https://arxiv.org/abs/2501.01880</li>
 
-<li>Microsoft Research, <a href="https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/">&quot;GraphRAG: Unlocking LLM discovery on narrative private data&quot;</a></li>
+<li>Microsoft Research, &quot;GraphRAG: Unlocking LLM discovery on narrative private data&quot; — https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/</li>
 
-<li>Avi Chawla (@_avichawla) on X, February 2026 <a href="https://x.com/_avichawla/status/2020747017258217808">x.com</a></li>
+<li>Avi Chawla (@_avichawla) on X, February 2026 — https://x.com/_avichawla/status/2020747017258217808</li>
 
 </ul>
     <p class="to-top"><a href="#top">Back to top</a></p>
@@ -137,16 +144,16 @@
   </button>
 
   <script>
-    const btt = document.getElementById("backToTop");
-    window.addEventListener("scroll", () => {
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
       if (window.scrollY > 250) {
-        btt.classList.add("visible");
+        btt.classList.add('visible');
       } else {
-        btt.classList.remove("visible");
+        btt.classList.remove('visible');
       }
     }, { passive: true });
-    btt.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
 </body>

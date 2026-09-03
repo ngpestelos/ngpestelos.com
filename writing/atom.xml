@@ -4,7 +4,7 @@
   <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
   <link href="https://ngpestelos.com/writing/"/>
   <id>https://ngpestelos.com/writing/</id>
-  <updated>2026-09-03T05:23:30Z</updated>
+  <updated>2026-09-03T05:37:59Z</updated>
   <author>
     <name>Nestor G Pestelos Jr</name>
   </author>
@@ -46,7 +46,7 @@
   <entry>
     <id>https://ngpestelos.com/writing/build-source-of-truth-before-index/</id>
     <title>Build the Source of Truth Before the Index</title>
-    <summary>The default move for AI memory is a vector database first. Below context-window scale, that is backwards: build a human-readable, editable source of truth, then layer search, graph structure, and…</summary>
+    <summary>The default move for AI memory is a vector database first. Below context-window scale, that is backwards. Build a human-readable, editable source of truth, then layer search, graph structure, and agent access on top as rebuildable derivations.</summary>
     <updated>2026-08-18T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/build-source-of-truth-before-index/"/>
   </entry>
