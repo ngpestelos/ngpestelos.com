@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Bugs That Hide Between Your Agents — Nestor G Pestelos Jr</title>
-  <meta name="description" content="Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found…">
+  <meta name="description" content="A two-day adversarial review of my agent infrastructure found bugs that file-scoped review could not see: contract drift, fake success, dead states, and untrusted text reaching write authority.">
   <meta property="og:title" content="The Bugs That Hide Between Your Agents">
-  <meta property="og:description" content="Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found…">
+  <meta property="og:description" content="A two-day adversarial review of my agent infrastructure found bugs that file-scoped review could not see: contract drift, fake success, dead states, and untrusted text reaching write authority.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/">
   <link rel="canonical" href="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/">
@@ -17,7 +17,6 @@
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="/style.css?v=20260903e">
-  <link rel="alternate" type="application/atom+xml" title="Writing" href="https://ngpestelos.com/writing/atom.xml">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,75 +24,74 @@
     gtag('js', new Date());
     gtag('config', 'G-TLBY8P4GG9');
   </script>
-  <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"The Bugs That Hide Between Your Agents","description":"Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found…","url":"https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/","author":{"@type":"Person","name":"Nestor G Pestelos Jr"},"datePublished":"2026-07-08"}
-  </script>
 </head>
 <body>
   <main class="article">
     <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
     <h1>The Bugs That Hide Between Your Agents</h1>
-<p class="byline">Published July 8, 2026</p>
+<p class="byline">Published July 8, 2026. Revised September 4, 2026.</p>
 
-<p class="series">I red-teamed my own agent stack for two days. Everything broken was between components — invisible to any single file, and to me.</p>
 
-<div class="tldr"><span class="tldr-label">TL;DR</span><p>A two-day adversarial review of my own agent infrastructure found every real defect lived between components (contract drift, unfalsifiable success, injection), invisible to file-scoped review. The fix: reviewers who hold both sides of a contract and trust neither.</p></div>
-
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>A two-day adversarial review of my agent infrastructure found bugs that file-scoped review could not see: contract drift, fake success, dead states, and untrusted text reaching write authority. The useful reviewer holds both sides of a contract and trusts neither.</p></div>
 <hr>
 
-<p>Over two days I ran an <a href="https://ngpestelos.com/reference/adversarial-agent-review/">adversarial review</a> across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found something broken and running.</p>
+<p><em>The July 8, 2026 version is at <a href="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents-20260708/">the-bugs-that-hide-between-your-agents-20260708</a>.</em></p>
 
-<p>A safety hook silently disabled: the pre-commit guards I relied on weren&#x27;t firing, because the pointer that turns them on was never set. Two repositories wedged for weeks behind a stale lock, their sync logs printing &quot;OK&quot; the whole time. Injection paths where fetched text reached write authority unchecked. None of it was theoretical. It was live, in production, on the day I looked.</p>
+<p>I red-teamed my own agent stack for two days. The live bugs crossed component boundaries, which made them easy for me to miss.</p>
 
-<h2>The four classes</h2>
+<p>I reviewed the infrastructure that commits to repos and feeds my decisions when I am not watching: instruction files, hooks, and cron loops.</p>
 
-<p>The findings fell into four:</p>
+<p>A safety hook was disabled. The pre-commit guards I relied on were not firing because the pointer that enables them was never set. Two repositories had been wedged for weeks behind stale locks while their sync logs printed &quot;OK.&quot; Fetched text could reach components with write authority without a trust boundary.</p>
+
+<h2 id="four-classes">Four Classes</h2>
 
 <ol>
 
-<li><strong>Untrusted content treated as instructions</strong> — fetched text reaching a component that acts on it.</li>
+<li><strong>Untrusted content treated as instructions.</strong> Fetched text reached a component that could act on it.</li>
 
-<li><strong>Unfalsifiable success</strong> — a step reporting &quot;done&quot; with no evidence behind it.</li>
+<li><strong>Unfalsifiable success.</strong> A step reported &quot;done&quot; without evidence behind it.</li>
 
-<li><strong>Producer-consumer contract drift</strong> — two components disagreeing about a shared contract. <code>DONE</code> meant &quot;merged and verified&quot; to the skill that produced it and &quot;PR opened&quot; to the skill that consumed it.</li>
+<li><strong>Producer-consumer contract drift.</strong> Two components disagreed about a shared contract. <code>DONE</code> meant &quot;merged and verified&quot; to the producer and &quot;PR opened&quot; to the consumer.</li>
 
-<li><strong>Incomplete state machines</strong> — states with no way out, termination guards that can&#x27;t be evaluated from saved state.</li>
+<li><strong>Incomplete state machines.</strong> States existed with no way out, or termination guards could not be evaluated from saved state.</li>
 
 </ol>
 
-<p>Was this just my messy stack? I checked whether anyone had studied it at scale.</p>
+<p><a href="https://arxiv.org/abs/2503.13657">MAST</a>, by Cemri et al. in 2025, studied more than 1,600 traces across seven multi-agent frameworks. Their taxonomy groups failures into system design issues, inter-agent misalignment, and task verification.</p>
 
-<h2>Checked at scale</h2>
+<p>My mapping is mine, not the paper&#x27;s. Their subject is multi-agent coordination. Mine is one orchestrator&#x27;s plumbing.</p>
 
-<p>They had. <a href="https://arxiv.org/abs/2503.13657">MAST</a> (Cemri et al., 2026) built a failure taxonomy from 1,600-plus traces across seven multi-agent frameworks and landed on three categories: system design, inter-agent misalignment, and task verification. The mapping to my four classes is mine, not the paper&#x27;s, and their subject is coordination between agents where mine is one orchestrator&#x27;s plumbing. But the shapes converge. Their misalignment category includes an agent whose stated reasoning doesn&#x27;t match its action, contract drift by another name; their verification failures look like my unfalsifiable success; their system-design failures, especially mishandled termination, look like my dead state machines. Only my first class, untrusted input treated as instructions, falls outside their map; injection enters from outside the agent set, not from the coordination between agents. Other people&#x27;s stacks fail in the same shapes, and most of those shapes live between components, where no one is watching.</p>
+<p>Their inter-agent misalignment includes agents whose stated reasoning does not match their action. That is close to producer-consumer contract drift. Their task-verification failures match my fake success cases. Their system-design failures include mishandled termination, which is close to my dead state machines.</p>
 
-<p>So the mess isn&#x27;t mine alone; it&#x27;s the shape of the thing.</p>
+<p>My first class sits outside their map. Untrusted input enters from outside the agent set. The failure is still between components because no single file owns the trust boundary.</p>
 
-<h2>No single file is wrong</h2>
+<h2 id="no-single-file-owns-the-bug">No Single File Owns the Bug</h2>
 
-<p>That&#x27;s what these defects share, and it&#x27;s why the usual tools miss them. Prevention, type checkers, single-diff review all work by finding the file that&#x27;s wrong. Contract drift lives in the gap between two files that are each internally fine. Each side is right about its own <code>DONE</code>. They just never agreed, and the disagreement isn&#x27;t written down anywhere.</p>
+<p>Prevention, type checkers, and single-diff review look for the wrong file. Contract drift does not work that way. Each side can be internally consistent. Each side can pass its own tests. The producer and consumer assigned different meanings to <code>DONE</code>, and no review checked the contract between them.</p>
 
-<p>No one owns the seam between components, so nothing watches it. Each skill passes its own tests, and no test exists for the pipeline they form.</p>
+<p>No one owns the space between components. In my case, no review checked that producer output, consumer input, and saved state described the same contract.</p>
 
-<h2>You can&#x27;t review your own work</h2>
+<h2 id="hold-both-sides">Hold Both Sides</h2>
 
-<p>The reflex fix is &quot;review your own infrastructure.&quot; That&#x27;s half wrong, and the wrong half matters. You can&#x27;t reliably review your own work, for a reason that&#x27;s cognitive, not moral: inattentional blindness — the gorilla-suit experiment, <a href="https://doi.org/10.1068/p281059">Simons and Chabris, 1999</a> — means a mind locked on a task misses what a fresh one catches. You read what your code is meant to say, not what it says. A reader with different priors sees different things, not more.</p>
+<p>&quot;Review your own infrastructure&quot; is half right.</p>
 
-<p>My defects surfaced not because I inspected my own plumbing but because I spawned independent reviewers with no memory of why I&#x27;d written what I had. The working ingredient is manufactured independence, not ownership. &quot;Review your own infrastructure&quot; gets the credit backwards.</p>
+<p>You cannot reliably review your own work because attention is shaped by the task you think you are doing. Simons and Chabris showed this in their <a href="https://doi.org/10.1068/p281059">1999 inattentional-blindness work</a>: people focused on one task can miss a visible unexpected event.</p>
 
-<h2>Both sides of the contract</h2>
+<p>Code review has the same failure mode. You read what the system is meant to say. A fresh reviewer reads what it says.</p>
 
-<p>One move did more than the rest, and it repeats: for every contract between two components, give one reviewer both sides at once — the producer&#x27;s file and the consumer&#x27;s — and tell it to trust neither. The <code>DONE</code>-means-two-things bug was invisible to any reviewer that saw one skill. It took a reader holding both definitions at once to notice they didn&#x27;t match. There&#x27;s no single file to catch it in; a two-sided reviewer is the cheapest thing that can.</p>
+<p>My defects surfaced because I used independent reviewers with no memory of why I had written the components that way.</p>
 
-<p>The smaller move: trust the running state, not the documentation. Mine described a guard that was right in intent and disabled in fact.</p>
+<p>For every contract between two components, a useful reviewer needs both sides at once: the producer and the consumer. The <code>DONE</code> bug was invisible to a reviewer that saw one component. It took a reader holding both definitions at once to see the mismatch.</p>
 
-<h2>Investment or avoidance</h2>
+<p>The same rule caught the disabled guard. The documentation said the guard existed. The running state said it was off.</p>
 
-<p>Now the part I trust least. I keep telling myself the missing piece isn&#x27;t infrastructure but the customer conversations I keep putting off. I&#x27;d capped myself: no new meta-systems. Yet here&#x27;s a two-day sweep of my own plumbing — meta-system work by any honest definition.</p>
+<h2 id="investment-or-avoidance">Investment or Avoidance</h2>
 
-<p>So which was it? The honest answer isn&#x27;t clean. I didn&#x27;t build a system; I checked whether the ones I&#x27;d committed to were doing what I&#x27;d promised, and several weren&#x27;t. A disabled safety hook isn&#x27;t a new project. It&#x27;s a promise I broke without noticing. That defense holds. But those two days could have gone to the conversations, and no bug buys that time back. I can name the cost but not erase it.</p>
+<p>I had capped myself: no new meta-systems. The sweep violated the spirit of that cap, even though it checked systems I had already committed to maintain.</p>
 
-<p>The bugs are live in your stack too, in whatever plumbing you&#x27;ve stopped watching. If your review tooling is file-scoped, and most of it is, nothing you run will surface them: these bugs live between the files. So hand a stranger both sides of one contract and tell them to trust neither. It costs an afternoon. Then ask yourself the same question I did.</p>
+<p>Maintenance counts when an existing commitment is broken. Expansion starts when the fix creates a new system. The disabled safety hook was a broken promise, but those two days still came out of the customer conversations I keep deferring.</p>
+
+<p>Your stack has this class of bug wherever a component hands state, text, or authority to another component. Pick one contract. Give a reviewer the producer, the consumer, and the running state. Tell it to trust none of them.</p>
     <p class="to-top"><a href="#top">Back to top</a></p>
     <footer class="meta">
       <a href="/privacy.html">Privacy</a>
@@ -106,16 +104,16 @@
   </button>
 
   <script>
-    const btt = document.getElementById("backToTop");
-    window.addEventListener("scroll", () => {
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
       if (window.scrollY > 250) {
-        btt.classList.add("visible");
+        btt.classList.add('visible');
       } else {
-        btt.classList.remove("visible");
+        btt.classList.remove('visible');
       }
     }, { passive: true });
-    btt.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   </script>
 </body>
