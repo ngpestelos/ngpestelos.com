@@ -75,8 +75,22 @@ h1 {
   line-height: 1.5;
 }
 
-.writing-pins {
+#writing-pins {
   margin-top: 0.85rem;
+}
+
+#writing-pins ul.pins {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+#writing-pins ul.pins li {
+  margin: 0.35rem 0;
+}
+
+#writing-pins .hook {
+  color: var(--muted);
 }
 
 .next-step {
