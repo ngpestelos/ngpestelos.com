@@ -10,7 +10,7 @@ from pathlib import Path
 SCRIPTS = Path(__file__).resolve().parent
 ROOT = SCRIPTS.parent
 CSS = ROOT / "style.css"
-CSS_VER = "style.css?v=20260903c"
+CSS_VER = "style.css?v=20260903e"
 IOWAN = '"Iowan Old Style"'
 LANDING_BG = "#f4efe6"
 LANDING_INK = "#1c1915"
