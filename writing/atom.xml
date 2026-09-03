@@ -4,355 +4,413 @@
   <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
   <link href="https://ngpestelos.com/writing/"/>
   <id>https://ngpestelos.com/writing/</id>
-  <updated>2026-09-03T03:08:16Z</updated>
+  <updated>2026-09-03T04:34:18Z</updated>
   <author>
     <name>Nestor G Pestelos Jr</name>
   </author>
   <entry>
     <id>https://ngpestelos.com/writing/five-checks-against-motivated-reasoning/</id>
     <title>Five Checks Against Motivated Reasoning</title>
+    <summary>Wanting a thing to be true and it actually being true feel identical from the inside. Five checks catch the gap: name the preference first, ask what would falsify the claim, use a confidence number, apply the same skepticism to sources you like and dislike, and treat certainty itself as a cost. Three of the five trace to published research; two are my own synthesis.</summary>
     <updated>2026-08-24T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/five-checks-against-motivated-reasoning/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/the-employee-you-cant-stop-managing/</id>
     <title>The Employee You Can't Stop Managing</title>
+    <summary>Treating AI agents like employees shifts software from static tools into collaborative relationships. But without strict systems discipline, ephemeral boundaries, and hard concurrency caps, it turns the solo builder…</summary>
     <updated>2026-08-21T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/the-employee-you-cant-stop-managing/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/what-actually-buys-you-the-power-to-say-no/</id>
     <title>What Actually Buys You the Power to Say No</title>
+    <summary>One employer is a single point of failure. But a handful of clients isn't a diversified portfolio either. It's correlated risk. The actual lever behind "walk away" power is savings and marketable skills…</summary>
     <updated>2026-08-21T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/what-actually-buys-you-the-power-to-say-no/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/meat-proxy-problem/</id>
     <title>The Meat Proxy Problem</title>
+    <summary>Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to "just validate it" will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.</summary>
     <updated>2026-08-19T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/meat-proxy-problem/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/instapay-is-not-ach/</id>
     <title>InstaPay Is Not ACH</title>
+    <summary>BSP calls InstaPay an ACH. That word is a local label for a retail scheme. Nacha's ACH is a batch file network that can push and pull. PESONet is the Philippine batch sibling. InstaPay is a third shape.</summary>
     <updated>2026-08-18T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/instapay-is-not-ach/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/build-source-of-truth-before-index/</id>
     <title>Build the Source of Truth Before the Index</title>
+    <summary>The default move for AI memory is a vector database first. Below context-window scale, that is backwards: build a human-readable, editable source of truth, then layer search, graph structure, and…</summary>
     <updated>2026-08-18T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/build-source-of-truth-before-index/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/us-and-philippine-payment-rails/</id>
     <title>US and Philippine Payment Rails</title>
+    <summary>The Fed names four public rails: currency, checks, ACH, and Fedwire. FedNow sits beside ACH. BSP names five designated systems. Cards sit on neither list. Pair the jobs, not the brand names.</summary>
     <updated>2026-08-18T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/us-and-philippine-payment-rails/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/payments-glossary/</id>
     <title>Payments Glossary</title>
+    <summary>Word list for the rest of this series. Each heading is a stable address on this site. InstaPay is not RTGS. A card authorization is not a transfer.</summary>
     <updated>2026-08-18T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/payments-glossary/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/credit-cures-plagiarism-not-permission/</id>
     <title>Credit Cures Plagiarism, Not Permission</title>
+    <summary>Citing sources legitimizes borrowing as a creative practice. It does not resolve copyright permissions, and it does not cover transformational creativity that changes domain rules instead of recombining parts.</summary>
     <updated>2026-08-17T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/credit-cures-plagiarism-not-permission/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/metric-already-happened-upstream/</id>
     <title>The Metric You're Watching Already Happened Upstream</title>
+    <summary>The number you're staring at almost always already happened elsewhere or earlier. It rarely has one clean cause. Fix a real contributor instead of reacting to the metric, and expect that fix to expire too.</summary>
     <updated>2026-08-15T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/metric-already-happened-upstream/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/positioning-demotes-prediction/</id>
     <title>Positioning Doesn't Escape Prediction, It Demotes It</title>
+    <summary>Positioning over predicting is right, but incomplete. It swaps a guess about outcomes for a guess about timing. Calibrated forecasting is the real exception; timing judgment is the real cost.</summary>
     <updated>2026-08-14T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/positioning-demotes-prediction/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/ledger-that-stayed-empty/</id>
     <title>The Ledger That Stayed Empty</title>
+    <summary>Nine security issues got fixed and merged today. Seven never touched my commitments ledger; nobody was owed a fix on a deadline. Two were already on the ledger, a promise to test the system,…</summary>
     <updated>2026-08-14T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/ledger-that-stayed-empty/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/career-ceiling-i-was-worried-about-already-existed/</id>
     <title>The Career Ceiling I Was Worried About Already Existed</title>
+    <summary>A pro athlete's career has a real ceiling, usually in their mid-thirties, not because they get worse at the game but because a body only holds up so long. Sean Goedecke argued software engineering might be entering…</summary>
     <updated>2026-08-14T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/career-ceiling-i-was-worried-about-already-existed/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/triffins-dilemma-escape-doesnt-work/</id>
     <title>The Only Concrete Escape From Triffin's Dilemma Doesn't Work</title>
+    <summary>I spent a long session with Grok working through Triffin's Dilemma: the old observation that a country issuing the world's reserve currency must send out more dollars than it takes back…</summary>
     <updated>2026-08-14T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/triffins-dilemma-escape-doesnt-work/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/scanner-that-feeds-pipeline/</id>
     <title>The Scanner That Feeds the Pipeline</title>
+    <summary>I maintain more repos than I can check by hand. A small system called portfolio-ops watches all of them, runs one deterministic scan, and turns whatever it finds into one of three narrow requests. The pipeline from…</summary>
     <updated>2026-08-13T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/scanner-that-feeds-pipeline/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/</id>
     <title>Nine Security Issues, Zero Lines I Wrote</title>
+    <summary>Nine open findings from a security audit on a Go CLI tool. I assigned each issue to an autonomous background agent running a full plan-to-PR pipeline. I wrote zero lines of code. I merged all nine pull requests in…</summary>
     <updated>2026-08-12T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/agency-dims-as-the-timeframe-collapses/</id>
     <title>Agency Dims as the Timeframe Collapses</title>
+    <summary>Agency operates as a decaying function of time rather than a fixed personal trait.</summary>
     <updated>2026-08-11T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/agency-dims-as-the-timeframe-collapses/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/ai-writes-code-plan-becomes-work/</id>
     <title>When the AI Writes the Code, the Plan Becomes the Work</title>
+    <summary>Forty years ago Fred Brooks wrote the line the whole industry has spent the AI era rediscovering. In *[No Silver Bullet](https://worrydream.com/refs/Brooks_1986_-_No_Silver_Bullet.pdf)*, he argued the hard part of…</summary>
     <updated>2026-08-11T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/ai-writes-code-plan-becomes-work/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset/</id>
     <title>Your Agent Infrastructure Has Two Lifespans</title>
+    <summary>Agent infrastructure has two clocks. Substrate changes when your problem changes. Scaffolding can expire with the next model release.</summary>
     <updated>2026-08-02T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/agent-didnt-get-dumber-chat-got-contaminated/</id>
     <title>The Agent Didn't Get Dumber. The Chat Got Contaminated</title>
+    <summary>I have been living in long coding-agent sessions again. The kind of debug that needs a lot of context: many files, history in the thread, a problem that does not fit a five-minute prompt. Early turns feel sharp.…</summary>
     <updated>2026-07-31T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/agent-didnt-get-dumber-chat-got-contaminated/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/same-tunnel-ships-work-drops-room/</id>
     <title>The Same Tunnel That Ships the Work Drops the Room</title>
+    <summary>I was diagnosed on the autism spectrum in 2026. Late, after decades of treating the same pattern as personality: go dark, ship hard, miss the room.</summary>
     <updated>2026-07-31T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/same-tunnel-ships-work-drops-room/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/urgency-conscientiousness-better-marketing/</id>
     <title>Urgency Is Just Conscientiousness With Better Marketing</title>
+    <summary>In November 2025, an account called Boring_Business [posted a claim](https://x.com/boringbiz_/status/1984295313499160756) that has been reposted, quoted, and independently reinvented ever since: "Pretty convinced…</summary>
     <updated>2026-07-28T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/urgency-conscientiousness-better-marketing/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/most-expensive-avoidance-looks-like-prudence/</id>
     <title>The Most Expensive Avoidance Looks Exactly Like Prudence</title>
+    <summary>Not every avoided thing is a debt. Walking away from a fight you would lose, declining the deal with bad math, closing the tab on the argument that goes nowhere. That is not cowardice; it is triage. As far as I…</summary>
     <updated>2026-07-28T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/most-expensive-avoidance-looks-like-prudence/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/run-dead-internet-on-purpose/</id>
     <title>I Run a Dead Internet on Purpose</title>
+    <summary>Yesterday my knowledge system committed 192 changes. I made 7 of them.</summary>
     <updated>2026-07-26T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/run-dead-internet-on-purpose/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/addiction-to-being-right-is-rarer-than-you-think/</id>
     <title>The Addiction to Being Right Is Rarer Than You Think</title>
+    <summary>You have probably heard of the backfire effect: correct someone's false belief and they dig in harder. It also mostly failed to replicate. Thomas Wood and Ethan Porter tested it across five experiments, more than…</summary>
     <updated>2026-07-24T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/addiction-to-being-right-is-rarer-than-you-think/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/ai-rerunning-the-nuclear-script/</id>
     <title>AI Is Rerunning the Nuclear Script, Not the Part You Think</title>
+    <summary>In April I saved a tweet from Danielle Fong: society never found out how much abundance nuclear energy could deliver, because the nuclear club "proposed to scale to mutually assured destruction, and close this off…</summary>
     <updated>2026-07-24T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/ai-rerunning-the-nuclear-script/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/debt-with-diff-attached/</id>
     <title>Debt With a Diff Attached</title>
+    <summary>AI made contributing free, so volume no longer signals effort. Judge a contribution by whether it removes uncertainty for the next person or dumps cost on them…</summary>
     <updated>2026-07-24T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/debt-with-diff-attached/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/orchestrator-identity/</id>
     <title>The Orchestrator Identity</title>
+    <summary>The tools didn't threaten my career. They threatened my identity. After 20+ years building self-worth around writing code, I now mostly direct an AI that writes code. The job listings still say "developer," but the…</summary>
     <updated>2026-07-24T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/orchestrator-identity/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/selection-beats-execution-when-games-differ/</id>
     <title>Selection Beats Execution Only When the Games Differ</title>
+    <summary>Google was not the first search engine. Facebook was not the first social network. Both won their markets anyway, which is a problem for the most popular piece of career advice going.</summary>
     <updated>2026-07-23T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/selection-beats-execution-when-games-differ/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/engineer-the-downside-when-you-cannot-forecast/</id>
     <title>Engineer the Downside When You Cannot Forecast the Upside</title>
+    <summary>Sam Zell built a multibillion-dollar fortune in real estate, and his method reduces to a rule simple enough to fit on a napkin: if the downside is small and the upside big, go; if the downside is big and the upside…</summary>
     <updated>2026-07-23T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/engineer-the-downside-when-you-cannot-forecast/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/triage-system-not-your-toolbox/</id>
     <title>Triage the System Not Your Toolbox</title>
+    <summary>When something is slow, we reach for the tools we already know: `top`, the dashboard, the trace we understand. It feels like investigation. It is closer to hunting for your keys under the streetlight because the…</summary>
     <updated>2026-07-23T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/triage-system-not-your-toolbox/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/anxiety-present-tense-problem/</id>
     <title>Anxiety Is a Present-Tense Problem</title>
+    <summary>&gt; Returning to the present can be engagement or avoidance. If you use 'mindfulness' to hide from the feared thing, it's a safety behavior that feeds the anxiety. The exit is to name the dread, let it stand in the…</summary>
     <updated>2026-07-21T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/anxiety-present-tense-problem/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/havent-written-a-test-in-a-year/</id>
     <title>I Haven't Written a Test in a Year</title>
+    <summary>I haven't written a test in a year.</summary>
     <updated>2026-07-20T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/havent-written-a-test-in-a-year/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/bottleneck-is-you/</id>
     <title>The Bottleneck Is You</title>
+    <summary>Around the 300th note, I started seeing a pattern I wasn't looking for. I've been collecting notes on AI and software development for over a year. People from different companies and different decades of experience…</summary>
     <updated>2026-07-19T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/bottleneck-is-you/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/your-review-checklist-has-never-been-reviewed/</id>
     <title>Your Review Checklist Has Never Been Reviewed</title>
+    <summary>A rule in your review checklist can be doing nothing, and you would never know. If a capable model would have caught the bug anyway, the rule sitting above it takes the credit. It looks load-bearing and is inert.…</summary>
     <updated>2026-07-14T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/your-review-checklist-has-never-been-reviewed/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/your-living-spec-is-still-lying/</id>
     <title>Your Living Spec Is Still Lying</title>
+    <summary>The fix for spec rot has a nice symmetry. Specs go stale because humans write them once and never touch them again, so make the spec bidirectional: let the agent write back what it learns during implementation, and…</summary>
     <updated>2026-07-14T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/your-living-spec-is-still-lying/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/tell-me-whats-wrong-with-it-isnt-review/</id>
     <title>'Tell Me What's Wrong With It' Isn't a Review</title>
+    <summary>The adversarial-review prompt most people use is one sentence. Review this plan and tell me what's wrong with it. I wrote that sentence too. The version I run now is a 170-line file, and every line exists because the…</summary>
     <updated>2026-07-13T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/tell-me-whats-wrong-with-it-isnt-review/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/cheap-code-expensive-context/</id>
     <title>Cheap Code, Expensive Context</title>
+    <summary>The loudest version of the 2026 story is that engineers are finished. Anyone with customer context and a chat window can ship the software that used to require a team, so the org chart inverts and the people who can…</summary>
     <updated>2026-07-12T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/cheap-code-expensive-context/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/polish-is-free-thinking-isnt/</id>
     <title>Polish Is Free. Thinking Isn't</title>
+    <summary>There's a genre of advice built on one promise: learn a few frameworks (an album of your best ideas, Problem-Agitate-Solution, the Pyramid Principle) and you become, in [Dan Koe's…</summary>
     <updated>2026-07-11T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/polish-is-free-thinking-isnt/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/capacity-is-your-lowest-ceiling/</id>
     <title>Capacity Is Your Lowest Ceiling</title>
+    <summary>Ask an engineering team how much more traffic their service can take, and the answer usually comes back as a resource number. CPU is at forty percent, so there is room. Memory looks fine. The database is quiet.</summary>
     <updated>2026-07-11T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/capacity-is-your-lowest-ceiling/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/pattern-capture-auto-activating-skill-library/</id>
     <title>Pattern Capture - How I Built an Auto-Activating Skill Library</title>
+    <summary>Work discoveries usually vanish into conversation history or project notes. Pattern capture turns them into permanent, auto-activating expertise through a six-phase workflow: analyze the context, search your existing…</summary>
     <updated>2026-07-10T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/pattern-capture-auto-activating-skill-library/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/agent-rail-war-red-herring/</id>
     <title>The Agent Rail War Is a Red Herring</title>
+    <summary>Two stories get told about building infrastructure for AI agents. Both of them mislead.</summary>
     <updated>2026-07-08T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/agent-rail-war-red-herring/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/</id>
     <title>The Bugs That Hide Between Your Agents</title>
+    <summary>Over two days I ran an adversarial review across ten components of my own agent infrastructure: the skills, hooks, and cron loops that commit to my repos and feed my decisions without me watching. Every pass found…</summary>
     <updated>2026-07-08T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/governing-delegation-scope-creep/</id>
     <title>Governing Delegation - Using Architecture to Stop AI Scope Creep</title>
+    <summary>You asked for a small change and got a 12-file feature. You reverted it, burned 30 minutes, and now you hesitate before delegating anything.</summary>
     <updated>2026-07-03T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/governing-delegation-scope-creep/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/certainty-wellbeing-variable/</id>
     <title>Certainty as a Wellbeing Variable</title>
+    <summary>"Almost every form of misery I've encountered in text involves certainty curdling."</summary>
     <updated>2026-07-03T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/certainty-wellbeing-variable/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/second-brain-fails-you/</id>
     <title>The Moment Your Second Brain Fails You</title>
+    <summary>The moment you realize your perfectly organized Second Brain is useless.</summary>
     <updated>2026-04-09T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/second-brain-fails-you/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/agents-plan-b-destroy-data/</id>
     <title>Your Agent's Plan B Will Destroy Your Data</title>
+    <summary>Twenty-four files disappeared from my working tree on a Tuesday afternoon. No error message. No warning. I'd asked Claude Code to commit some changes, and five git commands later, three days of conversation backups…</summary>
     <updated>2026-03-25T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/agents-plan-b-destroy-data/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/debug-system-not-prompt/</id>
     <title>Debug the System Not the Prompt</title>
+    <summary>I started asking Claude why it gave me wrong output instead of reprompting. Not as a rhetorical exercise. As a direct question: "Explain step by step what you did to produce that output and what sources you…</summary>
     <updated>2026-03-24T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/debug-system-not-prompt/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/pkm-bottleneck-was-never-capture/</id>
     <title>The PKM Bottleneck Was Never Capture</title>
+    <summary>I've kept notes since 2003. Eight tools, two data losses, one rebuild from scratch. The collection grew steadily. My ability to use it didn't.</summary>
     <updated>2026-03-24T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/pkm-bottleneck-was-never-capture/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/basb-claude-code-setup/</id>
     <title>Building a Second Brain with Claude Code - The Setup</title>
+    <summary>You built the [Second Brain](https://www.buildingasecondbrain.com/). You have the Obsidian vault, the [PARA](https://www.buildingasecondbrain.com/para) folders, the [Readwise ](https://readwise.io)…</summary>
     <updated>2026-03-19T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/basb-claude-code-setup/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/enter-key-problem/</id>
     <title>The Enter Key Problem</title>
+    <summary>I've used Claude Code daily for over a year. It runs my knowledge vault, helps me modernize a legacy Rails codebase, and handles routine tasks I used to do manually. It is, genuinely, the most useful tool I've…</summary>
     <updated>2026-03-19T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/enter-key-problem/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/deleting-24k-lines-ai-instructions/</id>
     <title>Deleting 24K Lines of AI Instructions</title>
+    <summary>I applied Elon Musk's Five-Step Algorithm to 257 Claude Code skills totaling 43,000+ lines. 29 batches later: 56%…</summary>
     <updated>2026-03-17T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/deleting-24k-lines-ai-instructions/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/new-art-learning/</id>
     <title>The New Art of Learning</title>
+    <summary>I have spent most of my career building the kind of unconscious expertise that Josh Waitzkin describes in *The Art of Learning*: the final stage of a climb where skill drops below awareness and the expert mind just…</summary>
     <updated>2026-03-08T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/new-art-learning/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/developers-job-judgment-now/</id>
     <title>The Developer's Job is Judgment Now</title>
+    <summary>I haven't written a test in a year.</summary>
     <updated>2026-02-27T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/developers-job-judgment-now/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/45/</id>
     <title>45</title>
+    <summary>The restaurant hasn't changed in thirty years. One uncle still owns it, another still manages it. The tables are the same, the menu is the same, the food tastes the way I remember it from when I was a teenager.</summary>
     <updated>2026-02-13T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/45/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/parallelizing-sftp-downloads-ruby/</id>
     <title>Parallelizing SFTP Downloads in Ruby</title>
+    <summary>A vendor sync job had a 20GB file that took more than a day over single-connection SFTP. A CLI tool called lftp already does parallel downloads over SSH. But wrapping that in a proper Ruby gem with integrity…</summary>
     <updated>2026-02-08T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/parallelizing-sftp-downloads-ruby/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/when-your-mcp-server-breaks/</id>
     <title>When Your MCP Server Breaks</title>
+    <summary>*Published January 24, 2026*</summary>
     <updated>2026-01-24T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/when-your-mcp-server-breaks/"/>
   </entry>
   <entry>
     <id>https://ngpestelos.com/writing/juanito-p-galvez-1928-2022/</id>
     <title>Juanito P. Galvez (1928–2022)</title>
+    <summary>Nestor G Pestelos Jr's tribute to his grandfather Juanito P. Galvez (1928–2022).</summary>
     <updated>2022-10-26T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/juanito-p-galvez-1928-2022/"/>
   </entry>

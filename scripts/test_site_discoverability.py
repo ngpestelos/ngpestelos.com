@@ -44,6 +44,17 @@ def is_snapshot_slug(slug: str) -> bool:
     return bool(SNAPSHOT_SLUG.search(slug))
 
 
+class MetaDescriptionParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.descriptions = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]):
+        attributes = dict(attrs)
+        if tag == "meta" and attributes.get("name") == "description":
+            self.descriptions.append(attributes.get("content"))
+
+
 class SiteDiscoverabilityTests(unittest.TestCase):
     def test_catalog_buckets_and_pins(self):
         items = load_catalog()
@@ -176,6 +187,9 @@ class SiteDiscoverabilityTests(unittest.TestCase):
 
     def test_sitemap_and_atom(self):
         items = load_catalog()
+        items_by_url = {
+            f"https://ngpestelos.com/writing/{item['slug']}/": item for item in items
+        }
         locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
         self.assertIn("https://ngpestelos.com/", locs)
         self.assertIn("https://ngpestelos.com/writing/", locs)
@@ -190,6 +204,16 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertEqual(len(entries), len(items))
         feed_updated = datetime.fromisoformat(root.findtext("atom:updated", namespaces=ATOM_NS))
         for entry in entries:
+            entry_id = entry.findtext("atom:id", namespaces=ATOM_NS)
+            self.assertIn(entry_id, items_by_url)
+            item = items_by_url[entry_id]
+            article = ROOT / "writing" / item["slug"] / "index.html"
+            parser = MetaDescriptionParser()
+            parser.feed(article.read_text(encoding="utf-8"))
+            self.assertEqual(len(parser.descriptions), 1, article)
+            summaries = entry.findall("atom:summary", ATOM_NS)
+            self.assertEqual(len(summaries), 1, entry_id)
+            self.assertEqual(summaries[0].text, parser.descriptions[0])
             entry_updated = datetime.fromisoformat(
                 entry.findtext("atom:updated", namespaces=ATOM_NS)
             )
