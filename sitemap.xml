@@ -21,6 +21,16 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/eli5/embeddings/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/eli5/tokens/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/eli5/abstract-syntax-trees/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -237,6 +247,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/toctou-race-condition/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/embeddings/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

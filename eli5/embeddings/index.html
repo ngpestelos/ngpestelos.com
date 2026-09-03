@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Embeddings &middot; ELI5 &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A picture-book explainer of embeddings in artificial intelligence. How words become coordinates on a map where similar meanings sit close together.">
+  <meta property="og:title" content="Embeddings &middot; ELI5">
+  <meta property="og:description" content="A picture-book explainer of embeddings in artificial intelligence. How words become coordinates on a map where similar meanings sit close together.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/embeddings/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/embeddings/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --paper: #f4eee4;
+      --card: #fffaf3;
+      --ink: #1c1612;
+      --line: #d4c9bb;
+      --mute: #6e645a;
+      --op: #8c3a27;
+      --op-edge: #7c2d12;
+      --leaf: #0f5c57;
+      --leaf-edge: #0b4a46;
+      --edge: #8a7d72;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 50rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-size: 0.9rem;
+      color: var(--mute);
+      margin-bottom: 0.8rem;
+    }
+    .back a {
+      color: var(--op);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mute);
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    h1 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-size: clamp(2rem, 5.5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.4rem;
+    }
+    .lead {
+      font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+      color: var(--mute);
+      margin-bottom: 2rem;
+      line-height: 1.4;
+    }
+    .block {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .block-num {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--op);
+    }
+    h2 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-size: clamp(1.3rem, 3.2vw, 1.75rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+    .one {
+      font-size: 1.05rem;
+      color: #38312a;
+      line-height: 1.6;
+    }
+    .figure {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.2rem;
+      overflow-x: auto;
+    }
+    .figure svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+    details {
+      border-top: 1px dashed var(--line);
+      padding-top: 0.8rem;
+      font-size: 0.92rem;
+      color: var(--mute);
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--op);
+      user-select: none;
+      margin-bottom: 0.5rem;
+    }
+    summary:hover { color: var(--op-edge); }
+    details p {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    details ul {
+      padding-left: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    details li {
+      margin-bottom: 0.25rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      padding-top: 1.5rem;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: var(--mute);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    footer.meta a {
+      color: var(--op);
+      text-decoration: none;
+    }
+    footer.meta a:hover { text-decoration: underline; }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/eli5/">ELI5</a></p>
+    <div class="kicker">The Language of AI</div>
+    <h1>Embeddings</h1>
+    <p class="lead">How computers turn words into coordinates on a map where similar ideas sit close together.</p>
+
+    <!-- SECTION 1 -->
+    <section class="block">
+      <div class="block-num">01 / The Meaning Map</div>
+      <h2>Every word gets coordinates on a giant concept map.</h2>
+      <p class="one">An embedding model converts every word into a list of numbers, placing similar concepts in the same neighborhood.</p>
+      
+      <div class="figure">
+        <svg viewBox="0 0 680 260" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Axes -->
+          <line x1="60" y1="230" x2="630" y2="230" stroke="var(--line)" stroke-width="1.5"/>
+          <line x1="60" y1="230" x2="60" y2="30" stroke="var(--line)" stroke-width="1.5"/>
+          <polygon points="635,230 625,225 625,235" fill="var(--line)"/>
+          <polygon points="60,25 55,35 65,35" fill="var(--line)"/>
+
+          <text x="635" y="248" font-size="12" fill="var(--mute)" text-anchor="end">Dimension 1 (e.g. Living Being)</text>
+          <text x="75" y="32" font-size="12" fill="var(--mute)">Dimension 2 (e.g. Size / Scale)</text>
+
+          <!-- Animals Cluster (Top Right) -->
+          <rect x="420" y="45" width="210" height="95" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1" stroke-dasharray="4 4"/>
+          <text x="430" y="65" font-size="11" font-weight="700" fill="#15803d">ANIMAL CLUSTER</text>
+          
+          <circle cx="460" cy="90" r="5" fill="#16a34a"/>
+          <text x="472" y="94" font-size="13" font-weight="700" fill="var(--ink)">"dog"</text>
+
+          <circle cx="490" cy="115" r="5" fill="#16a34a"/>
+          <text x="502" y="119" font-size="13" font-weight="700" fill="var(--ink)">"puppy"</text>
+
+          <circle cx="560" cy="80" r="5" fill="#16a34a"/>
+          <text x="572" y="84" font-size="13" font-weight="700" fill="var(--ink)">"cat"</text>
+
+          <!-- Fruit Cluster (Bottom Right) -->
+          <rect x="360" y="160" width="180" height="60" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1" stroke-dasharray="4 4"/>
+          <text x="370" y="178" font-size="11" font-weight="700" fill="#92400e">FRUIT CLUSTER</text>
+          
+          <circle cx="410" cy="198" r="5" fill="#d97706"/>
+          <text x="422" y="202" font-size="13" font-weight="700" fill="var(--ink)">"apple"</text>
+
+          <circle cx="480" cy="195" r="5" fill="#d97706"/>
+          <text x="492" y="199" font-size="13" font-weight="700" fill="var(--ink)">"banana"</text>
+
+          <!-- Vehicles (Left Side) -->
+          <rect x="90" y="80" width="180" height="85" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1" stroke-dasharray="4 4"/>
+          <text x="100" y="100" font-size="11" font-weight="700" fill="#1e40af">VEHICLE CLUSTER</text>
+          
+          <circle cx="130" cy="135" r="5" fill="#2563eb"/>
+          <text x="142" y="139" font-size="13" font-weight="700" fill="var(--ink)">"truck"</text>
+
+          <circle cx="210" cy="125" r="5" fill="#2563eb"/>
+          <text x="222" y="129" font-size="13" font-weight="700" fill="var(--ink)">"airplane"</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>How many dimensions does a real map have?</summary>
+        <p>A paper map uses two dimensions (X and Y). Real AI embeddings use between 768 and 3,072 dimensions. Each dimension captures a subtle trait: formality, physical size, sentiment, technical depth, or grammatical role.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="block">
+      <div class="block-num">02 / Semantic Distance</div>
+      <h2>Distance equals meaning.</h2>
+      <p class="one">The closer two coordinates are in space, the more closely related their concepts are in the real world.</p>
+      
+      <div class="figure">
+        <svg viewBox="0 0 680 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Short Distance -->
+          <g transform="translate(60, 30)">
+            <circle cx="40" cy="50" r="6" fill="#16a34a"/>
+            <text x="40" y="32" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="middle">"doctor"</text>
+
+            <circle cx="160" cy="50" r="6" fill="#16a34a"/>
+            <text x="160" y="32" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="middle">"physician"</text>
+
+            <line x1="48" y1="50" x2="152" y2="50" stroke="#16a34a" stroke-width="2.5"/>
+            
+            <rect x="75" y="70" width="100" height="26" rx="4" fill="#dcfce7" stroke="#16a34a"/>
+            <text x="125" y="87" font-size="11" font-weight="700" fill="#15803d" text-anchor="middle">Distance: 0.12 (Near)</text>
+          </g>
+
+          <!-- Divider -->
+          <line x1="320" y1="20" x2="320" y2="150" stroke="var(--line)" stroke-width="1"/>
+
+          <!-- Long Distance -->
+          <g transform="translate(360, 30)">
+            <circle cx="30" cy="50" r="6" fill="#dc2626"/>
+            <text x="30" y="32" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="middle">"doctor"</text>
+
+            <circle cx="230" cy="50" r="6" fill="#dc2626"/>
+            <text x="230" y="32" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="middle">"submarine"</text>
+
+            <line x1="38" y1="50" x2="222" y2="50" stroke="#dc2626" stroke-width="2" stroke-dasharray="4 4"/>
+            
+            <rect x="90" y="70" width="115" height="26" rx="4" fill="#fee2e2" stroke="#dc2626"/>
+            <text x="147" y="87" font-size="11" font-weight="700" fill="#991b1b" text-anchor="middle">Distance: 0.94 (Distant)</text>
+          </g>
+        </svg>
+      </div>
+
+      <details>
+        <summary>How models measure distance in high dimensions</summary>
+        <p>AI systems use <strong>cosine similarity</strong>. Instead of measuring physical ruler distance, the system calculates the angle between the two coordinate arrows. An angle of zero means identical meaning, an angle of 90 degrees means unrelated, and 180 degrees indicates opposing concepts.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="block">
+      <div class="block-num">03 / Vector Arithmetic</div>
+      <h2>Math with meaning: the arrow trick.</h2>
+      <p class="one">Because concepts have directions, you can add and subtract words like numbers to solve analogies.</p>
+      
+      <div class="figure">
+        <svg viewBox="0 0 680 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Base Nodes -->
+          <!-- Man to Woman -->
+          <g transform="translate(60, 40)">
+            <rect x="0" y="0" width="80" height="34" rx="6" fill="#fff" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="40" y="22" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">"Man"</text>
+
+            <path d="M 85 17 L 195 17" stroke="var(--op)" stroke-width="2"/>
+            <polygon points="200,17 192,13 192,21" fill="var(--op)"/>
+            <text x="140" y="10" font-size="11" font-weight="700" fill="var(--op)" text-anchor="middle">+ Female gender arrow</text>
+
+            <rect x="205" y="0" width="85" height="34" rx="6" fill="#fff" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="247" y="22" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">"Woman"</text>
+          </g>
+
+          <!-- King to Queen -->
+          <g transform="translate(60, 110)">
+            <rect x="0" y="0" width="80" height="34" rx="6" fill="#fff" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="40" y="22" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="middle">"King"</text>
+
+            <path d="M 85 17 L 195 17" stroke="var(--op)" stroke-width="2"/>
+            <polygon points="200,17 192,13 192,21" fill="var(--op)"/>
+            <text x="140" y="10" font-size="11" font-weight="700" fill="var(--op)" text-anchor="middle">+ Parallel gender arrow</text>
+
+            <rect x="205" y="0" width="85" height="34" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+            <text x="247" y="22" font-size="14" font-weight="700" fill="#92400e" text-anchor="middle">"Queen"</text>
+          </g>
+
+          <!-- Formula Box -->
+          <g transform="translate(385, 55)">
+            <rect x="0" y="0" width="240" height="75" rx="8" fill="#fff" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="120" y="32" font-size="14" font-family="monospace" font-weight="700" fill="var(--ink)" text-anchor="middle">King - Man + Woman</text>
+            <text x="120" y="58" font-size="16" font-family="monospace" font-weight="700" fill="var(--op)" text-anchor="middle">&approx; Queen</text>
+          </g>
+        </svg>
+      </div>
+
+      <details>
+        <summary>Why analogical directions hold true</summary>
+        <p>In 2013, researchers at Google discovered this property while building Word2Vec. Because the model learned from billions of real sentences, the difference between "man" and "woman" matches the difference between "king" and "queen", "uncle" and "aunt", or "actor" and "actress".</p>
+      </details>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section class="block">
+      <div class="block-num">04 / Practical Retrieval</div>
+      <h2>Find what you mean, not just what you type.</h2>
+      <p class="one">Keyword search requires exact matching words. Embeddings match the underlying intent even when every word is completely different.</p>
+      
+      <div class="figure">
+        <svg viewBox="0 0 680 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Search Query -->
+          <g transform="translate(40, 65)">
+            <rect x="0" y="0" width="180" height="50" rx="8" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="15" y="24" font-size="11" font-weight="700" fill="#1e40af">USER SEARCH QUERY</text>
+            <text x="15" y="42" font-size="13" font-family="Georgia, serif" fill="var(--ink)">"feline physician"</text>
+          </g>
+
+          <!-- Vector Matching Engine -->
+          <g transform="translate(245, 60)">
+            <path d="M 0 30 L 70 30" stroke="var(--op)" stroke-width="2"/>
+            <polygon points="75,30 67,26 67,34" fill="var(--op)"/>
+            <text x="35" y="20" font-size="11" font-weight="700" fill="var(--mute)" text-anchor="middle">Vector</text>
+            <text x="35" y="48" font-size="11" font-weight="700" fill="var(--mute)" text-anchor="middle">Distance</text>
+          </g>
+
+          <!-- Matching Result -->
+          <g transform="translate(345, 45)">
+            <!-- Top Match -->
+            <rect x="0" y="0" width="295" height="42" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+            <text x="12" y="26" font-size="13" font-weight="700" fill="#15803d">&check; "Veterinarian who treats cats"</text>
+            <text x="245" y="26" font-size="11" font-weight="700" fill="#166534">94% Match</text>
+
+            <!-- Non Match -->
+            <rect x="0" y="55" width="295" height="42" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+            <text x="12" y="81" font-size="13" fill="#991b1b">&cross; "Physician practicing cardiology"</text>
+            <text x="245" y="81" font-size="11" fill="#b91c1c">31% Match</text>
+          </g>
+        </svg>
+      </div>
+
+      <details>
+        <summary>How Retrieval-Augmented Generation (RAG) uses embeddings</summary>
+        <p>When you ask an AI a question about your documents, a vector database converts your query into an embedding and retrieves the three to five text passages closest to it in semantic space. The AI reads those retrieved chunks to provide an accurate, grounded response.</p>
+      </details>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="meta">
+      <p><strong>Sources:</strong> <a href="https://arxiv.org/abs/1301.3781">Mikolov et al., 2013 (Word2Vec)</a> &middot; <a href="https://arxiv.org/abs/1908.10084">Reimers &amp; Gurevych, 2019 (Sentence-BERT)</a></p>
+      <p><strong>Longer version:</strong> <a href="/reference/embeddings/">Reference: Embeddings and Vector Representations</a></p>
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

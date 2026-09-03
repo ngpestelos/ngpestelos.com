@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embeddings and Vector Representations &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on vector embeddings in artificial intelligence: geometric representations, distance metrics, contextual models, anisotropy, and dense retrieval architectures.">
+  <meta property="og:title" content="Embeddings and Vector Representations &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on vector embeddings in AI: geometric representations, distance metrics, contextual models, anisotropy, and dense retrieval architectures.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/embeddings/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/embeddings/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --box-bg: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.78rem;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 0.1rem;
+    }
+    .cite a { color: var(--link); text-decoration: none; }
+    .cite a:hover { text-decoration: underline; }
+    .references ol {
+      font-size: 0.88rem;
+      padding-left: 1.4rem;
+    }
+    .references li {
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--well);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <div class="kicker">Reference Guide</div>
+    <h1>Embeddings</h1>
+    <p class="updated">Published September 3, 2026 &middot; Machine Learning &amp; Representation Theory</p>
+
+    <p class="lede"><strong>Vector embeddings</strong> are dense numerical representations of discrete entities (such as tokens, sentences, code, or images) in a continuous high-dimensional vector space. By projecting discrete concepts into continuous geometries, embeddings enable machine learning models to quantify semantic similarity, capture associative analogies, and conduct sub-linear nearest neighbor retrieval across massive corpora.</p>
+
+    <nav class="toc" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#theoretical-motivation">Theoretical Motivation</a></li>
+        <li><a href="#mathematical-formulation">Mathematical Formulation &amp; Geometry</a>
+          <ol>
+            <li><a href="#distance-metrics">Distance &amp; Similarity Metrics</a></li>
+            <li><a href="#linear-substructure">Linear Substructure &amp; Arithmetic</a></li>
+          </ol>
+        </li>
+        <li><a href="#architectural-evolution">Architectural Evolution</a>
+          <ol>
+            <li><a href="#static-embeddings">Static Word Embeddings</a></li>
+            <li><a href="#contextual-embeddings">Contextual Sequence Embeddings</a></li>
+            <li><a href="#positional-encodings">Positional Encodings</a></li>
+          </ol>
+        </li>
+        <li><a href="#representation-challenges">Geometric Pathologies: Anisotropy &amp; Degeneration</a></li>
+        <li><a href="#production-systems">Production Retrieval &amp; Vector Indexing</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="theoretical-motivation">1. Theoretical Motivation</h2>
+    <p>In classical computational linguistics, words were treated as atomic symbols represented by orthogonal one-hot vectors <span class="cite">[<a href="#ref-1">1</a>]</span>. In a vocabulary of size \(|V|\), each word \(w_i\) is represented by a vector \(\mathbf{x}_i \in \{0, 1\}^{|V|}\) where exactly one entry is 1 and all others are 0. This formulation exhibits two fundamental flaws:</p>
+    <ul>
+      <li><strong>Dimensional curse:</strong> The dimensionality grows linearly with vocabulary scale, requiring tens or hundreds of thousands of sparse dimensions.</li>
+      <li><strong>Orthogonal isolation:</strong> Every one-hot vector is completely orthogonal to every other: \(\mathbf{x}_i \cdot \mathbf{x}_j = 0\) for all \(i \neq j\). Consequently, the representation cannot capture that "physician" and "doctor" share semantic meaning, while "physician" and "submarine" do not.</li>
+    </ul>
+    <p>Modern representation learning addresses this limitation through the <em>distributional hypothesis</em>, formulated by linguist J.R. Firth in 1957: "You shall know a word by the company it keeps" <span class="cite">[<a href="#ref-2">2</a>]</span>. Dense vector embeddings map discrete vocabulary items into a low-dimensional continuous manifold \(\mathbb{R}^d\) (where typically \(d \in [256, 4096]\)), such that words appearing in similar contextual distributions are positioned close to one another in latent geometric space.</p>
+
+    <h2 id="mathematical-formulation">2. Mathematical Formulation &amp; Geometry</h2>
+    <p>Given an input token index \(i \in \{1, \dots, |V|\}\), the embedding operation corresponds to a matrix lookup in an embedding weight matrix \(\mathbf{W}_E \in \mathbb{R}^{|V| \times d}\):</p>
+    $$\mathbf{e}_i = \mathbf{W}_E^T \mathbf{x}_i$$
+    <p>where \(\mathbf{x}_i\) is the one-hot indicator vector for token \(i\), and \(\mathbf{e}_i \in \mathbb{R}^d\) is the resulting dense embedding.</p>
+
+    <h3 id="distance-metrics">Distance &amp; Similarity Metrics</h3>
+    <p>The semantic relationship between two embedded vectors \(\mathbf{u}, \mathbf{v} \in \mathbb{R}^d\) is quantified using geometric metrics in the embedding space:</p>
+    <ul>
+      <li><strong>Dot Product:</strong>
+        $$\langle \mathbf{u}, \mathbf{v} \rangle = \sum_{k=1}^d u_k v_k$$
+        Measures unnormalized directional alignment and vector magnitude.
+      </li>
+      <li><strong>Cosine Similarity:</strong>
+        $$\cos(\theta) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2}$$
+        Measures the cosine of the angle between vectors, normalizing for vector length. Widely preferred in text retrieval because document length variations do not distort thematic alignment.
+      </li>
+      <li><strong>Euclidean Distance (\(L_2\)):</strong>
+        $$\|\mathbf{u} - \mathbf{v}\|_2 = \sqrt{\sum_{k=1}^d (u_k - v_k)^2}$$
+        For \(L_2\)-normalized vectors (\(\|\mathbf{u}\|_2 = \|\mathbf{v}\|_2 = 1\)), Euclidean distance relates directly to cosine similarity: \(\|\mathbf{u} - \mathbf{v}\|_2^2 = 2 - 2\cos(\theta)\).
+      </li>
+    </ul>
+
+    <h3 id="linear-substructure">Linear Substructure &amp; Arithmetic</h3>
+    <p>A seminal discovery in distributed representations is that continuous vector spaces encode analogical relationships as consistent directional offsets <span class="cite">[<a href="#ref-3">3</a>]</span>. Relationships such as gender, grammatical tense, and capital-country associations emerge as stable translation vectors:</p>
+    $$\mathbf{e}_{\text{king}} - \mathbf{e}_{\text{man}} + \mathbf{e}_{\text{woman}} \approx \mathbf{e}_{\text{queen}}$$
+    <p>This linear property demonstrates that training objectives based on word co-occurrence implicitly perform matrix factorization on point-wise mutual information (PMI) matrices <span class="cite">[<a href="#ref-4">4</a>]</span>.</p>
+
+    <h2 id="architectural-evolution">3. Architectural Evolution</h2>
+
+    <h3 id="static-embeddings">Static Word Embeddings</h3>
+    <p>Early distributed representation frameworks produced static lookup tables where each vocabulary token mapped to a single fixed vector regardless of context:</p>
+    <ul>
+      <li><strong>Word2Vec (2013):</strong> Mikolov et al. introduced Continuous Bag-of-Words (CBOW) to predict target words from context windows, and Continuous Skip-gram to predict surrounding context from target words using negative sampling <span class="cite">[<a href="#ref-3">3</a>]</span>.</li>
+      <li><strong>GloVe (2014):</strong> Pennington et al. trained vectors directly on global log-bilinear word co-occurrence statistics across whole corpora, combining the advantages of global matrix factorization with local window methods <span class="cite">[<a href="#ref-5">5</a>]</span>.</li>
+      <li><strong>FastText (2017):</strong> Bojanowski et al. extended embeddings to character \(n\)-grams, allowing models to generate out-of-vocabulary representations for unseen morphological variants <span class="cite">[<a href="#ref-6">6</a>]</span>.</li>
+    </ul>
+
+    <h3 id="contextual-embeddings">Contextual Sequence Embeddings</h3>
+    <p>Static embeddings fail on polysemy: the token "bank" received the exact same vector in "river bank" and "investment bank." Modern deep architectures produce dynamically contextualized embeddings where each token's vector is a function of the entire sequence:</p>
+    <ul>
+      <li><strong>ELMo (2018):</strong> Bi-directional LSTMs generating layered representations based on sequence context <span class="cite">[<a href="#ref-7">7</a>]</span>.</li>
+      <li><strong>Transformer Encoders (BERT, 2019):</strong> Bidirectional multi-head self-attention generating deep, dynamically weighted token representations <span class="cite">[<a href="#ref-8">8</a>]</span>.</li>
+      <li><strong>Sentence Transformers (SBERT, 2019):</strong> Siamese neural networks trained with InfoNCE and multiple-negatives ranking loss to yield semantically meaningful whole-sentence pooling vectors <span class="cite">[<a href="#ref-9">9</a>]</span>.</li>
+    </ul>
+
+    <h3 id="positional-encodings">Positional Encodings</h3>
+    <p>Because the self-attention mechanism is inherently permutation-invariant, positional information must be added directly into token representations <span class="cite">[<a href="#ref-10">10</a>]</span>:</p>
+    <ul>
+      <li><strong>Absolute Sinusoidal Embeddings:</strong> Fixed frequencies using trigonometric functions across dimensions (original Transformer) <span class="cite">[<a href="#ref-10">10</a>]</span>.</li>
+      <li><strong>Rotary Position Embeddings (RoPE):</strong> Rotates query and key vectors in complex 2D subspaces based on token index, preserving relative distance decay without parameter inflation <span class="cite">[<a href="#ref-11">11</a>]</span>.</li>
+    </ul>
+
+    <h2 id="representation-challenges">4. Geometric Pathologies: Anisotropy &amp; Degeneration</h2>
+    <p>A persistent challenge in deep language model representation is the <em>anisotropy problem</em> <span class="cite">[<a href="#ref-12">12</a>]</span>. Rather than utilizing the full capacity of the \(d\)-dimensional hypersphere uniformly, learned token representations tend to collapse into a narrow, cone-shaped subspace. Consequently, arbitrary pairs of unrelated tokens often exhibit high positive cosine similarities (e.g. \(\cos > 0.7\)).</p>
+    <p>Remediations in modern embedding pipelines include:</p>
+    <ul>
+      <li><strong>Mean-centering and whitening:</strong> Subtracting the empirical mean vector \(\boldsymbol{\mu}\) and transforming vectors by the inverse covariance matrix to restore isotropic distribution.</li>
+      <li><strong>Contrastive regularization:</strong> Incorporating InfoNCE losses that explicitly push negative pairs apart across the full geometric sphere during fine-tuning.</li>
+      <li><strong>Matryoshka Representation Learning (MRL):</strong> Structuring embeddings so that truncating a 1536-dimension vector down to 256 or 512 dimensions preserves the highest-variance semantic information with minimal recall loss.</li>
+    </ul>
+
+    <h2 id="production-systems">5. Production Retrieval &amp; Vector Indexing</h2>
+    <p>In production applications such as Retrieval-Augmented Generation (RAG) and semantic search, systems query datasets containing millions or billions of embedding vectors. Exact \(k\)-nearest neighbor search via brute-force linear scanning requires \(O(N \cdot d)\) operations per query, which is computationally prohibitive at scale.</p>
+    <p>Production infrastructures deploy Approximate Nearest Neighbor (ANN) indexing structures:</p>
+    <ul>
+      <li><strong>Hierarchical Navigable Small World (HNSW):</strong> Multi-layer geometric graphs providing logarithmic search complexity \(O(\log N)\) while preserving high recall <span class="cite">[<a href="#ref-13">13</a>]</span>.</li>
+      <li><strong>Inverted File with Product Quantization (IVF-PQ):</strong> Clusters vector space into Voronoi cells and quantizes sub-vectors into compressed codebooks, reducing RAM requirements by 80% to 95%.</li>
+    </ul>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/eli5/embeddings/">ELI5: Embeddings</a> &middot; Visual picture-book explainer of word coordinates and distance metrics.</li>
+        <li><a href="/reference/tokens/">Tokens and Tokenization</a> &middot; Discrete subword representation and vocabulary algorithms.</li>
+        <li><a href="/reference/retrieval-augmented-generation/">Retrieval-Augmented Generation (RAG)</a> &middot; Grounding model generation on retrieved external context.</li>
+        <li><a href="/reference/semantic-caching/">Semantic Caching</a> &middot; Caching query results via embedding distance thresholds.</li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a> &middot; Foundational Transformer architectures and self-attention.</li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] D. Jurafsky and J. H. Martin, <em>Speech and Language Processing</em>, 3rd ed. draft, Prentice Hall, 2024.</li>
+        <li id="ref-2">[2] J. R. Firth, "A synopsis of linguistic theory 1930–1955," in <em>Studies in Linguistic Analysis</em>, Philological Society, Oxford, 1957, pp. 1–32.</li>
+        <li id="ref-3">[3] T. Mikolov, K. Chen, G. Corrado, and J. Dean, "Efficient Estimation of Word Representations in Vector Space," in <em>Proceedings of the International Conference on Learning Representations (ICLR)</em>, 2013. <a href="https://arxiv.org/abs/1301.3781">https://arxiv.org/abs/1301.3781</a></li>
+        <li id="ref-4">[4] O. Levy and Y. Goldberg, "Neural Word Embedding as Implicit Matrix Factorization," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, vol. 27, 2014, pp. 2177–2185.</li>
+        <li id="ref-5">[5] J. Pennington, R. Socher, and C. D. Manning, "GloVe: Global Vectors for Word Representation," in <em>Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)</em>, 2014, pp. 1532–1543. <a href="https://nlp.stanford.edu/pubs/glove.pdf">https://nlp.stanford.edu/pubs/glove.pdf</a></li>
+        <li id="ref-6">[6] P. Bojanowski, E. Grave, A. Joulin, and T. Mikolov, "Enriching Word Vectors with Subword Information," <em>Transactions of the Association for Computational Linguistics</em>, vol. 5, pp. 135–146, 2017. <a href="https://arxiv.org/abs/1607.04606">https://arxiv.org/abs/1607.04606</a></li>
+        <li id="ref-7">[7] M. E. Peters, M. Neumann, M. Iyyer, M. Gardner, C. Clark, K. Lee, and L. Zettlemoyer, "Deep Contextualized Word Representations," in <em>NAACL-HLT</em>, 2018, pp. 2227–2237. <a href="https://arxiv.org/abs/1802.05365">https://arxiv.org/abs/1802.05365</a></li>
+        <li id="ref-8">[8] J. Devlin, M. Chang, K. Lee, and K. Toutanova, "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding," in <em>NAACL-HLT</em>, 2019, pp. 4171–4186. <a href="https://arxiv.org/abs/1810.04805">https://arxiv.org/abs/1810.04805</a></li>
+        <li id="ref-9">[9] N. Reimers and I. Gurevych, "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks," in <em>EMNLP-IJCNLP</em>, 2019, pp. 3982–3992. <a href="https://arxiv.org/abs/1908.10084">https://arxiv.org/abs/1908.10084</a></li>
+        <li id="ref-10">[10] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, "Attention Is All You Need," in <em>NeurIPS</em>, 2017, pp. 5998–6008. <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+        <li id="ref-11">[11] J. Su, M. Ahmed, Y. Lu, S. Pan, W. Bo, and Y. Liu, "RoFormer: Enhanced Transformer with Rotary Position Embedding," <em>Neurocomputing</em>, vol. 568, p. 127063, 2024. <a href="https://arxiv.org/abs/2104.09864">https://arxiv.org/abs/2104.09864</a></li>
+        <li id="ref-12">[12] B. Gao, Y. Song, S. Shen, et al., "Representation Degeneration Problem in Language Modeling," in <em>ICLR</em>, 2019. <a href="https://arxiv.org/abs/1907.12009">https://arxiv.org/abs/1907.12009</a></li>
+        <li id="ref-13">[13] Y. A. Malkov and D. A. Yashunin, "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs," <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, vol. 42, no. 4, pp. 824–836, 2018. <a href="https://arxiv.org/abs/1603.09320">https://arxiv.org/abs/1603.09320</a></li>
+      </ol>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
