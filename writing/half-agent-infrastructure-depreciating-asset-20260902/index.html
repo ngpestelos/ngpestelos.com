@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half of Your Agent Infrastructure Is a Depreciating Asset — Nestor G Pestelos Jr</title>
+  <meta name="description" content="AI agent organization advice conflates durable substrate with scaffolding that compensates for a model's current weaknesses.">
+  <meta property="og:title" content="Half of Your Agent Infrastructure Is a Depreciating Asset">
+  <meta property="og:description" content="AI agent organization advice conflates durable substrate with scaffolding that compensates for a model's current weaknesses.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset-20260902/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset-20260902/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
+    <h1>Half of Your Agent Infrastructure Is a Depreciating Asset</h1>
+<p class="byline">Published August 2, 2026. Revised September 2, 2026.</p>
+
+<p class="series">This is the September 2, 2026 version. The current article is at <a href="https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset/">half-agent-infrastructure-depreciating-asset</a>.</p>
+
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>AI agent &quot;organization&quot; advice conflates two things: substrate that rots on your own clock and outlives model upgrades, and scaffolding that compensates for today&#x27;s model weaknesses and mostly depreciates on someone else&#x27;s release schedule.</p></div>
+
+<hr>
+
+<p><em>The August 2, 2026 version is at <a href="https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset-20260802/">half-agent-infrastructure-depreciating-asset-20260802</a>.</em></p>
+
+<p>There is a piece of advice circulating wherever people build with AI agents: organization matters more than ever. Write the docs. Structure the context. Build the harness. It is half right, and the wrong half is expensive, because two different things are being called organization, and one of them is a depreciating asset.</p>
+
+<p>The craft consensus in software was stated by James Hague, in a passage John D. Cook made famous: the most important skill is not algorithmic wizardry but &quot;how to keep a tangle of features from collapsing under the weight of its own complexity.&quot; &quot;To a great extent,&quot; Hague wrote, &quot;the act of coding is one of organization. Refactoring. Simplifying. Figuring out how to remove extraneous manipulations here and there.&quot; That is an opinion from experienced practitioners, not a measured finding, but it has held up as consensus for a decade. John Ousterhout&#x27;s design philosophy pulls a different lever on the same problem, how little anyone has to hold: arrange systems so that nobody faces more than a small fraction of the total complexity at once.</p>
+
+<p>Agents appear to raise the premium on all of this. The same model&#x27;s results depend on the environment it lands in. A smaller toolset means less context to wade through and fewer wrong choices available, and Vercel&#x27;s team reported exactly that after deleting 80% of their agent&#x27;s tools, per secondhand practitioner accounts. LangChain, in the same secondhand stack, reported large benchmark gains from changing only the infrastructure around an unchanged model. The two interventions differ, one removed tools and one rebuilt the surrounding infrastructure, and what they share is that neither touched the model. I run a small fleet of agent sessions against one git-tracked knowledge repo, and I see both the harness premium and the environment sensitivity daily. The tempting conclusion is to invest in the harness, since the premium on organization looks compounding.</p>
+
+<p>That conclusion conflates two things that age differently. Some of what gets built around a model is scaffolding: structure that compensates for what today&#x27;s model cannot do. Task decomposition, elaborate tool routing, attention management, the choreography that keeps a weaker model on rails. Richard Sutton&#x27;s bitter lesson (general methods that use more computation beat built-in human structure, demonstrated across chess, Go, speech, and vision) was an argument. The one well-documented agent-era case lands on its side: the engineer behind Anthropic&#x27;s long-running-app harness dropped its sprint decomposition after a model upgrade, the newer model ran coherently for hours without the structure the older one had needed, and the team&#x27;s stated principle is that &quot;every component in a harness encodes an assumption about what the model can&#x27;t do on its own.&quot; They stress-test those assumptions by removing components one at a time. Most of the assumptions expire on someone else&#x27;s release schedule; the ones tracking architectural limits (finite context, say) last longer, but even those keep moving. That is the honest evidentiary floor: one well-documented deletion and a thirty-year pattern argued rather than proven.</p>
+
+<p>The rest is substrate: the clean data layer, the real specification, the comprehensible codebase, the documented conventions, the private domain context no model learns from scale. It is Hague and Ousterhout&#x27;s organization extended into the agent stack, and the part agents raise the premium on, for a reason with measured consequences.</p>
+
+<p>Language models do not use context uniformly. Performance follows a U-shape by position, in the &quot;Lost in the Middle&quot; study: what sits in the middle of a long context is used worse than what sits at the edges. Length is the other axis. Accuracy degrades as input grows, across the eighteen models in Chroma&#x27;s context-rot report, well before the advertised window is full. Where information is placed and how much surrounds it are organizational decisions with measured consequences.</p>
+
+<p>Luke Pierce adds a different kind of evidence, about sequence rather than context: the construction order that holds up in the field puts the data layer, intake, and routing before any intelligence, because an agent on top of a dirty foundation amplifies the dirt. My own addition is smaller: without specs and documentation, agents guess. I have watched mine do it. I argued in <a href="https://ngpestelos.com/writing/cheap-code-expensive-context/">&quot;Cheap Code, Expensive Context&quot;</a> that when code gets cheap, value moves to whoever holds the context.</p>
+
+<p>The lazy cost argument (disorganization burns tokens, tokens cost money) has a short shelf life. Inference prices for fixed capability are collapsing: Epoch AI measures the fall at 9x to 900x per year depending on the benchmark; a16z&#x27;s earlier estimate, 10x a year, sits at the conservative end of that range. My inference from those curves is that any argument denominated in absolute token dollars depreciates faster than your scaffolding. Your time and the ratio do not deflate. A disorganized system burns more than an organized one at any price level (unstable context collapses cache hit rates, missing specs send agents into guess-and-retry loops), and the hours you spend re-reviewing output that transferred its ambiguity to you are billed at a rate no price curve touches. An agent-written pull request that saves one person ten minutes and costs someone else an hour is, in Hiten Shah&#x27;s words, debt with a diff attached.</p>
+
+<p>Organizational skill, before agents and after, is subtractive. Hague&#x27;s advice was to remove, and at Anthropic removal is now routine maintenance. Ask of every piece of structure in your system whether it encodes your problem or this month&#x27;s model&#x27;s weaknesses. The first kind, the data model, the spec, the conventions, the documented why, is worth real investment. The second kind you build reluctantly and plan to delete.</p>
+
+<p>The test takes practice, because plenty of pieces are honestly both. My own agent memory is the ambiguous case I know best: the facts it holds (what is true about my system, which conventions bind, what was decided and why) are substrate, and they have outlived every model this year. The elaborate rules around when to compact it and what survives a context reset are scaffolding: they compensate for context limits that keep growing, and I expect to delete them without ceremony. Same file, two clocks. Substrate rots too, of course, but on your clock: a spec drifts when your problem drifts, and you can see that coming. Scaffolding goes when someone else ships a model, on a schedule you neither see nor control.</p>
+
+<p>I hold both kinds, and the substrate pieces of my own setup (git-tracked agent memory, pre-commit guards that stop parallel sessions from contaminating each other&#x27;s work, conventions files that tell any agent where things live and why) have survived every model upgrade this year, because none of them are built around what a model can&#x27;t do. They describe what my system is. The scaffolding pieces I try to hold loosely, on the assumption that the next release obsoletes some of them. Whether agents will eventually absorb the substrate work too, writing the specs and owning the data model, is an open question.</p>
+
+<p>Cook&#x27;s second observation was that organizational skill is barely teachable: you acquire it only by owning a mess you care about, because &quot;you can&#x27;t appreciate a feat of organization until you experience the disorganization.&quot; If agents absorb the day-to-day mess, where does the next person learn? The classroom moves. The mess you now own is the system itself, the agents, the context they see, the conventions they follow, and it degrades visibly when you organize it badly. Anyone running agents seriously has already felt it: the session that burned an afternoon because the context was stale, the output that had to be re-reviewed because the spec lived in someone&#x27;s head. The skill is still learned the way Cook said. The tangle just moved up a level.</p>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+
+<li>James Hague via John D. Cook, <a href="https://www.johndcook.com/blog/2015/06/18/most-important-skill-in-software/">&quot;The most important skill in software development,&quot;</a> June 18, 2015</li>
+
+<li>John Ousterhout, <em>A Philosophy of Software Design</em> (Yale, 2018)</li>
+
+<li>Richard S. Sutton, <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">&quot;The Bitter Lesson,&quot;</a> March 13, 2019</li>
+
+<li>Nelson Liu et al., <a href="https://arxiv.org/abs/2307.03172">&quot;Lost in the Middle: How Language Models Use Long Contexts,&quot;</a> TACL 2024</li>
+
+<li>Kelly Hong, Anton Troynikov &amp; Jeff Huber, <a href="https://research.trychroma.com/context-rot">&quot;Context Rot: How Increasing Input Tokens Impacts LLM Performance,&quot;</a> Chroma Research, July 2025</li>
+
+<li>Prithvi Rajasekaran, <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps">&quot;Harness design for long-running application development,&quot;</a> Anthropic Engineering</li>
+
+<li>Epoch AI, <a href="https://epoch.ai/data-insights/llm-inference-price-trends">&quot;LLM inference prices have fallen rapidly but unequally across tasks&quot;</a></li>
+
+<li>Guido Appenzeller, <a href="https://a16z.com/llmflation-llm-inference-cost/">&quot;Welcome to LLMflation,&quot;</a> Andreessen Horowitz</li>
+
+<li><a href="https://x.com/lukepierceops/status/2059254933539451104">Luke Pierce on foundation-before-agents construction order</a></li>
+
+<li>On harness-vs-model performance (Vercel, LangChain; practitioner reports, secondhand): <a href="https://x.com/voxyz_ai/status/2038405848595353971">voxyz_ai</a> and <a href="https://x.com/akshay_pachaar/status/2041146899319971922">akshay_pachaar</a></li>
+
+<li><a href="https://x.com/hnshah/status/2066761276945211442">Hiten Shah on uncertainty transfer</a></li>
+
+<li>Nestor Pestelos, <a href="https://ngpestelos.com/writing/cheap-code-expensive-context/">&quot;Cheap Code, Expensive Context&quot;</a></li>
+
+</ul>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
