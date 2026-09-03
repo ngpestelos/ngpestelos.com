@@ -120,7 +120,21 @@ def apply_index_inner(root: Path | None = None, items: list[dict] | None = None)
     return path
 
 
-def atom_xml(items: list[dict], now_iso: str | None = None) -> str:
+def article_description(slug: str, root: Path | None = None) -> str:
+    base = root or ROOT
+    path = base / "writing" / slug / "index.html"
+    match = re.search(
+        r'<meta name="description" content="([^"]*)">',
+        path.read_text(encoding="utf-8"),
+    )
+    if not match:
+        raise ValueError(f"missing meta description: {path}")
+    return html.unescape(match.group(1))
+
+
+def atom_xml(
+    items: list[dict], descriptions: dict[str, str], now_iso: str | None = None
+) -> str:
     updated = now_iso or datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     ordered = sorted(items, key=lambda item: item["date"], reverse=True)
     entries = []
@@ -130,6 +144,7 @@ def atom_xml(items: list[dict], now_iso: str | None = None) -> str:
             "  <entry>\n"
             f"    <id>{xml_escape(url)}</id>\n"
             f"    <title>{xml_escape(item['title'])}</title>\n"
+            f"    <summary>{xml_escape(descriptions[item['slug']])}</summary>\n"
             f"    <updated>{item['date']}T00:00:00{MANILA_OFFSET}</updated>\n"
             f'    <link href="{xml_escape(url)}"/>\n'
             "  </entry>"
@@ -231,6 +246,9 @@ def sitemap_xml(items: list[dict], extra_locs: list[str]) -> str:
 def build_feeds(root: Path | None = None, now_iso: str | None = None) -> None:
     base = root or ROOT
     items = load_catalog()
+    descriptions = {
+        item["slug"]: article_description(item["slug"], base) for item in items
+    }
     extra = existing_non_writing_locs((base / "sitemap.xml").read_text(encoding="utf-8"))
     if HOME_URL not in extra:
         extra.insert(0, HOME_URL)
@@ -240,7 +258,7 @@ def build_feeds(root: Path | None = None, now_iso: str | None = None) -> None:
     extra.append(ATOM_URL)
     (base / "sitemap.xml").write_text(sitemap_xml(items, extra), encoding="utf-8")
     (base / "writing" / "atom.xml").write_text(
-        atom_xml(items, now_iso=now_iso), encoding="utf-8"
+        atom_xml(items, descriptions, now_iso=now_iso), encoding="utf-8"
     )
 
 
