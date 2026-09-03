@@ -75,6 +75,10 @@ h1 {
   line-height: 1.5;
 }
 
+.writing-pins {
+  margin-top: 0.85rem;
+}
+
 .next-step {
   font-size: 1.05rem;
   line-height: 1.5;
@@ -107,7 +111,7 @@ section {
   margin-bottom: 1rem;
 }
 
-.card h3 {
+.card h3, .card h4 {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;

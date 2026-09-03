@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 import unittest
+from html.parser import HTMLParser
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -98,6 +99,43 @@ class SiteDiscoverabilityTests(unittest.TestCase):
             html,
             r'mailto:nestor@pestelos\.net\?subject=[^"\']*homepage',
         )
+        self.assertNotIn('id="proof"', html)
+        self.assertNotIn("Track Record", html)
+        self.assertEqual(html.count("91% test coverage"), 1)
+        self.assertNotIn("25 years", html)
+        self.assertEqual(html.count("gumroad.com"), 1)
+        self.assertIn("written readiness read", html)
+        self.assertIn("Software engineer since 2001. Manila, UTC+8.", html)
+        next_step = re.search(r'<p class="next-step">.*?</p>', html, re.S).group(0)
+        self.assertIn("UTC+8 provides overnight coverage for US teams", next_step)
+        my_work = html.split('<section id="my-work">', 1)[1].split(
+            '<section id="personal">', 1
+        )[0]
+        self.assertNotIn("UTC+8 provides overnight coverage for US teams", my_work)
+        self.assertIn('<section id="my-work">', html)
+        self.assertIn("<h2>My Work</h2>", html)
+        self.assertIn("<h3>What I Do</h3>", html)
+        self.assertIn('<h3 id="projects">Open Source</h3>', html)
+        self.assertNotIn('<section id="work">', html)
+        self.assertNotIn('<section id="projects">', html)
+        self.assertIn('<section id="personal">', html)
+        self.assertIn("Family &amp; Hobby", html)
+        self.assertNotIn("3 MCP servers", html)
+        self.assertNotIn("6+ providers", html)
+        self.assertNotIn("BS Computer Science", html)
+        self.assertIn("<h4>Rails Modernization", html)
+        self.assertIn("<h4>Payment System Integration", html)
+        self.assertIn("<h4>Agents in the Work", html)
+        header = re.search(r'<p class="header-links">.*?</p>', html, re.S).group(0)
+        self.assertNotIn("gumroad.com", header)
+        self.assertIn("/eli5/", header)
+        self.assertIn("/trees/", header)
+        self.assertIn("/reference/", header)
+        self.assertIn("/writing/", header)
+        css = (ROOT / "style.css").read_text(encoding="utf-8")
+        self.assertIn(".card h3, .card h4", css)
+        self.assertRegex(css, r"\.writing-pins\s*\{[^}]*margin-top:\s*0\.85rem")
+        HTMLParser().feed(html)
 
     def test_essay_schema_and_head(self):
         essay = ESSAY.read_text(encoding="utf-8")
