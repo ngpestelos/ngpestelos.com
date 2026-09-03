@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vector Search &middot; ELI5 &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A picture-book explainer of vector search in artificial intelligence. How computers find relevant knowledge by concept proximity rather than exact keywords.">
+  <meta property="og:title" content="Vector Search &middot; ELI5">
+  <meta property="og:description" content="A picture-book explainer of vector search in artificial intelligence. How computers find relevant knowledge by concept proximity rather than exact keywords.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/vector-search/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/vector-search/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root {
+      --paper: #f4eee4;
+      --card: #fffaf3;
+      --ink: #1c1612;
+      --line: #d4c9bb;
+      --mute: #6e645a;
+      --op: #8c3a27;
+      --op-edge: #7c2d12;
+      --leaf: #0f5c57;
+      --leaf-edge: #0b4a46;
+      --edge: #8a7d72;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 50rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-size: 0.9rem;
+      color: var(--mute);
+      margin-bottom: 0.8rem;
+    }
+    .back a {
+      color: var(--op);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mute);
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    h1 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-size: clamp(2rem, 5.5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.4rem;
+    }
+    .lead {
+      font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+      color: var(--mute);
+      margin-bottom: 2rem;
+      line-height: 1.4;
+    }
+    .block {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .block-num {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--op);
+    }
+    h2 {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      font-size: clamp(1.3rem, 3.2vw, 1.75rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+    .one {
+      font-size: 1.05rem;
+      color: #38312a;
+      line-height: 1.6;
+    }
+    .figure {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 1.2rem;
+      overflow-x: auto;
+    }
+    .figure svg {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+    details {
+      border-top: 1px dashed var(--line);
+      padding-top: 0.8rem;
+      font-size: 0.92rem;
+      color: var(--mute);
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--op);
+      user-select: none;
+      margin-bottom: 0.5rem;
+    }
+    summary:hover { color: var(--op-edge); }
+    details p {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    details ul {
+      padding-left: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    details li {
+      margin-bottom: 0.25rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      padding-top: 1.5rem;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: var(--mute);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    footer.meta a {
+      color: var(--op);
+      text-decoration: none;
+    }
+    footer.meta a:hover { text-decoration: underline; }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.8rem;
+      height: 2.8rem;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/eli5/">ELI5</a></p>
+    <div class="kicker">Phase 2: The User Interaction</div>
+    <h1>Vector Search</h1>
+    <p class="lead">How computers retrieve the right information by measuring conceptual closeness instead of matching exact spelling.</p>
+
+    <!-- SECTION 1 -->
+    <section class="block">
+      <div class="block-num">01 / Concept vs Keyword</div>
+      <h2>Finding meaning even when zero words overlap.</h2>
+      <p class="one">Old search engines look for exact letter matches. Vector search looks for concept proximity in embedding space.</p>
+      
+      <div class="figure">
+        <svg viewBox="0 0 680 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Keyword Search Failure -->
+          <g transform="translate(40, 20)">
+            <rect x="0" y="0" width="280" height="135" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+            <text x="15" y="24" font-size="11" font-weight="700" fill="#991b1b">&cross; KEYWORD SEARCH</text>
+            <text x="15" y="46" font-size="12" fill="var(--mute)">Query: "feline clinic"</text>
+            <text x="15" y="66" font-size="12" fill="var(--mute)">Document: "cat hospital"</text>
+            <line x1="15" y1="80" x2="265" y2="80" stroke="#fca5a5" stroke-width="1"/>
+            <text x="15" y="100" font-size="11" font-weight="700" fill="#991b1b">Result: 0 Matches Found</text>
+            <text x="15" y="118" font-size="11" fill="#b91c1c">(No overlapping words, search fails)</text>
+          </g>
+
+          <!-- Vector Search Success -->
+          <g transform="translate(360, 20)">
+            <rect x="0" y="0" width="280" height="135" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+            <text x="15" y="24" font-size="11" font-weight="700" fill="#15803d">&check; VECTOR SEARCH</text>
+            <text x="15" y="46" font-size="12" fill="var(--mute)">Query vector: [0.82, -0.41, 0.19]</text>
+            <text x="15" y="66" font-size="12" fill="var(--mute)">Doc vector: [0.80, -0.39, 0.22]</text>
+            <line x1="15" y1="80" x2="265" y2="80" stroke="#86efac" stroke-width="1"/>
+            <text x="15" y="100" font-size="11" font-weight="700" fill="#15803d">Result: 96% Semantic Match</text>
+            <text x="15" y="118" font-size="11" fill="#166534">Recognizes feline = cat, clinic = hospital</text>
+          </g>
+        </svg>
+      </div>
+
+      <details>
+        <summary>How queries turn into vectors</summary>
+        <p>When you type a search question, an embedding model converts your sentence into a list of numbers. The search engine calculates the cosine angle between your query vector and millions of stored document vectors in fractions of a millisecond.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 2 -->
+    <section class="block">
+      <div class="block-num">02 / Nearest Neighbors</div>
+      <h2>Dropping a pin and finding the closest neighbors.</h2>
+      <p class="one">Vector search acts like dropping a GPS pin on a map and scooping up the three closest landmarks.</p>
+      
+      <div class="figure">
+        <svg viewBox="0 0 680 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background plane -->
+          <rect x="60" y="20" width="560" height="160" rx="8" fill="#f8fafc" stroke="var(--line)" stroke-width="1"/>
+
+          <!-- Distant docs -->
+          <circle cx="120" cy="60" r="5" fill="#94a3b8"/>
+          <text x="130" y="64" font-size="11" fill="#64748b">Doc: "Cooking pasta"</text>
+
+          <circle cx="530" cy="140" r="5" fill="#94a3b8"/>
+          <text x="430" y="144" font-size="11" fill="#64748b">Doc: "Rocket engines"</text>
+
+          <!-- Search Pin -->
+          <circle cx="300" cy="95" r="8" fill="var(--op)"/>
+          <polygon points="300,95 295,80 305,80" fill="var(--op)"/>
+          <text x="300" y="72" font-size="12" font-weight="700" fill="var(--op)" text-anchor="middle">YOUR QUERY PIN</text>
+
+          <!-- Top 3 Radius Circle -->
+          <circle cx="300" cy="95" r="55" fill="#dcfce7" fill-opacity="0.3" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+          <!-- Neighbor 1 -->
+          <circle cx="280" cy="115" r="5" fill="#16a34a"/>
+          <text x="260" y="132" font-size="11" font-weight="700" fill="#15803d">Match #1</text>
+
+          <!-- Neighbor 2 -->
+          <circle cx="330" cy="80" r="5" fill="#16a34a"/>
+          <text x="340" y="84" font-size="11" font-weight="700" fill="#15803d">Match #2</text>
+
+          <!-- Neighbor 3 -->
+          <circle cx="310" cy="130" r="5" fill="#16a34a"/>
+          <text x="320" y="145" font-size="11" font-weight="700" fill="#15803d">Match #3</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>What is top-k retrieval?</summary>
+        <p>In production search, <em>k</em> represents the number of documents retrieved (typically \(k = 3\) or \(k = 5\)). The database ranks all candidates by distance and returns only the top-k highest-scoring snippets to pass into the model's context window.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 3 -->
+    <section class="block">
+      <div class="block-num">03 / Highway Shortcuts (HNSW)</div>
+      <h2>Highway express lanes make searching instant.</h2>
+      <p class="one">Comparing your query against a billion documents takes too long. Algorithms like HNSW use express highways to zoom in rapidly.</p>
+      
+      <div class="figure">
+        <svg viewBox="0 0 680 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Layer 2: Express Highway -->
+          <g transform="translate(60, 20)">
+            <text x="0" y="22" font-size="11" font-weight="700" fill="var(--mute)">LAYER 2 (EXPRESS HIGHWAY)</text>
+            <line x1="180" y1="18" x2="350" y2="18" stroke="var(--op)" stroke-width="2"/>
+            <line x1="350" y1="18" x2="520" y2="18" stroke="var(--op)" stroke-width="2"/>
+            <circle cx="180" cy="18" r="6" fill="var(--op)"/>
+            <circle cx="350" cy="18" r="6" fill="var(--op)"/>
+            <circle cx="520" cy="18" r="6" fill="var(--op)"/>
+            <text x="350" y="38" font-size="11" fill="var(--mute)" text-anchor="middle">Giant regional jumps</text>
+          </g>
+
+          <!-- Dropdown arrow -->
+          <path d="M 410 50 L 410 80" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="3 3"/>
+          <polygon points="410,84 406,76 414,76" fill="var(--line)"/>
+
+          <!-- Layer 0: Local Streets -->
+          <g transform="translate(60, 95)">
+            <text x="0" y="22" font-size="11" font-weight="700" fill="var(--mute)">LAYER 0 (LOCAL STREETS)</text>
+            <g stroke="#16a34a" stroke-width="1.5">
+              <line x1="320" y1="18" x2="360" y2="18"/>
+              <line x1="360" y1="18" x2="390" y2="35"/>
+              <line x1="390" y1="35" x2="430" y2="18"/>
+              <line x1="430" y1="18" x2="470" y2="28"/>
+            </g>
+            <circle cx="320" cy="18" r="4" fill="#16a34a"/>
+            <circle cx="360" cy="18" r="4" fill="#16a34a"/>
+            <circle cx="390" cy="35" r="4" fill="#16a34a"/>
+            <circle cx="430" cy="18" r="4" fill="#16a34a"/>
+            <circle cx="470" cy="28" r="4" fill="#16a34a"/>
+            <text x="400" y="55" font-size="11" font-weight="700" fill="#15803d" text-anchor="middle">Fine-grained target neighborhood reached</text>
+          </g>
+        </svg>
+      </div>
+
+      <details>
+        <summary>What does HNSW stand for?</summary>
+        <p><strong>HNSW</strong> stands for Hierarchical Navigable Small World. It is an index graph inspired by the "six degrees of separation" rule. Instead of evaluating 10,000,000 items, the search hops across only 20 to 50 nodes to pinpoint the exact closest answer.</p>
+      </details>
+    </section>
+
+    <!-- SECTION 4 -->
+    <section class="block">
+      <div class="block-num">04 / Hybrid Search</div>
+      <h2>Combining vectors with keywords gives the best results.</h2>
+      <p class="one">Vector search understands broad ideas, but keyword search is unbeatable for exact serial numbers and proper names. Mixing both is called hybrid search.</p>
+      
+      <div class="figure">
+        <svg viewBox="0 0 680 180" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Dense Branch -->
+          <g transform="translate(60, 25)">
+            <rect x="0" y="0" width="190" height="42" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="95" y="26" font-size="12" font-weight="700" fill="#1e40af" text-anchor="middle">Vector Search (Concepts)</text>
+          </g>
+
+          <!-- Sparse Branch -->
+          <g transform="translate(60, 85)">
+            <rect x="0" y="0" width="190" height="42" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+            <text x="95" y="26" font-size="12" font-weight="700" fill="#92400e" text-anchor="middle">Keyword Search (BM25)</text>
+          </g>
+
+          <!-- Fusion Arrows -->
+          <g stroke="var(--op)" stroke-width="2">
+            <line x1="260" y1="46" x2="330" y2="75"/>
+            <line x1="260" y1="106" x2="330" y2="75"/>
+            <polygon points="335,75 325,70 325,80" fill="var(--op)"/>
+          </g>
+
+          <!-- Fused Output -->
+          <g transform="translate(350, 40)">
+            <rect x="0" y="0" width="270" height="70" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+            <text x="135" y="28" font-size="13" font-weight="700" fill="#15803d" text-anchor="middle">HYBRID FUSED RESULTS</text>
+            <text x="135" y="50" font-size="12" font-family="Georgia, serif" fill="var(--ink)" text-anchor="middle">Understands concepts AND matches exact IDs</text>
+          </g>
+
+          <text x="340" y="155" font-size="12" fill="var(--mute)" text-anchor="middle">This combined pipeline powers modern Retrieval-Augmented Generation (RAG).</text>
+        </svg>
+      </div>
+
+      <details>
+        <summary>What is Reciprocal Rank Fusion?</summary>
+        <p><strong>Reciprocal Rank Fusion (RRF)</strong> is an algorithm that combines rankings from both search methods. An item ranked highly by both keyword search and vector search automatically rises to the very top of the list.</p>
+      </details>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="meta">
+      <p><strong>Sources:</strong> <a href="https://arxiv.org/abs/1603.09320">Malkov &amp; Yashunin, 2018 (HNSW)</a> &middot; <a href="https://dl.acm.org/doi/10.1145/1571941.1572114">Cormack et al., 2009 (Reciprocal Rank Fusion)</a></p>
+      <p><strong>Longer version:</strong> <a href="/reference/vector-search/">Reference: Vector Search</a></p>
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
