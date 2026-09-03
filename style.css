@@ -494,31 +494,9 @@ a:hover {
   }
 }
 
-.js-paged #writing li.hidden {
-  display: none;
-}
-
 body:has(#writing) main:not(.article) time {
   color: var(--mute);
   font-size: 0.92em;
-}
-
-.pager {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem 0.85rem;
-  margin: 1.25rem 0 0;
-  font-size: 1.05rem;
-}
-
-.pager [aria-current="page"] {
-  color: var(--fg);
-  font-weight: 600;
-}
-
-.pager [aria-disabled="true"] {
-  color: var(--muted);
 }
 
 /* Writing layout: landing :root owns paper, ink, and type. */
@@ -647,14 +625,6 @@ body:has(#writing) main:not(.article) li::before {
   color: var(--ink);
 }
 
-body:has(#writing) .pager [aria-current="page"] {
-  color: var(--ink);
-}
-
-body:has(#writing) .pager [aria-disabled="true"] {
-  color: var(--mute);
-}
-
 body:has(main.article) .table-wrap {
   max-width: 100%;
 }
@@ -678,12 +648,10 @@ body:has(main.article) .table-wrap {
     content: none !important;
   }
 
-  body:has(main.article) .pager,
   body:has(main.article) .next-step,
   body:has(main.article) .to-top,
   body:has(main.article) footer.meta,
   body:has(main.article) .print,
-  body:has(#writing) .pager,
   body:has(#writing) .next-step,
   body:has(#writing) .print {
     display: none;
@@ -786,6 +754,5 @@ body:has(main.article) .table-wrap {
     display: none !important;
   }
 }
-
 
 
