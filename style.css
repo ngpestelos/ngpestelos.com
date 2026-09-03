@@ -6,6 +6,15 @@
   --card-bg: #fffaf3;
   --border: #d8d2c6;
   --max-width: 680px;
+  --paper: var(--bg);
+  --ink: var(--fg);
+  --mute: var(--muted);
+  --line: var(--border);
+  --op: var(--accent);
+  --card: var(--card-bg);
+  --link: var(--accent);
+  --link-visited: #7a280e;
+  --well: var(--card-bg);
   color-scheme: light;
 }
 
@@ -75,8 +84,22 @@ h1 {
   line-height: 1.5;
 }
 
-.writing-pins {
+#writing-pins {
   margin-top: 0.85rem;
+}
+
+#writing-pins ul.pins {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+}
+
+#writing-pins ul.pins li {
+  margin: 0.35rem 0;
+}
+
+#writing-pins .hook {
+  color: var(--muted);
 }
 
 .next-step {
@@ -85,8 +108,10 @@ h1 {
   margin-top: 0.85rem;
 }
 
-/* Landing chrome — never apply to essay pages */
-main:not(.article) h2 {
+/* Landing chrome — never apply to essay pages or ELI5/reference headings */
+#my-work h2,
+#personal h2,
+#writing h2 {
   font-family: "Segoe UI", Helvetica, Arial, sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
@@ -102,7 +127,7 @@ section {
   margin-bottom: 2.5rem;
 }
 
-.card {
+#my-work .card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
@@ -117,27 +142,33 @@ section {
   margin-bottom: 0.5rem;
 }
 
-.card p {
+#my-work .card p {
   font-size: 0.95rem;
   color: var(--fg);
 }
 
-.card p + p {
+#my-work .card p + p {
   margin-top: 0.75rem;
 }
 
-main:not(.article) ul {
+#my-work ul,
+#personal ul,
+#writing ul {
   list-style: none;
   padding: 0;
 }
 
-main:not(.article) li {
+#my-work li,
+#personal li,
+#writing li {
   padding: 0.4rem 0;
   font-size: 0.95rem;
   overflow-wrap: break-word;
 }
 
-main:not(.article) li::before {
+#my-work li::before,
+#personal li::before,
+#writing li::before {
   content: "\2022";
   color: var(--accent);
   font-weight: bold;
@@ -463,35 +494,24 @@ a:hover {
   }
 }
 
-body:has(#writing) main:not(.article) h2 {
-  color: var(--ink);
-  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
-  font-size: clamp(1.12rem, 1rem + 0.55vw, 1.28rem);
-  font-weight: 600;
-  margin: 1.6rem 0 0.6rem;
-}
-
 body:has(#writing) main:not(.article) time {
   color: var(--mute);
   font-size: 0.92em;
 }
 
-/* Writing paper: screen matches print. Landing uses :root light tokens. */
+/* Writing layout: landing :root owns paper, ink, and type. */
 body:has(main.article),
 body:has(#writing) {
-  --paper: #faf8f4;
-  --ink: #1c1915;
-  --mute: #5c564e;
-  --rule: #d8d2c6;
-  --well: #f3efe6;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  --rule: var(--border);
   line-height: 1.65;
   padding: clamp(1.15rem, 3.5vw, 2.25rem) clamp(1.15rem, 5vw, 2rem);
   overflow-x: clip;
   overflow-wrap: anywhere;
-  color-scheme: light;
+}
+
+body.eli5,
+body.reference {
+  padding: 0;
 }
 
 body:has(main.article) main,
@@ -499,20 +519,6 @@ body:has(#writing) main {
   max-width: 40rem;
   width: 100%;
   min-width: 0;
-}
-
-body:has(main.article) a,
-body:has(#writing) a {
-  color: var(--ink);
-  text-decoration: underline;
-  text-underline-offset: 0.14em;
-  text-decoration-thickness: 0.06em;
-  overflow-wrap: anywhere;
-}
-
-body:has(main.article) a:hover,
-body:has(#writing) a:hover {
-  color: #000;
 }
 
 body:has(main.article) .back,

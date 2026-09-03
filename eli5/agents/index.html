@@ -16,6 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,11 +26,6 @@
   </script>
   <style>
     :root {
-      --paper: #f4eee4;
-      --ink: #1c1612;
-      --mute: #6e645a;
-      --line: #d4c9bb;
-      --card: #fffaf3;
       --accent: #8c3a27;
       --blue: #1d4ed8;
       --green: #15803d;
@@ -43,9 +39,6 @@
       scroll-behavior: smooth;
     }
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
       line-height: 1.5;
     }
     main {
@@ -54,6 +47,7 @@
       padding: 1.4rem 1.4rem 4rem;
     }
     .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.9rem;
       color: var(--mute);
       margin-bottom: 0.8rem;
@@ -103,7 +97,7 @@
       line-height: 1.6;
     }
     .diagram-box {
-      background: #ffffff;
+      background: var(--paper);
       border: 1px solid var(--line);
       border-radius: 6px;
       padding: 1.2rem;
@@ -177,7 +171,7 @@
       height: 2.6rem;
       border-radius: 50%;
       background: var(--card, #fffaf3);
-      color: var(--ink, #1c1612);
+      color: var(--ink);
       border: 1px solid var(--line, #d4c9bb);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       display: flex;
@@ -196,7 +190,7 @@
       transform: translateY(0);
     }
     .back-to-top:hover {
-      background: var(--paper, #f4eee4);
+      background: var(--paper);
       border-color: var(--op, #9a3412);
       color: var(--op, #9a3412);
     }
@@ -209,7 +203,7 @@
     }
   </style>
 </head>
-<body>
+<body class="eli5">
   <main>
     <p class="back" id="top"><a href="/eli5/">← ELI5</a> · <a href="/">Nestor G Pestelos Jr</a></p>
     <h1>How Do AI Agents Work?</h1>
