@@ -16,6 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,11 +26,6 @@
   </script>
   <style>
     :root {
-      --paper: #f4eee4;
-      --ink: #1c1612;
-      --mute: #6e645a;
-      --line: #d4c9bb;
-      --op: #9a3412;
       --op-edge: #7c2d12;
       --leaf: #0f5c57;
       --leaf-edge: #0b4a46;
@@ -37,7 +33,6 @@
       --edge-dash: #b7aaa0;
       --yes: #166534;
       --no: #9f1239;
-      --card: #fffaf3;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html {
@@ -48,17 +43,14 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
     }
-    body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
-    }
+    
     main {
       max-width: 52rem;
       margin: 0 auto;
       padding: 1.4rem 1.4rem 4rem;
     }
     .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       margin: 0 0 1.6rem;
       font-size: 0.95rem;
       font-weight: 700;
@@ -66,6 +58,7 @@
     .back a { color: var(--op); text-decoration: none; }
     .back a:hover { text-decoration: underline; }
     .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.85rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -191,7 +184,7 @@
       height: 2.6rem;
       border-radius: 50%;
       background: var(--card, #fffaf3);
-      color: var(--ink, #1c1612);
+      color: var(--ink);
       border: 1px solid var(--line, #d4c9bb);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       display: flex;
@@ -210,7 +203,7 @@
       transform: translateY(0);
     }
     .back-to-top:hover {
-      background: var(--paper, #f4eee4);
+      background: var(--paper);
       border-color: var(--op, #9a3412);
       color: var(--op, #9a3412);
     }
@@ -223,7 +216,7 @@
     }
   </style>
 </head>
-<body>
+<body class="eli5">
   <main>
     <p class="back" id="top"><a href="/eli5/">← ELI5</a> · <a href="/">Nestor G Pestelos Jr</a></p>
     <p class="kicker">Retrieval-Augmented Generation</p>
@@ -237,7 +230,7 @@
           <title id="fig1title">RAG splits into Retrieval, Augmented, and Generation, feeding into one answer</title>
           <defs>
             <filter id="r1" x="-12%" y="-12%" width="124%" height="130%">
-              <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" flood-color="#1c1612" flood-opacity="0.14"/>
+              <feDropShadow dx="0" dy="1.2" stdDeviation="1.6" flood-color="#1c1915" flood-opacity="0.14"/>
             </filter>
           </defs>
           <g fill="none" stroke="#8a7d72" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round">
@@ -254,7 +247,7 @@
           <text x="475" y="38" text-anchor="middle" dy="0.35em" fill="#fff8f0" font-size="15" font-weight="700">GENERATION</text>
           <text x="475" y="56" text-anchor="middle" dy="0.35em" fill="#ffe9dc" font-size="10.5">write the answer</text>
           <rect x="180" y="140" width="200" height="52" rx="8" fill="none" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="280" y="166" text-anchor="middle" dy="0.35em" fill="#1c1612" font-size="14.5" font-weight="700">one grounded answer</text>
+          <text x="280" y="166" text-anchor="middle" dy="0.35em" fill="#1c1915" font-size="14.5" font-weight="700">one grounded answer</text>
           <path d="M280 100 L280 140" fill="none" stroke="#8a7d72" stroke-width="1.75" marker-end="url(#a1)"/>
           <defs>
             <marker id="a1" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
@@ -278,7 +271,7 @@
           <text x="280" y="18" text-anchor="middle" fill="#9a3412" font-size="11" font-weight="700">TRAINING STOPS HERE</text>
           <rect x="296" y="56" width="248" height="68" rx="8" fill="#faf4f2" stroke="#e8cfc8" stroke-width="1.5"/>
           <text x="420" y="84" text-anchor="middle" dy="0.35em" fill="#6e645a" font-size="12">after that date</text>
-          <text x="420" y="106" text-anchor="middle" dy="0.35em" fill="#1c1612" font-size="18" font-weight="700">? ? ?</text>
+          <text x="420" y="106" text-anchor="middle" dy="0.35em" fill="#1c1915" font-size="18" font-weight="700">? ? ?</text>
         </svg>
       </div>
       <p class="one">It doesn't leave that second box empty on the page &mdash; it fills it in and sounds sure.</p>
@@ -299,11 +292,11 @@
             </marker>
           </defs>
           <rect x="16" y="16" width="150" height="54" rx="8" fill="#faf4f2" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="91" y="43" text-anchor="middle" dy="0.35em" fill="#1c1612" font-size="13">your question</text>
+          <text x="91" y="43" text-anchor="middle" dy="0.35em" fill="#1c1915" font-size="13">your question</text>
           <path d="M166 43 L206 43" stroke="#8a7d72" stroke-width="1.75" marker-end="url(#a2)"/>
           <rect x="216" y="16" width="150" height="54" rx="8" fill="#faf4f2" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="291" y="37" text-anchor="middle" dy="0.35em" fill="#1c1612" font-size="12">search the</text>
-          <text x="291" y="52" text-anchor="middle" dy="0.35em" fill="#1c1612" font-size="12">document store</text>
+          <text x="291" y="37" text-anchor="middle" dy="0.35em" fill="#1c1915" font-size="12">search the</text>
+          <text x="291" y="52" text-anchor="middle" dy="0.35em" fill="#1c1915" font-size="12">document store</text>
           <path d="M366 43 L406 43" stroke="#8a7d72" stroke-width="1.75" marker-end="url(#a2)"/>
           <rect x="416" y="16" width="200" height="54" rx="8" fill="#0f5c57" stroke="#0b4a46" stroke-width="1.25"/>
           <text x="516" y="43" text-anchor="middle" dy="0.35em" fill="#f3fffd" font-size="13" font-weight="700">matching pages</text>
@@ -350,7 +343,7 @@
         <svg class="pic" viewBox="0 0 640 220" role="img" aria-labelledby="fig5title">
           <title id="fig5title">A question about API timeout matches the title-level summary document, while the real answer sits buried five sections deeper and is never picked</title>
           <rect x="16" y="16" width="608" height="46" rx="8" fill="#faf4f2" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="36" y="44" font-size="13.5" fill="#1c1612" text-anchor="start">Question: "how do I configure the API timeout?"</text>
+          <text x="36" y="44" font-size="13.5" fill="#1c1915" text-anchor="start">Question: "how do I configure the API timeout?"</text>
           <path d="M155 62 L155 96" stroke="#9a3412" stroke-width="2" marker-end="url(#a4)"/>
           <defs>
             <marker id="a4" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
@@ -363,8 +356,8 @@
           <text x="156" y="163" text-anchor="middle" dy="0.35em" fill="#c9e9e5" font-size="11">but no timeout value in it</text>
           <rect x="350" y="100" width="264" height="76" rx="8" fill="#faf4f2" stroke="#e8cfc8" stroke-width="1.5" stroke-dasharray="6 4"/>
           <text x="482" y="122" text-anchor="middle" dy="0.35em" fill="#9f1239" font-size="11.5">never picked:</text>
-          <text x="482" y="141" text-anchor="middle" dy="0.35em" fill="#1c1612" font-size="12">Section 5, buried &mdash;</text>
-          <text x="482" y="160" text-anchor="middle" dy="0.35em" fill="#1c1612" font-size="12">"set timeout_ms to 5000"</text>
+          <text x="482" y="141" text-anchor="middle" dy="0.35em" fill="#1c1915" font-size="12">Section 5, buried &mdash;</text>
+          <text x="482" y="160" text-anchor="middle" dy="0.35em" fill="#1c1915" font-size="12">"set timeout_ms to 5000"</text>
         </svg>
       </div>
       <p class="one">It didn't find the wrong document &mdash; it found the right one, at the wrong depth.</p>
