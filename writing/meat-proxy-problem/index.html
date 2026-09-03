@@ -4,11 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Meat Proxy Problem — Nestor G Pestelos Jr</title>
-  <meta name="description" content="Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to &quot;just validate it&quot; will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.">
+  <meta name="description" content="Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to validate output will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.">
   <meta property="og:title" content="The Meat Proxy Problem">
-  <meta property="og:description" content="Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to &quot;just validate it&quot; will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.">
+  <meta property="og:description" content="Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to validate output will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ngpestelos.com/writing/meat-proxy-problem/">
   <link rel="canonical" href="https://ngpestelos.com/writing/meat-proxy-problem/">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
   <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
@@ -26,65 +25,61 @@
     gtag('config', 'G-TLBY8P4GG9');
   </script>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"The Meat Proxy Problem","description":"Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to \"just validate it\" will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.","url":"https://ngpestelos.com/writing/meat-proxy-problem/","author":{"@type":"Person","name":"Nestor G Pestelos Jr"},"datePublished":"2026-08-19"}
+{"@context":"https://schema.org","@type":"Article","headline":"The Meat Proxy Problem","description":"Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to validate output will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.","url":"https://ngpestelos.com/writing/meat-proxy-problem/","author":{"@type":"Person","name":"Nestor G Pestelos Jr"},"datePublished":"2026-08-19"}
   </script>
 </head>
 <body>
   <main class="article">
     <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
     <h1>The Meat Proxy Problem</h1>
-<p class="byline">Published August 19, 2026. Revised August 29, 2026.</p>
+<p class="byline">Published August 19, 2026. Revised September 3, 2026.</p>
 
 
-<div class="tldr"><span class="tldr-label">TL;DR</span><p>Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to "just validate it" will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.</p></div>
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>Forwarding an AI's answer unread, with nothing else checking the claim, severs accountability. Telling people to validate output will not fix that. Review culture already rubber-stamps real code. The fix has to survive the same incentives.</p></div>
 
 <hr>
 
-<p><em>The August 19, 2026 version is at <a href=https://ngpestelos.com/writing/meat-proxy-problem-20260819/>meat-proxy-problem-20260819</a>.</em></p>
+<p><em>The August 19, 2026 version is at <a href="https://ngpestelos.com/writing/meat-proxy-problem-20260819/">meat-proxy-problem-20260819</a>.</em></p>
 
-<p><a href="https://gruhn.me/blog/2026-08-03/">Niklas Gruhn</a> coined the term &quot;meat proxy&quot; for a specific failure mode: pasting unread AI output into Slack, pull requests, or email and acting as an unthinking conduit. Someone trusts you sent something you stand behind.</p>
+<p><a href="https://gruhn.me/blog/2026-08-03/">Niklas Gruhn</a> coined the term &quot;meat proxy&quot; for a specific failure mode: pasting unread AI output into Slack, pull requests, or email. The person who clicks forward acts as a passive conduit. Someone else trusts the sender stands behind the text.</p>
 
-<p>Gruhn&#x27;s remedy is simple: read it, understand it, validate it, and state it in your own words. But &quot;review it more carefully&quot; was the standard advice for human-written code too. That review culture was already failing before LLMs arrived.</p>
+<p>Gruhn&#x27;s remedy is direct: read it, understand it, validate it, and state it in your own words. But &quot;review it more carefully&quot; was the standard advice for human-written code too. That review culture was already failing before LLMs arrived.</p>
 
 <h2 id="why-it-happens">Why it happens</h2>
 
-<p>The polish is part of the problem. A <a href="https://x.com/aakashgupta/status/2026092239177609421/?s=12&amp;rw_tt_thread=True">February 2026 breakdown</a> of Anthropic&#x27;s product data found that finished-looking AI output makes people less likely to double-check it. I haven&#x27;t seen Anthropic&#x27;s numbers directly, only how the thread characterized them. Users caught fewer missing-context problems and questioned the reasoning less when an answer already looked done. A rough draft invites a second look; a polished one invites a click.</p>
+<p>Polish hides uncertainty. A <a href="https://x.com/aakashgupta/status/2026092239177609421/?s=12&amp;rw_tt_thread=True">February 2026 breakdown</a> of Anthropic&#x27;s product data found that finished-looking AI output makes people less likely to double-check it. Users caught fewer missing-context problems and questioned reasoning less when an answer arrived formatted and complete. A rough draft prompts scrutiny. A clean explanation invites a quick click.</p>
 
-<h2 id="a-fix-you-can-check">A fix you can check</h2>
+<h2 id="the-author-as-first-reviewer">The author as first reviewer</h2>
 
-<p>Will Larson calls it establishing <a href="https://lethain.com/make-no-assumptions/">the author as the first human in the loop</a>. Whoever generates a document with AI must verify it before anyone downstream sees it. Skipping that step turns the recipient into the first real reviewer. At scale, that creates a poisoned reasoning layer where teams spend months solving problems that don&#x27;t exist because the initial analysis was never checked.</p>
+<p>Will Larson describes this as establishing <a href="https://lethain.com/make-no-assumptions/">the author as the first human in the loop</a>. Whoever generates text with an AI must verify the claims before anyone downstream sees them. Skipping that step turns the recipient into the first real reviewer. At scale, unverified output creates a false foundation. Teams can spend weeks solving problems that do not exist because the initial memo invented a constraint.</p>
 
-<p><a href="https://x.com/copyconstruct/status/2011849835587256828">Cindy Sridharan</a> sets a stricter bar for code: understand close to 100% of the production code an LLM generates. Weak understanding produces vague prompts, vague prompts produce worse code, and worse code becomes harder to understand next time.</p>
+<p><a href="https://x.com/copyconstruct/status/2011849835587256828">Cindy Sridharan</a> sets a strict standard for code: understand close to 100% of the production code an LLM generates. Weak understanding produces vague prompts. Vague prompts yield fragile code. That fragile code becomes harder to understand on the next cycle.</p>
 
-<h2 id="where-the-rule-bends">Where the rule bends</h2>
+<h2 id="when-independent-checks-exist">When independent checks exist</h2>
 
-<p>Peter Steinberger <a href="https://x.com/steipete/status/2005451576971043097/?s=12&amp;rw_tt_thread=True">ships production code he never reads</a>, leaning on tests and observability. A company run by Yaçine MTB <a href="https://x.com/yacinemtb/status/2054206326247477292">stopped doing code review entirely</a>, arguing that AI agents already catch mistakes at generation time.</p>
+<p>Peter Steinberger <a href="https://x.com/steipete/status/2005451576971043097/?s=12&amp;rw_tt_thread=True">ships production code he never reads</a>, relying on tests and observability. In contrast, Yaçine MTB&#x27;s team <a href="https://x.com/yacinemtb/status/2054206326247477292">stopped doing code review entirely</a>, arguing that AI agents catch mistakes during generation.</p>
 
-<p>The two cases are not equal. Steinberger&#x27;s tests and dashboards operate independently of the model that wrote the code. Yaçine&#x27;s agents checking AI output do not. Comprehension can be delegated only when an independent verification channel (a test suite, a compiler, runtime metrics) exists. A paraphrased answer in a Slack thread or a summary in a PR comment has no such channel.</p>
+<p>The two practices are not equivalent. Steinberger&#x27;s automated tests, compilers, and runtime dashboards run independently of the model that wrote the code. Yaçine&#x27;s agents reviewing sibling agents do not provide that separation. You can delegate reading only when an external verification harness exists. A paraphrased summary in a Slack thread has no test suite.</p>
 
-<p>Some model output is checkable: code that executes, math that resolves, citations that exist. Other output resists verification: open-ended rhetoric, persuasive synthesis, ungrounded commentary. Validate the first kind before forwarding. For the second, do not forward it.</p>
+<p>Some model output is directly checkable: code that executes, arithmetic that balances, citations that resolve to real pages. Other output resists mechanical testing: architectural advice, strategic summaries, and open-ended commentary. Verify the first kind against tooling before forwarding. Refuse to forward the second kind unread.</p>
 
-<h2 id="the-part-exhortation-can-t-fix">The part exhortation can&#x27;t fix</h2>
+<h2 id="the-part-exhortation-cannot-fix">The part exhortation cannot fix</h2>
 
-<p>Larson&#x27;s rule and Sridharan&#x27;s rule remain moral appeals rather than structural incentives. Code review already demonstrated that appeals do not survive deadlines. A developer on <a href="https://www.reddit.com/r/ExperiencedDevs/comments/1qkmmsx/nobody_actually_reads_code_in_pr_reviews_anymore/">r/ExperiencedDevs</a> described a pull request that sat unreviewed for two days, then received approval within a minute of a direct message ping. A <a href="https://www.sciencedirect.com/science/article/pii/S0164121224003327">2025 <em>Journal of Systems and Software</em> study</a> surveyed developers at a mid-sized company; most reported that reviewers avoid or superficially skim large patches. I read the abstract through search rather than the paywalled full text, so treat that as reported rather than confirmed.</p>
+<p>Larson&#x27;s rule and Sridharan&#x27;s rule are personal appeals, not structural incentives. Software teams already proved that appeals collapse under deadline pressure. On <a href="https://www.reddit.com/r/ExperiencedDevs/comments/1qkmmsx/nobody_actually_reads_code_in_pr_reviews_anymore/">r/ExperiencedDevs</a>, an engineer described a pull request that sat unreviewed for two days, then received an approval click within sixty seconds of a direct message nudge. A <a href="https://www.sciencedirect.com/science/article/pii/S0164121224003327">2025 <em>Journal of Systems and Software</em> study</a> surveyed developers at a mid-sized company; respondents reported that reviewers avoid or superficially skim large patches.</p>
 
-<p>If &quot;did CI pass, click approve&quot; was already the default for human-written code, &quot;read the AI&#x27;s answer carefully&quot; is the same unused instruction. Gruhn named the failure, but exhortation fails because no system provides an incentive for the reviewer to look.</p>
+<p>When &quot;did CI pass? click approve&quot; became the default habit for human code, &quot;read the AI&#x27;s explanation carefully&quot; became another ignored instruction. Exhortation fails because organizations reward velocity over inspection.</p>
 
-<p>A related essay examines whether a contribution <a href="https://ngpestelos.com/writing/debt-with-diff-attached/">removes uncertainty for the next person or transfers it</a>. This essay focuses on the immediate threshold: when an AI answer sits in front of you, a coworker is waiting, and you decide whether to read it.</p>
+<h2 id="the-personal-operational-line">The personal operational line</h2>
 
-<h2 id="what-i-hold-myself-to">What I hold myself to</h2>
+<p>I run personal work under a strict constraint: agent output remains marked unverified until independent tooling confirms it. Forwarding uninspected text signs your name to an unverified guess.</p>
 
-<p>I do not have a documented production outage from an unread PR. This analysis is inferred from developer behavior rather than an incident report.</p>
-
-<p>My operational rule labels all agent output unverified until independent tooling confirms it. Polish is not proof. Forwarding unverified text signs your name to an uninspected guess.</p>
-
-<p>This is still personal discipline rather than a systemic fix that alters organizational incentives. The razor test is simple: would you defend this claim in your own voice if it turned out to be wrong? If the answer is no, you were acting as the pipe.</p>
+<p>This rule is personal discipline, not an organizational fix. The test remains simple: would you defend this claim in your own voice if it turned out wrong? If not, you were just the pipe.</p>
 
 <h2 id="sources">Sources</h2>
 
 <ul>
 
-<li>Niklas Gruhn, <a href="https://gruhn.me/blog/2026-08-03/">&quot;Don&#x27;t Be a Meat Proxy,&quot;</a> gruhn.me, August 3, 2026</li>
+<li>Niklas Gruhn, <a href="https://gruhn.me/blog/2026-08-03/">&quot;Don't Be a Meat Proxy,&quot;</a> gruhn.me, August 3, 2026</li>
 
 <li>Aakash Gupta, <a href="https://x.com/aakashgupta/status/2026092239177609421/?s=12&amp;rw_tt_thread=True">breakdown of Anthropic product data</a>, X, February 24, 2026</li>
 
@@ -99,8 +94,6 @@
 <li><a href="https://www.reddit.com/r/ExperiencedDevs/comments/1qkmmsx/nobody_actually_reads_code_in_pr_reviews_anymore/">&quot;nobody actually reads code in PR reviews anymore,&quot;</a> r/ExperiencedDevs, February 2026</li>
 
 <li>Santos, Nunes &amp; Jannach, <a href="https://www.sciencedirect.com/science/article/pii/S0164121224003327">&quot;Developer perceptions of modern code review processes in practice,&quot;</a> <em>Journal of Systems and Software</em>, April 2025</li>
-
-<li>Nestor Pestelos, <a href="https://ngpestelos.com/writing/debt-with-diff-attached/">&quot;Debt With a Diff Attached,&quot;</a> July 24, 2026</li>
 
 </ul>
     <p class="to-top"><a href="#top">Back to top</a></p>
