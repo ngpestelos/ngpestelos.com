@@ -117,11 +117,11 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertIn("written readiness read", html)
         self.assertIn("Software engineer since 2001. Manila, UTC+8.", html)
         next_step = re.search(r'<p class="next-step">.*?</p>', html, re.S).group(0)
-        self.assertIn("UTC+8 provides overnight coverage for US teams", next_step)
+        self.assertIn("I work from Manila, UTC+8, so US teams get overnight coverage.", next_step)
         my_work = html.split('<section id="my-work">', 1)[1].split(
             '<section id="personal">', 1
         )[0]
-        self.assertNotIn("UTC+8 provides overnight coverage for US teams", my_work)
+        self.assertNotIn("overnight coverage", my_work)
         self.assertIn('<section id="my-work">', html)
         self.assertIn("<h2>My Work</h2>", html)
         self.assertIn("<h3>What I Do</h3>", html)
