@@ -4,7 +4,7 @@
   <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
   <link href="https://ngpestelos.com/writing/"/>
   <id>https://ngpestelos.com/writing/</id>
-  <updated>2026-09-03T06:40:59Z</updated>
+  <updated>2026-09-03T07:10:52Z</updated>
   <author>
     <name>Nestor G Pestelos Jr</name>
   </author>
@@ -270,7 +270,7 @@
   <entry>
     <id>https://ngpestelos.com/writing/cheap-code-expensive-context/</id>
     <title>Cheap Code, Expensive Context</title>
-    <summary>The loudest version of the 2026 story is that engineers are finished. Anyone with customer context and a chat window can ship the software that used to require a team, so the org chart inverts and the people who can…</summary>
+    <summary>AI drives the cost of syntax toward zero, not the cost of engineering. Leverage shifts from writing code to holding customer context, defining problems, and verifying system architecture.</summary>
     <updated>2026-07-12T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/cheap-code-expensive-context/"/>
   </entry>
