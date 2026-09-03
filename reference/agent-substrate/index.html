@@ -177,7 +177,8 @@
     <h1>Agent Substrate</h1>
     <p class="updated">Reference entry · last updated September 3, 2026</p>
 
-    <p class="lede"><strong>Agent substrate</strong> is, in Nestor G Pestelos Jr's agent-infrastructure framework, the durable, operator-owned, model-independent representation of the system or domain on which one or more agent harnesses operate. It keeps knowledge and rules under operator control so different vendor runtimes can use them without renegotiation.<span class="cite">[<a href="#ref1">1</a>]</span> The term is specific to this framework. It is not an established industry term.</p>
+    <p class="lede"><strong>Agent substrate</strong> is the part of agent infrastructure that describes the system or domain: its data model, specifications, decisions, conventions, and private context. It changes when the work changes.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p class="unattributed">In Nestor G Pestelos Jr's implementation, the substrate is durable, operator-owned, and model-independent. Multiple vendor runtimes can use it without renegotiating the system's rules. This extension describes the author's framework and is not established industry terminology.</p>
 
     <nav class="toc" aria-label="Contents">
       <p class="toc-title">Contents</p>
@@ -212,7 +213,6 @@
     <p>The classification follows purpose rather than file type. Separating durable information from temporary compensation makes obsolete scaffolding easier to remove.</p>
 
     <h2 id="examples">Examples</h2>
-    <p>Examples of substrate in this framework include:</p>
     <ul>
       <li>vault conventions that define names, relationships, and storage rules;</li>
       <li>a Workstreams ledger that records commitments and their state;</li>
@@ -225,10 +225,10 @@
 
     <h2 id="limits">Limits</h2>
     <ul>
-      <li>Durable does not mean permanent. Substrate must change when the domain or its rules change.</li>
-      <li>Model-independent does not mean format-independent. A harness still needs a compatible way to read and update the representation.</li>
-      <li>Operator-owned does not require local storage. The operator must control the meaning, access rules, and migration path.</li>
-      <li>Substrate does not guarantee correctness. Stale facts and faulty rules remain faulty when stored in a durable form.</li>
+      <li>Durability tracks stable domain rules. The substrate must be updated when those rules change.</li>
+      <li>The format must remain compatible with every harness that reads or updates it.</li>
+      <li>Ownership requires control over meaning, access, and migration. Storage can be local or remote.</li>
+      <li>Correctness requires maintenance and validation. Durable storage preserves stale facts as stale facts.</li>
     </ul>
 
     <h2 id="see-also">See also</h2>
