@@ -21,6 +21,16 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/eli5/fine-tuning/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/eli5/pre-training/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/eli5/embeddings/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -247,6 +257,16 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/toctou-race-condition/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/fine-tuning/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/pre-training/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

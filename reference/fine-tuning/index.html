@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fine-Tuning &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on fine-tuning and model alignment: Supervised Fine-Tuning (SFT), Parameter-Efficient Fine-Tuning (LoRA, QLoRA), Reinforcement Learning from Human Feedback (RLHF), and Direct Preference Optimization (DPO).">
+  <meta property="og:title" content="Fine-Tuning &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on fine-tuning and model alignment: Supervised Fine-Tuning (SFT), Parameter-Efficient Fine-Tuning (LoRA, QLoRA), Reinforcement Learning from Human Feedback (RLHF), and Direct Preference Optimization (DPO).">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/fine-tuning/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/fine-tuning/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --box-bg: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.78rem;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 0.1rem;
+    }
+    .cite a { color: var(--link); text-decoration: none; }
+    .cite a:hover { text-decoration: underline; }
+    .references ol {
+      font-size: 0.88rem;
+      padding-left: 1.4rem;
+    }
+    .references li {
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--well);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <div class="kicker">Reference Guide</div>
+    <h1>Fine-Tuning</h1>
+    <p class="updated">Published September 3, 2026 &middot; Machine Learning &amp; Alignment Engineering</p>
+
+    <p class="lede"><strong>Fine-tuning</strong> is the secondary training phase in which a pre-trained base neural network undergoes parameter updates on curated, task-specific datasets or preference feedback signals. While pre-training instills foundational linguistic representations and general knowledge, fine-tuning steers the model to adhere to dialogue schemas, follow complex user instructions, adopt specific operational personas, and satisfy safety constraints.</p>
+
+    <nav class="toc" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#overview">Overview &amp; Post-Training Lifecycle</a></li>
+        <li><a href="#supervised-fine-tuning">Supervised Fine-Tuning (SFT)</a></li>
+        <li><a href="#peft">Parameter-Efficient Fine-Tuning (PEFT)</a>
+          <ol>
+            <li><a href="#lora">Low-Rank Adaptation (LoRA)</a></li>
+            <li><a href="#qlora">QLoRA &amp; Quantized Adaptation</a></li>
+          </ol>
+        </li>
+        <li><a href="#preference-alignment">Preference Alignment &amp; RLHF</a>
+          <ol>
+            <li><a href="#rlhf">RLHF via PPO</a></li>
+            <li><a href="#dpo">Direct Preference Optimization (DPO)</a></li>
+          </ol>
+        </li>
+        <li><a href="#alignment-tax">The Alignment Tax &amp; Catastrophic Forgetting</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="overview">1. Overview &amp; Post-Training Lifecycle</h2>
+    <p>A raw pre-trained base model functions strictly as an autoregressive text completer. Given an instruction such as "Summarize this article," a base model is statistically likely to append additional related bullet points, ask a related exam question, or generate further article text rather than executing the summary command <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>Post-training resolves this behavioral mismatch through a disciplined pipeline:</p>
+    <ol>
+      <li><strong>Instruction Tuning / SFT:</strong> Teaching the model the turn-based schema of conversational interaction (e.g. system, user, assistant roles) and cultivating instruction adherence across diverse tasks.</li>
+      <li><strong>Preference Optimization:</strong> Aligning model responses with human values, conciseness criteria, factual veracity, and safety boundaries using ranking signals.</li>
+    </ol>
+
+    <h2 id="supervised-fine-tuning">2. Supervised Fine-Tuning (SFT)</h2>
+    <p>In Supervised Fine-Tuning, training instances consist of formatted prompt-response pairs \((\mathbf{x}, \mathbf{y})\). Crucially, during loss computation, the model's loss mask zeroes out gradients on prompt tokens \(\mathbf{x}\), computing cross-entropy loss exclusively on target completion tokens \(\mathbf{y} = (y_1, y_2, \dots, y_T)\) <span class="cite">[<a href="#ref-2">2</a>]</span>:</p>
+    $$\mathcal{L}_{\text{SFT}}(\theta) = -\sum_{t=1}^T \log P(y_t \mid \mathbf{x}, y_1, \dots, y_{t-1}; \theta)$$
+    <p>SFT dataset scale is vastly smaller than pre-training: while pre-training consumes trillions of tokens, effective SFT requires only tens of thousands to hundreds of thousands of high-quality demonstrations (as demonstrated by the LIMA hypothesis: "Less Is More for Alignment" <span class="cite">[<a href="#ref-3">3</a>]</span>). Data quality, stylistic consistency, and step-by-step reasoning chains far outweigh sheer token volume during SFT.</p>
+
+    <h2 id="peft">3. Parameter-Efficient Fine-Tuning (PEFT)</h2>
+    <p>Full-parameter fine-tuning modifies all model weights \(\mathbf{W} \in \mathbb{R}^{d \times k}\). For models with 70 billion parameters, this requires storing duplicate gradient, momentum, and variance states across hundreds of gigabytes of VRAM. Parameter-Efficient Fine-Tuning (PEFT) updates only a small fraction (typically &lt;1%) of parameters while freezing base weights.</p>
+
+    <h3 id="lora">Low-Rank Adaptation (LoRA)</h3>
+    <p>Hu et al. hypothesized that weight updates during downstream adaptation have a low "intrinsic dimension" <span class="cite">[<a href="#ref-4">4</a>]</span>. Rather than updating \(\mathbf{W}_0\) directly, LoRA decomposes the weight update matrix \(\Delta \mathbf{W}\) into the product of two low-rank matrices \(\mathbf{B}\) and \(\mathbf{A}\):</p>
+    $$\mathbf{W} = \mathbf{W}_0 + \Delta \mathbf{W} = \mathbf{W}_0 + \frac{\alpha}{r} \mathbf{B}\mathbf{A}$$
+    <p>where \(\mathbf{W}_0 \in \mathbb{R}^{d \times k}\) remains frozen, \(\mathbf{A} \in \mathbb{R}^{r \times k}\) is initialized from a Gaussian distribution, \(\mathbf{B} \in \mathbb{R}^{d \times r}\) is initialized to zero (ensuring \(\Delta \mathbf{W} = 0\) at the start of training), \(r \ll \min(d, k)\) is the low-rank rank (typically \(r \in [8, 64]\)), and \(\alpha\) is a scaling constant.</p>
+    <p>LoRA reduces GPU VRAM consumption by up to 75% and eliminates deployment overhead: adapter weights can be dynamically swapped or merged directly into \(\mathbf{W}_0\) for zero-latency inference.</p>
+
+    <h3 id="qlora">QLoRA &amp; Quantized Adaptation</h3>
+    <p>Dettmers et al. extended LoRA to consumer hardware by introducing QLoRA <span class="cite">[<a href="#ref-5">5</a>]</span>:</p>
+    <ul>
+      <li><strong>NF4 (NormalFloat 4):</strong> An information-theoretically optimal quantile quantization data type for normally distributed neural network weights.</li>
+      <li><strong>Double Quantization (DQ):</strong> Quantizing the quantization constants themselves, saving roughly 0.37 bits per parameter.</li>
+      <li><strong>Paged Optimizers:</strong> Utilizing CUDA Unified Memory to page memory between GPU and CPU during memory spikes, preventing out-of-memory crashes.</li>
+    </ul>
+
+    <h2 id="preference-alignment">4. Preference Alignment &amp; RLHF</h2>
+    <p>SFT trains a model to produce plausible responses, but fails to penalize subtle hallucinations, sycophantic agreement, or unsafe outputs. Preference alignment optimizes the model using pairwise human comparisons where human evaluators indicate which of two completions \((y_w, y_l)\) is preferred for a given prompt \(x\).</p>
+
+    <h3 id="rlhf">RLHF via PPO</h3>
+    <p>Reinforcement Learning from Human Feedback (RLHF) trains a scalar Reward Model \(r_\psi(x, y)\) on paired comparisons using a Bradley-Terry preference loss <span class="cite">[<a href="#ref-1">1</a>]</span>. The policy network \(\pi_\theta\) is then optimized using Proximal Policy Optimization (PPO) <span class="cite">[<a href="#ref-6">6</a>]</span> with a Kullback-Leibler (KL) penalty to prevent the policy from drifting excessively from the initial reference model \(\pi_{\text{ref}}\):</p>
+    $$\max_\theta \mathbb{E}_{(x, y) \sim \mathcal{D}_{\pi_\theta}} \left[ r_\psi(x, y) - \beta D_{\text{KL}}(\pi_\theta(y \mid x) \parallel \pi_{\text{ref}}(y \mid x)) \right]$$
+
+    <h3 id="dpo">Direct Preference Optimization (DPO)</h3>
+    <p>In 2023, Rafailov et al. demonstrated that the constrained RLHF objective can be solved analytically without fitting an explicit reward model or executing reinforcement learning sampling loops <span class="cite">[<a href="#ref-7">7</a>]</span>. By reparameterizing the reward as an implicit function of the optimal policy and reference model, DPO optimizes directly over preference pairs using a binary cross-entropy loss:</p>
+    $$\mathcal{L}_{\text{DPO}}(\theta; \pi_{\text{ref}}) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)} - \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)} \right) \right]$$
+    <p>DPO achieves comparable or superior alignment performance to PPO while remaining stable, computationally lightweight, and mathematically tractable.</p>
+
+    <h2 id="alignment-tax">5. The Alignment Tax &amp; Catastrophic Forgetting</h2>
+    <p>While fine-tuning instills adherence and safety, it frequently imposes an <em>alignment tax</em> <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <ul>
+      <li><strong>Entropy Collapse:</strong> Base models exhibit high token diversity across generation distributions. Aggressive preference optimization forces the model into narrow, conservative response modes.</li>
+      <li><strong>Catastrophic Forgetting:</strong> Fine-tuning on conversational datasets can degrade performance on complex symbolic reasoning, competitive mathematics, or specialized programming benchmarks.</li>
+      <li><strong>Refusal Calibration:</strong> Over-aligned models frequently trigger false-positive refusals, rejecting benign queries containing sensitive keywords (e.g. refusing to write a bash script that "kills" a process).</li>
+    </ul>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/eli5/fine-tuning/">ELI5: Fine-Tuning</a> &middot; Visual picture-book explainer of teaching manners and job skills to an AI.</li>
+        <li><a href="/reference/pre-training/">Pre-Training</a> &middot; Self-supervised training on trillion-token corpora prior to adaptation.</li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a> &middot; Foundational Transformer architectures and self-attention mechanisms.</li>
+        <li><a href="/reference/reward-hacking/">Reward Hacking</a> &middot; Exploitation of reward model specification gaming during RLHF.</li>
+        <li><a href="/reference/sycophancy/">Sycophancy in AI</a> &middot; Behavioral failure modes induced by human preference fine-tuning.</li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] L. Ouyang, J. Wu, X. Jiang, et al., "Training language models to follow instructions with human feedback," in <em>NeurIPS</em>, 2022. <a href="https://arxiv.org/abs/2203.02155">https://arxiv.org/abs/2203.02155</a></li>
+        <li id="ref-2">[2] J. Wei, M. Bosma, V. Y. Zhao, et al., "Finetuned Language Models Are Zero-Shot Learners," in <em>ICLR</em>, 2022. <a href="https://arxiv.org/abs/2109.01652">https://arxiv.org/abs/2109.01652</a></li>
+        <li id="ref-3">[3] C. Zhou, P. Liu, P. Xu, et al., "LIMA: Less Is More for Alignment," in <em>NeurIPS</em>, 2023. <a href="https://arxiv.org/abs/2305.11206">https://arxiv.org/abs/2305.11206</a></li>
+        <li id="ref-4">[4] E. J. Hu, Y. Shen, P. Wallis, et al., "LoRA: Low-Rank Adaptation of Large Language Models," in <em>ICLR</em>, 2022. <a href="https://arxiv.org/abs/2106.09685">https://arxiv.org/abs/2106.09685</a></li>
+        <li id="ref-5">[5] T. Dettmers, A. Pagnoni, A. Holtzman, and L. Zettlemoyer, "QLoRA: Efficient Finetuning of Quantized LLMs," in <em>NeurIPS</em>, 2023. <a href="https://arxiv.org/abs/2305.14314">https://arxiv.org/abs/2305.14314</a></li>
+        <li id="ref-6">[6] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, "Proximal Policy Optimization Algorithms," <em>arXiv:1707.06347</em>, 2017. <a href="https://arxiv.org/abs/1707.06347">https://arxiv.org/abs/1707.06347</a></li>
+        <li id="ref-7">[7] R. Rafailov, A. Sharma, E. Mitchell, S. Ermon, C. D. Manning, and C. Finn, "Direct Preference Optimization: Your Language Model is Secretly a Reward Model," in <em>NeurIPS</em>, 2023. <a href="https://arxiv.org/abs/2305.18290">https://arxiv.org/abs/2305.18290</a></li>
+      </ol>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

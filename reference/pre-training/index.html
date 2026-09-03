@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre-Training &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on pre-training in artificial intelligence: self-supervised objectives, compute scaling laws, dataset curation pipelines, and distributed training systems.">
+  <meta property="og:title" content="Pre-Training &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on pre-training in AI: self-supervised objectives, compute scaling laws, dataset curation pipelines, and distributed training systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/pre-training/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/pre-training/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --box-bg: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.78rem;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 0.1rem;
+    }
+    .cite a { color: var(--link); text-decoration: none; }
+    .cite a:hover { text-decoration: underline; }
+    .references ol {
+      font-size: 0.88rem;
+      padding-left: 1.4rem;
+    }
+    .references li {
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--well);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <div class="kicker">Reference Guide</div>
+    <h1>Pre-Training</h1>
+    <p class="updated">Published September 3, 2026 &middot; Deep Learning &amp; Language Modeling</p>
+
+    <p class="lede"><strong>Pre-training</strong> is the initial self-supervised phase of machine learning in which a neural network optimizes billions of parameters over massive, uncurated or weakly curated datasets. By predicting masked or subsequent tokens across trillions of text fragments, the model encodes generalized linguistic structure, factual associations, and latent reasoning abstractions prior to task-specific adaptation or alignment.</p>
+
+    <nav class="toc" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#overview">Overview &amp; The Self-Supervised Paradigm</a></li>
+        <li><a href="#mathematical-objectives">Mathematical Objectives &amp; Architectures</a>
+          <ol>
+            <li><a href="#causal-language-modeling">Causal Language Modeling (CLM)</a></li>
+            <li><a href="#masked-language-modeling">Masked Language Modeling (MLM)</a></li>
+          </ol>
+        </li>
+        <li><a href="#compute-scaling-laws">Compute Scaling Laws &amp; Chinchilla Frontier</a></li>
+        <li><a href="#data-curation">Data Curation &amp; Filtering Pipelines</a></li>
+        <li><a href="#distributed-systems">Distributed Systems &amp; 3D Parallelism</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="overview">1. Overview &amp; The Self-Supervised Paradigm</h2>
+    <p>Before modern pre-training, natural language processing relied on supervised learning, where human annotators manually labeled training examples for isolated tasks such as sentiment classification, named entity recognition, or syntactic parsing <span class="cite">[<a href="#ref-1">1</a>]</span>. This paradigm suffered from severe data bottlenecks: human labeling does not scale to billions of examples, and models trained on narrow tasks fail to generalize beyond their training distribution.</p>
+    <p>Pre-training replaced supervised human labeling with <em>self-supervision</em> <span class="cite">[<a href="#ref-2">2</a>]</span>. The supervisory signal is generated directly from the natural structure of the text itself by predicting missing words or calculating the likelihood of upcoming tokens. In this stage, the base model acquires broad world knowledge, statistical syntax, and internal semantic abstractions, acting as a foundational base for fine-tuning.</p>
+
+    <h2 id="mathematical-objectives">2. Mathematical Objectives &amp; Architectures</h2>
+
+    <h3 id="causal-language-modeling">Causal Language Modeling (CLM)</h3>
+    <p>Autoregressive generative models (such as GPT-4, Llama, and Mistral) utilize Causal Language Modeling. Given an arbitrary token sequence \(\mathbf{x} = (x_1, x_2, \dots, x_T)\), the network is trained using maximum likelihood estimation to minimize cross-entropy loss over next-token predictions:</p>
+    $$\mathcal{L}_{\text{CLM}}(\theta) = -\frac{1}{T} \sum_{t=1}^T \log P(x_t \mid x_1, x_2, \dots, x_{t-1}; \theta)$$
+    <p>where \(P(x_t \mid x_{<t}; \theta) = \text{softmax}(\mathbf{W}_U \mathbf{h}_{t-1})\), \(\mathbf{h}_{t-1}\) is the hidden state output from the causal Transformer decoder, and \(\mathbf{W}_U\) is the vocabulary unembedding projection matrix. An autoregressive attention mask enforces causality by zeroing out attention weights to future token indices \(j > t\).</p>
+
+    <h3 id="masked-language-modeling">Masked Language Modeling (MLM)</h3>
+    <p>Bidirectional encoder models (such as BERT and RoBERTa) optimize a denoising autoencoder objective <span class="cite">[<a href="#ref-3">3</a>]</span>. A stochastic subset of tokens \(M \subset \{1, \dots, T\}\) (typically 15%) is corrupted: 80% are replaced with a special <code>[MASK]</code> token, 10% are replaced with an arbitrary random token, and 10% remain unchanged:</p>
+    $$\mathcal{L}_{\text{MLM}}(\theta) = -\sum_{i \in M} \log P(x_i \mid \tilde{\mathbf{x}}; \theta)$$
+    <p>Because self-attention is unmasked and bidirectional, MLM hidden states condition on both left and right context simultaneously, making MLM effective for feature extraction, semantic search embeddings, and classification, but inefficient for open-ended text generation.</p>
+
+    <h2 id="compute-scaling-laws">3. Compute Scaling Laws &amp; Chinchilla Frontier</h2>
+    <p>Pre-training performance follows empirical power laws relating parameter count \(N\), training dataset size in tokens \(D\), and total floating-point operations \(C\) <span class="cite">[<a href="#ref-4">4</a>]</span>. Total training compute is approximated by:</p>
+    $$C \approx 6ND$$
+    <p>In 2020, Kaplan et al. at OpenAI posited that model size \(N\) should scale substantially faster than dataset token volume \(D\) as compute increases <span class="cite">[<a href="#ref-4">4</a>]</span>. In 2022, Hoffmann et al. at DeepMind demonstrated that Kaplan et al. evaluated sub-optimally scheduled learning rates, resulting in severely undertrained models. Fitting the empirical parametric loss surface:</p>
+    $$L(N, D) = E + \frac{A}{N^\alpha} + \frac{B}{D^\beta}$$
+    <p>DeepMind established the <em>Chinchilla scaling law</em>: for compute-optimal training, model parameter count \(N\) and training token volume \(D\) must scale in equal proportion (\(\alpha \approx \beta \approx 0.5\)):</p>
+    $$N_{\text{opt}} \propto C^{0.5}, \quad D_{\text{opt}} \propto C^{0.5}$$
+    <p>Under Chinchilla optimality, a 70-billion-parameter model requires approximately 1.4 trillion tokens. Subsequent open-weights models (such as Llama 3) deliberately overtrain past the Chinchilla compute frontier (e.g. 15 trillion tokens for an 8B model) to minimize downstream inference latency and memory footprints at serving time.</p>
+
+    <h2 id="data-curation">4. Data Curation &amp; Filtering Pipelines</h2>
+    <p>Modern pre-training datasets span 5 to 20 trillion tokens. Raw web crawls (such as Common Crawl) cannot be fed directly to training clusters without extensive multi-stage filtering <span class="cite">[<a href="#ref-5">5</a>]</span>:</p>
+    <ul>
+      <li><strong>Text Extraction &amp; Normalization:</strong> Removing HTML boilerplate, normalizing Unicode characters, and stripping machine-generated SEO spam.</li>
+      <li><strong>Quality Filtering:</strong> Classifier-based filtering (such as FastText or small Transformers trained on curated corpora like Wikipedia, textbooks, and peer-reviewed journals) and heuristic filters (word count distributions, symbol-to-word ratios, repetition checks).</li>
+      <li><strong>Fuzzy Deduplication:</strong> MinHash and Locality-Sensitive Hashing (LSH) algorithms detect and purge near-duplicate documents. Deduplication prevents verbatim memorization and accelerates convergence.</li>
+      <li><strong>Privacy &amp; Safety:</strong> Automated regex and entity-detection filters mask personally identifiable information (PII) and exclude illegal content.</li>
+      <li><strong>Curriculum Annealing:</strong> High-quality synthetic data, mathematical proofs, and clean code repositories are upsampled toward the final 10% to 20% of the training schedule to enhance reasoning capabilities before checkpoint freeze.</li>
+    </ul>
+
+    <h2 id="distributed-systems">5. Distributed Systems &amp; 3D Parallelism</h2>
+    <p>Because frontier pre-training models exceed the memory capacity of an individual GPU (e.g., an 80GB H100 GPU holds only ~16 billion parameters in FP16, excluding optimizer states and activations), pre-training relies on 3D parallelism <span class="cite">[<a href="#ref-6">6</a>]</span>:</p>
+    <ul>
+      <li><strong>Tensor Parallelism (Megatron-LM):</strong> Splitting individual weight matrices (such as attention query/key/value projections and MLP layers) across multiple GPUs within the same NVLink node <span class="cite">[<a href="#ref-6">6</a>]</span>.</li>
+      <li><strong>Pipeline Parallelism:</strong> Partitioning consecutive layers across different GPU nodes with micro-batch scheduling (e.g., 1F1B schedule) to minimize idle bubble time.</li>
+      <li><strong>Zero Redundancy Optimizer (ZeRO / FSDP):</strong> Sharding optimizer states (ZeRO-1), gradients (ZeRO-2), and parameters (ZeRO-3) across data-parallel ranks, removing memory duplication.</li>
+      <li><strong>Precision:</strong> Mixed-precision training utilizing BF16 or FP8 execution formats with FP32 master weight accumulation prevents gradient underflow while maximizing tensor core utilization.</li>
+    </ul>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/eli5/pre-training/">ELI5: Pre-Training</a> &middot; Visual picture-book explainer of how AI reads the library before learning its job.</li>
+        <li><a href="/reference/fine-tuning/">Fine-Tuning and Alignment</a> &middot; Supervised task adaptation, RLHF, and parameter-efficient methods.</li>
+        <li><a href="/reference/tokens/">Tokens and Tokenization</a> &middot; Vocabulary algorithms and subword units ingested during pre-training.</li>
+        <li><a href="/reference/embeddings/">Embeddings and Vector Representations</a> &middot; Latent geometric manifolds learned through self-supervision.</li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a> &middot; Transformer architecture, self-attention mechanisms, and generation.</li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] D. Jurafsky and J. H. Martin, <em>Speech and Language Processing</em>, 3rd ed. draft, Prentice Hall, 2024.</li>
+        <li id="ref-2">[2] A. Radford, K. Narasimhan, T. Salimans, and I. Sutskever, "Improving Language Understanding by Generative Pre-Training," <em>OpenAI Technical Report</em>, 2018.</li>
+        <li id="ref-3">[3] J. Devlin, M. Chang, K. Lee, and K. Toutanova, "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding," in <em>NAACL-HLT</em>, 2019, pp. 4171–4186. <a href="https://arxiv.org/abs/1810.04805">https://arxiv.org/abs/1810.04805</a></li>
+        <li id="ref-4">[4] J. Kaplan, S. McCandlish, T. Henighan, T. B. Brown, B. Chess, R. Child, S. Gray, A. Radford, J. Wu, and D. Amodei, "Scaling Laws for Neural Language Models," <em>arXiv:2001.08361</em>, 2020. <a href="https://arxiv.org/abs/2001.08361">https://arxiv.org/abs/2001.08361</a></li>
+        <li id="ref-5">[5] J. Hoffmann, S. Borgeaud, A. Mensch, et al., "Training Compute-Optimal Large Language Models," in <em>NeurIPS</em>, 2022. <a href="https://arxiv.org/abs/2203.15556">https://arxiv.org/abs/2203.15556</a></li>
+        <li id="ref-6">[6] H. Touvron, L. Martin, K. Stone, et al., "Llama 2: Open Foundation and Fine-Tuned Chat Models," <em>arXiv:2307.09288</em>, 2023. <a href="https://arxiv.org/abs/2307.09288">https://arxiv.org/abs/2307.09288</a></li>
+        <li id="ref-7">[7] M. Shoeybi, M. Patwary, R. Puri, P. LeGresley, J. Casper, and B. Catanzaro, "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism," <em>arXiv:1909.08053</em>, 2019. <a href="https://arxiv.org/abs/1909.08053">https://arxiv.org/abs/1909.08053</a></li>
+        <li id="ref-8">[8] S. Rajbhandari, J. Rasley, O. Ruwase, and Y. He, "ZeRO: Memory Optimizations Toward Training Trillion Parameter Models," in <em>SC20: International Conference for High Performance Computing, Networking, Storage and Analysis</em>, 2020, pp. 1–16.</li>
+      </ol>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
