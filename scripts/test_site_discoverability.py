@@ -44,6 +44,18 @@ def is_snapshot_slug(slug: str) -> bool:
     return bool(SNAPSHOT_SLUG.search(slug))
 
 
+def bucket_datetimes(html: str) -> dict[str, list[str]]:
+    sections = re.findall(
+        r'<section class="bucket" id="([^"]+)">(.*?)</section>',
+        html,
+        re.S,
+    )
+    return {
+        bucket_id: re.findall(r'<time datetime="([^"]+)">', body)
+        for bucket_id, body in sections
+    }
+
+
 class MetaDescriptionParser(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -97,6 +109,17 @@ class SiteDiscoverabilityTests(unittest.TestCase):
                 rf'href="/writing/{re.escape(item["slug"])}/">[^<]*</a>\s*<time datetime="{item["date"]}"',
             )
         self.assertGreaterEqual(len(re.findall(r'<li class="pin">', html)), 13)
+        datetimes = bucket_datetimes(html)
+        self.assertEqual(list(datetimes), ["systems", "payments", "essays"])
+        for bucket_id, dates in datetimes.items():
+            self.assertEqual(dates, sorted(dates, reverse=True), bucket_id)
+        systems = re.search(
+            r'<section class="bucket" id="systems">.*?</section>', html, re.S
+        ).group(0)
+        employee = systems.find("/writing/the-employee-you-cant-stop-managing/")
+        meat = systems.find("/writing/meat-proxy-problem/")
+        source = systems.find("/writing/build-source-of-truth-before-index/")
+        self.assertTrue(0 <= employee < meat < source)
 
     def test_homepage_pins_and_linters(self):
         html = HOME.read_text(encoding="utf-8")
