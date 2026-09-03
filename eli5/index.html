@@ -16,6 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903c">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -24,25 +25,14 @@
     gtag('config', 'G-TLBY8P4GG9');
   </script>
   <style>
-    :root {
-      --paper: #f4eee4;
-      --ink: #1c1612;
-      --mute: #6e645a;
-      --line: #d4c9bb;
-      --op: #9a3412;
-      --card: #fffaf3;
-    }
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html {
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
     }
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
       line-height: 1.45;
-      color-scheme: light;
     }
     main {
       max-width: 40rem;
@@ -52,6 +42,7 @@
       padding: clamp(1.2rem, 4vw, 2rem) clamp(1.15rem, 5vw, 1.75rem) 3.5rem;
     }
     .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       margin: 0 0 1.6rem;
       font-size: 0.95rem;
       font-weight: 700;
@@ -106,7 +97,7 @@
       height: 2.6rem;
       border-radius: 50%;
       background: var(--card, #fffaf3);
-      color: var(--ink, #1c1612);
+      color: var(--ink);
       border: 1px solid var(--line, #d4c9bb);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       display: flex;
@@ -125,7 +116,7 @@
       transform: translateY(0);
     }
     .back-to-top:hover {
-      background: var(--paper, #f4eee4);
+      background: var(--paper);
       border-color: var(--op, #9a3412);
       color: var(--op, #9a3412);
     }
@@ -138,7 +129,7 @@
     }
   </style>
 </head>
-<body>
+<body class="eli5">
   <main>
     <header>
       <p class="back"><a href="/">← Nestor G Pestelos Jr</a></p>

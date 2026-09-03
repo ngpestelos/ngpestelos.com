@@ -16,6 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903c">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -25,16 +26,10 @@
   </script>
   <style>
     :root {
-      --paper: #f4eee4;
-      --ink: #1c1612;
-      --mute: #6e645a;
-      --line: #d4c9bb;
-      --op: #9a3412;
       --op-edge: #7c2d12;
       --leaf: #0f5c57;
       --leaf-edge: #0b4a46;
       --edge: #8a7d72;
-      --card: #fffaf3;
       --blue: #1d4ed8;
       --blue-edge: #1e40af;
     }
@@ -48,9 +43,6 @@
       html { scroll-behavior: auto; }
     }
     body {
-      background: var(--paper);
-      color: var(--ink);
-      font-family: "Segoe UI", Helvetica, ui-sans-serif, system-ui, sans-serif;
       line-height: 1.5;
     }
     main {
@@ -59,6 +51,7 @@
       padding: 1.4rem 1.4rem 4rem;
     }
     .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       margin: 0 0 1.6rem;
       font-size: 0.95rem;
       font-weight: 700;
@@ -66,6 +59,7 @@
     .back a { color: var(--op); text-decoration: none; }
     .back a:hover { text-decoration: underline; }
     .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.85rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
@@ -170,7 +164,7 @@
       height: 2.6rem;
       border-radius: 50%;
       background: var(--card, #fffaf3);
-      color: var(--ink, #1c1612);
+      color: var(--ink);
       border: 1px solid var(--line, #d4c9bb);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       display: flex;
@@ -189,7 +183,7 @@
       transform: translateY(0);
     }
     .back-to-top:hover {
-      background: var(--paper, #f4eee4);
+      background: var(--paper);
       border-color: var(--op, #9a3412);
       color: var(--op, #9a3412);
     }
@@ -202,7 +196,7 @@
     }
   </style>
 </head>
-<body>
+<body class="eli5">
   <main>
     <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/eli5/">ELI5</a></p>
     <p class="kicker">Machine Learning &middot; Picture Book</p>
@@ -252,8 +246,8 @@
           </g>
 
           <!-- Summation Circle -->
-          <circle cx="390" cy="160" r="64" fill="#fffaf3" stroke="#1c1612" stroke-width="2"/>
-          <text x="390" y="152" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Sum + Bias</text>
+          <circle cx="390" cy="160" r="64" fill="#fffaf3" stroke="#1c1915" stroke-width="2"/>
+          <text x="390" y="152" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1915">Sum + Bias</text>
           <text x="390" y="176" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Total = 1.1</text>
 
           <!-- Circle to Activation Arrow -->
@@ -294,15 +288,15 @@
         <svg viewBox="0 0 800 340" role="img" aria-label="Diagram showing input layer finding edges, hidden layer finding parts, and output layer finding objects with generous header clearance.">
           <!-- Background container cards -->
           <rect x="20" y="20" width="170" height="300" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="105" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Input Layer</text>
+          <text x="105" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1915">Input Layer</text>
           <text x="105" y="74" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Raw Pixels</text>
 
           <rect x="290" y="20" width="220" height="300" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="400" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Hidden Layer</text>
+          <text x="400" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1915">Hidden Layer</text>
           <text x="400" y="74" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Edges &amp; Textures</text>
 
           <rect x="610" y="20" width="170" height="300" rx="12" fill="#fffaf3" stroke="#d4c9bb" stroke-width="1.5"/>
-          <text x="695" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1612">Output Layer</text>
+          <text x="695" y="50" text-anchor="middle" font-family="sans-serif" font-weight="700" font-size="15" fill="#1c1915">Output Layer</text>
           <text x="695" y="74" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#6e645a">Final Decision</text>
 
           <!-- CONNECTORS UNDERNEATH NODES (Layer 1 x=105 to Layer 2 x=400) -->
@@ -385,7 +379,7 @@
           <!-- Card 1: Forward Pass (Top Left) -->
           <rect x="30" y="20" width="330" height="110" rx="12" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
           <text x="55" y="52" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">1. Forward Pass</text>
-          <text x="55" y="78" font-family="sans-serif" font-size="13" fill="#1c1612">Input: picture of a cat</text>
+          <text x="55" y="78" font-family="sans-serif" font-size="13" fill="#1c1915">Input: picture of a cat</text>
           <text x="55" y="100" font-family="sans-serif" font-size="12" fill="#6e645a">Signals propagate through network</text>
 
           <!-- Arrow 1 -> 2 (Top Horizontal, Right) -->
@@ -395,7 +389,7 @@
           <!-- Card 2: Prediction (Top Right) -->
           <rect x="440" y="20" width="330" height="110" rx="12" fill="#fffaf3" stroke="#0f5c57" stroke-width="2"/>
           <text x="465" y="52" font-family="sans-serif" font-weight="700" font-size="15" fill="#0f5c57">2. Network Prediction</text>
-          <text x="465" y="78" font-family="sans-serif" font-size="13" fill="#1c1612">Guess: "Dog" (92% confidence)</text>
+          <text x="465" y="78" font-family="sans-serif" font-size="13" fill="#1c1915">Guess: "Dog" (92% confidence)</text>
           <text x="465" y="100" font-family="sans-serif" font-size="12" fill="#6e645a">Raw output before verification</text>
 
           <!-- Arrow 2 -> 3 (Right Vertical, Down) -->
@@ -405,7 +399,7 @@
           <!-- Card 3: Measure Loss (Bottom Right) -->
           <rect x="440" y="190" width="330" height="110" rx="12" fill="#fffaf3" stroke="#9a3412" stroke-width="2"/>
           <text x="465" y="222" font-family="sans-serif" font-weight="700" font-size="15" fill="#9a3412">3. Measure Error (Loss)</text>
-          <text x="465" y="248" font-family="sans-serif" font-size="13" fill="#1c1612">Compare with true label ("Cat")</text>
+          <text x="465" y="248" font-family="sans-serif" font-size="13" fill="#1c1915">Compare with true label ("Cat")</text>
           <text x="465" y="270" font-family="sans-serif" font-size="12" fill="#6e645a">Error Score = 0.85 (High mistake)</text>
 
           <!-- Arrow 3 -> 4 (Bottom Horizontal, Left) -->
@@ -415,7 +409,7 @@
           <!-- Card 4: Backpropagation (Bottom Left) -->
           <rect x="30" y="190" width="330" height="110" rx="12" fill="#fffaf3" stroke="#1d4ed8" stroke-width="2"/>
           <text x="55" y="222" font-family="sans-serif" font-weight="700" font-size="15" fill="#1d4ed8">4. Backpropagation</text>
-          <text x="55" y="248" font-family="sans-serif" font-size="13" fill="#1c1612">Trace error back through layers</text>
+          <text x="55" y="248" font-family="sans-serif" font-size="13" fill="#1c1915">Trace error back through layers</text>
           <text x="55" y="270" font-family="sans-serif" font-size="12" fill="#6e645a">Nudge dials toward correct guess</text>
 
           <!-- Arrow 4 -> 1 (Left Vertical, Up) -->

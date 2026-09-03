@@ -16,6 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903c">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -24,15 +25,7 @@
     gtag('config', 'G-TLBY8P4GG9');
   </script>
   <style>
-    :root {
-      --bg: #ffffff;
-      --well: #f8f9fa;
-      --ink: #202122;
-      --mute: #54595d;
-      --line: #a2a9b1;
-      --link: #0645ad;
-      --link-visited: #795cb2;
-    }
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html {
       -webkit-text-size-adjust: 100%;
@@ -40,9 +33,6 @@
       scroll-behavior: smooth;
     }
     body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Georgia, "Times New Roman", serif;
       line-height: 1.6;
     }
     main {
@@ -51,7 +41,7 @@
       padding: 1.4rem 1.4rem 4rem;
     }
     .back {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.85rem;
       color: var(--mute);
       margin-bottom: 1.4rem;
@@ -66,7 +56,7 @@
       margin-bottom: 1rem;
     }
     .next-step {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.98rem;
       color: var(--mute);
       max-width: 40ch;
@@ -78,7 +68,7 @@
       border-radius: 4px;
       padding: 0.6rem 0.8rem;
       margin-bottom: 1.8rem;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.92rem;
       display: flex;
       flex-wrap: wrap;
@@ -94,7 +84,7 @@
       border-radius: 3px;
     }
     .alpha-nav a:hover {
-      background: #eaecf0;
+      background: var(--border);
       text-decoration: underline;
     }
     .alpha-nav a:visited {
@@ -120,7 +110,7 @@
       margin-bottom: 0;
     }
     .letter-heading {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 1.2rem;
       font-weight: 700;
       color: var(--ink);
@@ -130,7 +120,7 @@
     }
     #reference ul {
       list-style: none;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     }
     #reference li {
       padding: 0.45rem 0;
@@ -190,7 +180,7 @@
     }
   </style>
 </head>
-<body>
+<body class="reference">
   <main>
     <header>
       <p class="back"><a href="/">← Nestor G Pestelos Jr</a></p>

@@ -16,6 +16,7 @@
   <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
   <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903c">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
@@ -39,22 +40,10 @@
     gtag('config', 'G-TLBY8P4GG9');
   </script>
   <style>
-    :root {
-      --bg: #ffffff;
-      --well: #f8f9fa;
-      --ink: #202122;
-      --mute: #54595d;
-      --line: #a2a9b1;
-      --link: #0645ad;
-      --link-visited: #795cb2;
-      --box-bg: #f8f9fa;
-    }
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: Georgia, "Times New Roman", serif;
       line-height: 1.6;
     }
     main {
@@ -63,7 +52,7 @@
       padding: 1.4rem 1.4rem 4rem;
     }
     .back {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.85rem;
       color: var(--mute);
       margin-bottom: 1.4rem;
@@ -71,7 +60,7 @@
     .back a { color: var(--link); text-decoration: none; }
     .back a:hover { text-decoration: underline; }
     .kicker {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.78rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -86,7 +75,7 @@
       margin-bottom: 1rem;
     }
     .updated {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.82rem;
       color: var(--mute);
       margin-bottom: 1.4rem;
@@ -94,13 +83,13 @@
     .lede { margin-bottom: 1.6rem; }
     .lede strong:first-child { font-weight: 700; }
     .toc {
-      background: var(--box-bg);
+      background: var(--well);
       border: 1px solid var(--line);
       border-radius: 4px;
       padding: 1rem 1.4rem;
       margin-bottom: 2rem;
       max-width: 26rem;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.92rem;
     }
     .toc .toc-title {
@@ -125,7 +114,7 @@
     code {
       font-family: "SF Mono", Consolas, Monaco, monospace;
       font-size: 0.9em;
-      background: var(--box-bg);
+      background: var(--well);
       padding: 0.1em 0.35em;
       border-radius: 3px;
     }
@@ -143,7 +132,7 @@
     #references { font-size: 0.95rem; }
     #references .backlink { margin-right: 0.3rem; }
     .diagram-box {
-      background: var(--box-bg);
+      background: var(--well);
       border: 1px solid var(--line);
       border-radius: 6px;
       padding: 1.2rem;
@@ -158,7 +147,7 @@
       margin-top: 3rem;
       padding-top: 1.2rem;
       border-top: 1px solid var(--line);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.85rem;
       color: var(--mute);
     }
@@ -203,7 +192,7 @@
     }
   </style>
 </head>
-<body>
+<body class="reference">
   <main id="top">
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a></p>
     <p class="kicker">Systems Engineering · Computer Science · Operations Research</p>
@@ -222,8 +211,8 @@
         <text x="25" y="80" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d" transform="rotate(-90 25 80)">Performance</text>
 
         <!-- Throughput Curve (Blue) -->
-        <path d="M 60 140 Q 200 40 320 40 L 580 40" fill="none" stroke="#0645ad" stroke-width="2.5"/>
-        <text x="500" y="32" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" fill="#0645ad">Throughput (Saturation Ceiling)</text>
+        <path d="M 60 140 Q 200 40 320 40 L 580 40" fill="none" stroke="#9a3412" stroke-width="2.5"/>
+        <text x="500" y="32" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" fill="#9a3412">Throughput (Saturation Ceiling)</text>
 
         <!-- Latency Curve (Red) -->
         <path d="M 60 125 Q 320 120 420 80 Q 500 40 580 22" fill="none" stroke="#9f1239" stroke-width="2" stroke-dasharray="4,3"/>
@@ -231,7 +220,7 @@
 
         <!-- Knee of Curve Marker -->
         <line x1="320" y1="140" x2="320" y2="35" stroke="#54595d" stroke-width="1" stroke-dasharray="2,2"/>
-        <circle cx="320" cy="40" r="4" fill="#0645ad"/>
+        <circle cx="320" cy="40" r="4" fill="#9a3412"/>
         <text x="320" y="22" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#202122">Knee of Curve (\(N^*\))</text>
       </svg>
     </div>
