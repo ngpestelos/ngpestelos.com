@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Windows &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on context windows in large language models: quadratic attention complexity, KV cache scaling, RoPE position interpolation, and the Lost in the Middle phenomenon.">
+  <meta property="og:title" content="Context Windows &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on context windows in LLMs: quadratic attention complexity, KV cache scaling, RoPE position interpolation, and the Lost in the Middle phenomenon.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/context-window/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/context-window/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --box-bg: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.78rem;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 0.1rem;
+    }
+    .cite a { color: var(--link); text-decoration: none; }
+    .cite a:hover { text-decoration: underline; }
+    .references ol {
+      font-size: 0.88rem;
+      padding-left: 1.4rem;
+    }
+    .references li {
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--well);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <div class="kicker">Reference Guide</div>
+    <h1>Context Windows</h1>
+    <p class="updated">Published September 3, 2026 &middot; Transformer Architecture &amp; Systems Engineering</p>
+
+    <p class="lede">A <strong>context window</strong> (also designated <em>context length</em> or <em>maximum sequence length</em>) is the finite boundary of tokens that an attention-based neural network can condition upon within a single computational forward pass. Because standard self-attention mechanisms evaluate pairwise token interactions, the context window establishes the model's instantaneous working memory capacity, bounded by quadratic computational complexity and GPU Key-Value (KV) cache memory constraints.</p>
+
+    <nav class="toc" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#mathematical-foundations">Mathematical Foundations &amp; Computational Complexity</a></li>
+        <li><a href="#hardware-bottlenecks">Hardware Bottlenecks: The KV Cache Memory Wall</a>
+          <ol>
+            <li><a href="#memory-scaling">Memory Scaling Formulations</a></li>
+            <li><a href="#gqa">Architectural Mitigations (GQA &amp; PagedAttention)</a></li>
+          </ol>
+        </li>
+        <li><a href="#context-extension">Context Extension &amp; Position Interpolation</a></li>
+        <li><a href="#retrieval-degradation">Behavioral Pathologies: The Lost in the Middle Phenomenon</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="mathematical-foundations">1. Mathematical Foundations &amp; Computational Complexity</h2>
+    <p>In the standard scaled dot-product self-attention mechanism <span class="cite">[<a href="#ref-1">1</a>]</span>, an input sequence of length \(L\) produces Query (\(\mathbf{Q}\)), Key (\(\mathbf{K}\)), and Value (\(\mathbf{V}\)) matrices in \(\mathbb{R}^{L \times d_k}\):</p>
+    $$\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right)\mathbf{V}$$
+    <p>The matrix product \(\mathbf{Q}\mathbf{K}^T\) produces an \(L \times L\) attention score matrix. Consequently:</p>
+    <ul>
+      <li><strong>Time Complexity:</strong> Requires \(\mathcal{O}(L^2 \cdot d)\) floating-point operations per attention layer. Doubling the context window length quadruples the required arithmetic operations during un-fused attention computation.</li>
+      <li><strong>Space Complexity:</strong> Materializing the intermediate \(L \times L\) attention matrix in GPU memory requires \(\mathcal{O}(L^2)\) bytes per head. In 2022, Dao et al. introduced <em>FlashAttention</em>, using online softmax tiling to compute exact attention in SRAM without materializing the \(L \times L\) matrix in high-bandwidth memory (HBM), reducing memory overhead from quadratic to linear \(\mathcal{O}(L)\) with respect to sequence length <span class="cite">[<a href="#ref-2">2</a>]</span>.</li>
+    </ul>
+
+    <h2 id="hardware-bottlenecks">2. Hardware Bottlenecks: The KV Cache Memory Wall</h2>
+    <p>While FlashAttention resolves the quadratic memory overhead of the prefill stage, the autoregressive generation stage faces a severe memory-capacity barrier known as the <em>Key-Value (KV) cache</em> <span class="cite">[<a href="#ref-3">3</a>]</span>.</p>
+
+    <h3 id="memory-scaling">Memory Scaling Formulations</h3>
+    <p>To avoid redundant matrix operations during sequential autoregressive decoding, past Key and Value tensor representations are cached in GPU HBM for every token in the active context window. The memory footprint for an active sequence of length \(L\) is given by:</p>
+    $$\text{Memory}_{\text{KV}} = 2 \times 2 \times n_{\text{layers}} \times n_{\text{heads}} \times d_{\text{head}} \times L \quad \text{bytes (in 16-bit precision)}$$
+    <p>For a 70-billion-parameter model with 80 layers, 64 heads, and head dimension 128, a single request consuming 128,000 tokens of context requires over 160 gigabytes of VRAM strictly to hold its KV cache tensors, surpassing the total physical capacity of an 80GB GPU before accounting for model parameter weights.</p>
+
+    <h3 id="gqa">Architectural Mitigations (GQA &amp; PagedAttention)</h3>
+    <p>Modern frontier architectures deploy two foundational systems optimizations to tame the KV cache footprint:</p>
+    <ul>
+      <li><strong>Grouped-Query Attention (GQA):</strong> Ainslie et al. introduced GQA to shard multiple query heads across a smaller number of shared key and value heads (e.g. 8 KV heads shared by 64 query heads) <span class="cite">[<a href="#ref-4">4</a>]</span>. GQA reduces KV cache memory consumption by an 8x factor with negligible degradation in model accuracy.</li>
+      <li><strong>PagedAttention:</strong> Kwon et al. eliminated internal and external memory fragmentation by partitioning KV caches into non-contiguous virtual memory pages (vLLM), achieving near-zero memory waste and enabling concurrent serving of multi-turn long-context conversations <span class="cite">[<a href="#ref-5">5</a>]</span>.</li>
+    </ul>
+
+    <h2 id="context-extension">3. Context Extension &amp; Position Interpolation</h2>
+    <p>Models trained with Rotary Position Embeddings (RoPE) assign complex rotation angles \(\mathbf{R}_{\Theta, m}^d\) to token vectors based on their ordinal sequence index \(m\) <span class="cite">[<a href="#ref-6">6</a>]</span>. Naively feeding sequences longer than the pre-training context length causes perplexity to explode because attention heads encounter unfamiliar rotary frequencies and high-frequency rotations.</p>
+    <p>Production systems scale context windows from 4,000 tokens up to 1,000,000+ tokens through position interpolation:</p>
+    <ul>
+      <li><strong>Linear Position Interpolation:</strong> Chen et al. compressed positional indices by scaling positions by a constant ratio \(\alpha = L_{\text{new}} / L_{\text{train}}\), mapping previously unseen positions back into the familiar pre-training interpolation range.</li>
+      <li><strong>NTK-Aware &amp; YaRN Scaling:</strong> Neural Tangent Kernel (NTK) scaling and YaRN (Yet another RoPE extensioN) adjust the base frequency \(\Theta\) non-uniformly, interpolating low-frequency dimensions (responsible for long-range relationships) while extrapolating high-frequency dimensions (responsible for local syntactic precision) <span class="cite">[<a href="#ref-7">7</a>]</span>.</li>
+    </ul>
+
+    <h2 id="retrieval-degradation">4. Behavioral Pathologies: The Lost in the Middle Phenomenon</h2>
+    <p>A large architectural context window does not imply effective information utilization across all token positions. In 2023, Liu et al. demonstrated the <em>Lost in the Middle</em> phenomenon <span class="cite">[<a href="#ref-8">8</a>]</span>:</p>
+    <ul>
+      <li><strong>U-Shaped Attention Bias:</strong> Language models retrieve information with high accuracy when key facts reside at the very beginning of the prompt (primacy effect) or near the very end of the prompt (recency effect).</li>
+      <li><strong>Middle Degradation:</strong> When critical information is embedded within the middle 40% to 70% of a lengthy context window, retrieval and multi-hop reasoning accuracy degrades by up to 40% to 60%, even on models that boast 128k or 1M context limits.</li>
+      <li><strong>Evaluation Beyond NIAH:</strong> Simple synthetic benchmarks (such as Needle-in-a-Haystack, which queries unique, out-of-distribution strings) fail to reveal middle degradation. Rigorous long-context evaluation requires dense, multi-document aggregation benchmarks (such as RULER and BABILong) that force cross-document reasoning amidst conflicting distractor contexts.</li>
+    </ul>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/eli5/context-window/">ELI5: Context Windows</a> &middot; Visual picture-book explainer of the AI short-term memory limit.</li>
+        <li><a href="/reference/context-engineering/">Context Engineering</a> &middot; Context window token budgeting, tiering, and dynamic memory state.</li>
+        <li><a href="/reference/tokens/">Tokens and Tokenization</a> &middot; Subword units that populate the context window.</li>
+        <li><a href="/reference/prompt/">Prompts in Artificial Intelligence</a> &middot; Structuring the input tokens that consume context capacity.</li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a> &middot; Foundational Transformer self-attention architecture.</li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] A. Vaswani, N. Shazeer, N. Parmar, et al., "Attention Is All You Need," in <em>NeurIPS</em>, 2017, pp. 5998–6008. <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+        <li id="ref-2">[2] T. Dao, D. Y. Fu, S. Ermon, A. Rudra, and C. Ré, "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness," in <em>NeurIPS</em>, 2022, pp. 16344–16359. <a href="https://arxiv.org/abs/2205.14135">https://arxiv.org/abs/2205.14135</a></li>
+        <li id="ref-3">[3] R. Pope, S. Douglas, A. Chowdhery, et al., "Efficiently Scaling Transformer Inference," in <em>MLSys</em>, 2023. <a href="https://arxiv.org/abs/2211.05102">https://arxiv.org/abs/2211.05102</a></li>
+        <li id="ref-4">[4] J. Ainslie, J. Lee, D. de Las Casas, et al., "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints," in <em>EMNLP</em>, 2023, pp. 4895–4901. <a href="https://arxiv.org/abs/2305.13245">https://arxiv.org/abs/2305.13245</a></li>
+        <li id="ref-5">[5] W. Kwon, Z. Li, S. Zhuang, et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention," in <em>SOSP</em>, 2023, pp. 611–626. <a href="https://arxiv.org/abs/2309.06180">https://arxiv.org/abs/2309.06180</a></li>
+        <li id="ref-6">[6] J. Su, M. Ahmed, Y. Lu, et al., "RoFormer: Enhanced Transformer with Rotary Position Embedding," <em>Neurocomputing</em>, vol. 568, p. 127063, 2024. <a href="https://arxiv.org/abs/2104.09864">https://arxiv.org/abs/2104.09864</a></li>
+        <li id="ref-7">[7] B. Peng, J. Quesnelle, H. Fan, and E. Shippole, "YaRN: Efficient Context Window Extension of Large Language Models," in <em>ICLR</em>, 2024. <a href="https://arxiv.org/abs/2309.00071">https://arxiv.org/abs/2309.00071</a></li>
+        <li id="ref-8">[8] N. F. Liu, K. Lin, J. Hewitt, A. Paranjape, M. Bevilacqua, F. Petroni, and P. Liang, "Lost in the Middle: How Language Models Use Long Contexts," <em>Transactions of the Association for Computational Linguistics</em>, vol. 12, pp. 157–173, 2024. <a href="https://arxiv.org/abs/2307.03172">https://arxiv.org/abs/2307.03172</a></li>
+      </ol>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

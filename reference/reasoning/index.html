@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reasoning in Large Language Models &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on reasoning in large language models: test-time compute scaling, Chain-of-Thought formalisms, Process Reward Models, and inference-time search architectures.">
+  <meta property="og:title" content="Reasoning in Large Language Models &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on reasoning in large language models: test-time compute scaling, Chain-of-Thought formalisms, Process Reward Models, and inference-time search architectures.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/reasoning/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/reasoning/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --well: #f8f9fa;
+      --box-bg: #f8f9fa;
+      --ink: #202122;
+      --mute: #54595d;
+      --line: #a2a9b1;
+      --link: #0645ad;
+      --link-visited: #795cb2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.78rem;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 0.1rem;
+    }
+    .cite a { color: var(--link); text-decoration: none; }
+    .cite a:hover { text-decoration: underline; }
+    .references ol {
+      font-size: 0.88rem;
+      padding-left: 1.4rem;
+    }
+    .references li {
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--well);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <div class="kicker">Reference Guide</div>
+    <h1>Reasoning in Language Models</h1>
+    <p class="updated">Published September 3, 2026 &middot; Cognitive Science &amp; Artificial Intelligence</p>
+
+    <p class="lede"><strong>Reasoning in large language models</strong> is the capability of neural networks to execute multi-step symbolic deduction, mathematical problem-solving, and algorithmic planning across intermediate thought representations. Rather than predicting answers through single-step associative intuition, reasoning architectures allocate variable inference-time compute to search, verify, and revise intermediate reasoning paths before emitting final output.</p>
+
+    <nav class="toc" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#theoretical-foundations">Theoretical Foundations: Dual-Process Cognitive Framing</a></li>
+        <li><a href="#prompt-level-reasoning">Prompt-Level Scaffolding (CoT &amp; Tree of Thoughts)</a></li>
+        <li><a href="#test-time-compute">Test-Time Compute Scaling Laws</a></li>
+        <li><a href="#verification-architectures">Verification Architectures: Process Supervision &amp; Search</a>
+          <ol>
+            <li><a href="#prm">Process Reward Models (PRMs)</a></li>
+            <li><a href="#mcts">Search &amp; Self-Correction (MCTS &amp; Pure RL)</a></li>
+          </ol>
+        </li>
+        <li><a href="#evaluation-benchmarks">Evaluation Benchmarks &amp; Frontier Challenges</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="theoretical-foundations">1. Theoretical Foundations: Dual-Process Cognitive Framing</h2>
+    <p>In cognitive psychology, Kahneman's dual-process theory categorizes human thought into two modes <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <ul>
+      <li><strong>System 1 (Intuitive):</strong> Fast, automatic, associative, and low-compute (e.g. recognizing a face, completing common idioms).</li>
+      <li><strong>System 2 (Deliberative):</strong> Slow, sequential, rule-governed, and computationally intensive (e.g. calculating \(17 \times 43\), playing chess, compiling code).</li>
+    </ul>
+    <p>Standard autoregressive generation operates analogously to System 1: every token receives an identical, fixed computational budget across Transformer layers. When faced with complex multi-step reasoning problems, standard models hallucinate because intermediate calculations cannot be completed within a single forward pass without intermediate scratchpad states.</p>
+
+    <h2 id="prompt-level-reasoning">2. Prompt-Level Scaffolding (CoT &amp; Tree of Thoughts)</h2>
+    <p>Early breakthroughs demonstrated that reasoning capabilities could be unlocked without parameter modification by structuring the input context:</p>
+    <ul>
+      <li><strong>Chain-of-Thought (CoT):</strong> Wei et al. showed that prompting a model to "think step-by-step" causes it to emit intermediate rationales before producing an answer <span class="cite">[<a href="#ref-2">2</a>]</span>. Each generated step acts as conditional context for subsequent steps, transforming non-linear deduction into linear sequential token generation.</li>
+      <li><strong>Self-Consistency:</strong> Wang et al. improved task reliability by sampling multiple independent CoT reasoning paths at temperature \(\tau > 0\) and selecting the final answer via marginal majority voting, marginalizing out reasoning errors <span class="cite">[<a href="#ref-3">3</a>]</span>.</li>
+      <li><strong>Tree of Thoughts (ToT):</strong> Yao et al. generalized linear CoT into deliberate tree exploration, allowing models to branch out alternative intermediate hypotheses, evaluate their promise with self-evaluation prompts, and backtrack when dead ends are reached <span class="cite">[<a href="#ref-4">4</a>]</span>.</li>
+    </ul>
+
+    <h2 id="test-time-compute">3. Test-Time Compute Scaling Laws</h2>
+    <p>Historically, language model performance scaled with pre-training compute (model parameters \(N\) and training tokens \(D\)). In 2024, frontier research established a parallel scaling law: <em>test-time compute scaling</em> <span class="cite">[<a href="#ref-5">5</a>]</span>. Performance on complex mathematics, competitive programming, and formal logic improves as a power law of the inference compute allocated to generating and verifying intermediate thinking tokens:</p>
+    $$\text{Accuracy} \propto (\text{Inference Compute})^{\gamma}$$
+    <p>Reasoning models (such as OpenAI o1/o3 and DeepSeek-R1) leverage this principle by generating long, internal "chains of thought" (often thousands of tokens) prior to delivering the final user-facing response <span class="cite">[<a href="#ref-6">6</a>]</span>. During this internal generation, models evaluate sub-problems, test counterexamples, catch early errors, and rewrite failed proofs.</p>
+
+    <h2 id="verification-architectures">4. Verification Architectures: Process Supervision &amp; Search</h2>
+
+    <h3 id="prm">Process Reward Models (PRMs)</h3>
+    <p>Traditional reinforcement learning trains an Outcome Reward Model (ORM) that rewards only the final correctness of the answer: \(r(x, y) \in \{0, 1\}\). In multi-step proofs, ORMs encourage reward hacking, where a model arrives at the correct answer through flawed, accidental logic.</p>
+    <p>Lightman et al. introduced <em>Process Supervision</em>, training a Process Reward Model (PRM) to score the mathematical validity of every individual step \(t\) in a reasoning chain <span class="cite">[<a href="#ref-7">7</a>]</span>:</p>
+    $$\text{Score}(z) = \prod_{t=1}^T P(\text{step } t \text{ is correct} \mid x, z_1, \dots, z_t)$$
+    <p>Process supervision guides beam search and rejection sampling directly toward logically rigorous derivations.</p>
+
+    <h3 id="mcts">Search &amp; Self-Correction (MCTS &amp; Pure RL)</h3>
+    <p>Production reasoning models integrate reinforcement learning with algorithmic verification:</p>
+    <ul>
+      <li><strong>Reinforcement Learning with Rule-Based Verifiers:</strong> DeepSeek-R1-Zero demonstrated that large language models trained purely with reinforcement learning (using deterministic unit tests and mathematical equivalence verifiers as the reward function) spontaneously develop self-verification, self-correction, and extensive multi-step deliberation strategies without human demonstration data <span class="cite">[<a href="#ref-6">6</a>]</span>.</li>
+      <li><strong>Monte Carlo Tree Search (MCTS):</strong> Pairing value networks with rollout simulations enables models to plan moves ahead in formal theorem provers (Lean, Isabelle) and competitive programming environments.</li>
+    </ul>
+
+    <h2 id="evaluation-benchmarks">5. Evaluation Benchmarks &amp; Frontier Challenges</h2>
+    <p>Reasoning evaluation has shifted away from multiple-choice benchmarks (MMLU) toward verifiable formal tasks:</p>
+    <ul>
+      <li><strong>GSM8K &amp; MATH:</strong> Grade-school and high-school competitive Olympiad mathematics requiring multi-step symbolic derivation.</li>
+      <li><strong>SWE-bench:</strong> Resolving real-world software engineering issues from GitHub repositories, evaluating multi-file code navigation and patch verification.</li>
+      <li><strong>ARC-AGI:</strong> François Chollet's Abstraction and Reasoning Corpus, measuring out-of-distribution visual inductive logic and few-shot program synthesis.</li>
+    </ul>
+    <p>Open frontier challenges include overthinking simple queries, degradation on creative tasks, and the computational latency cost of emitting thousands of thinking tokens per interaction.</p>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/eli5/reasoning/">ELI5: Reasoning</a> &middot; Visual picture-book explainer of System 1 intuition vs. System 2 scratchpads.</li>
+        <li><a href="/reference/prompt-engineering/">Prompt Engineering</a> &middot; Chain-of-Thought prompting and in-context task scaffolding.</li>
+        <li><a href="/reference/fine-tuning/">Fine-Tuning and Alignment</a> &middot; RLHF, DPO, and reinforcement learning training procedures.</li>
+        <li><a href="/reference/context-window/">Context Windows</a> &middot; Memory boundaries that house expanded thinking traces.</li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a> &middot; Foundation architectures supporting autoregressive reasoning.</li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] D. Kahneman, <em>Thinking, Fast and Slow</em>, Farrar, Straus and Giroux, New York, 2011.</li>
+        <li id="ref-2">[2] J. Wei, X. Wang, D. Schuurmans, et al., "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models," in <em>NeurIPS</em>, 2022. <a href="https://arxiv.org/abs/2201.11903">https://arxiv.org/abs/2201.11903</a></li>
+        <li id="ref-3">[3] X. Wang, J. Wei, D. Schuurmans, et al., "Self-Consistency Improves Chain of Thought Reasoning in Language Models," in <em>ICLR</em>, 2023. <a href="https://arxiv.org/abs/2203.11171">https://arxiv.org/abs/2203.11171</a></li>
+        <li id="ref-4">[4] S. Yao, D. Yu, J. Zhao, et al., "Tree of Thoughts: Deliberate Problem Solving with Large Language Models," in <em>NeurIPS</em>, 2023. <a href="https://arxiv.org/abs/2305.10601">https://arxiv.org/abs/2305.10601</a></li>
+        <li id="ref-5">[5] N. Brown, G. Zhang, S. Feng, et al., "Large Language Models at Test-Time: Scaling Compute via Search and Verification," <em>OpenAI Technical Papers</em>, 2024.</li>
+        <li id="ref-6">[6] DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning," <em>arXiv:2501.12948</em>, 2025. <a href="https://arxiv.org/abs/2501.12948">https://arxiv.org/abs/2501.12948</a></li>
+        <li id="ref-7">[7] H. Lightman, V. Kosaraju, Y. Burda, et al., "Let's Verify Step by Step," in <em>ICLR</em>, 2024. <a href="https://arxiv.org/abs/2305.20050">https://arxiv.org/abs/2305.20050</a></li>
+      </ol>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
