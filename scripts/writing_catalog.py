@@ -51,13 +51,7 @@ def display_date(iso_date: str) -> str:
 
 def _ordered_bucket(items: list[dict], bucket: str) -> list[dict]:
     bucket_items = [item for item in items if item.get("bucket") == bucket]
-    pins = sorted(
-        [item for item in bucket_items if item.get("pin")],
-        key=lambda item: item["pin"],
-    )
-    rest = [item for item in bucket_items if not item.get("pin")]
-    rest.sort(key=lambda item: item["date"], reverse=True)
-    return pins + rest
+    return sorted(bucket_items, key=lambda item: item["date"], reverse=True)
 
 
 def index_inner_html(items: list[dict]) -> str:
