@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Substrate · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Agent substrate is the durable, operator-owned, model-independent representation of the system or domain on which agent harnesses operate.">
+  <meta property="og:title" content="Agent Substrate · Reference">
+  <meta property="og:description" content="The durable layer of data, rules, and operational knowledge shared across agent harnesses.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/agent-substrate/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/agent-substrate/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul { padding-left: 1.5rem; }
+    li { margin-bottom: 0.5rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #references ol { padding-left: 1.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Artificial Intelligence · Systems Architecture</p>
+    <h1>Agent Substrate</h1>
+    <p class="updated">Reference entry · last updated September 3, 2026</p>
+
+    <p class="lede"><strong>Agent substrate</strong> is, in Nestor G Pestelos Jr's agent-infrastructure framework, the durable, operator-owned, model-independent representation of the system or domain on which one or more agent harnesses operate. It keeps knowledge and rules under operator control so different vendor runtimes can use them without renegotiation.<span class="cite">[<a href="#ref1">1</a>]</span> The term is specific to this framework. It is not an established industry term.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#components">Components</a></li>
+        <li><a href="#harness">Relation to an agent harness</a></li>
+        <li><a href="#two-clocks">Substrate and scaffolding</a></li>
+        <li><a href="#mixed-artifacts">Mixed artifacts</a></li>
+        <li><a href="#examples">Examples</a></li>
+        <li><a href="#limits">Limits</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="components">Components</h2>
+    <p>A substrate records facts about the work and the rules that govern it. It can contain data models, specifications, decisions, conventions, and private context.<span class="cite">[<a href="#ref1">1</a>]</span> In this framework it can also include safety constraints and operational procedures. This information remains useful when the model or vendor runtime changes.</p>
+    <p class="unattributed">The extension to safety constraints and operational procedures describes the author's implementation.</p>
+
+    <h2 id="harness">Relation to an agent harness</h2>
+    <p>An <a href="/reference/agent-harness/">agent harness</a> is a runtime such as Claude Code or Codex. It supplies the model, tool interface, execution loop, and session controls. The substrate is the owned layer that these harnesses read, write, and operate on.</p>
+    <p>Several harnesses can use the same domain model and operating rules. Replacing a harness does not require the operator to redefine the system.</p>
+    <p class="unattributed">This boundary is part of Pestelos's framework, not a general definition accepted across agent platforms.</p>
+
+    <h2 id="two-clocks">Substrate and scaffolding</h2>
+    <p>Substrate changes when the represented work changes. Scaffolding compensates for a limitation in a model or runtime, so a model release can make it obsolete.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Anthropic described this effect in a long-running application-development harness. Each harness component encoded an assumption about model limits. The team removed its sprint construct for Claude Opus 4.6 and moved the evaluator to one final pass. It retained the planner. The builder then ran for more than two hours without sprint decomposition.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Chroma reported that model performance often declines as input length grows, although the shape and degree vary by model and task.<span class="cite">[<a href="#ref3">3</a>]</span> A context rule belongs to the substrate when it expresses a durable domain requirement. It is scaffolding when it only compensates for current model behavior.</p>
+
+    <h2 id="mixed-artifacts">Mixed artifacts</h2>
+    <p>One file can contain both layers. A memory file may hold a durable project decision beside a temporary compaction rule. A pipeline may encode an operator's approval boundary and also divide work into smaller steps because a current model loses track of long tasks.</p>
+    <p>The classification follows purpose rather than file type. Separating durable information from temporary compensation makes obsolete scaffolding easier to remove.</p>
+
+    <h2 id="examples">Examples</h2>
+    <p>Examples of substrate in this framework include:</p>
+    <ul>
+      <li>vault conventions that define names, relationships, and storage rules;</li>
+      <li>a Workstreams ledger that records commitments and their state;</li>
+      <li>Git guards that preserve operator-defined safety boundaries;</li>
+      <li>Git-tracked memory shared across sessions;</li>
+      <li>skills that encode repeatable procedures; and</li>
+      <li>pipelines and loops that preserve durable operating rules.</li>
+    </ul>
+    <p class="unattributed">These examples describe the author's implementation of the framework.</p>
+
+    <h2 id="limits">Limits</h2>
+    <ul>
+      <li>Durable does not mean permanent. Substrate must change when the domain or its rules change.</li>
+      <li>Model-independent does not mean format-independent. A harness still needs a compatible way to read and update the representation.</li>
+      <li>Operator-owned does not require local storage. The operator must control the meaning, access rules, and migration path.</li>
+      <li>Substrate does not guarantee correctness. Stale facts and faulty rules remain faulty when stored in a durable form.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/writing/half-agent-infrastructure-depreciating-asset/">Your Agent Infrastructure Has Two Lifespans</a></li>
+      <li><a href="/reference/agent-harness/">Agent Harness</a></li>
+      <li><a href="/reference/context-engineering/">Context Engineering</a></li>
+      <li><a href="/reference/agents/">Agents</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#components">↑</a> Nestor G Pestelos Jr, “Your Agent Infrastructure Has Two Lifespans,” revised September 3, 2026. <a href="https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset/">https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset/</a></li>
+      <li id="ref2"><a class="backlink" href="#two-clocks">↑</a> Prithvi Rajasekaran, “Harness design for long-running application development,” <em>Anthropic Engineering</em>, March 24, 2026. <a href="https://www.anthropic.com/engineering/harness-design-long-running-apps">https://www.anthropic.com/engineering/harness-design-long-running-apps</a></li>
+      <li id="ref3"><a class="backlink" href="#two-clocks">↑</a> Kelly Hong, Anton Troynikov, and Jeff Huber, “Context Rot: How Increasing Input Tokens Impacts LLM Performance,” July 14, 2025. <a href="https://www.trychroma.com/research/context-rot">https://www.trychroma.com/research/context-rot</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

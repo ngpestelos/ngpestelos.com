@@ -316,6 +316,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/agent-substrate/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/ai-agent-observability/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
