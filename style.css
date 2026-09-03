@@ -107,7 +107,7 @@ section {
   margin-bottom: 1rem;
 }
 
-.card h3 {
+.card h3, .card h4 {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
