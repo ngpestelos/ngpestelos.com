@@ -7,6 +7,7 @@ import json
 import re
 import unittest
 import xml.etree.ElementTree as ET
+from datetime import datetime, timedelta
 from pathlib import Path
 
 SCRIPTS = Path(__file__).resolve().parent
@@ -137,6 +138,13 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         if not entries:
             entries = root.findall("entry")
         self.assertEqual(len(entries), len(items))
+        feed_updated = datetime.fromisoformat(root.findtext("atom:updated", namespaces=ATOM_NS))
+        for entry in entries:
+            entry_updated = datetime.fromisoformat(
+                entry.findtext("atom:updated", namespaces=ATOM_NS)
+            )
+            self.assertEqual(entry_updated.utcoffset(), timedelta(hours=8))
+            self.assertLessEqual(entry_updated, feed_updated)
 
     def test_privacy_mentions_cloudflare(self):
         html = PRIVACY.read_text(encoding="utf-8")

@@ -19,6 +19,7 @@ SITE = "https://ngpestelos.com"
 ATOM_URL = f"{SITE}/writing/atom.xml"
 WRITING_INDEX_URL = f"{SITE}/writing/"
 HOME_URL = f"{SITE}/"
+MANILA_OFFSET = "+08:00"
 
 BUCKETS = (
     ("systems", "Production systems and agents"),
@@ -129,7 +130,7 @@ def atom_xml(items: list[dict], now_iso: str | None = None) -> str:
             "  <entry>\n"
             f"    <id>{xml_escape(url)}</id>\n"
             f"    <title>{xml_escape(item['title'])}</title>\n"
-            f"    <updated>{item['date']}T00:00:00Z</updated>\n"
+            f"    <updated>{item['date']}T00:00:00{MANILA_OFFSET}</updated>\n"
             f'    <link href="{xml_escape(url)}"/>\n'
             "  </entry>"
         )

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Tests for writing chrome split/render."""
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -73,6 +74,19 @@ class WritingLayoutTests(unittest.TestCase):
         rendered = writing_layout.render(page)
         escaped = 'content="Say &quot;just validate it&quot; now."'
         self.assertEqual(rendered.count(escaped), 2)
+
+    def test_article_json_ld_uses_plain_text(self):
+        page = {
+            "path": "writing/example/index.html",
+            "og_title": "Your Agent&#x27;s Plan",
+            "description": "Read *[the guide](https://example.com)* with `care`.",
+            "canonical": "https://ngpestelos.com/writing/example/",
+        }
+        script = writing_layout.article_json_ld(page, {})
+        payload = re.search(r"\n(\{.*\})\n", script).group(1)
+        data = json.loads(payload)
+        self.assertEqual(data["headline"], "Your Agent's Plan")
+        self.assertEqual(data["description"], "Read the guide with care.")
 
     def test_essay_with_writing_id_keeps_essay_chrome(self):
         page = writing_layout.split(ESSAY.read_text(encoding="utf-8"))

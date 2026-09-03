@@ -7,6 +7,7 @@ import argparse
 import json
 import re
 import sys
+from html import unescape
 from pathlib import Path
 
 import writing_catalog
@@ -73,6 +74,15 @@ def _quoted_attr(value: str) -> str:
     return str(value or "").replace('"', "&quot;")
 
 
+def _plain_text(value: str) -> str:
+    text = unescape(str(value or ""))
+    text = re.sub(r"!?\[([^]]+)\]\([^)]+\)", r"\1", text)
+    text = re.sub(r"^\s*>\s?", "", text)
+    for pattern in (r"\*\*([^*]+)\*\*", r"\*([^*]+)\*", r"`([^`]+)`"):
+        text = re.sub(pattern, r"\1", text)
+    return text
+
+
 def is_writing_index(page: dict) -> bool:
     path = str(page.get("path") or "").replace("\\", "/")
     return path == "writing/index.html"
@@ -88,12 +98,12 @@ def slug_from_path(path: str) -> str:
 def article_json_ld(page: dict, by_slug: dict | None = None) -> str:
     if is_writing_index(page):
         return ""
-    headline = page.get("og_title") or page.get("title") or ""
+    headline = _plain_text(page.get("og_title") or page.get("title") or "")
     data = {
         "@context": "https://schema.org",
         "@type": "Article",
         "headline": headline,
-        "description": page.get("description") or "",
+        "description": _plain_text(page.get("description") or ""),
         "url": page.get("canonical") or "",
         "author": {"@type": "Person", "name": "Nestor G Pestelos Jr"},
     }
