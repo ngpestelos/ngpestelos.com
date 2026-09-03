@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Writing — Nestor G Pestelos Jr</title>
+  <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
+  <link href="https://ngpestelos.com/writing/"/>
+  <id>https://ngpestelos.com/writing/</id>
+  <updated>2026-09-03T00:38:48Z</updated>
+  <author>
+    <name>Nestor G Pestelos Jr</name>
+  </author>
+  <entry>
+    <id>https://ngpestelos.com/writing/legacy-rails-upgrade-with-agents/</id>
+    <title>A Legacy Rails Upgrade With Agents Under a Human Gate</title>
+    <updated>2026-09-03T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/legacy-rails-upgrade-with-agents/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/upgrade-or-rewrite/</id>
+    <title>Upgrade or Rewrite</title>
+    <updated>2026-09-03T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/upgrade-or-rewrite/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/five-checks-against-motivated-reasoning/</id>
+    <title>Five Checks Against Motivated Reasoning</title>
+    <updated>2026-08-24T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/five-checks-against-motivated-reasoning/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/the-employee-you-cant-stop-managing/</id>
+    <title>The Employee You Can't Stop Managing</title>
+    <updated>2026-08-21T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/the-employee-you-cant-stop-managing/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/what-actually-buys-you-the-power-to-say-no/</id>
+    <title>What Actually Buys You the Power to Say No</title>
+    <updated>2026-08-21T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/what-actually-buys-you-the-power-to-say-no/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/meat-proxy-problem/</id>
+    <title>The Meat Proxy Problem</title>
+    <updated>2026-08-19T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/meat-proxy-problem/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/instapay-is-not-ach/</id>
+    <title>InstaPay Is Not ACH</title>
+    <updated>2026-08-18T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/instapay-is-not-ach/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/build-source-of-truth-before-index/</id>
+    <title>Build the Source of Truth Before the Index</title>
+    <updated>2026-08-18T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/build-source-of-truth-before-index/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/us-and-philippine-payment-rails/</id>
+    <title>US and Philippine Payment Rails</title>
+    <updated>2026-08-18T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/us-and-philippine-payment-rails/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/payments-glossary/</id>
+    <title>Payments Glossary</title>
+    <updated>2026-08-18T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/payments-glossary/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/credit-cures-plagiarism-not-permission/</id>
+    <title>Credit Cures Plagiarism, Not Permission</title>
+    <updated>2026-08-17T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/credit-cures-plagiarism-not-permission/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/metric-already-happened-upstream/</id>
+    <title>The Metric You're Watching Already Happened Upstream</title>
+    <updated>2026-08-15T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/metric-already-happened-upstream/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/positioning-demotes-prediction/</id>
+    <title>Positioning Doesn't Escape Prediction, It Demotes It</title>
+    <updated>2026-08-14T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/positioning-demotes-prediction/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/ledger-that-stayed-empty/</id>
+    <title>The Ledger That Stayed Empty</title>
+    <updated>2026-08-14T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/ledger-that-stayed-empty/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/career-ceiling-i-was-worried-about-already-existed/</id>
+    <title>The Career Ceiling I Was Worried About Already Existed</title>
+    <updated>2026-08-14T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/career-ceiling-i-was-worried-about-already-existed/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/triffins-dilemma-escape-doesnt-work/</id>
+    <title>The Only Concrete Escape From Triffin's Dilemma Doesn't Work</title>
+    <updated>2026-08-14T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/triffins-dilemma-escape-doesnt-work/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/scanner-that-feeds-pipeline/</id>
+    <title>The Scanner That Feeds the Pipeline</title>
+    <updated>2026-08-13T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/scanner-that-feeds-pipeline/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/</id>
+    <title>Nine Security Issues, Zero Lines I Wrote</title>
+    <updated>2026-08-12T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/nine-security-issues-zero-lines-i-wrote/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/agency-dims-as-the-timeframe-collapses/</id>
+    <title>Agency Dims as the Timeframe Collapses</title>
+    <updated>2026-08-11T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/agency-dims-as-the-timeframe-collapses/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/ai-writes-code-plan-becomes-work/</id>
+    <title>When the AI Writes the Code, the Plan Becomes the Work</title>
+    <updated>2026-08-11T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/ai-writes-code-plan-becomes-work/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset/</id>
+    <title>Half of Your Agent Infrastructure Is a Depreciating Asset</title>
+    <updated>2026-08-02T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/half-agent-infrastructure-depreciating-asset/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/agent-didnt-get-dumber-chat-got-contaminated/</id>
+    <title>The Agent Didn't Get Dumber. The Chat Got Contaminated</title>
+    <updated>2026-07-31T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/agent-didnt-get-dumber-chat-got-contaminated/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/same-tunnel-ships-work-drops-room/</id>
+    <title>The Same Tunnel That Ships the Work Drops the Room</title>
+    <updated>2026-07-31T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/same-tunnel-ships-work-drops-room/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/urgency-conscientiousness-better-marketing/</id>
+    <title>Urgency Is Just Conscientiousness With Better Marketing</title>
+    <updated>2026-07-28T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/urgency-conscientiousness-better-marketing/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/most-expensive-avoidance-looks-like-prudence/</id>
+    <title>The Most Expensive Avoidance Looks Exactly Like Prudence</title>
+    <updated>2026-07-28T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/most-expensive-avoidance-looks-like-prudence/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/run-dead-internet-on-purpose/</id>
+    <title>I Run a Dead Internet on Purpose</title>
+    <updated>2026-07-26T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/run-dead-internet-on-purpose/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/addiction-to-being-right-is-rarer-than-you-think/</id>
+    <title>The Addiction to Being Right Is Rarer Than You Think</title>
+    <updated>2026-07-24T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/addiction-to-being-right-is-rarer-than-you-think/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/ai-rerunning-the-nuclear-script/</id>
+    <title>AI Is Rerunning the Nuclear Script, Not the Part You Think</title>
+    <updated>2026-07-24T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/ai-rerunning-the-nuclear-script/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/debt-with-diff-attached/</id>
+    <title>Debt With a Diff Attached</title>
+    <updated>2026-07-24T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/debt-with-diff-attached/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/orchestrator-identity/</id>
+    <title>The Orchestrator Identity</title>
+    <updated>2026-07-24T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/orchestrator-identity/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/selection-beats-execution-when-games-differ/</id>
+    <title>Selection Beats Execution Only When the Games Differ</title>
+    <updated>2026-07-23T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/selection-beats-execution-when-games-differ/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/engineer-the-downside-when-you-cannot-forecast/</id>
+    <title>Engineer the Downside When You Cannot Forecast the Upside</title>
+    <updated>2026-07-23T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/engineer-the-downside-when-you-cannot-forecast/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/triage-system-not-your-toolbox/</id>
+    <title>Triage the System Not Your Toolbox</title>
+    <updated>2026-07-23T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/triage-system-not-your-toolbox/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/anxiety-present-tense-problem/</id>
+    <title>Anxiety Is a Present-Tense Problem</title>
+    <updated>2026-07-21T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/anxiety-present-tense-problem/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/havent-written-a-test-in-a-year/</id>
+    <title>I Haven't Written a Test in a Year</title>
+    <updated>2026-07-20T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/havent-written-a-test-in-a-year/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/bottleneck-is-you/</id>
+    <title>The Bottleneck Is You</title>
+    <updated>2026-07-19T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/bottleneck-is-you/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/your-review-checklist-has-never-been-reviewed/</id>
+    <title>Your Review Checklist Has Never Been Reviewed</title>
+    <updated>2026-07-14T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/your-review-checklist-has-never-been-reviewed/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/your-living-spec-is-still-lying/</id>
+    <title>Your Living Spec Is Still Lying</title>
+    <updated>2026-07-14T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/your-living-spec-is-still-lying/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/tell-me-whats-wrong-with-it-isnt-review/</id>
+    <title>'Tell Me What's Wrong With It' Isn't a Review</title>
+    <updated>2026-07-13T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/tell-me-whats-wrong-with-it-isnt-review/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/cheap-code-expensive-context/</id>
+    <title>Cheap Code, Expensive Context</title>
+    <updated>2026-07-12T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/cheap-code-expensive-context/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/polish-is-free-thinking-isnt/</id>
+    <title>Polish Is Free. Thinking Isn't</title>
+    <updated>2026-07-11T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/polish-is-free-thinking-isnt/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/capacity-is-your-lowest-ceiling/</id>
+    <title>Capacity Is Your Lowest Ceiling</title>
+    <updated>2026-07-11T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/capacity-is-your-lowest-ceiling/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/pattern-capture-auto-activating-skill-library/</id>
+    <title>Pattern Capture - How I Built an Auto-Activating Skill Library</title>
+    <updated>2026-07-10T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/pattern-capture-auto-activating-skill-library/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/agent-rail-war-red-herring/</id>
+    <title>The Agent Rail War Is a Red Herring</title>
+    <updated>2026-07-08T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/agent-rail-war-red-herring/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/</id>
+    <title>The Bugs That Hide Between Your Agents</title>
+    <updated>2026-07-08T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/governing-delegation-scope-creep/</id>
+    <title>Governing Delegation - Using Architecture to Stop AI Scope Creep</title>
+    <updated>2026-07-03T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/governing-delegation-scope-creep/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/certainty-wellbeing-variable/</id>
+    <title>Certainty as a Wellbeing Variable</title>
+    <updated>2026-07-03T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/certainty-wellbeing-variable/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/second-brain-fails-you/</id>
+    <title>The Moment Your Second Brain Fails You</title>
+    <updated>2026-04-09T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/second-brain-fails-you/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/agents-plan-b-destroy-data/</id>
+    <title>Your Agent's Plan B Will Destroy Your Data</title>
+    <updated>2026-03-25T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/agents-plan-b-destroy-data/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/debug-system-not-prompt/</id>
+    <title>Debug the System Not the Prompt</title>
+    <updated>2026-03-24T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/debug-system-not-prompt/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/pkm-bottleneck-was-never-capture/</id>
+    <title>The PKM Bottleneck Was Never Capture</title>
+    <updated>2026-03-24T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/pkm-bottleneck-was-never-capture/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/basb-claude-code-setup/</id>
+    <title>Building a Second Brain with Claude Code - The Setup</title>
+    <updated>2026-03-19T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/basb-claude-code-setup/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/enter-key-problem/</id>
+    <title>The Enter Key Problem</title>
+    <updated>2026-03-19T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/enter-key-problem/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/deleting-24k-lines-ai-instructions/</id>
+    <title>Deleting 24K Lines of AI Instructions</title>
+    <updated>2026-03-17T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/deleting-24k-lines-ai-instructions/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/new-art-learning/</id>
+    <title>The New Art of Learning</title>
+    <updated>2026-03-08T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/new-art-learning/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/developers-job-judgment-now/</id>
+    <title>The Developer's Job is Judgment Now</title>
+    <updated>2026-02-27T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/developers-job-judgment-now/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/45/</id>
+    <title>45</title>
+    <updated>2026-02-13T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/45/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/parallelizing-sftp-downloads-ruby/</id>
+    <title>Parallelizing SFTP Downloads in Ruby</title>
+    <updated>2026-02-08T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/parallelizing-sftp-downloads-ruby/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/when-your-mcp-server-breaks/</id>
+    <title>When Your MCP Server Breaks</title>
+    <updated>2026-01-24T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/when-your-mcp-server-breaks/"/>
+  </entry>
+  <entry>
+    <id>https://ngpestelos.com/writing/juanito-p-galvez-1928-2022/</id>
+    <title>Juanito P. Galvez (1928–2022)</title>
+    <updated>2022-10-26T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/juanito-p-galvez-1928-2022/"/>
+  </entry>
+</feed>
