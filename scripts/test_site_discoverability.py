@@ -129,6 +129,7 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertIn("/writing/", header)
         css = (ROOT / "style.css").read_text(encoding="utf-8")
         self.assertIn(".card h3, .card h4", css)
+        self.assertRegex(css, r"\.writing-pins\s*\{[^}]*margin-top:\s*0\.85rem")
         HTMLParser().feed(html)
 
     def test_essay_schema_and_head(self):
