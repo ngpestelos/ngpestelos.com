@@ -596,6 +596,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/annus-mirabilis/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/evergreen-notes/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
