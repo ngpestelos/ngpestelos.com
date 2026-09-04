@@ -510,7 +510,7 @@ body:has(#writing) {
 }
 
 body.eli5,
-body.reference {
+body.reference:not(:has(#reference)) {
   padding: 0;
 }
 
@@ -754,5 +754,4 @@ body:has(main.article) .table-wrap {
     display: none !important;
   }
 }
-
 
