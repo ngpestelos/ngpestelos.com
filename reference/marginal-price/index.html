@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marginal Price (Electricity Markets) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Marginal price in an electricity market is the price set by the most expensive generating unit needed to meet demand in a trading interval, paid to every dispatched generator under uniform pricing. Merit order, pay-as-bid, the England and Wales Pool, locational pricing in the Philippine WESM.">
+  <meta property="og:title" content="Marginal Price (Electricity Markets) · Reference">
+  <meta property="og:description" content="The price set by the last generator needed to meet demand. Merit order, uniform versus pay-as-bid pricing, the UK Pool, locational marginal price.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/marginal-price/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/marginal-price/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+      .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Marginal Price (Electricity Markets)","description":"Marginal price in an electricity market is the price set by the most expensive generating unit needed to meet demand in a trading interval, paid to every dispatched generator under uniform pricing. Merit order, pay-as-bid, the England and Wales Pool, locational pricing in the Philippine WESM.","url":"https://ngpestelos.com/reference/marginal-price/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Economics · Energy Markets</p>
+    <h1>Marginal Price (Electricity Markets)</h1>
+    <p class="updated">Reference entry · last updated September 5, 2026</p>
+
+    <p class="lede"><strong>Marginal price</strong>, in a wholesale electricity market, is the price set by the most expensive generating unit needed to meet demand in a trading interval. Under uniform pricing, every generator dispatched in that interval is paid this price, whatever it bid.<span class="cite">[<a href="#ref1">1</a>]</span> In general economics the phrase is used loosely for the price of one more unit of a good. The formal term is <em>marginal cost</em>: the change in total cost that arises when the quantity produced is increased.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#economics">Marginal cost and marginal price</a></li>
+        <li><a href="#merit-order">Merit order and the system marginal price</a></li>
+        <li><a href="#uniform-vs-pab">Uniform pricing and pay-as-bid</a></li>
+        <li><a href="#uk-pool">The England and Wales Pool</a></li>
+        <li><a href="#locational">Locational marginal price</a></li>
+        <li><a href="#merit-order-effect">Merit-order effect</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="economics">Marginal cost and marginal price</h2>
+    <p>Marginal cost is the change in total cost when output rises by one unit. In a perfectly competitive market a firm produces a unit when the sale price is higher than its marginal cost, and stops when it is not.<span class="cite">[<a href="#ref2">2</a>]</span> The market price therefore settles near the marginal cost of the last unit supplied. That last unit is the marginal unit, and its price is the marginal price.</p>
+    <p>Electricity markets make this textbook mechanism explicit. Supply is committed in short intervals, generators submit priced offers, and the operator clears the interval at the offer of the last unit needed.</p>
+
+    <h2 id="merit-order">Merit order and the system marginal price</h2>
+    <p>The merit order ranks available generating units in ascending order of price.<span class="cite">[<a href="#ref1">1</a>]</span> A market operator aggregates supply offers for each interval into a supply curve and demand bids into a demand curve. The clearing price is defined by the intersection of the two curves.<span class="cite">[<a href="#ref3">3</a>]</span> Units are dispatched up the merit order until demand is met. The marginal cost of the final generator needed to meet load sets the system marginal price, and all dispatched generators receive it.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>A unit whose marginal cost is below the clearing price earns the difference as an inframarginal rent. Kahn, Cramton, Porter and Tabors give the arithmetic: if the accepted offers in an hour are equal blocks with incremental costs of $30, $40 and $50 per MWh, the clearing price of $50 gives the three bidders markups of $20, $10 and zero.<span class="cite">[<a href="#ref4">4</a>]</span> Those markups are what cover fixed costs and profit for the cheaper units.</p>
+
+    <h2 id="uniform-vs-pab">Uniform pricing and pay-as-bid</h2>
+    <p>Two settlement rules can be applied to the same set of accepted offers. Under uniform pricing, also called pay-as-clear or marginal pricing, all participants are paid the price of the highest successful bid. Under pay-as-bid, each accepted offer is paid its own bid.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>The two rules produce different bidding. Under uniform pricing, in the absence of collusion, producers are expected to bid close to their short-run marginal cost, since a higher bid risks missing dispatch altogether.<span class="cite">[<a href="#ref3">3</a>]</span> Under pay-as-bid, a producer bidding its cost would collect only its cost, so producers instead bid their estimate of the clearing price. Kahn and co-authors, reporting to the California Power Exchange in 2001, wrote that any belief that a shift from uniform to as-bid pricing would provide power purchasers substantial relief from soaring prices is simply mistaken, and that the immediate consequence would be a radical change in bidding behavior that would introduce new inefficiencies, weaken competition in new generation, and impede expansion in capacity.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>Their first listed inefficiency is dispatch order. With all bids above marginal cost by amounts that depend on each bidder's estimate of the clearing price, some lower-marginal-cost bids will be rejected because their bidders overestimated the clearing price, in favour of higher-marginal-cost power.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>The rule matters most for plants whose marginal cost is near zero. A nuclear, hydro, wind or solar unit under uniform pricing can bid zero to guarantee dispatch and still be paid the marginal price. Under pay-as-bid the same unit must guess the clearing price and carries the rejection risk described above.</p>
+
+    <h2 id="uk-pool">The England and Wales Pool</h2>
+    <p>The Electricity Pool of England and Wales operated from 1 April 1990 to 26 March 2001. Generators alone bid into it and set the wholesale price through the System Marginal Price. The New Electricity Trading Arrangements (NETA) came into force on 27 March 2001 and brought both generators and suppliers into wholesale trading, with parties able to trade off their imbalances close to real time.<span class="cite">[<a href="#ref5">5</a>]</span><span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <p>British Energy, the privatised nuclear generator (privatised 1996), approached the UK government for financial aid in 2002 after a slump in wholesale energy prices, a failure to obtain relaxations on the Climate Change Levy, and renegotiation of its back-end fuel costs. The European Commission approved a government investment of over £3 billion in the restructured firm in 2004. Électricité de France agreed a £12.5 billion takeover in 2008 and completed it in 2009.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+    <p>Robert McGregor, a former British Energy employee who later ran power and energy banking for HSBC in Asia, gave a trader's account of the same episode in a 2026 interview. Under the Pool, the nuclear desk's daily question was whether to bid zero or negative, because the plant had to run anyway and would be paid the system marginal price. Once generators were paid what they bid, the desk had to make a judgement call: overbid and drop off the supply curve, or underbid and receive far less than the marginal price it used to collect. He named that regulatory change as the cause of the bankruptcy.<span class="cite">[<a href="#ref8">8</a>]</span> The encyclopedic account above lists price slump, levy and fuel-cost factors.</p>
+
+    <h2 id="locational">Locational marginal price</h2>
+    <p>A single system marginal price assumes power can flow anywhere on the grid without loss or limit. Where transmission losses and congestion matter, the market computes a marginal price at each node instead. The Philippine Wholesale Electricity Spot Market (WESM), which started commercial operation in Luzon on 26 June 2006, computes the marginal price at each node or location to reflect transmission loss and congestion.<span class="cite">[<a href="#ref9">9</a>]</span> A generator behind a constrained line can face a nodal price well below the system-wide one, because the marginal unit that would serve its node is a different plant.</p>
+
+    <h2 id="merit-order-effect">Merit-order effect</h2>
+    <p>Because wind and solar have very low marginal costs, they sit at the bottom of the merit order and are dispatched first. Increasing their supply displaces higher-priced units from the margin and lowers the average price per unit of electricity. One 2013 study cited in the literature found that each additional GWh of renewables fed into the grid reduced the day-ahead price by 0.11 to 0.13 cents per kWh.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#merit-order">↑</a> Wikipedia, “Merit order.” Definition, system marginal cost set by the final generator needed to meet load, merit-order effect. <a href="https://en.wikipedia.org/wiki/Merit_order">https://en.wikipedia.org/wiki/Merit_order</a></li>
+      <li id="ref2"><a class="backlink" href="#economics">↑</a> Wikipedia, “Marginal cost.” Definition and the perfect-competition production rule. <a href="https://en.wikipedia.org/wiki/Marginal_cost">https://en.wikipedia.org/wiki/Marginal_cost</a></li>
+      <li id="ref3"><a class="backlink" href="#merit-order">↑</a> Wikipedia, “Electricity market.” Clearing price at the intersection of supply and demand curves; uniform pricing versus pay-as-bid and the bidding incentives of each. <a href="https://en.wikipedia.org/wiki/Electricity_market">https://en.wikipedia.org/wiki/Electricity_market</a></li>
+      <li id="ref4"><a class="backlink" href="#uniform-vs-pab">↑</a> Alfred E. Kahn, Peter C. Cramton, Robert H. Porter and Richard D. Tabors, “Uniform Pricing or Pay-as-Bid Pricing: A Dilemma for California and Beyond,” <em>The Electricity Journal</em>, vol. 14, no. 6, July 2001, pp. 70–79. Free full text: <a href="https://www.cramton.umd.edu/papers2000-2004/kahn-cramton-porter-tabors-uniform-or-pay-as-bid-pricing-ej.pdf">https://www.cramton.umd.edu/papers2000-2004/kahn-cramton-porter-tabors-uniform-or-pay-as-bid-pricing-ej.pdf</a></li>
+      <li id="ref5"><a class="backlink" href="#uk-pool">↑</a> Keith Tovey, University of East Anglia, “Electricity Supply in the UK.” Pool dates, System Marginal Price, NETA start date. <a href="https://archive.uea.ac.uk/~e680/energy/energy_links/electricity_supply.htm">https://archive.uea.ac.uk/~e680/energy/energy_links/electricity_supply.htm</a></li>
+      <li id="ref6"><a class="backlink" href="#uk-pool">↑</a> Wikipedia, “New Electricity Trading Arrangements.” In effect from 27 March 2001; parties could trade off imbalances close to real time. <a href="https://en.wikipedia.org/wiki/New_Electricity_Trading_Arrangements">https://en.wikipedia.org/wiki/New_Electricity_Trading_Arrangements</a></li>
+      <li id="ref7"><a class="backlink" href="#uk-pool">↑</a> Wikipedia, “British Energy.” Privatised 1996; approached government for aid in 2002; £3 billion restructuring approved 2004; EDF takeover agreed 2008 for £12.5 billion. <a href="https://en.wikipedia.org/wiki/British_Energy">https://en.wikipedia.org/wiki/British_Energy</a></li>
+      <li id="ref8"><a class="backlink" href="#uk-pool">↑</a> ANC, <em>Banker after Dark: Robert McGregor on the future of the energy industry</em>, video interview, 4 September 2026. Pool bidding and the pay-as-bid change discussed from about 11:57 to 13:25. <a href="https://www.youtube.com/watch?v=iZM6zOAmIsg">https://www.youtube.com/watch?v=iZM6zOAmIsg</a></li>
+      <li id="ref9"><a class="backlink" href="#locational">↑</a> Independent Electricity Market Operator of the Philippines (IEMOP), “About the Philippine Electricity Market.” WESM commercial operation in Luzon from 26 June 2006; marginal price computed at each node to reflect transmission loss and congestion. <a href="https://www.iemop.ph/the-market/">https://www.iemop.ph/the-market/</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
