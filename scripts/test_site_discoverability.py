@@ -28,6 +28,7 @@ PAYMENTS = {
     "instapay-is-not-ach",
     "us-and-philippine-payment-rails",
     "payments-glossary",
+    "agent-rail-war-red-herring",
 }
 SNAPSHOT_SLUG = re.compile(r"-\d{8}$")
 ATOM_NS = {"atom": "http://www.w3.org/2005/Atom"}
