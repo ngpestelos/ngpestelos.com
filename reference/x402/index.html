@@ -102,6 +102,23 @@
     li { margin-bottom: 0.4rem; }
     a { color: var(--link); }
     a:visited { color: var(--link-visited); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--well);
+      font-weight: 600;
+    }
     code {
       font-family: "SF Mono", Consolas, Monaco, monospace;
       font-size: 0.9em;
@@ -238,12 +255,37 @@
 
     <h2 id="distinctions">Distinctions from Traditional Payment Rails</h2>
     <p>The table below summarizes the operational differences between traditional payment systems and x402:</p>
-    <ul>
-      <li><strong>Identity:</strong> Traditional rails authenticate a verified human cardholder through KYC checks. x402 authenticates a cryptographic public address and spending mandate.</li>
-      <li><strong>Unit Economics:</strong> Traditional rails require multi-dollar ticket sizes to amortize fixed interchange. x402 enables sub-cent micropayments via Layer-2 blockchains.</li>
-      <li><strong>Friction:</strong> Traditional rails require interactive checkouts, CAPTCHAs, or pre-registered API keys. x402 completes payment inside the protocol request loop.</li>
-      <li><strong>Dispute Resolution:</strong> Traditional rails offer subjective 60-day chargeback windows. x402 provides final, cryptographic on-chain settlement.</li>
-    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Traditional Card Rails</th>
+          <th>x402 Protocol</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Identity</strong></td>
+          <td>Verified human cardholder via KYC and billing address</td>
+          <td>Cryptographic public address and spending mandate</td>
+        </tr>
+        <tr>
+          <td><strong>Unit Economics</strong></td>
+          <td>Multi-dollar minimum to amortize fixed interchange (20 to 30 cents)</td>
+          <td>Sub-cent micropayments via Layer-2 blockchains</td>
+        </tr>
+        <tr>
+          <td><strong>Interaction Model</strong></td>
+          <td>Interactive checkout forms, redirects, CAPTCHAs</td>
+          <td>Autonomous protocol handshake inside HTTP request cycle</td>
+        </tr>
+        <tr>
+          <td><strong>Settlement &amp; Dispute</strong></td>
+          <td>Subjective 60-day chargeback window</td>
+          <td>Immediate cryptographic on-chain finality</td>
+        </tr>
+      </tbody>
+    </table>
 
     <h2 id="see-also">See also</h2>
     <ul>
