@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attention (Neurological and Computational) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference disambiguating neurological attention in cognitive neuroscience from computational attention mechanisms in artificial intelligence.">
+  <meta property="og:title" content="Attention (Neurological and Computational) · Reference">
+  <meta property="og:description" content="An encyclopedia entry comparing biological attention networks, sensory gating, and cognitive bottlenecks with computational attention, Transformer query-key-value projections, and routing mechanics.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/attention/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/attention/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 32rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--well);
+      font-weight: 600;
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: var(--well);
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .math-block {
+      text-align: center;
+      margin: 1.2rem 0;
+      background: var(--well);
+      padding: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    .cite {
+      font-size: 0.78rem;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 0.1rem;
+    }
+    .cite a { color: var(--link); text-decoration: none; }
+    .cite a:hover { text-decoration: underline; }
+    .references ol {
+      font-size: 0.88rem;
+      padding-left: 1.4rem;
+    }
+    .references li {
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Attention (Neurological and Computational)","description":"A citable ground-truth reference disambiguating neurological attention in cognitive neuroscience from computational attention mechanisms in artificial intelligence.","url":"https://ngpestelos.com/reference/attention/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Cognitive Neuroscience &amp; Machine Learning</p>
+    <h1>Attention (Neurological and Computational)</h1>
+    <p class="updated">Reference entry · last updated September 5, 2026</p>
+
+    <p class="lede"><strong>Attention</strong> refers to mechanisms for selectively prioritizing a subset of available information for concentrated processing while filtering out competing stimuli. In cognitive neuroscience and psychology, attention is a capacity-limited biological function mediated by frontoparietal neural networks that governs perception, working memory, and conscious awareness.<span class="cite">[<a href="#ref1">1</a>]</span> In artificial intelligence and machine learning, attention is a computational mechanism that dynamically weights relationships among input representations through learned matrix projections, most prominently instantiated as scaled dot-product self-attention in Transformer architectures.<span class="cite">[<a href="#ref2">2</a>]</span> Although both systems solve the challenge of allocating finite representational capacity, they operate under fundamentally different physical substrates, mathematical constraints, and behavioral imperatives.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#core-disambiguation">Core disambiguation</a></li>
+        <li><a href="#cognitive-and-neurological-attention">Cognitive and neurological attention</a>
+          <ol>
+            <li><a href="#taxonomy-and-modes">Taxonomy and operational modes</a></li>
+            <li><a href="#anatomical-networks">Anatomical frontoparietal networks</a></li>
+            <li><a href="#subcortical-gating">Subcortical gating and sensory routing</a></li>
+            <li><a href="#capacity-bottlenecks">Capacity bottlenecks and cognitive constraints</a></li>
+          </ol>
+        </li>
+        <li><a href="#computational-attention-in-ai">Computational attention in artificial intelligence</a>
+          <ol>
+            <li><a href="#connectionist-precursors">Connectionist and visual saliency precursors</a></li>
+            <li><a href="#additive-alignment-attention">Additive alignment attention</a></li>
+            <li><a href="#scaled-dot-product-attention">Scaled dot-product self-attention</a></li>
+            <li><a href="#multi-head-attention">Multi-head attention and subspace projection</a></li>
+            <li><a href="#efficiency-and-scaling">Hardware scaling and memory efficiency</a></li>
+          </ol>
+        </li>
+        <li><a href="#comparative-analysis">Comparative analysis: biological vs computational</a>
+          <ol>
+            <li><a href="#comparison-matrix">Comparison matrix</a></li>
+            <li><a href="#selection-vs-routing">Selection versus routing</a></li>
+            <li><a href="#capacity-limits-vs-complexity">Capacity limits versus computational complexity</a></li>
+            <li><a href="#metabolic-state-vs-stateless-eval">Metabolic exhaustion versus stateless evaluation</a></li>
+          </ol>
+        </li>
+        <li><a href="#epistemic-pitfalls">Epistemic pitfalls of anthropomorphism</a>
+          <ol>
+            <li><a href="#metaphor-reification">Attention as architectural loan-word</a></li>
+            <li><a href="#interpretability-debate">The explanation debate in mechanistic interpretability</a></li>
+          </ol>
+        </li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="core-disambiguation">Core disambiguation</h2>
+    <p>The term <em>attention</em> occupies a central role in both human psychology and machine learning, leading to frequent conceptual confusion. In biological organisms, attention evolved as an energy-conserving filter. Sensory receptors receive millions of bits of information per second, far exceeding the processing bandwidth of the central nervous system. Biological attention suppresses irrelevant incoming signals to protect a fragile working-memory bottleneck.</p>
+    <p>In machine learning, the term was adopted by analogy. In sequence models, computational attention was introduced to resolve the information bottleneck of recurrent neural networks (RNNs), which compressed variable-length inputs into fixed-size hidden vectors.<span class="cite">[<a href="#ref7">7</a>]</span> Rather than selecting a single item to the exclusion of others, computational attention computes a continuous, differentiable routing matrix across all elements in a sequence simultaneously. Biological attention is primarily exclusionary and selective; computational attention is aggregative and relational.</p>
+
+    <h2 id="cognitive-and-neurological-attention">Cognitive and neurological attention</h2>
+    <p>Cognitive neuroscience investigates attention as a suite of neural mechanisms that select, modulate, and sustain focus on specific internal or external information sources.</p>
+
+    <h3 id="taxonomy-and-modes">Taxonomy and operational modes</h3>
+    <p>Experimental psychology divides attention along functional axes:</p>
+    <ul>
+      <li><strong>Selective Attention:</strong> The capacity to focus on specific stimuli while ignoring task-irrelevant distractors, famously demonstrated by the cocktail party effect.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+      <li><strong>Sustained Attention (Vigilance):</strong> The maintenance of continuous perceptual sensitivity over prolonged temporal intervals, governed by right-hemisphere subcortical and cortical circuits.</li>
+      <li><strong>Divided Attention:</strong> The allocation of cognitive resources across concurrent tasks, constrained by shared central capacity and executive control.</li>
+      <li><strong>Overt versus Covert Orienting:</strong> Overt attention involves physical foveation through saccadic eye movements. Covert attention shifts internal focus without shifting ocular position.<span class="cite">[<a href="#ref5">5</a>]</span></li>
+      <li><strong>Top-Down versus Bottom-Up:</strong> Top-down (endogenous) attention is voluntary, goal-driven, and initiated by executive intent. Bottom-up (exogenous) attention is involuntary, stimulus-driven, and captured by abrupt sensory salience.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+    </ul>
+
+    <h3 id="anatomical-networks">Anatomical frontoparietal networks</h3>
+    <p>Neuroimaging and lesion studies by Maurizio Corbetta and Gordon Shulman established that visual attention in primates is orchestrated by two partially segregated cortical networks in the frontoparietal cortex:<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <ul>
+      <li><strong>Dorsal Attention Network (DAN):</strong> Comprising the frontal eye fields (FEF) and the superior parietal lobule / intraparietal sulcus (IPS). The DAN operates bilaterally to generate goal-directed, top-down spatial and feature-based attention.</li>
+      <li><strong>Ventral Attention Network (VAN):</strong> Comprising the temporoparietal junction (TPJ) and the ventral frontal cortex (inferior and middle frontal gyri). Strongly lateralized to the right hemisphere, the VAN functions as an alerting mechanism that detects unexpected, behaviorally relevant stimuli and interrupts ongoing dorsal processing.</li>
+    </ul>
+
+    <h3 id="subcortical-gating">Subcortical gating and sensory routing</h3>
+    <p>Cortical attention relies on subcortical gating structures to filter sensory afferents before cortical arrival:</p>
+    <ul>
+      <li><strong>Thalamic Reticular Nucleus (TRN):</strong> A shell of inhibitory GABAergic neurons encapsulating the dorsal thalamus. The TRN regulates thalamocortical transmission, acting as a gateway that suppresses sensory noise before it reaches primary sensory cortices.</li>
+      <li><strong>Pulvinar Nucleus:</strong> The largest nucleus of the primate thalamus, driving alpha-rhythm coherence and synchronizing information transfer across distributed cortical regions during attentional selection.</li>
+      <li><strong>Superior Colliculus:</strong> A midbrain laminated structure coordinating visual sensory maps and driving motor commands for saccadic eye movements.</li>
+    </ul>
+
+    <h3 id="capacity-bottlenecks">Capacity bottlenecks and cognitive constraints</h3>
+    <p>Biological attention operates under strict physical and temporal bounds:</p>
+    <ul>
+      <li><strong>Working Memory Limit:</strong> Research by Nelson Cowan indicates that focal human working memory without rehearsed chunking is limited to approximately four discrete units or items.<span class="cite">[<a href="#ref6">6</a>]</span></li>
+      <li><strong>Attentional Blink:</strong> When two target stimuli appear in rapid succession (within 200 to 500 milliseconds), identification of the second target drops severely, demonstrating a temporal bottleneck in conscious sensory consolidation.</li>
+      <li><strong>Inattentional Blindness:</strong> Observers fail to perceive salient visual events when cognitive focus is concentrated on another demanding visual task, illustrating that awareness depends on active attentional gating rather than retinal reception.</li>
+    </ul>
+
+    <h2 id="computational-attention-in-ai">Computational attention in artificial intelligence</h2>
+    <p>In machine learning, attention describes differentiable weighting operations that allow neural models to reference arbitrary representations across an input context dynamically.</p>
+
+    <h3 id="connectionist-precursors">Connectionist and visual saliency precursors</h3>
+    <p>Early computational models simulated biological visual attention using feature integration theory. The landmark saliency model of Laurent Itti, Christof Koch, and Ernst Niebur (1998) decomposed images into multiscale topographical feature maps (color, intensity, orientation), combining them into a single 2D saliency map governed by a neural winner-take-all network to predict human eye fixation paths.<span class="cite">[<a href="#ref8">8</a>]</span></p>
+
+    <h3 id="additive-alignment-attention">Additive alignment attention</h3>
+    <p>In natural language processing, attention was formalized by Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio in 2014 for sequence-to-sequence translation.<span class="cite">[<a href="#ref7">7</a>]</span> Prior encoder-decoder architectures compressed source sentences into a fixed-length vector \(h\), causing translation quality to degrade on longer sentences. Bahdanau et al. introduced an additive alignment model that calculates a context vector \(c_i\) as a weighted sum of encoder hidden annotations \((h_1, \dots, h_{T_x})\):</p>
+    <div class="math-block">
+      $$c_i = \sum_{j=1}^{T_x} \alpha_{ij} h_j$$
+    </div>
+    <p>The alignment weights \(\alpha_{ij}\) quantify how well input position \(j\) matches the decoder state at position \(i-1\), calculated via a softmax normalized feed-forward layer:</p>
+    <div class="math-block">
+      $$\alpha_{ij} = \frac{\exp(e_{ij})}{\sum_{k=1}^{T_x} \exp(e_{ik})}, \quad e_{ij} = v_a^T \tanh(W_a s_{i-1} + U_a h_j)$$
+    </div>
+
+    <h3 id="scaled-dot-product-attention">Scaled dot-product self-attention</h3>
+    <p>In 2017, Ashish Vaswani and collaborators introduced the Transformer architecture in the paper "Attention Is All You Need."<span class="cite">[<a href="#ref2">2</a>]</span> The Transformer discarded recurrent and convolutional layers entirely, relying on <strong>scaled dot-product self-attention</strong> to model dependencies across sequences in constant \(O(1)\) operational path length.</p>
+    <p>Given an input sequence projected into query matrix \(Q \in \mathbb{R}^{N \times d_k}\), key matrix \(K \in \mathbb{R}^{M \times d_k}\), and value matrix \(V \in \mathbb{R}^{M \times d_v}\), the attention equation computes:</p>
+    <div class="math-block">
+      $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+    </div>
+    <p>The scaling factor \(\frac{1}{\sqrt{d_k}}\) prevents dot products from growing excessively large in high dimensions, which would push softmax logits into regions with near-zero gradients. In causal autoregressive models, an upper-triangular mask of \(-\infty\) is added before the softmax operation to prevent tokens from attending to subsequent future positions.</p>
+
+    <h3 id="multi-head-attention">Multi-head attention and subspace projection</h3>
+    <p>To enable the model to jointly attend to information from different representation subspaces at different positions, the Transformer applies multi-head attention. Input vectors are linearly projected \(h\) distinct times with learned parameter matrices:</p>
+    <div class="math-block">
+      $$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O$$
+    </div>
+    <div class="math-block">
+      $$\text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)$$
+    </div>
+    <p>Different heads specialize in capturing syntactic dependencies, lexical co-reference, factual associations, and stylistic patterns without manual feature engineering.</p>
+
+    <h3 id="efficiency-and-scaling">Hardware scaling and memory efficiency</h3>
+    <p>Standard self-attention exhibits \(O(N^2)\) time and memory complexity with respect to sequence length \(N\). This quadratic scaling created memory bottlenecks on modern accelerators (GPUs/TPUs). To expand practical context windows, Tri Dao et al. (2022) developed <strong>FlashAttention</strong>, an exact attention algorithm that reorganizes execution to be IO-aware.<span class="cite">[<a href="#ref11">11</a>]</span> By tiling queries, keys, and values into fast on-chip SRAM and computing the softmax incrementally without materializing the \(N \times N\) attention matrix in high-bandwidth memory (HBM), FlashAttention scales throughput and context windows by orders of magnitude while preserving mathematical exactness.</p>
+
+    <h2 id="comparative-analysis">Comparative analysis: biological vs computational</h2>
+    <p>The shared vocabulary between cognitive neuroscience and deep learning conceals profound structural divergences.</p>
+
+    <h3 id="comparison-matrix">Comparison matrix</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Neurological Attention</th>
+          <th>Computational AI Attention</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Physical Substrate</strong></td>
+          <td>Biological tissue; spiking neurons, neurotransmitters, and glial support cells.</td>
+          <td>Digital semiconductor silicon; floating-point matrix multiplications on GPUs/TPUs.</td>
+        </tr>
+        <tr>
+          <td><strong>Core Mechanism</strong></td>
+          <td>Inhibitory gating (TRN), neural synchrony (gamma oscillations), and phase locking.</td>
+          <td>Dot-product similarity, matrix scaling, and softmax normalizations.</td>
+        </tr>
+        <tr>
+          <td><strong>Operational Objective</strong></td>
+          <td>Information filtering to protect limited metabolic and working memory capacity.</td>
+          <td>Differentiable routing and context aggregation to minimize training loss.</td>
+        </tr>
+        <tr>
+          <td><strong>Selection Profile</strong></td>
+          <td>Sparse and exclusionary; unattended stimuli are heavily suppressed or discarded.</td>
+          <td>Continuous and dense; all input tokens receive non-zero softmax probability mass.</td>
+        </tr>
+        <tr>
+          <td><strong>Temporal Dynamics</strong></td>
+          <td>Serial saccades, temporal refractory periods (attentional blink: 200 to 500 ms).</td>
+          <td>Fully parallel batch processing across the active context window.</td>
+        </tr>
+        <tr>
+          <td><strong>Working Memory Capacity</strong></td>
+          <td>Extremely constrained; approximately 4 chunks or focal items (Cowan).</td>
+          <td>Extensive buffer; millions of tokens within active key-value caches.</td>
+        </tr>
+        <tr>
+          <td><strong>Action Coupling</strong></td>
+          <td>Directly coupled to physical motor commands (foveation, posture, somatic arousal).</td>
+          <td>Decoupled from physical embodiment; passive tensor transformation during forward pass.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="selection-vs-routing">Selection versus routing</h3>
+    <p>The fundamental functional distinction lies between selection and routing. In biological systems, attention is an exclusionary filter. Human sensory organs absorb an estimated \(10^7\) to \(10^8\) bits of raw information per second, while conscious processing bandwidth is estimated at under 50 bits per second.<span class="cite">[<a href="#ref3">3</a>]</span> Survival requires aggressive, permanent pruning of distractors.</p>
+    <p>In contrast, Transformer self-attention is a dense routing network. In standard self-attention, the softmax function guarantees that every token assigns non-zero attention weight to every other token in the sequence (unless explicitly masked). Rather than discarding data, computational attention calculates a convex combination of all value vectors in memory. It routes information rather than discarding it.</p>
+
+    <h3 id="capacity-limits-vs-complexity">Capacity limits versus computational complexity</h3>
+    <p>Biological attention is strictly bound by working memory capacity (the "magical number four").<span class="cite">[<a href="#ref6">6</a>]</span> Human cognition cannot simultaneously hold ten unrelated concepts in active focal attention without chunking or external cognitive aids. In contrast, modern language models operate with context windows spanning from 8,192 to over 1,000,000 tokens. The computational bottleneck is not an arbitrary capacity cap, but the quadratic \(O(N^2)\) FLOP and memory bandwidth cost of all-to-all sequence interactions.</p>
+
+    <h3 id="metabolic-state-vs-stateless-eval">Metabolic exhaustion versus stateless evaluation</h3>
+    <p>Biological attention is metabolically expensive. Sustained cognitive vigilance depletes prefrontal glycogen reserves and accumulates extracellular adenosine, producing subjective cognitive fatigue, vigilance decrements, and degraded executive function. Computational attention has no metabolic degradation. A forward pass across a sequence of 100,000 tokens consumes electrical energy, but the model suffers no fatigue, drift, or vigilance decrement over repeated evaluations. Its attention mechanics are deterministic, stateless, and mathematically invariant between successive queries.</p>
+
+    <h2 id="epistemic-pitfalls">Epistemic pitfalls of anthropomorphism</h2>
+    <p>Borrowing cognitive terms to describe computational primitives creates predictable analytical errors.</p>
+
+    <h3 id="metaphor-reification">Attention as architectural loan-word</h3>
+    <p>Computer science frequently uses cognitive metaphors (such as <em>memory</em>, <em>learning</em>, <em>perception</em>, and <em>attention</em>) to label mathematical data structures. Reifying these metaphors leads to erroneous inferences about model capabilities. A machine learning model that exhibits high attention weights on a specific token is not "focusing" in the phenomenological or psychological sense. It is performing a weighted linear combination of vectors in an abstract embedding space to minimize cross-entropy loss.</p>
+
+    <h3 id="interpretability-debate">The explanation debate in mechanistic interpretability</h3>
+    <p>A prominent controversy in artificial intelligence research involves whether computational attention weights provide faithful explanations of model decisions:</p>
+    <ul>
+      <li><strong>Attention is Not Explanation (Jain &amp; Wallace, 2019):</strong> Empirical work demonstrated that attention weights frequently fail to correlate with gradient-based feature importance measures. Moreover, researchers could generate adversarial attention distributions that produced identical model outputs while distributing attention weights across completely different input tokens.<span class="cite">[<a href="#ref9">9</a>]</span></li>
+      <li><strong>Attention is Not Not Explanation (Wiegreffe &amp; Pinter, 2019):</strong> Counter-arguments showed that under appropriate constraints, attention distributions track model behavior, particularly when evaluating complete architectures rather than isolated layers.<span class="cite">[<a href="#ref10">10</a>]</span></li>
+    </ul>
+    <p>This debate underscores that computational attention weights are internal intermediate variables within a highly non-linear parameter landscape, rather than transparent transcripts of conscious deliberation.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/transformer-architecture/">Reference: Transformer Architecture</a></li>
+      <li><a href="/reference/context-window/">Reference: Context Windows</a></li>
+      <li><a href="/reference/context-engineering/">Reference: Context Engineering</a></li>
+      <li><a href="/reference/embeddings/">Reference: Embeddings and Vector Representations</a></li>
+      <li><a href="/reference/autoregressive/">Reference: Autoregressive Models</a></li>
+      <li><a href="/reference/deep-neural-networks/">Reference: Deep Neural Networks</a></li>
+      <li><a href="/reference/neural-networks/">Reference: Neural Networks</a></li>
+      <li><a href="/reference/agents/">Reference: Agents</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol class="references">
+      <li id="ref1"><span class="backlink">^</span> William James, <em>The Principles of Psychology</em>, Vol. 1, Henry Holt and Co., New York, 1890, pp. 403-404.</li>
+      <li id="ref2"><span class="backlink">^</span> Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin, "Attention Is All You Need," <em>Advances in Neural Information Processing Systems</em>, 30, 2017. <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">arXiv:1706.03762</a>.</li>
+      <li id="ref3"><span class="backlink">^</span> Donald E. Broadbent, <em>Perception and Communication</em>, Pergamon Press, London, 1958.</li>
+      <li id="ref4"><span class="backlink">^</span> Maurizio Corbetta and Gordon L. Shulman, "Control of goal-directed and stimulus-driven attention in the brain," <em>Nature Reviews Neuroscience</em>, 3(3), 201-215, 2002. doi:10.1038/nrn755.</li>
+      <li id="ref5"><span class="backlink">^</span> Michael I. Posner, "Orienting of attention," <em>Quarterly Journal of Experimental Psychology</em>, 32(1), 3-25, 1980. doi:10.1080/00335558008248231.</li>
+      <li id="ref6"><span class="backlink">^</span> Nelson Cowan, "The magical number 4 in short-term memory: A reconsideration of mental storage capacity," <em>Behavioral and Brain Sciences</em>, 24(1), 87-114, 2001. doi:10.1017/s0140525x01003922.</li>
+      <li id="ref7"><span class="backlink">^</span> Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio, "Neural Machine Translation by Jointly Learning to Align and Translate," <em>International Conference on Learning Representations (ICLR)</em>, 2015. <a href="https://arxiv.org/abs/1409.0473" target="_blank" rel="noopener">arXiv:1409.0473</a>.</li>
+      <li id="ref8"><span class="backlink">^</span> Laurent Itti, Christof Koch, and Ernst Niebur, "A Model of Saliency-Based Visual Attention for Rapid Scene Analysis," <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, 20(11), 1254-1259, 1998. doi:10.1109/34.730558.</li>
+      <li id="ref9"><span class="backlink">^</span> Sarthak Jain and Byron C. Wallace, "Attention is not Explanation," <em>Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)</em>, 3543-3556, 2019. doi:10.18653/v1/N19-1357.</li>
+      <li id="ref10"><span class="backlink">^</span> Sarah Wiegreffe and Yuval Pinter, "Attention is not not Explanation," <em>Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)</em>, 11-20, 2019. doi:10.18653/v1/D19-1002.</li>
+      <li id="ref11"><span class="backlink">^</span> Tri Dao, Daniel Y. Fu, Stefano Ermon, Atri Rudra, and Christopher Ré, "FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness," <em>Advances in Neural Information Processing Systems</em>, 35, 2022. <a href="https://arxiv.org/abs/2205.14135" target="_blank" rel="noopener">arXiv:2205.14135</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
