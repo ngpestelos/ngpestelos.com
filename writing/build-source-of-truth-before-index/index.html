@@ -43,43 +43,33 @@
 
 <p>In 1970, E. F. Codd wrote <a href="https://dl.acm.org/doi/10.1145/362384.362685">the paper that founded the relational database</a>. Section 1.2.2 establishes that an index is a redundant component of the data representation. An index is not central to the system and not authoritative. It is a performance artifact that the system can create and destroy without breaking anything that depends on it.</p>
 
-<p>Fifty-six years later, the default move for building AI memory is to skip straight to the redundant component: chunk everything, embed it, query by similarity, and never build the substrate the index was supposed to index.</p>
-
 <h2 id="three-traditions-one-architecture">Three traditions, one architecture</h2>
 
 <p>The Pragmatic Programmer&#x27;s <a href="https://pragprog.com/tips/">Tip 25</a> argues from software craft: keep knowledge in plain text because plain text never becomes obsolete.</p>
 
-<p>Doug McIlroy&#x27;s <a href="https://en.wikipedia.org/wiki/Unix_philosophy">Unix philosophy</a> ends on a parallel principle: write programs to handle text streams because text is a universal interface. Binary formats couple readers to the program that wrote them. Plain text carries no such coupling. It can be inspected, filtered, diffed, and repaired by hand when surrounding tooling fails.</p>
+<p>Doug McIlroy&#x27;s <a href="https://en.wikipedia.org/wiki/Unix_philosophy">Unix philosophy</a>: write programs to handle text streams because text is a universal interface.</p>
 
 <h2 id="the-build-order-for-2026">The build order for 2026</h2>
 
 <p>shyam&#x27;s <a href="https://x.com/shyamsundar/status/2077215255432974689">lesson from building long-term memory for an AI agent</a>: start with a source of truth humans can read and edit. Next add search. Then add graph structure. Finally give agents access. A markdown wiki remains correctable. A vector database seeded with arbitrary chunks remains an un-auditable black box.</p>
 
-<p>Boris Cherny, creator of Claude Code, <a href="https://x.com/aakashgupta/status/2018933856460775597">makes the search half of the argument</a> from inside a production coding agent (relayed by Aakash Gupta). Simple Unix search (grep, find, ripgrep) beats RAG pipelines for code comprehension because search inspects the source of truth directly instead of an out-of-sync secondary store.</p>
+<p>Boris Cherny, creator of Claude Code, <a href="https://x.com/aakashgupta/status/2018933856460775597">makes the search half of the argument</a> (relayed by Aakash Gupta). Simple Unix search (grep, find, ripgrep) beats RAG pipelines because search inspects the source of truth directly.</p>
 
-<p><a href="https://x.com/karpathy/status/2039805659525644595">Andrej Karpathy runs the identical build order</a> for his knowledge base: raw documents compiled into a markdown wiki, an LLM as maintainer, and zero RAG at roughly 100 articles and 400,000 words. The model&#x27;s context window already holds the entire corpus.</p>
+<p><a href="https://x.com/karpathy/status/2039805659525644595">Andrej Karpathy runs the identical build order</a> for his knowledge base: raw documents compiled into a markdown wiki, an LLM as maintainer, and zero RAG at roughly 100 articles and 400,000 words.</p>
 
 <h2 id="two-companies-tried-it-backwards">Two companies tried it backwards</h2>
 
-<p>Sourcegraph <a href="https://sourcegraph.com/blog/how-cody-understands-your-codebase">shipped Cody on embeddings, then deprecated them</a> in February 2024. Code left local perimeters for third-party embedding, the index demanded constant upkeep, and operational complexity grew unsustainable past 100,000 repositories. Sourcegraph replaced embeddings with BM25 search across raw code. The source of truth was sufficient all along; the index was the fragile dependency.</p>
+<p>Sourcegraph <a href="https://sourcegraph.com/blog/how-cody-understands-your-codebase">shipped Cody on embeddings, then deprecated them</a> in February 2024. Code left local perimeters for third-party embedding. The index demanded constant upkeep past 100,000 repositories. Sourcegraph replaced embeddings with BM25 search across raw code.</p>
 
-<p>Confident AI encountered a separate wall. <a href="https://www.confident-ai.com/blog/why-we-replaced-pinecone-with-pgvector">Pinecone&#x27;s metadata limits forced two-step retrieval</a>, and their separated vector store lacked synchronization mechanisms with the primary data source. They folded vectors back into PostgreSQL, eliminating desync risk by construction. Both accounts are vendor-reported and qualitative, without independent replication.</p>
+<p><a href="https://www.confident-ai.com/blog/why-we-replaced-pinecone-with-pgvector">Pinecone&#x27;s metadata limits forced two-step retrieval</a> at Confident AI. Their separated vector store lacked synchronization with the primary data source. They folded vectors back into PostgreSQL. Both accounts are vendor-reported and qualitative, without independent replication.</p>
 
 <h2 id="where-the-derivation-earns-its-keep">Where the derivation earns its keep</h2>
 
 <p><a href="https://cursor.com/blog/semsearch">Cursor recorded semantic search</a> over its embeddings index at 12.5% higher question-answering accuracy than grep alone, with code retention in A/B tests rising 2.6% on repositories over 1,000 files. These numbers are Cursor&#x27;s internal benchmarks without independent confirmation.</p>
 
-<p><a href="https://cursor.com/blog/secure-codebase-indexing">Cursor&#x27;s index is a Merkle tree synchronized with the local working copy</a>. Chunks are cached by hash and evicted immediately when a file changes on disk. This is not an independent data store.</p>
+<p><a href="https://cursor.com/blog/secure-codebase-indexing">Cursor&#x27;s index is a Merkle tree synchronized with the local working copy</a>. Chunks are cached by hash and evicted immediately when a file changes on disk.</p>
 
-<ol>
-
-<li><strong>Context-window capacity</strong>: A <a href="https://arxiv.org/abs/2501.01880">2025 study on long-context models versus chunk retrieval</a> found long-context models beat chunk-based RAG on accuracy. That advantage flips once a corpus outgrows the window, where input costs scale linearly and indexing becomes mandatory.</li>
-
-<li><strong>Whole-corpus synthesis</strong>: Aggregations like &quot;find the top five themes across all notes&quot; require a <a href="https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/">derived knowledge graph</a>, because single chunks cannot answer global questions.</li>
-
-<li><strong>Lexical versus semantic recall</strong>: BM25 catches exact identifiers that embeddings blur, while vector search captures paraphrases BM25 misses. <a href="https://x.com/_avichawla/status/2020747017258217808">Avi Chawla notes</a> that robust retrieval combines both.</li>
-
-</ol>
+<p>A <a href="https://arxiv.org/abs/2501.01880">2025 study</a> found long-context models beat chunk-based RAG on accuracy until the corpus outgrows the window. Aggregations like &quot;find the top five themes across all notes&quot; need a <a href="https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/">derived knowledge graph</a>. BM25 catches exact identifiers; vector search catches paraphrases. <a href="https://x.com/_avichawla/status/2020747017258217808">Avi Chawla</a> notes robust retrieval combines both.</p>
 
 <h2 id="before-reaching-for-a-vector-database">Before reaching for a vector database</h2>
 
@@ -95,7 +85,7 @@
 
 </ol>
 
-<p>In my own vault, every note is plain markdown: readable by any editor, tracked by git, and editable by hand. Full-text and vector indexes run on top, rebuilt from source files whenever they drift. This is not a speculative architecture. It is running right now under the text you are reading.</p>
+<p>In my own vault, every note is plain markdown, tracked by git, editable by hand. Full-text and vector indexes run on top, rebuilt from source files whenever they drift. This is not a speculative architecture. It is running right now under the text you are reading.</p>
 
 <h2 id="sources">Sources</h2>
 
