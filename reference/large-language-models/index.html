@@ -36,201 +36,48 @@
       ]
     });"></script>
   <style>
-    
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
-    body {
-      line-height: 1.6;
-    }
-    main {
-      max-width: 48rem;
-      margin: 0 auto;
-      padding: 1.4rem 1.4rem 4rem;
-    }
-    .back {
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 0.85rem;
-      color: var(--mute);
-      margin-bottom: 1.4rem;
-    }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
     .back a { color: var(--link); text-decoration: none; }
     .back a:hover { text-decoration: underline; }
-    .kicker {
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--mute);
-      margin-bottom: 0.2rem;
-    }
-    h1 {
-      font-size: clamp(1.9rem, 5vw, 2.4rem);
-      font-weight: 400;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 0.4rem;
-      margin-bottom: 0.8rem;
-    }
-    .subtitle {
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 1rem;
-      color: var(--mute);
-      margin-bottom: 1.6rem;
-      line-height: 1.5;
-    }
-    .companion-box {
-      background: var(--well);
-      border: 1px solid var(--line);
-      border-left: 4px solid var(--link);
-      border-radius: 4px;
-      padding: 1rem 1.3rem;
-      margin-bottom: 1.8rem;
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    }
-    .companion-box h2 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      border-bottom: none;
-      padding-bottom: 0;
-      color: var(--ink);
-    }
-    .companion-box ul {
-      list-style: none;
-      padding-left: 0;
-      margin-bottom: 0;
-      font-size: 0.92rem;
-    }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .subtitle { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 1rem; color: var(--mute); margin-bottom: 1.6rem; line-height: 1.5; }
+    .companion-box { background: var(--well); border: 1px solid var(--line); border-left: 4px solid var(--link); border-radius: 4px; padding: 1rem 1.3rem; margin-bottom: 1.8rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; }
+    .companion-box h2 { font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0; margin-bottom: 0.5rem; border-bottom: none; padding-bottom: 0; color: var(--ink); }
+    .companion-box ul { list-style: none; padding-left: 0; margin-bottom: 0; font-size: 0.92rem; }
     .companion-box li { margin-bottom: 0.4rem; }
     .companion-box li:last-child { margin-bottom: 0; }
     .companion-box a { color: var(--link); text-decoration: none; }
     .companion-box a:hover { text-decoration: underline; }
-    .toc {
-      background: var(--well);
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      padding: 1.1rem 1.4rem;
-      margin-bottom: 2rem;
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 0.9rem;
-    }
-    .toc h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-      color: var(--ink);
-    }
-    .toc-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem 0.6rem;
-      line-height: 1.4;
-    }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--ink); }
+    .toc-grid { display: flex; flex-wrap: wrap; gap: 0.3rem 0.6rem; line-height: 1.4; }
     .toc-grid a { color: var(--link); text-decoration: none; }
     .toc-grid a:hover { text-decoration: underline; }
-    h2 {
-      font-size: 1.45rem;
-      font-weight: 700;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 0.3rem;
-      margin-top: 2.2rem;
-      margin-bottom: 0.9rem;
-      color: var(--ink);
-    }
-    h3 {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-top: 1.4rem;
-      margin-bottom: 0.3rem;
-      color: var(--ink);
-    }
+    h2 { font-size: 1.45rem; font-weight: 700; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin-top: 2.2rem; margin-bottom: 0.9rem; color: var(--ink); }
+    h3 { font-size: 1.15rem; font-weight: 700; margin-top: 1.4rem; margin-bottom: 0.3rem; color: var(--ink); }
     p { margin-bottom: 1rem; }
     ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
     li { margin-bottom: 0.4rem; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.2rem 0 1.8rem;
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 0.88rem;
-    }
-    th, td {
-      border: 1px solid var(--line);
-      padding: 0.55rem 0.75rem;
-      text-align: left;
-      vertical-align: top;
-    }
+    table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.8rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.88rem; }
+    th, td { border: 1px solid var(--line); padding: 0.55rem 0.75rem; text-align: left; vertical-align: top; }
     th { background: var(--well); font-weight: 600; }
-    code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 0.88em;
-      background: #f1f3f5;
-      padding: 0.15em 0.35em;
-      border-radius: 3px;
-    }
-    .def-box {
-      margin-bottom: 1.4rem;
-      padding-bottom: 0.8rem;
-      border-bottom: 1px dashed #d0d7de;
-    }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.88em; background: #f1f3f5; padding: 0.15em 0.35em; border-radius: 3px; }
+    .def-box { margin-bottom: 1.4rem; padding-bottom: 0.8rem; border-bottom: 1px dashed #d0d7de; }
     .def-box:last-child { border-bottom: none; }
     .term-title { font-weight: 700; font-size: 1.05rem; display: inline; }
     .term-desc { display: inline; margin-left: 0.35rem; }
-    footer {
-      border-top: 1px solid var(--line);
-      margin-top: 3rem;
-      padding-top: 1.4rem;
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 0.85rem;
-      color: var(--mute);
-    }
+    footer { border-top: 1px solid var(--line); margin-top: 3rem; padding-top: 1.4rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
     footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
-    @media print {
-      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
-    }
-      .back-to-top {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      width: 2.6rem;
-      height: 2.6rem;
-      border-radius: 50%;
-      background: var(--bg);
-      color: var(--ink);
-      border: 1px solid var(--line);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(8px);
-      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
-      z-index: 100;
-    }
-    .back-to-top.visible {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-    .back-to-top:hover {
-      background: var(--well);
-      border-color: var(--link);
-      color: var(--link);
-    }
-    .back-to-top:focus-visible {
-      outline: 2px solid var(--link);
-      outline-offset: 2px;
-    }
-    @media print {
-      .back-to-top { display: none !important; }
-    }
+    @media print { .back { display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    @media print { .back-to-top { display: none !important; } }
   </style>
   <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"DefinedTerm","name":"Large Language Models","description":"A citable ground-truth reference on Large Language Models (LLMs): transformer architecture, tokenization, context engineering, RAG, gateways, and evaluation.","url":"https://ngpestelos.com/reference/large-language-models/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
@@ -246,12 +93,18 @@
     <div class="companion-box">
       <h2>Companion Formats &amp; Related References</h2>
       <ul>
-        <li>🎨 <a href="/eli5/large-language-models/"><strong>ELI5: How Large Language Models Work</strong></a> — Visual picture-book explainer for intuitive understanding.</li>
-        <li>🌳 <a href="/trees/large-language-models/"><strong>LLM System Design Knowledge Tree</strong></a> — Prerequisite curriculum map and active learning frontier.</li>
-        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a> — Sequential factorization and causal attention masks.</li>
-        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a> — Multi-layer architectures, backpropagation, and representation learning.</li>
-        <li>📖 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> — Attention dynamics, memory tiers, and token budgeting.</li>
-        <li>📖 <a href="/reference/retrieval-augmented-generation/"><strong>Reference: Retrieval-Augmented Generation</strong></a> — Dedicated ground-truth page on RAG architectures.</li>
+        <li>🎨 <a href="/eli5/large-language-models/"><strong>ELI5: How Large Language Models Work</strong></a>: Visual picture-book explainer for intuitive understanding.</li>
+        <li>🌳 <a href="/trees/large-language-models/"><strong>LLM System Design Knowledge Tree</strong></a>: Prerequisite curriculum map and active learning frontier.</li>
+        <li>📖 <a href="/reference/transformer-architecture/"><strong>Reference: Transformer Architecture</strong></a>: Multi-head self-attention and projection mechanics.</li>
+        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a>: Sequential factorization and causal attention masks.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a>: Multi-layer architectures, backpropagation, and representation learning.</li>
+        <li>📖 <a href="/reference/tokens/"><strong>Reference: Tokens</strong></a>: Discrete units, subword tokenizers, and vocabulary projections.</li>
+        <li>📖 <a href="/reference/embeddings/"><strong>Reference: Embeddings</strong></a>: High-dimensional semantic vector spaces and similarity metrics.</li>
+        <li>📖 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a>: Attention dynamics, memory tiers, and token budgeting.</li>
+        <li>📖 <a href="/reference/retrieval-augmented-generation/"><strong>Reference: Retrieval-Augmented Generation</strong></a>: Dedicated ground-truth page on RAG architectures.</li>
+        <li>📖 <a href="/reference/llm-inference/"><strong>Reference: LLM Inference</strong></a>: Prefill-decode lifecycle, KV caching, and continuous batching.</li>
+        <li>📖 <a href="/reference/llm-gateway/"><strong>Reference: LLM Gateway</strong></a>: Reverse proxy normalization, rate limiting, and circuit breakers.</li>
+        <li>📖 <a href="/reference/prompt-injection/"><strong>Reference: Prompt Injection</strong></a>: Threat taxonomy, delimiter confusion, and defense patterns.</li>
       </ul>
     </div>
 
@@ -272,10 +125,10 @@
     <!-- Section 1: Definition & Core Model -->
     <h2 id="definition">1. Definition &amp; Core Mechanism</h2>
     <p>
-      A <strong>Large Language Model (LLM)</strong> is an <a href="/reference/autoregressive/">autoregressive</a> <a href="/reference/deep-neural-networks/">deep neural network</a> trained on vast text corpora to model the conditional probability distribution of text tokens. Based primarily on the Transformer decoder architecture (Vaswani et al., 2017), an LLM generates output by iteratively predicting the single most plausible next token given all preceding context tokens.
+      A <strong>Large Language Model (LLM)</strong> is an <a href="/reference/autoregressive/">autoregressive</a> <a href="/reference/deep-neural-networks/">deep neural network</a> trained on vast text corpora to model the conditional probability distribution of text tokens. Based primarily on the <a href="/reference/transformer-architecture/">Transformer decoder architecture</a> (Vaswani et al., 2017), an LLM generates output by iteratively predicting the single most plausible next token given all preceding context tokens.
     </p>
     <p>
-      At its core, an LLM is a mathematical function mapping an input sequence of token IDs \((x_1, x_2, \dots, x_t)\) to a probability distribution over the vocabulary \(V\):
+      At its core, an LLM is a mathematical function mapping an input sequence of token IDs \((x_1, x_2, \dots, x_t)\) to a probability distribution over the vocabulary \(V\) projected through a <a href="/reference/softmax/">softmax function</a>:
     </p>
     <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
       $$P(x_{t+1} \mid x_1, x_2, \dots, x_t) = \text{softmax}(W_v \cdot h_t)$$
@@ -300,10 +153,10 @@
       </thead>
       <tbody>
         <tr>
-          <td><strong>Frontier Models</strong> (e.g. Claude Opus, GPT-4.5)</td>
+          <td><a href="/reference/frontier-models/"><strong>Frontier Models</strong></a> (e.g. Claude Opus, GPT-4.5)</td>
           <td>&gt;500B (MoE)</td>
           <td>Complex multi-step reasoning, architectural planning, system synthesis, edge-case analysis.</td>
-          <td>Highest cost ($5–$30 / 1M tokens), high latency (TTFT &gt; 1.5s), external API dependency.</td>
+          <td>Highest cost ($5–$30 / 1M tokens), high latency (<a href="/reference/time-to-first-token/">TTFT</a> &gt; 1.5s), external API dependency.</td>
         </tr>
         <tr>
           <td><strong>Workhorse Models</strong> (e.g. Claude Sonnet, GPT-4o)</td>
@@ -315,39 +168,39 @@
           <td><strong>Fast / Flash Models</strong> (e.g. Claude Haiku, Gemini Flash)</td>
           <td>8B–35B</td>
           <td>Triage, summarization, classifier gates, firewall intent filtering, high-throughput routing.</td>
-          <td>Sub-second TTFT, low cost ($0.10–$0.50 / 1M tokens), lower deep-reasoning ceiling.</td>
+          <td>Sub-second <a href="/reference/time-to-first-token/">TTFT</a>, low cost ($0.10–$0.50 / 1M tokens), lower deep-reasoning ceiling.</td>
         </tr>
         <tr>
           <td><strong>Specialized SLMs</strong> (e.g. Llama 3 8B, Qwen 2.5)</td>
           <td>1B–8B</td>
-          <td>On-device inference, air-gapped data compliance, narrow fine-tuned classification, parsing.</td>
+          <td>On-device <a href="/reference/llm-inference/">inference</a>, air-gapped data compliance, narrow fine-tuned classification, parsing.</td>
           <td>Runs locally / on CPU/edge, zero API cost, strict single-task specialization.</td>
         </tr>
       </tbody>
     </table>
 
     <!-- Section 3: Tokenization & Embeddings -->
-    <h2 id="tokenization-embeddings">3. Tokens, Embeddings &amp; Vector Search</h2>
+    <h2 id="tokenization-embeddings">3. <a href="/reference/tokens/">Tokens</a>, <a href="/reference/embeddings/">Embeddings</a> &amp; <a href="/reference/vector-search/">Vector Search</a></h2>
     
     <h3 id="tokenization">Tokenization Mechanics</h3>
     <p>
-      LLMs do not process raw text or characters directly. Text is converted into discrete integer tokens using subword algorithms such as Byte-Pair Encoding (BPE) or WordPiece. 
+      LLMs do not process raw text or characters directly. Text is converted into discrete integer <a href="/reference/tokens/">tokens</a> using subword algorithms such as Byte-Pair Encoding (BPE) or WordPiece. 
       On average in English, 1 token &approx; 0.75 words (or 4 characters). Numbers, whitespace, non-Latin scripts, and complex code syntax consume substantially higher token density.
     </p>
 
     <h3 id="embeddings">Dense Vector Embeddings</h3>
     <p>
-      An embedding model projects text tokens into a continuous high-dimensional vector space (e.g., 768 to 3072 dimensions). 
+      An <a href="/reference/embeddings/">embedding model</a> projects text tokens into a continuous high-dimensional vector space (e.g., 768 to 3072 dimensions). 
       Geometric proximity in this space captures semantic meaning: two text passages with similar conceptual meaning cluster closely together as measured by <strong>cosine similarity</strong>, regardless of whether they share exact vocabulary.
     </p>
 
     <!-- Section 4: Context Engineering -->
-    <h2 id="context-engineering">4. Context Engineering &amp; Memory Strategies</h2>
+    <h2 id="context-engineering">4. <a href="/reference/context-engineering/">Context Engineering</a> &amp; Memory Strategies</h2>
     <p>
-      Context engineering is the systematic discipline of curating the token payload submitted to an LLM on each call. It is a data-pipeline engineering problem, not prompt styling.
+      <a href="/reference/context-engineering/">Context engineering</a> is the systematic discipline of curating the token payload submitted to an LLM on each call. It is a data-pipeline engineering problem, not prompt styling.
     </p>
     <ul>
-      <li><strong>The Context Window Budget:</strong> Every LLM has a finite context length (e.g. 128k to 2M tokens). However, "effective recall" degrades as context grows (the <em>Lost in the Middle</em> phenomenon).</li>
+      <li><strong>The <a href="/reference/context-window/">Context Window</a> Budget:</strong> Every LLM has a finite context length (e.g. 128k to 2M tokens). However, "effective recall" degrades as context grows (the <em>Lost in the Middle</em> phenomenon).</li>
       <li><strong>Context Overflow Strategy:</strong> Massive context windows do not replace a structured memory hierarchy. Production systems split state into:
         <ul>
           <li><em>Short-term Working Memory:</em> Immediate session turn buffer and current active files.</li>
@@ -355,53 +208,53 @@
           <li><em>Semantic Long-Term Memory:</em> Curated atomic notes, vector databases, and knowledge graphs.</li>
         </ul>
       </li>
-      <li><strong>Structured Prompt Framework:</strong> High-reliability prompts partition instructions into four deterministic sections: <code>Role &amp; Identity</code>, <code>Task &amp; Context</code>, <code>Constraints &amp; Safety Guards</code>, and <code>Output Format / Schema</code>.</li>
+      <li><strong>Structured Prompt Framework:</strong> High-reliability <a href="/reference/prompt-engineering/">prompts</a> partition instructions into four deterministic sections: <code>Role &amp; Identity</code>, <code>Task &amp; Context</code>, <code>Constraints &amp; Safety Guards</code>, and <code>Output Format / Schema</code>.</li>
     </ul>
 
     <!-- Section 5: Production Architecture -->
     <h2 id="system-patterns">5. Production System Architecture Patterns</h2>
     <p>
-      Deploying LLMs in production requires isolating application code from non-deterministic, high-latency external model APIs (Mitra, 2026):
+      Deploying LLMs in production requires isolating application code from non-deterministic, high-latency external model APIs through specialized <a href="/reference/llm-inference/">inference</a> and serving infrastructure (Mitra, 2026):
     </p>
 
-    <h3 id="gateway-pattern">1. The LLM Gateway Pattern</h3>
+    <h3 id="gateway-pattern">1. The <a href="/reference/llm-gateway/">LLM Gateway Pattern</a></h3>
     <p>
       Decouples business services from proprietary vendor SDKs. The gateway acts as a reverse proxy providing centralized API key rotation, unified request/response normalization, token-bucket rate limiting, and observability metrics.
     </p>
 
     <h3 id="tiered-fallback">2. Circuit Breakers &amp; Tiered Model Fallback</h3>
     <p>
-      When an upstream provider experiences elevated 5xx errors or latency spikes, a circuit breaker trips from <em>Closed</em> to <em>Open</em>, instantly routing incoming traffic to secondary providers (e.g., Primary Claude Sonnet &rarr; Fallback DeepSeek-V3 on Nous / OpenAI GPT-4o) without user-facing downtime.
+      When an upstream provider experiences elevated 5xx errors or latency spikes, a circuit breaker in the <a href="/reference/model-router/">model router</a> trips from <em>Closed</em> to <em>Open</em>, instantly routing incoming traffic to secondary providers (e.g., Primary Claude Sonnet &rarr; Fallback DeepSeek-V3 on Nous / OpenAI GPT-4o) without user-facing downtime.
     </p>
 
     <h3 id="caching-tiers">3. Three-Level Caching Strategy</h3>
     <ul>
       <li><strong>Level 1 (Exact Match):</strong> Hash lookup over raw prompt strings and temperature settings (0ms latency, zero token cost).</li>
-      <li><strong>Level 2 (Semantic Caching):</strong> Cosine distance matching over prompt embeddings to serve cached answers for semantically identical questions within a cosine threshold (e.g., \(&gt;0.96\)).</li>
-      <li><strong>Level 3 (Proactive Caching):</strong> Pre-populating responses for anticipated high-frequency queries.</li>
+      <li><strong>Level 2 (<a href="/reference/semantic-caching/">Semantic Caching</a>):</strong> Cosine distance matching over prompt embeddings to serve cached answers for semantically identical questions within a cosine threshold (e.g., \(&gt;0.96\)).</li>
+      <li><strong>Level 3 (Proactive Caching):</strong> Pre-populating responses for anticipated high-frequency queries and leveraging <a href="/reference/prompt-caching/">prompt caching</a> for shared prefixes.</li>
     </ul>
 
     <!-- Section 6: Evals & Benchmarks -->
-    <h2 id="evals-benchmarks">6. Evaluation, Testing &amp; LLM-as-a-Judge</h2>
+    <h2 id="evals-benchmarks">6. <a href="/reference/llm-evaluations/">Evaluation, Testing &amp; LLM-as-a-Judge</a></h2>
     <p>
       Because LLM output is non-deterministic and natural language-based, classical string-equality unit tests fail. Production systems rely on three testing layers:
     </p>
     <ol>
       <li><strong>Deterministic Rule Checks:</strong> JSON Schema validation, regex constraints, forbidden keyword filters, and execution compiler checks.</li>
       <li><strong>Golden Set Benchmarking:</strong> Curated suites of input-output test cases evaluated by a frontier model (LLM-as-a-Judge) using explicit, rubric-based scoring.</li>
-      <li><strong>Mutation &amp; Red-Team Testing:</strong> Programmatically injecting deliberate errors (syntax mutations, adversarial prompt injections) to verify that guardrails catch regressions.</li>
+      <li><strong><a href="/reference/llm-mutation-testing/">Mutation &amp; Red-Team Testing</a>:</strong> Programmatically injecting deliberate errors (syntax mutations, adversarial prompt injections) to verify that guardrails catch regressions.</li>
     </ol>
 
     <!-- Section 7: Failure Modes & Security -->
     <h2 id="failure-modes">7. Failure Modes &amp; AI Security</h2>
     <div class="def-box">
-      <h3 class="term-title" id="prompt-injection">Prompt Injection:</h3>
-      <p class="term-desc">An attacker embeds instructions inside untrusted user data that override the system instructions. Mitigated by the Firewall LLM pattern (filtering data before main model), strict instruction/data separation, and treating all model outputs as untrusted input.</p>
+      <h3 class="term-title" id="prompt-injection"><a href="/reference/prompt-injection/">Prompt Injection</a>:</h3>
+      <p class="term-desc">An attacker embeds instructions inside untrusted user data that override the system instructions. Mitigated by the <a href="/reference/firewall-llm/">Firewall LLM pattern</a> (filtering data before main model), strict instruction/data separation, and treating all model outputs as untrusted input.</p>
     </div>
 
     <div class="def-box">
       <h3 class="term-title" id="excessive-agency">Excessive Agency:</h3>
-      <p class="term-desc">Granting an LLM autonomous write or execution permissions without validation gates. Mitigated by the <strong>Plan-Approve-Execute</strong> pattern: the model proposes an action, but a deterministic policy or human operator executes the gate.</p>
+      <p class="term-desc">Granting an LLM autonomous write or execution permissions without validation gates. Mitigated by the <a href="/reference/plan-approve-execute/"><strong>Plan-Approve-Execute</strong> pattern</a>: the model proposes an action, but a deterministic policy or human operator executes the gate.</p>
     </div>
 
     <div class="def-box">
@@ -420,7 +273,7 @@
         <li>OpenAI: <a href="https://platform.openai.com/docs/guides/evals" target="_blank" rel="noopener">Model Evaluation &amp; Evals Framework</a></li>
       </ul>
       <p style="margin-top: 1rem;">
-        Related: <a href="/eli5/large-language-models/">ELI5: Large Language Models</a> &middot; <a href="/trees/large-language-models/">LLM System Design Tree</a> &middot; <a href="/reference/retrieval-augmented-generation/">RAG Reference</a>
+        Related: <a href="/reference/transformer-architecture/">Transformer Architecture</a> &middot; <a href="/reference/llm-inference/">LLM Inference</a> &middot; <a href="/reference/retrieval-augmented-generation/">RAG</a> &middot; <a href="/reference/prompt-injection/">Prompt Injection</a> &middot; <a href="/reference/llm-gateway/">LLM Gateway</a> &middot; <a href="/eli5/large-language-models/">ELI5: Large Language Models</a> &middot; <a href="/trees/large-language-models/">LLM System Design Tree</a>
       </p>
     </footer>
   </main>
