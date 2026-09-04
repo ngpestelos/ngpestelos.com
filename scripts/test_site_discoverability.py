@@ -296,6 +296,15 @@ class ReferenceSeoTests(unittest.TestCase):
             locs,
         )
 
+    def test_personal_knowledge_management_is_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/personal-knowledge-management/"', html)
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn(
+            "https://ngpestelos.com/reference/personal-knowledge-management/",
+            locs,
+        )
+
     def test_adversarial_review_title_scopes_ai_agents(self):
         raw = (REF / "adversarial-agent-review" / "index.html").read_bytes()
         title = re.search(rb"<title>(.*?)</title>", raw, re.I | re.S).group(1).decode("utf-8")
