@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working Memory &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Working memory is a limited-capacity cognitive system responsible for temporarily holding and manipulating information during complex reasoning and learning tasks.">
+  <meta property="og:title" content="Working Memory · Reference">
+  <meta property="og:description" content="An encyclopedia reference entry on working memory architecture, Baddeley multicomponent model, Cowan capacity limits, prefrontal substrates, and cognitive load theory.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/working-memory/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/working-memory/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 1000;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Working Memory","description":"Working memory is a limited-capacity cognitive system responsible for temporarily holding and manipulating information during complex reasoning and learning tasks.","url":"https://ngpestelos.com/reference/working-memory/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Cognitive Psychology &amp; Neuroscience</p>
+    <h1>Working Memory</h1>
+    <p class="updated">Reference entry &middot; last updated September 5, 2026</p>
+
+    <p class="lede"><strong>Working memory</strong> is a cognitive system with limited capacity responsible for temporarily holding and actively manipulating information necessary for complex cognitive operations, including reasoning, mathematical deduction, and language comprehension.<span class="cite">[<a href="#ref1">1</a>]</span> Unlike simple short-term memory, which refers primarily to passive maintenance of sensory traces across brief delays, working memory incorporates executive coordination, selective interference suppression, and dynamic information transformation.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#theoretical-architectures">Theoretical architectures</a>
+          <ol>
+            <li><a href="#baddeley-multicomponent-model">Baddeley and Hitch multicomponent model</a></li>
+            <li><a href="#cowan-embedded-processes">Cowan embedded-processes model</a></li>
+          </ol>
+        </li>
+        <li><a href="#capacity-constraints">Capacity constraints and chunking</a>
+          <ol>
+            <li><a href="#the-four-item-limit">The four-item capacity baseline</a></li>
+            <li><a href="#chunking-mechanisms">Chunking and schema automation</a></li>
+          </ol>
+        </li>
+        <li><a href="#neurobiological-substrate">Neurobiological substrate</a></li>
+        <li><a href="#cognitive-load-theory">Cognitive load theory and instructional limits</a></li>
+        <li><a href="#computational-analogies">Computational analogies and differences</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="theoretical-architectures">Theoretical architectures</h2>
+    <p>Cognitive psychology models working memory through two prominent structural paradigms.</p>
+
+    <h3 id="baddeley-multicomponent-model">Baddeley and Hitch multicomponent model</h3>
+    <p>Introduced by Alan Baddeley and Graham Hitch in 1974, this modular framework divides working memory into specialized domain subsystems governed by a supervisory control unit:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Central Executive:</strong> An attentional control system responsible for binding information, focusing selective attention, switching tasks, and suppressing irrelevant intrusions.</li>
+      <li><strong>Phonological Loop:</strong> Maintains verbal and auditory information through an inner ear store subject to temporal decay, refreshed via sub-vocal articulatory rehearsal.</li>
+      <li><strong>Visuospatial Sketchpad:</strong> Maintains spatial layouts, visual patterns, and kinesthetic trajectories.</li>
+      <li><strong>Episodic Buffer:</strong> Added in 2000, this limited-capacity component integrates multidimensional representations from the subsidiary stores and long-term memory into coherent temporal episodes.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+    </ul>
+
+    <h3 id="cowan-embedded-processes">Cowan embedded-processes model</h3>
+    <p>Nelson Cowan proposed an alternative embedded-processes framework. Rather than positing physically distinct storage buffers, Cowan models working memory as a hierarchical state: long-term memory contains inactive knowledge traces, a subset of which enter an activated state through contextual priming. Working memory corresponds to the fraction of activated representations currently enclosed within the conscious focus of attention.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="capacity-constraints">Capacity constraints and chunking</h2>
+    <p>Working memory is severely constrained in both duration and volume. Information degrades within seconds unless sustained by continuous attentional refreshing or active rehearsal.</p>
+
+    <h3 id="the-four-item-limit">The four-item capacity baseline</h3>
+    <p>George Miller famously identified seven items (plus or minus two) as the limit of unidimensional human immediate recall.<span class="cite">[<a href="#ref4">4</a>]</span> Subsequent empirical research by Nelson Cowan established that when verbal rehearsal strategies, mnemonics, and grouping mechanisms are strictly prevented, the pure central storage capacity of human working memory is approximately four chunks of information.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h3 id="chunking-mechanisms">Chunking and schema automation</h3>
+    <p>To overcome biological item constraints, human cognition groups basic informational elements into larger, functionally organized units called chunks. In classic experiments by Chase and Simon, chess grandmasters recalled complex mid-game board configurations with high accuracy while performing at novice levels on randomized piece distributions. Expertise allows long-term memory schemas to package multi-piece constellations into individual chunks, consuming single working memory slots.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="neurobiological-substrate">Neurobiological substrate</h2>
+    <p>Working memory maintenance relies on sustained neuronal firing across frontoparietal networks. Early electrophysiological work by Patricia Goldman-Rakic demonstrated that pyramidal neurons within the dorsolateral prefrontal cortex (DLPFC) maintain elevated spiking during the delay period between stimulus presentation and behavioral execution, holding sensory targets in an active representational state.<span class="cite">[<a href="#ref6">6</a>]</span> Prefrontal regions interact bidirectionally with posterior sensory cortices, exerting top-down inhibitory and excitatory bias to stabilize task-relevant signals against distractors.</p>
+
+    <h2 id="cognitive-load-theory">Cognitive load theory and instructional limits</h2>
+    <p>Formulated by John Sweller, cognitive load theory examines how working memory limitations govern human learning and problem-solving.<span class="cite">[<a href="#ref7">7</a>]</span> The theory partitions cognitive burden into three categories:</p>
+    <ul>
+      <li><strong>Intrinsic Load:</strong> The inherent relational complexity of the information, defined by the number of interacting elements that must be processed concurrently.</li>
+      <li><strong>Extraneous Load:</strong> Unnecessary mental effort imposed by poor presentation formats, fragmented materials, or extraneous instructional steps.</li>
+      <li><strong>Germane Load:</strong> Mental processing dedicated to constructing and automating permanent schemas in long-term memory.</li>
+    </ul>
+    <p>When combined intrinsic and extraneous load exceeds working memory capacity, comprehension and retention fail completely.</p>
+
+    <h2 id="computational-analogies">Computational analogies and differences</h2>
+    <p>Computer architectures parallel working memory through high-speed CPU registers and L1/L2 SRAM caches, which hold immediate data for arithmetic logic units while relying on slower, higher-capacity DRAM and solid-state drives for persistence. In artificial intelligence, Transformer architectures maintain a context window of tokens processed in parallel via self-attention.<span class="cite">[<a href="#ref8">8</a>]</span> Unlike biological working memory, which requires continuous metabolic energy and active neural reverberation to avoid instant decay, computational context buffers are stateless matrix allocations evaluated deterministically on silicon hardware.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/attention/">Reference: Attention</a></li>
+      <li><a href="/reference/consciousness/">Reference: Consciousness</a></li>
+      <li><a href="/reference/context-window/">Reference: Context Windows</a></li>
+      <li><a href="/reference/perception/">Reference: Perception</a></li>
+      <li><a href="/reference/theory-of-constraints/">Reference: Theory of Constraints</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Alan D. Baddeley and Graham Hitch, "Working Memory," <em>Psychology of Learning and Motivation</em>, vol. 8, 1974, pp. 47–89.</li>
+      <li id="ref2"><span class="backlink">^</span> Alan Baddeley, "The episodic buffer: a new component of working memory?" <em>Trends in Cognitive Sciences</em>, vol. 4, no. 11, 2000, pp. 417–423.</li>
+      <li id="ref3"><span class="backlink">^</span> Nelson Cowan, "The magical number 4 in short-term memory: A reconsideration of mental storage capacity," <em>Behavioral and Brain Sciences</em>, vol. 24, no. 1, 2001, pp. 87–114.</li>
+      <li id="ref4"><span class="backlink">^</span> George A. Miller, "The magical number seven, plus or minus two: Some limits on our capacity for processing information," <em>Psychological Review</em>, vol. 63, no. 2, 1956, pp. 81–97.</li>
+      <li id="ref5"><span class="backlink">^</span> William G. Chase and Herbert A. Simon, "Perception in chess," <em>Cognitive Psychology</em>, vol. 4, no. 1, 1973, pp. 55–81.</li>
+      <li id="ref6"><span class="backlink">^</span> Patricia S. Goldman-Rakic, "Cellular basis of working memory," <em>Neuron</em>, vol. 14, no. 3, 1995, pp. 477–485.</li>
+      <li id="ref7"><span class="backlink">^</span> John Sweller, "Cognitive load during problem solving: Effects on learning," <em>Cognitive Science</em>, vol. 12, no. 2, 1988, pp. 257–285.</li>
+      <li id="ref8"><span class="backlink">^</span> Ashish Vaswani et al., "Attention Is All You Need," <em>Advances in Neural Information Processing Systems</em>, vol. 30, 2017.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
