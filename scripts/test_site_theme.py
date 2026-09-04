@@ -68,6 +68,7 @@ class SiteThemeTests(unittest.TestCase):
 
         index_html = text("reference/index.html")
         index_style = "".join(re.findall(r"<style>(.*?)</style>", index_html, re.S))
+        self.assertNotRegex(index_style, r"font-family\s*:")
         for selector in ("body", "main", "h1", ".next-step"):
             with self.subTest(selector=selector):
                 self.assertNotRegex(
