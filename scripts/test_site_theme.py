@@ -59,6 +59,23 @@ class SiteThemeTests(unittest.TestCase):
             self.assertNotRegex(style, r"body\s*\{[^}]*font-family:\s*\"Segoe UI\"")
 
     def test_reference_uses_landing_tokens(self):
+        css = text("style.css")
+        self.assertNotRegex(css, r"body\.eli5,\s*body\.reference\s*\{")
+        self.assertRegex(
+            css,
+            r"body\.eli5,\s*body\.reference:not\(:has\(#reference\)\)\s*\{\s*padding:\s*0;",
+        )
+
+        index_html = text("reference/index.html")
+        index_style = "".join(re.findall(r"<style>(.*?)</style>", index_html, re.S))
+        self.assertNotRegex(index_style, r"font-family\s*:")
+        for selector in ("body", "main", "h1", ".next-step"):
+            with self.subTest(selector=selector):
+                self.assertNotRegex(
+                    index_style,
+                    rf"(?m)^\s*{re.escape(selector)}\s*\{{",
+                )
+
         for rel in ("reference/index.html", "reference/agents/index.html"):
             html = text(rel)
             self.assertIn(CSS_VER, html)
