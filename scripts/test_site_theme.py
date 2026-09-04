@@ -76,15 +76,20 @@ class SiteThemeTests(unittest.TestCase):
                     rf"(?m)^\s*{re.escape(selector)}\s*\{{",
                 )
 
-        for rel in ("reference/index.html", "reference/agents/index.html"):
-            html = text(rel)
-            self.assertIn(CSS_VER, html)
-            self.assertRegex(html, r"<body[^>]*class=\"[^\"]*\breference\b")
-            self.assertNotIn("#0645ad", html)
-            self.assertNotIn("#795cb2", html)
-            style = "".join(re.findall(r"<style>(.*?)</style>", html, re.S))
-            self.assertNotRegex(style, r"--bg:\s*#fff")
-            self.assertNotRegex(style, r"font-family:\s*Georgia")
+        ref_pages = ["reference/index.html"] + [
+            str(p.relative_to(ROOT))
+            for p in sorted((ROOT / "reference").glob("*/index.html"))
+        ]
+        for rel in ref_pages:
+            with self.subTest(rel=rel):
+                html = text(rel)
+                self.assertIn(CSS_VER, html)
+                self.assertRegex(html, r"<body[^>]*class=\"[^\"]*\breference\b")
+                self.assertNotIn("#0645ad", html)
+                self.assertNotIn("#795cb2", html)
+                style = "".join(re.findall(r"<style>(.*?)</style>", html, re.S))
+                self.assertNotRegex(style, r"--bg:\s*#fff")
+                self.assertNotRegex(style, r"font-family:\s*Georgia")
 
     def test_ninthgreen_and_trees_untouched(self):
         sample = text("samples/ninthgreen/index.html")
