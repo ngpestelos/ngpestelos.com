@@ -312,6 +312,45 @@ class ReferenceSeoTests(unittest.TestCase):
         self.assertIn("Amdahl's Law for Parallel AI Agents", html)
         self.assertNotIn("—", title)
 
+    def test_llm_reference_expansion_is_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        for slug in ("transformer-architecture", "llm-inference", "prompt-injection"):
+            self.assertIn(f'href="/reference/{slug}/"', html, f"Missing from reference/index.html: {slug}")
+            self.assertIn(
+                f"https://ngpestelos.com/reference/{slug}/",
+                locs,
+                f"Missing from sitemap.xml: {slug}",
+            )
+
+    def test_large_language_models_cross_links(self):
+        html = (REF / "large-language-models" / "index.html").read_text(encoding="utf-8")
+        expected_links = [
+            "/reference/transformer-architecture/",
+            "/reference/llm-inference/",
+            "/reference/prompt-injection/",
+            "/reference/autoregressive/",
+            "/reference/deep-neural-networks/",
+            "/reference/softmax/",
+            "/reference/tokens/",
+            "/reference/embeddings/",
+            "/reference/vector-search/",
+            "/reference/context-engineering/",
+            "/reference/context-window/",
+            "/reference/prompt-engineering/",
+            "/reference/llm-gateway/",
+            "/reference/model-router/",
+            "/reference/semantic-caching/",
+            "/reference/prompt-caching/",
+            "/reference/llm-evaluations/",
+            "/reference/llm-mutation-testing/",
+            "/reference/firewall-llm/",
+            "/reference/plan-approve-execute/",
+        ]
+        for link in expected_links:
+            self.assertIn(link, html, f"Missing cross-link in large-language-models: {link}")
+
 
 if __name__ == "__main__":
     unittest.main()
+
