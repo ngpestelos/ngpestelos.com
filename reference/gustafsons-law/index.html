@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gustafson's Law for Parallel AI Agents · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Gustafson's Law is a scaled-speedup formula: when problem size grows with processor count at roughly fixed wall-clock time, speedup stays near-linear in N, reduced only by the serial fraction measured on the parallel run.">
+  <meta property="og:title" content="Gustafson's Law for Parallel AI Agents · Reference">
+  <meta property="og:description" content="Scaled speedup, weak scaling, Sandia 1024-processor results, and parallel AI agent fleets.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/gustafsons-law/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/gustafsons-law/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+      .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Gustafson's Law for Parallel AI Agents","description":"Gustafson's Law is a scaled-speedup formula: when problem size grows with processor count at roughly fixed wall-clock time, speedup stays near-linear in N, reduced only by the serial fraction measured on the parallel run.","url":"https://ngpestelos.com/reference/gustafsons-law/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Computer Architecture · Parallel Computing</p>
+    <h1>Gustafson's Law for Parallel AI Agents</h1>
+    <p class="updated">Reference entry · last updated September 4, 2026</p>
+
+    <p class="lede"><strong>Gustafson's Law</strong> is a scaled-speedup formula for parallel computers. When problem size grows with processor count and wall-clock time stays about constant, speedup stays near-linear in \(N\), reduced only by the serial fraction of time measured on the parallel run.<span class="cite">[<a href="#ref1">1</a>]</span> John L. Gustafson published the argument in 1988. The same relation is also called Gustafson–Barsis's law, after E. Barsis at Sandia, who suggested the scaled-speedup form.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 650 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gustafson's Law scaled speedup lines for 1 percent, 5 percent, and 10 percent serial fractions">
+        <line x1="60" y1="230" x2="600" y2="230" stroke="#54595d" stroke-width="1.5"/>
+        <line x1="60" y1="230" x2="60" y2="20" stroke="#54595d" stroke-width="1.5"/>
+
+        <text x="330" y="262" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d">Processors (\(N\))</text>
+        <text x="22" y="125" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#54595d" transform="rotate(-90 22 125)">Scaled speedup \(S\)</text>
+
+        <text x="60" y="246" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#54595d">0</text>
+        <text x="330" y="246" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#54595d">16</text>
+        <text x="600" y="246" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#54595d">32</text>
+        <text x="48" y="234" font-family="-apple-system, sans-serif" font-size="10" text-anchor="end" fill="#54595d">0</text>
+        <text x="48" y="134" font-family="-apple-system, sans-serif" font-size="10" text-anchor="end" fill="#54595d">16</text>
+        <text x="48" y="34" font-family="-apple-system, sans-serif" font-size="10" text-anchor="end" fill="#54595d">32</text>
+
+        <line x1="77" y1="224" x2="600" y2="32" fill="none" stroke="#166534" stroke-width="2.5"/>
+        <text x="430" y="48" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#166534">1% serial (\(s = 0.01\))</text>
+
+        <line x1="77" y1="224" x2="600" y2="40" fill="none" stroke="#9a3412" stroke-width="2"/>
+        <text x="430" y="72" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9a3412">5% serial (\(s = 0.05\))</text>
+
+        <line x1="77" y1="224" x2="600" y2="49" fill="none" stroke="#9f1239" stroke-width="2" stroke-dasharray="3,3"/>
+        <text x="430" y="96" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" fill="#9f1239">10% serial (\(s = 0.10\))</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#mathematical-formula">Mathematical formula</a></li>
+        <li><a href="#weak-scaling">Weak scaling</a></li>
+        <li><a href="#sandia-1988">Sandia 1988</a></li>
+        <li><a href="#agent-fleets">Parallel AI agent fleets</a></li>
+        <li><a href="#amdahl-comparison">Comparison with Amdahl's Law</a></li>
+        <li><a href="#limits">Limits</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="mathematical-formula">Mathematical formula</h2>
+    <p>Let \(s\) be the serial fraction of time on the parallel system, with total parallel-run time normalized to 1. This \(s\) is not the serial fraction of a fixed sequential baseline. Let \(p = 1 - s\) be the parallel fraction of that same parallel-run time, and let \(N\) be the number of processors. Scaled speedup is:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    \[S = N - (N-1)s\]
+    <p>Equivalent forms are \(S = s + pN\) and \(S = 1 + (N-1)p\).<span class="cite">[<a href="#ref1">1</a>]</span> A serial processor would need time \(s + pN\) for the same scaled work. The scaled-speedup form is also called Gustafson–Barsis's law.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="weak-scaling">Weak scaling</h2>
+    <p>Amdahl's Law holds problem size fixed. That is strong scaling: the same job, more processors, shorter wall-clock. Gustafson's Law lets problem size grow so wall-clock time stays about constant. That is weak scaling, or scaled speedup.<span class="cite">[<a href="#ref1">1</a>]</span> The two formulas answer different questions about workload. Gustafson later wrote that people scale their problems to match the power available, and that Amdahl's assumptions do not match that use of parallel processors.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="sandia-1988">Sandia 1988</h2>
+    <p>On a 1024-processor hypercube at Sandia National Laboratories, Gustafson reported scaled speedups of 1021 for beam stress analysis (conjugate gradients), 1020 for baffled surface wave simulation (explicit finite differences), and 1016 for unstable fluid flow (flux-corrected transport). Serial fractions on those parallel runs were about 0.4 to 0.8 percent.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="agent-fleets">Parallel AI agent fleets</h2>
+    <p>The same formula applies to a swarm of AI agents if \(N\) is the number of concurrent agents and \(s\) is the share of wall-clock spent on coordination, merge, and integration after the parallel work.<span class="cite">[<a href="#ref1">1</a>]</span> The matching use is to cover a larger task graph in the same wall-clock window: more files, more test cases, more independent reviews. Serial remainder remains coordination, merge, and integration.</p>
+    <p class="unattributed">The mapping from processors to agents is an application of Gustafson's formula. It is not a lab measurement of a named agent product.</p>
+
+    <h2 id="amdahl-comparison">Comparison with Amdahl's Law</h2>
+    <p><a href="/reference/amdahls-law/">Amdahl's Law for Parallel AI Agents</a> bounds speedup of a fixed job as processors increase. Gustafson's Law bounds how much scaled work a fleet can finish in a fixed time. Both remain true under their assumptions.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="limits">Limits</h2>
+    <p>Workloads that cannot grow with \(N\) stay in Amdahl's fixed-size frame. Communication and coherence costs sit outside the simple \(s + pN\) model. Serial work that grows with problem size reduces scaled speedup below the line.</p>
+    <p class="unattributed">These limits follow from the model's assumptions. They are not additional Sandia measurements.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/amdahls-law/">Amdahl's Law for Parallel AI Agents</a></li>
+      <li><a href="/reference/throughput/">Throughput</a></li>
+      <li><a href="/reference/agentic-loops/">Agentic Loops</a></li>
+      <li><a href="/reference/agent-harness/">Agent Harness</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#mathematical-formula">↑</a> Gustafson, John L. "Reevaluating Amdahl's Law." <em>Communications of the ACM</em>, vol. 31, no. 5, 1988, pp. 532–533. <a href="https://doi.org/10.1145/42411.42415">https://doi.org/10.1145/42411.42415</a></li>
+      <li id="ref2"><a class="backlink" href="#mathematical-formula">↑</a> McCool, Michael, Arch D. Robison, and James Reinders. <em>Structured Parallel Programming: Patterns for Efficient Computation</em>. Morgan Kaufmann, 2012, pp. 61–62.</li>
+      <li id="ref3"><a class="backlink" href="#weak-scaling">↑</a> Gustafson, John L. "Gustafson's Law." <a href="http://www.johngustafson.net/glaw.html">http://www.johngustafson.net/glaw.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
