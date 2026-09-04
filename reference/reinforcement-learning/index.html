@@ -541,6 +541,7 @@ abla_\theta \log \pi_\theta(A_t \mid S_t) \, Q^{\pi_\theta}(S_t, A_t) \right]$$
         </div>
       </li>
     </ol>
+    <p>Because the reward model in stage 2 is trained on human pairwise preferences rather than ground truth, the policy in stage 3 is optimized toward what raters found convincing, not directly toward what is correct. This is the documented source of <a href="/reference/sycophancy/">sycophancy</a>, a measured tendency of RLHF-tuned models to favor an agreeable response over an accurate one.</p>
 
     <h3 id="dpo">5.2 Direct Preference Optimization (DPO)</h3>
     <p>
