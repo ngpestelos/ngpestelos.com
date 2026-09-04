@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>An Adversarial Review Prompt for Claude Code and Codex — Nestor G Pestelos Jr</title>
+  <meta name="description" content="The adversarial review prompt I run as a Claude Code skill, with an install path for Codex. Point it at a plan or diff, and loop until it says PROCEED. Template repository: ngpestelos/adversarial-review.">
+  <meta property="og:title" content="An Adversarial Review Prompt for Claude Code and Codex">
+  <meta property="og:description" content="The adversarial review prompt I run as a Claude Code skill, with an install path for Codex. Point it at a plan or diff, and loop until it says PROCEED. Template repository: ngpestelos/adversarial-review.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/adversarial-review-prompt-claude-code-codex/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/adversarial-review-prompt-claude-code-codex/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"An Adversarial Review Prompt for Claude Code and Codex","description":"The adversarial review prompt I run as a Claude Code skill, with an install path for Codex. Point it at a plan or diff, and loop until it says PROCEED. Template repository: ngpestelos/adversarial-review.","url":"https://ngpestelos.com/writing/adversarial-review-prompt-claude-code-codex/","author":{"@type":"Person","name":"Nestor G Pestelos Jr"},"datePublished":"2026-09-04"}
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
+    <h1>An Adversarial Review Prompt for Claude Code and Codex</h1>
+<p class="byline">Published September 4, 2026</p>
+
+
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>The adversarial review prompt I run as a Claude Code skill, with an install path for Codex. Point it at a plan or diff, and loop until it says PROCEED. Template repository: <a href="https://github.com/ngpestelos/adversarial-review">ngpestelos/adversarial-review</a>.</p></div>
+
+<hr>
+
+<p>Ask an AI agent to review a plan or diff and it defaults to sycophancy. In July I explained why in <a href="https://ngpestelos.com/writing/tell-me-whats-wrong-with-it-isnt-review/"><em>&#x27;Tell Me What&#x27;s Wrong With It&#x27; Isn&#x27;t a Review</em></a>. Readers asked for the raw prompt file. Here is the template I run in Claude Code, with an install path for Codex.</p>
+
+<h2 id="what-the-template-does">What the template does</h2>
+
+<p>The template consists of two markdown files: the skill definition (<code>SKILL.md</code>) and the output contract (<code>findings-format.md</code>). Together they cover five core areas:</p>
+
+<ul>
+
+<li><strong>Independence check.</strong> Self-review is the weakest mode. Low stakes and not self-authored: one inline pass. High stakes or drafted this session: parallel read-only reviewers. You can override the reviewer route in the prompt&#x27;s first line.</li>
+
+<li><strong>Verify before criticize.</strong> Every finding cites a checked fact: file and line for code, source of truth for everything else. Partial reviews never issue a clean verdict.</li>
+
+<li><strong>Ten evaluation lenses.</strong> Goals, assumptions, failure modes, gaps, reversibility, verification, simpler alternatives, evidence, second-order effects, and security. Reviewers must state a reason for any skipped lens.</li>
+
+<li><strong>Structured verdicts.</strong> Output is restricted to PROCEED, PROCEED WITH CHANGES, or REWORK, with findings ranked Blocker, Major, Minor, or Nit. Findings must cite concrete failure paths (such as <em>if orders is empty, line 42 divides by zero</em>) rather than abstract labels like <em>fragile</em>.</li>
+
+<li><strong>A stop condition.</strong> Only the user can accept a Major finding. Accepted Majors sit in a ledger carried between passes. A finding that survives three passes unchanged halts the loop for escalation.</li>
+
+</ul>
+
+<h2 id="install">Install</h2>
+
+<p>Clone the repository:</p>
+
+<pre><code>git clone https://github.com/ngpestelos/adversarial-review.git</code></pre>
+
+<p><strong>Claude Code.</strong> Copy the files into <code>~/.claude/skills/adversarial-review/</code>:</p>
+
+<pre><code>mkdir -p ~/.claude/skills/adversarial-review
+cp adversarial-review/{SKILL.md,findings-format.md} ~/.claude/skills/adversarial-review/</code></pre>
+
+<p>Invoke with <code>/adversarial-review &lt;path&gt;</code>.</p>
+
+<p><strong>Codex.</strong> Copy both files to <code>~/.codex/skills/adversarial-review/</code>, or paste their contents into <code>AGENTS.md</code> under their own headings.</p>
+
+<p><strong>Plain chat.</strong> Paste the Verify, Lenses, and Output sections from <code>SKILL.md</code>. The independence and loop parts need an agent that can spawn reviewers; the rest works in any chat window.</p>
+
+<h2 id="run">Run</h2>
+
+<p>In Claude Code:</p>
+
+<pre><code>/adversarial-review plans/migration.md</code></pre>
+
+<p>In Codex:</p>
+
+<pre><code>Review plans/migration.md using the adversarial review prompt.</code></pre>
+
+<p>In plain web chat: paste the template sections directly into the prompt alongside your plan or diff.</p>
+
+<p>Read the <code>VERDICT:</code> line, apply fixes or accept findings, and run again until the output returns PROCEED.</p>
+
+<p>If you script or automate the loop, match the verdict as a whole token: PROCEED is a prefix of PROCEED WITH CHANGES. A reviewer that returns prose instead of the structured format leaves its lenses UNREVIEWED. Do not synthesize around the gap. False PROCEED tokens allow defects to pass through unexamined.</p>
+
+<h2 id="what-i-cut-from-the-private-version">What I cut from the private version</h2>
+
+<p>My working file is about 170 lines. Around sixty of them are incident notes: defect classes from my own review sweeps, dated, with which model caught what. The public template retains only the review mechanism. For the defect classes and failure modes, see <a href="https://ngpestelos.com/writing/the-bugs-that-hide-between-your-agents/"><em>The Bugs That Hide Between Your Agents</em></a>.</p>
+
+<h2 id="limits">Limits</h2>
+
+<p>In autonomous agent runs, the harness does not parse the verdict; the model reads the token and controls the loop. In an outer shell or CI script, the script parses the token as a string. When an agent cannot spawn parallel reviewers, the template falls back to sequential passes with a fresh adversary and flags reduced independence.</p>
+
+<p>I have run this file in Claude Code since June. I have not tested it in Codex; the Codex install path follows its documented skills layout and remains unverified.</p>
+
+<h2 id="files">Files</h2>
+
+<p>Repository: <a href="https://github.com/ngpestelos/adversarial-review"><code>ngpestelos/adversarial-review</code></a></p>
+
+<ul>
+
+<li><a href="https://github.com/ngpestelos/adversarial-review/blob/master/SKILL.md"><code>SKILL.md</code></a>: the template.</li>
+
+<li><a href="https://github.com/ngpestelos/adversarial-review/blob/master/findings-format.md"><code>findings-format.md</code></a>: the output contract and verdict rules.</li>
+
+<li><a href="https://github.com/ngpestelos/adversarial-review/blob/master/README.md"><code>README.md</code></a>: install paths and repository overview.</li>
+
+</ul>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

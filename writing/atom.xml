@@ -4,10 +4,17 @@
   <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
   <link href="https://ngpestelos.com/writing/"/>
   <id>https://ngpestelos.com/writing/</id>
-  <updated>2026-09-04T00:31:49Z</updated>
+  <updated>2026-09-04T01:55:09Z</updated>
   <author>
     <name>Nestor G Pestelos Jr</name>
   </author>
+  <entry>
+    <id>https://ngpestelos.com/writing/adversarial-review-prompt-claude-code-codex/</id>
+    <title>An Adversarial Review Prompt for Claude Code and Codex</title>
+    <summary>The adversarial review prompt I run as a Claude Code skill, with an install path for Codex. Point it at a plan or diff, and loop until it says PROCEED. Template repository: ngpestelos/adversarial-review.</summary>
+    <updated>2026-09-04T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/adversarial-review-prompt-claude-code-codex/"/>
+  </entry>
   <entry>
     <id>https://ngpestelos.com/writing/five-checks-against-motivated-reasoning/</id>
     <title>Five Checks Against Motivated Reasoning</title>

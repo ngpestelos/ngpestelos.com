@@ -1,5 +1,12 @@
 [
   {
+    "slug": "adversarial-review-prompt-claude-code-codex",
+    "title": "An Adversarial Review Prompt for Claude Code and Codex",
+    "date": "2026-09-04",
+    "bucket": "systems",
+    "pin": null
+  },
+  {
     "slug": "five-checks-against-motivated-reasoning",
     "title": "Five Checks Against Motivated Reasoning",
     "date": "2026-08-24",
