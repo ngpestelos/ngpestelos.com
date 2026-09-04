@@ -151,6 +151,7 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertEqual(html.count("gumroad.com"), 1)
         self.assertIn("written readiness read", html)
         self.assertIn("Software engineer since 2001. Manila, UTC+8.", html)
+        self.assertIn('<a href="https://rubyonrails.org/">Ruby on Rails</a>', html)
         next_step = re.search(r'<p class="next-step">.*?</p>', html, re.S).group(0)
         self.assertIn("I work from Manila, UTC+8, so US teams get overnight coverage.", next_step)
         my_work = html.split('<section id="my-work">', 1)[1].split(

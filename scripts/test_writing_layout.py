@@ -89,6 +89,7 @@ class WritingLayoutTests(unittest.TestCase):
 
         self.assertIn('id="writing"', rendered)
         self.assertIn('class="next-step"', rendered)
+        self.assertIn('<a href="https://rubyonrails.org/">Ruby on Rails</a>', rendered)
         self.assertEqual(len(parser.buckets), 3)
         for bucket in parser.buckets:
             self.assertEqual(bucket["h2"], 1)
