@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intermediate Packets · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Intermediate Packets are reusable pieces of work that can contribute to current or future projects.">
+  <meta property="og:title" content="Intermediate Packets · Reference">
+  <meta property="og:description" content="Reusable pieces of work that can contribute to current or future projects.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/intermediate-packets/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/intermediate-packets/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 28rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { margin-bottom: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1.05rem;
+      margin: 1.3rem 0 0.45rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Intermediate Packet","description":"An Intermediate Packet is a reusable piece of work that can contribute to a current or future project.","url":"https://ngpestelos.com/reference/intermediate-packets/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Knowledge Management · Project Work</p>
+    <h1>Intermediate Packets</h1>
+    <p class="updated">Reference entry · last updated September 4, 2026</p>
+
+    <p class="lede"><strong>Intermediate Packet</strong> is a reusable piece of work that can contribute to a current or future project. Tiago Forte introduced the term.<span class="cite">[<a href="#ref1">1</a>]</span> In his <em>Building a Second Brain</em> system, Intermediate Packets include tangible units such as notes, outlines, drafts, slides, templates, and completed deliverables.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#origin">Origin and purpose</a></li>
+        <li><a href="#kinds">Five kinds of Intermediate Packets</a>
+          <ol>
+            <li><a href="#distilled-notes">Distilled notes</a></li>
+            <li><a href="#outtakes">Outtakes</a></li>
+            <li><a href="#work-in-process">Work-in-process</a></li>
+            <li><a href="#final-deliverables">Final deliverables</a></li>
+            <li><a href="#documents-by-others">Documents created by others</a></li>
+          </ol>
+        </li>
+        <li><a href="#benefits">Practical benefits</a></li>
+        <li><a href="#atomic-notes">Relationship to atomic notes</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="origin">Origin and purpose</h2>
+    <p>Forte used the term in his February 2017 article “Bending the Curves of Productivity.” He proposed packaging research, notes, brainstorms, examples, outlines, prototypes, drafts, and unused ideas as reusable components.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Three months later, Forte described Intermediate Packets as units smaller than deliverables, including digital notes, work-in-progress drafts, outlines, brainstorms, and checklists.<span class="cite">[<a href="#ref2">2</a>]</span> The <em>Building a Second Brain</em> book places these reusable assets in the Express stage of its Capture, Organize, Distill, Express method.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="kinds">Five kinds of Intermediate Packets</h2>
+    <p><em>Building a Second Brain</em> identifies five kinds of packets.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h3 id="distilled-notes">Distilled notes</h3>
+    <p>Distilled notes compress books, articles, meetings, or research into material that can be reviewed and applied without rereading the full source.</p>
+
+    <h3 id="outtakes">Outtakes</h3>
+    <p>Outtakes are useful material removed from an earlier project. A cut paragraph, unused diagram, or rejected example can remain available for later work.</p>
+
+    <h3 id="work-in-process">Work-in-process</h3>
+    <p>Work-in-process includes artifacts created while a project develops, such as plans, agendas, graphics, requirement documents, checklists, and drafts.</p>
+
+    <h3 id="final-deliverables">Final deliverables</h3>
+    <p>Completed reports, presentations, templates, and other delivered work can supply parts of later projects.</p>
+
+    <h3 id="documents-by-others">Documents created by others</h3>
+    <p>Documents from colleagues, clients, contractors, and other contributors can serve as packets when permission, attribution, and reuse rights allow it.</p>
+
+    <h2 id="benefits">Practical benefits</h2>
+    <p>Intermediate Packets reduce the amount of project state held in memory. A preserved artifact provides a clear point for resuming work after an interruption.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <ul>
+      <li><strong>Short work periods</strong>: A packet can fit the time available.</li>
+      <li><strong>Earlier feedback</strong>: A small draft or prototype can be reviewed before the project is heavily committed.</li>
+      <li><strong>Lower starting cost</strong>: Existing research, outlines, and templates reduce blank-page work.</li>
+      <li><strong>Reuse</strong>: One artifact can contribute to several deliverables or projects.</li>
+    </ul>
+    <h2 id="atomic-notes">Relationship to atomic notes</h2>
+    <p>An <a href="/reference/atomic-note/">atomic note</a> is classified by conceptual scope. It centers on one idea or knowledge building block.<span class="cite">[<a href="#ref4">4</a>]</span> An Intermediate Packet is classified by reuse in project work. Its size and format depend on the work it supports.</p>
+    <p>The categories overlap when an atomic note becomes input to a project. Meeting notes, slide decks, drafts, templates, and final deliverables may contain several ideas while remaining reusable units of work.<span class="cite">[<a href="#ref3">3</a>]</span> The Zettelkasten atomicity principle and Forte's Intermediate Packet concept address different properties of an artifact.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/atomic-note/">Atomic note</a></li>
+      <li><a href="/reference/zettelkasten/">Zettelkasten</a></li>
+      <li><a href="/reference/evergreen-notes/">Evergreen notes</a></li>
+      <li><a href="/reference/map-of-content/">Map of content</a></li>
+      <li><a href="/reference/kitbashing/">Kitbashing</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#origin">↑</a> Tiago Forte, “Bending the Curves of Productivity,” <em>Forte Labs</em>, February 1, 2017. <a href="https://fortelabs.com/blog/bending-the-curves-of-productivity/">https://fortelabs.com/blog/bending-the-curves-of-productivity/</a></li>
+      <li id="ref2"><a class="backlink" href="#origin">↑</a> Tiago Forte, “Mood as Extrapolation Engine: Using Emotions to Generate Momentum,” <em>Forte Labs</em>, May 24, 2017. <a href="https://fortelabs.com/blog/mood-as-extrapolation-engine-using-emotions-to-generate-momentum/">https://fortelabs.com/blog/mood-as-extrapolation-engine-using-emotions-to-generate-momentum/</a></li>
+      <li id="ref3"><a class="backlink" href="#origin">↑</a> Tiago Forte, <em>Building a Second Brain</em>, Atria Books, 2022, pp. 152–154. <a href="https://www.simonandschuster.com/books/Building-a-Second-Brain/Tiago-Forte/9781982167387">Official publisher page</a>.</li>
+      <li id="ref4"><a class="backlink" href="#atomic-notes">↑</a> Andy Matuschak, “Evergreen notes should be atomic,” <em>Andy's working notes</em>. <a href="https://notes.andymatuschak.org/Evergreen_notes_should_be_atomic">https://notes.andymatuschak.org/Evergreen_notes_should_be_atomic</a></li>
+      <li id="ref5"><a class="backlink" href="#atomic-notes">↑</a> Sascha Fast, “Introduction to the Zettelkasten Method,” <em>Zettelkasten Method</em>. <a href="https://zettelkasten.de/introduction/">https://zettelkasten.de/introduction/</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
