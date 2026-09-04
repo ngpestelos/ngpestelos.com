@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perception (Cognitive Science) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Perception is the neurocognitive process of organizing, identifying, and interpreting sensory information to construct an internal representation of the environment.">
+  <meta property="og:title" content="Perception (Cognitive Science) · Reference">
+  <meta property="og:description" content="An encyclopedia reference entry on sensory perception, bottom-up feature hierarchies, Bayesian predictive processing, multisensory binding, and attentional modulation.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/perception/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/perception/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      z-index: 1000;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Perception (Cognitive Science)","description":"Perception is the neurocognitive process of organizing, identifying, and interpreting sensory information to construct an internal mental representation of the environment.","url":"https://ngpestelos.com/reference/perception/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Cognitive Neuroscience &amp; Psychology</p>
+    <h1>Perception (Cognitive Science)</h1>
+    <p class="updated">Reference entry &middot; last updated September 5, 2026</p>
+
+    <p class="lede"><strong>Perception</strong> is the neurocognitive process of organizing, identifying, and interpreting sensory signals to construct an internal mental representation of the environment.<span class="cite">[<a href="#ref1">1</a>]</span> Unlike passive sensation, which consists of biological transduction converting physical energy into neural electrical impulses, perception involves active computational inference that transforms ambiguous, noisy sensory data into coherent objects, spatial relationships, and event categories.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#sensation-versus-perception">Sensation versus perception</a></li>
+        <li><a href="#processing-frameworks">Processing frameworks</a>
+          <ol>
+            <li><a href="#hierarchical-feature-extraction">Hierarchical feature extraction</a></li>
+            <li><a href="#predictive-processing-and-bayesian-inference">Predictive processing and Bayesian inference</a></li>
+          </ol>
+        </li>
+        <li><a href="#multisensory-integration">Multisensory integration and binding</a></li>
+        <li><a href="#attentional-modulation">Attentional modulation</a>
+          <ol>
+            <li><a href="#feature-binding-mechanisms">Feature binding mechanisms</a></li>
+            <li><a href="#inattentional-phenomena">Inattentional and change blindness</a></li>
+          </ol>
+        </li>
+        <li><a href="#artificial-perception">Artificial perception in computational systems</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="sensation-versus-perception">Sensation versus perception</h2>
+    <p>Cognitive science distinguishes between peripheral sensory registration and central perceptual synthesis. Sensation occurs at peripheral receptor organs, such as photoreceptors in the retina, hair cells within the cochlea, and mechanoreceptors in the dermis. These structures transduce electromagnetic, acoustic, and kinetic stimuli into action potentials transmitted along sensory nerves.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Perception begins when central neural structures organize these fragmented signals into unified environmental models. Because raw sensory input is inherently underdetermined (a two-dimensional retinal projection can correspond to infinitely many three-dimensional physical structures), the nervous system must apply prior constraints and probabilistic assumptions to resolve sensory ambiguity.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="processing-frameworks">Processing frameworks</h2>
+    <p>Modern cognitive neuroscience explains perception through two complementary computational streams.</p>
+
+    <h3 id="hierarchical-feature-extraction">Hierarchical feature extraction</h3>
+    <p>In bottom-up architectures, sensory cortex extracts increasingly abstract representations across successive anatomical stages. In the primate visual pathway, simple cells in primary visual cortex (V1) isolate local contrast borders and orientations. Intermediate cortical areas (V4, MT) integrate local orientations into contours, surfaces, and motion vectors. Higher-tier structures, such as the inferotemporal cortex, synthesize these features into viewpoint-invariant representations of complex entities, including faces and tools.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h3 id="predictive-processing-and-bayesian-inference">Predictive processing and Bayesian inference</h3>
+    <p>Top-down accounts, tracing historically to Hermann von Helmholtz's concept of unconscious inference, model perception as hierarchical Bayesian inference.<span class="cite">[<a href="#ref3">3</a>]</span> Under predictive coding frameworks, higher cortical regions generate generative prior predictions regarding incoming sensory patterns and transmit them down feedback connections. Lower sensory areas compare these predictions against incoming afferent signals, computing prediction error residuals. Only unexplained residual variance ascends the cortical hierarchy to update internal generative models, optimizing energy expenditure and latency in dynamic environments.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="multisensory-integration">Multisensory integration and binding</h2>
+    <p>Environmental events routinely stimulate multiple sensory organs concurrently. The brain resolves temporal and spatial alignment across visual, auditory, and somatosensory channels within structures such as the superior colliculus and intraparietal sulcus. In the McGurk effect, incongruent visual lip movements modify the auditory perception of spoken phonemes, demonstrating that conscious speech perception relies on obligatory cross-modal synthesis rather than isolated acoustic parsing.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+
+    <h2 id="attentional-modulation">Attentional modulation</h2>
+    <p>Sensory channels receive far more raw information than central nervous systems can process. Attention acts as a capacity-limiting filter that routes priority stimuli into higher processing stages.</p>
+
+    <h3 id="feature-binding-mechanisms">Feature binding mechanisms</h3>
+    <p>According to feature integration theory, low-level features (such as color, orientation, and motion) are parsed preattentively and in parallel across distinct cortical maps. Concentrated spatial attention is necessary to bind these distributed features to shared object coordinates, preventing illusory conjunctions where color from one item attaches to the shape of an adjacent item.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+
+    <h3 id="inattentional-phenomena">Inattentional and change blindness</h3>
+    <p>When selective attention is heavily engaged by a primary task, observers routinely fail to perceive salient unexpected events within their visual field. In inattentional blindness experiments, individuals tracking dynamic objects fail to notice prominent secondary figures crossing the display.<span class="cite">[<a href="#ref8">8</a>]</span> Similarly, change blindness demonstrations show that substantial alterations to visual scenes remain undetected when masked by brief visual saccades or visual occlusions, proving that perceived visual richness does not imply exhaustive internal representation.</p>
+
+    <h2 id="artificial-perception">Artificial perception in computational systems</h2>
+    <p>In artificial intelligence, perception refers to the automated extraction of semantic representations from sensor data. Computer vision and audio processing systems utilize deep neural networks to convert multidimensional arrays (pixel grids, spectrograms) into dense continuous vector embeddings. Multimodal foundation models project image, audio, and text representations into shared latent spaces, enabling cross-modal reasoning that mirrors biological sensory integration without biological metabolic constraints.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/attention/">Reference: Attention</a></li>
+      <li><a href="/reference/working-memory/">Reference: Working Memory</a></li>
+      <li><a href="/reference/consciousness/">Reference: Consciousness</a></li>
+      <li><a href="/reference/embeddings/">Reference: Embeddings</a></li>
+      <li><a href="/reference/transformer-architecture/">Reference: Transformer Architecture</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> E. Bruce Goldstein and James R. Brockmole, <em>Sensation and Perception</em>, 10th edition, Cengage Learning, 2017, pp. 2–8.</li>
+      <li id="ref2"><span class="backlink">^</span> David Marr, <em>Vision: A Computational Investigation into the Human Representation and Processing of Visual Information</em>, W. H. Freeman and Company, 1982, pp. 19–38.</li>
+      <li id="ref3"><span class="backlink">^</span> Hermann von Helmholtz, <em>Handbuch der physiologischen Optik</em>, Leopold Voss, 1867.</li>
+      <li id="ref4"><span class="backlink">^</span> David H. Hubel and Torsten N. Wiesel, "Receptive fields, binocular interaction and functional architecture in the cat's visual cortex," <em>The Journal of Physiology</em>, vol. 160, no. 1, 1962, pp. 106–154.</li>
+      <li id="ref5"><span class="backlink">^</span> Karl Friston, "A theory of cortical responses," <em>Philosophical Transactions of the Royal Society B: Biological Sciences</em>, vol. 360, no. 1456, 2005, pp. 815–836.</li>
+      <li id="ref6"><span class="backlink">^</span> Harry McGurk and John MacDonald, "Hearing lips and seeing voices," <em>Nature</em>, vol. 264, no. 5588, 1976, pp. 746–748.</li>
+      <li id="ref7"><span class="backlink">^</span> Anne M. Treisman and Garry Gelade, "A feature-integration theory of attention," <em>Cognitive Psychology</em>, vol. 12, no. 1, 1980, pp. 97–136.</li>
+      <li id="ref8"><span class="backlink">^</span> Daniel J. Simons and Christopher F. Chabris, "Gorillas in our midst: sustained inattentional blindness for dynamic events," <em>Perception</em>, vol. 28, no. 9, 1999, pp. 1059–1074.</li>
+      <li id="ref9"><span class="backlink">^</span> Yann LeCun, Yoshua Bengio, and Geoffrey Hinton, "Deep learning," <em>Nature</em>, vol. 521, no. 7553, 2015, pp. 436–444.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
