@@ -22,6 +22,7 @@ ATOM = ROOT / "writing" / "atom.xml"
 PRIVACY = ROOT / "privacy.html"
 DEEP_DIVE = ROOT / "writing" / "legacy-rails-upgrade-with-agents" / "index.html"
 COMPARISON = ROOT / "writing" / "upgrade-or-rewrite" / "index.html"
+REF = ROOT / "reference"
 
 PAYMENTS = {
     "instapay-is-not-ach",
@@ -262,6 +263,45 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertIn("8-check", deep)
         self.assertIn("1,116,726", deep)
         self.assertNotIn("ROI", comparison)
+
+
+class ReferenceSeoTests(unittest.TestCase):
+    def test_reference_titles_use_middot_not_emdash(self):
+        for path in sorted(REF.rglob("index.html")):
+            raw = path.read_bytes()
+            m = re.search(rb"<title>(.*?)</title>", raw, re.I | re.S)
+            self.assertIsNotNone(m, path)
+            title = m.group(1).decode("utf-8")
+            with self.subTest(path=str(path.relative_to(ROOT))):
+                self.assertNotIn("—", title)
+                self.assertNotIn("&mdash;", title)
+
+    def test_reference_entries_have_definedterm_jsonld(self):
+        for path in sorted(REF.glob("*/index.html")):
+            html = path.read_text(encoding="utf-8")
+            with self.subTest(slug=path.parent.name):
+                self.assertIn("application/ld+json", html)
+                self.assertIn('"@type":"DefinedTerm"', html)
+
+    def test_reference_index_has_jsonld(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        self.assertIn("application/ld+json", html)
+
+    def test_adversarial_review_title_scopes_ai_agents(self):
+        raw = (REF / "adversarial-agent-review" / "index.html").read_bytes()
+        title = re.search(rb"<title>(.*?)</title>", raw, re.I | re.S).group(1).decode("utf-8")
+        h1 = (REF / "adversarial-agent-review" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("AI Agents", title)
+        self.assertIn("Adversarial Review (AI Agents)", h1)
+        self.assertNotIn("—", title)
+
+    def test_amdahls_title_targets_parallel_agents(self):
+        raw = (REF / "amdahls-law" / "index.html").read_bytes()
+        title = re.search(rb"<title>(.*?)</title>", raw, re.I | re.S).group(1).decode("utf-8")
+        html = (REF / "amdahls-law" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Parallel AI Agents", title)
+        self.assertIn("Amdahl's Law for Parallel AI Agents", html)
+        self.assertNotIn("—", title)
 
 
 if __name__ == "__main__":
