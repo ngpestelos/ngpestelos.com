@@ -169,7 +169,7 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertNotIn("3 MCP servers", html)
         self.assertNotIn("6+ providers", html)
         self.assertNotIn("BS Computer Science", html)
-        self.assertIn("<h4>Rails Modernization", html)
+        self.assertIn("<h4>Ruby on Rails Modernization", html)
         self.assertIn("<h4>Payment System Integration", html)
         self.assertIn("<h4>Agents in the Work", html)
         header = re.search(r'<p class="header-links">.*?</p>', html, re.S).group(0)
