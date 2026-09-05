@@ -256,6 +256,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/leiningen-and-the-ants/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/machine-learning/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -312,6 +317,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/vector-search/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/working-memory/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -387,6 +397,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/firewall-llm/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/perception/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -992,6 +1007,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/marginal-price/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/consciousness/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
