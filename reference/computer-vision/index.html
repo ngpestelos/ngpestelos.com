@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computer Vision · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on computer vision: image formation, spatial filtering, feature extraction, CNN architectures, Vision Transformers (ViT), object detection, segmentation, and 3D vision.">
+  <meta property="og:title" content="Computer Vision · Reference">
+  <meta property="og:description" content="A citable ground-truth reference on computer vision: image formation, spatial filtering, feature extraction, CNN architectures, Vision Transformers (ViT), object detection, segmentation, and 3D vision.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/computer-vision/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/computer-vision/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-top: 0;
+    }
+    .toc ol {
+      padding-left: 1.3rem;
+      margin-bottom: 0;
+    }
+    .toc ol ol {
+      padding-left: 1.2rem;
+      margin-top: 0.15rem;
+    }
+    .toc li { margin: 0.25rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula-box {
+      text-align: center;
+      margin: 1.2rem 0;
+      background: var(--well);
+      padding: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    #references {
+      font-size: 0.92rem;
+    }
+    #references ol {
+      padding-left: 1.5rem;
+    }
+    #references li {
+      margin-bottom: 0.5rem;
+    }
+    #references .backlink {
+      margin-right: 0.3rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Computer Vision","description":"A citable ground-truth reference on computer vision: image formation, spatial filtering, feature extraction, CNN architectures, Vision Transformers (ViT), object detection, segmentation, and 3D vision.","url":"https://ngpestelos.com/reference/computer-vision/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Artificial Intelligence</p>
+    <h1>Computer Vision</h1>
+    <p class="subtitle">A citable reference on Computer Vision: image formation geometry, spatial filtering, classical feature descriptors, convolutional and Vision Transformer architectures, object detection, segmentation, and 3D scene representation.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/perception/"><strong>Reference: Perception</strong></a>: Sensory processing, feature integration, predictive processing, and biological vision.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a>: Backpropagation, non-linear representations, and convolutional layers.</li>
+        <li>📖 <a href="/reference/foveation/"><strong>Reference: Foveation (Vision and Rendering)</strong></a>: Non-uniform spatial resolution and gaze-contingent computation.</li>
+        <li>📖 <a href="/reference/machine-learning/"><strong>Reference: Machine Learning</strong></a>: Empirical risk minimization, loss functions, and generalization bounds.</li>
+        <li>📖 <a href="/reference/transformer-architecture/"><strong>Reference: Transformer Architecture</strong></a>: Multi-head attention mechanisms, patch embeddings, and sequence modeling.</li>
+      </ul>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#image-formation">1. Image Formation and Low-Level Processing</a>
+          <ol>
+            <li><a href="#camera-geometry">1.1 Pinhole Camera Geometry and Projection</a></li>
+            <li><a href="#discrete-images">1.2 Digital Image Representations</a></li>
+            <li><a href="#spatial-filtering">1.3 Linear Spatial Filtering and 2D Convolutions</a></li>
+            <li><a href="#edge-detection">1.4 Edge and Gradient Detection</a></li>
+          </ol>
+        </li>
+        <li><a href="#classical-features">2. Classical Feature Extraction and Geometric Vision</a>
+          <ol>
+            <li><a href="#local-features">2.1 Interest Points and Local Descriptors</a></li>
+            <li><a href="#epipolar-geometry">2.2 Epipolar Geometry and Multi-View Stereo</a></li>
+          </ol>
+        </li>
+        <li><a href="#deep-vision-architectures">3. Deep Learning Architectures for Vision</a>
+          <ol>
+            <li><a href="#cnns">3.1 Convolutional Neural Networks (CNNs)</a></li>
+            <li><a href="#residual-nets">3.2 Residual Networks (ResNet)</a></li>
+            <li><a href="#vision-transformers">3.3 Vision Transformers (ViT)</a></li>
+          </ol>
+        </li>
+        <li><a href="#core-visual-tasks">4. Core Visual Tasks and Objective Formulations</a>
+          <ol>
+            <li><a href="#image-classification">4.1 Image Classification</a></li>
+            <li><a href="#object-detection">4.2 Object Detection (YOLO, Faster R-CNN, DETR)</a></li>
+            <li><a href="#segmentation">4.3 Semantic and Instance Segmentation</a></li>
+            <li><a href="#generative-3d">4.4 3D Vision, NeRFs, and Gaussian Splatting</a></li>
+          </ol>
+        </li>
+        <li><a href="#evaluation-metrics">5. Evaluation Metrics in Computer Vision</a></li>
+        <li><a href="#references">6. References</a></li>
+      </ol>
+    </nav>
+
+    <!-- Section 1 -->
+    <h2 id="image-formation">1. Image Formation and Low-Level Processing</h2>
+    <p>
+      <strong>Computer Vision</strong> is an interdisciplinary field of artificial intelligence and computer science focused on developing algorithmic and computational systems that extract, process, analyze, and understand high-level semantic information from digital images and video sequences.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>]</span>
+    </p>
+
+    <h3 id="camera-geometry">1.1 Pinhole Camera Geometry and Projection</h3>
+    <p>
+      The geometric mapping from a 3D world coordinate point \(X = [X_w, Y_w, Z_w, 1]^T\) in homogeneous coordinates to a 2D image pixel coordinate \(x = [u, v, 1]^T\) is modeled by the <strong>pinhole camera projection matrix</strong> \(P \in \mathbb{R}^{3 \times 4}\):<span class="cite">[<a href="#ref2">2</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$x \sim P X = K [R \mid t] X$$
+    </div>
+    <p>
+      where:
+    </p>
+    <ul>
+      <li>\(K \in \mathbb{R}^{3 \times 3}\) is the <strong>intrinsic calibration matrix</strong> containing focal lengths \((f_x, f_y)\), principal point \((c_x, c_y)\), and skew \(s\):
+        <div class="formula-box">
+          $$K = \begin{bmatrix} f_x & s & c_x \\ 0 & f_y & c_y \\ 0 & 0 & 1 \end{bmatrix}$$
+        </div>
+      </li>
+      <li>\([R \mid t] \in \mathbb{R}^{3 \times 4}\) is the <strong>extrinsic matrix</strong> representing the 3D rotation \(R \in \text{SO}(3)\) and translation vector \(t \in \mathbb{R}^3\) transforming world coordinates into the camera reference frame.</li>
+    </ul>
+
+    <h3 id="discrete-images">1.2 Digital Image Representations</h3>
+    <p>
+      A discrete digital image is represented as a multidimensional array (tensor) \(I \in \mathbb{R}^{H \times W \times C}\), where \(H\) is height, \(W\) is width, and \(C\) is channel depth (e.g. \(C=1\) for grayscale luminance, \(C=3\) for RGB color spaces, or \(C > 3\) for multispectral imagery). Continuous intensity signals \(f(x, y)\) are digitized via spatial sampling on a pixel grid and radiometric quantization (typically 8-bit integer values in \([0, 255]\) or 32-bit floating-point numbers in \([0, 1]\)).
+    </p>
+
+    <h3 id="spatial-filtering">1.3 Linear Spatial Filtering and 2D Convolutions</h3>
+    <p>
+      Linear spatial filtering computes a weighted linear combination of neighboring pixels. For an image \(I\) and a discrete kernel \(K \in \mathbb{R}^{(2k+1) \times (2k+1)}\), the 2D discrete convolution is:<span class="cite">[<a href="#ref1">1</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$(I * K)(x, y) = \sum_{u=-k}^k \sum_{v=-k}^k I(x - u, y - v) K(u, v)$$
+    </div>
+    <p>
+      The <strong>Gaussian filter</strong> kernel smooths noise by isotropic spatial averaging with standard deviation \(\sigma\):
+    </p>
+    <div class="formula-box">
+      $$G_\sigma(x, y) = \frac{1}{2\pi \sigma^2} \exp\left( -\frac{x^2 + y^2}{2\sigma^2} \right)$$
+    </div>
+
+    <h3 id="edge-detection">1.4 Edge and Gradient Detection</h3>
+    <p>
+      Image edges correspond to local discontinuities in pixel intensity, computed via the spatial gradient vector \(\nabla I = \left[ \frac{\partial I}{\partial x}, \frac{\partial I}{\partial y} \right]^T\).
+    </p>
+    <ul>
+      <li><strong>Sobel Operators:</strong> Approximate first horizontal and vertical derivatives using separable \(3 \times 3\) difference kernels:
+        <div class="formula-box">
+          $$K_x = \begin{bmatrix} -1 & 0 & +1 \\ -2 & 0 & +2 \\ -1 & 0 & +1 \end{bmatrix}, \quad K_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ +1 & +2 & +1 \end{bmatrix}$$
+        </div>
+      </li>
+      <li><strong>Canny Edge Detector (Canny, 1986):</strong> A multi-stage optimal edge detection algorithm comprising: (1) Gaussian smoothing, (2) gradient magnitude and angle computation, (3) non-maximum suppression (thinning edges to 1-pixel width), and (4) hysteresis thresholding with dual high/low bounds.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    </ul>
+
+    <!-- Section 2 -->
+    <h2 id="classical-features">2. Classical Feature Extraction and Geometric Vision</h2>
+
+    <h3 id="local-features">2.1 Interest Points and Local Descriptors</h3>
+    <p>
+      Classical computer vision identifies distinctive, repeatable local image regions invariant to geometric scale, rotation, and illumination changes:
+    </p>
+    <ul>
+      <li><strong>Harris Corner Detector (Harris &amp; Stephens, 1988):</strong> Analyzes the second-moment structure tensor \(M = \sum_{(x,y)} w(x,y) \begin{bmatrix} I_x^2 & I_x I_y \\ I_x I_y & I_y^2 \end{bmatrix}\) and evaluates cornerness score \(R = \det(M) - k \, \text{Tr}(M)^2\).<span class="cite">[<a href="#ref4">4</a>]</span></li>
+      <li><strong>SIFT (Scale-Invariant Feature Transform, Lowe 2004):</strong> Detects scale-space extrema across Difference-of-Gaussian (DoG) octaves and constructs a 128-dimensional local gradient orientation histogram descriptor.<span class="cite">[<a href="#ref5">5</a>]</span></li>
+      <li><strong>HOG (Histogram of Oriented Gradients, Dalal &amp; Triggs 2005):</strong> Computes dense grids of normalized local gradient histograms, serving as the foundational descriptor for classical pedestrian detection.<span class="cite">[<a href="#ref6">6</a>]</span></li>
+    </ul>
+
+    <h3 id="epipolar-geometry">2.2 Epipolar Geometry and Multi-View Stereo</h3>
+    <p>
+      Given two calibrated views of a 3D scene, matching pixel coordinates \(x\) and \(x'\) satisfy the <strong>epipolar constraint</strong> defined by the <strong>Fundamental Matrix</strong> \(F \in \mathbb{R}^{3 \times 3}\):<span class="cite">[<a href="#ref2">2</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$x'^T F x = 0, \quad \text{where } F = K'^{-T} [t]_\times R \, K^{-1}$$
+    </div>
+    <p>
+      In normalized camera coordinates, the <strong>Essential Matrix</strong> \(E = [t]_\times R\) satisfies \(x_{\text{norm}}'^T E x_{\text{norm}} = 0\), enabling 3D point triangulation, Structure from Motion (SfM), and visual Simultaneous Localization and Mapping (SLAM).
+    </p>
+
+    <!-- Section 3 -->
+    <h2 id="deep-vision-architectures">3. Deep Learning Architectures for Vision</h2>
+
+    <h3 id="cnns">3.1 Convolutional Neural Networks (CNNs)</h3>
+    <p>
+      Convolutional Neural Networks exploit two structural inductive biases inherent to natural images: <strong>local receptive fields</strong> and <strong>translation equivariance</strong> (\(f(T_g(x)) = T_g(f(x))\)).<span class="cite">[<a href="#ref7">7</a>]</span>
+    </p>
+    <p>
+      A convolutional layer applies learnable 3D filter banks \(W \in \mathbb{R}^{C_{\text{out}} \times C_{\text{in}} \times k_h \times k_w}\) followed by non-linear activations (e.g. ReLU \(\max(0, z)\)) and spatial downsampling pooling operations (Max Pooling, Average Pooling, or strided convolutions). AlexNet (Krizhevsky et al., 2012) demonstrated the breakthrough capability of deep GPU-trained CNNs on the ImageNet benchmark.<span class="cite">[<a href="#ref8">8</a>]</span>
+    </p>
+
+    <h3 id="residual-nets">3.2 Residual Networks (ResNet)</h3>
+    <p>
+      As networks grow deeper, gradient vanishing and degradation hinder optimization. <strong>ResNet</strong> (He et al., 2016) introduces identity skip connections that reformulate layer blocks to learn residual mappings \(\mathcal{F}(x)\):<span class="cite">[<a href="#ref9">9</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$y = \mathcal{F}(x, \{W_i\}) + x$$
+    </div>
+    <p>
+      Residual connections ensure unobstructed gradient backpropagation directly through the identity pathway, enabling stable training of architectures spanning hundreds of layers.
+    </p>
+
+    <h3 id="vision-transformers">3.3 Vision Transformers (ViT)</h3>
+    <p>
+      <strong>Vision Transformers</strong> (Dosovitskiy et al., 2020) eliminate convolutional inductive biases in favor of standard Transformer encoders.<span class="cite">[<a href="#ref10">10</a>]</span> An image \(I \in \mathbb{R}^{H \times W \times C}\) is divided into \(N = \frac{HW}{P^2}\) non-overlapping patches of size \(P \times P\). Each patch is flattened and linearly projected into a \(D\)-dimensional embedding:
+    </p>
+    <div class="formula-box">
+      $$z_0 = \left[ x_{\text{class}}; \, x_p^1 E; \, x_p^2 E; \dots; \, x_p^N E \right] + E_{\text{pos}}, \quad E \in \mathbb{R}^{(P^2 C) \times D}, \quad E_{\text{pos}} \in \mathbb{R}^{(N+1) \times D}$$
+    </div>
+    <p>
+      Global multi-head self-attention computes pairwise patch interactions across the entire image from the first layer, achieving superior scaling efficiency when pre-trained on large-scale datasets (e.g. JFT-300M, LAION-5B).
+    </p>
+
+    <!-- Section 4 -->
+    <h2 id="core-visual-tasks">4. Core Visual Tasks and Objective Formulations</h2>
+
+    <h3 id="image-classification">4.1 Image Classification</h3>
+    <p>
+      Image classification maps an image \(I\) to a categorical distribution over \(C\) classes. Models are trained by minimizing the multiclass cross-entropy loss over one-hot target vectors \(y\):
+    </p>
+    <div class="formula-box">
+      $$\mathcal{L}_{\text{CE}} = -\sum_{c=1}^C y_c \log \hat{p}_c, \quad \text{where } \hat{p}_c = \frac{\exp(z_c)}{\sum_{j=1}^C \exp(z_j)}$$
+    </div>
+
+    <h3 id="object-detection">4.2 Object Detection (YOLO, Faster R-CNN, DETR)</h3>
+    <p>
+      Object detection predicts bounding box coordinates \(b = [x, y, w, h]\) and associated class labels for all object instances in an image.
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Paradigm</th>
+          <th>Representative Architectures</th>
+          <th>Mechanism &amp; Loss Formulation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Two-Stage Detectors</strong></td>
+          <td>Faster R-CNN, Cascade R-CNN</td>
+          <td>Stage 1 generates candidate proposals via Region Proposal Networks (RPN); Stage 2 performs RoIAlign pooling, box refinement, and classification.</td>
+        </tr>
+        <tr>
+          <td><strong>One-Stage Detectors</strong></td>
+          <td>YOLO (v1–v11), SSD, RetinaNet</td>
+          <td>Direct dense regression of bounding boxes and class probabilities across feature pyramid grids using Focal Loss: \(\text{FL}(p_t) = -\alpha_t (1 - p_t)^\gamma \log(p_t)\).<span class="cite">[<a href="#ref11">11</a>, <a href="#ref12">12</a>]</span></td>
+        </tr>
+        <tr>
+          <td><strong>Transformer Detectors</strong></td>
+          <td>DETR, Deformable DETR</td>
+          <td>End-to-end set prediction using learned object queries and bipartite matching loss solved via the Hungarian algorithm.<span class="cite">[<a href="#ref13">13</a>]</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="segmentation">4.3 Semantic and Instance Segmentation</h3>
+    <ul>
+      <li><strong>Semantic Segmentation:</strong> Assigns a categorical class label to every pixel without distinguishing separate object instances. Architectures utilize encoder-decoder pathways with skip connections (e.g. U-Net, DeepLabv3+ with atrous spatial pyramid pooling).<span class="cite">[<a href="#ref14">14</a>]</span></li>
+      <li><strong>Instance Segmentation:</strong> Detects and delineates a distinct pixel mask for each individual object instance (e.g. Mask R-CNN adding a binary mask prediction branch to Faster R-CNN).<span class="cite">[<a href="#ref15">15</a>]</span></li>
+      <li><strong>Foundation Segmentation:</strong> Promptable zero-shot segmentation across arbitrary images (e.g. Segment Anything Model / SAM).<span class="cite">[<a href="#ref16">16</a>]</span></li>
+    </ul>
+
+    <h3 id="generative-3d">4.4 3D Vision, NeRFs, and Gaussian Splatting</h3>
+    <p>
+      Modern computer vision reconstructs photorealistic, view-dependent 3D scenes from multi-view 2D image collections:
+    </p>
+    <ul>
+      <li><strong>Neural Radiance Fields (NeRF, Mildenhall et al. 2020):</strong> Represents continuous 3D scenes as an implicit neural network function \(F_\Theta(x, y, z, \theta, \phi) \to (\sigma, c)\) mapping 3D coordinates and viewing directions to volume density \(\sigma\) and RGB color \(c\), rendered via differentiable numerical ray marching.<span class="cite">[<a href="#ref17">17</a>]</span></li>
+      <li><strong>3D Gaussian Splatting (Kerbl et al. 2023):</strong> Represents scenes as collections of 3D anisotropic Gaussians parameterized by center \(\mu\), covariance \(\Sigma = R S S^T R^T\), opacity \(\alpha\), and spherical harmonic color coefficients, rendered via fast tile-based rasterization at real-time frame rates.<span class="cite">[<a href="#ref18">18</a>]</span></li>
+    </ul>
+
+    <!-- Section 5 -->
+    <h2 id="evaluation-metrics">5. Evaluation Metrics in Computer Vision</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Standard Metrics</th>
+          <th>Mathematical Definition / Interpretation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Classification</strong></td>
+          <td>Top-1 / Top-5 Accuracy</td>
+          <td>Fraction of test samples where ground-truth label matches top-1 or is within top-5 predicted logits.</td>
+        </tr>
+        <tr>
+          <td><strong>Detection</strong></td>
+          <td>Mean Average Precision (mAP)</td>
+          <td>Area under the Precision-Recall curve averaged across classes at specified Intersection over Union (IoU) thresholds (e.g. \(\text{mAP}_{50}\), \(\text{mAP}_{50:95}\)):
+            <div class="formula-box">
+              $$\text{IoU} = \frac{|\text{Box}_A \cap \text{Box}_B|}{|\text{Box}_A \cup \text{Box}_B|}$$
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Segmentation</strong></td>
+          <td>Mean IoU (mIoU), Dice Score</td>
+          <td>\(\text{mIoU} = \frac{1}{C} \sum_{c=1}^C \frac{|P_c \cap G_c|}{|P_c \cup G_c|}\), quantifying pixel overlap between prediction \(P_c\) and ground truth \(G_c\).</td>
+        </tr>
+        <tr>
+          <td><strong>3D Synthesis</strong></td>
+          <td>PSNR, SSIM, LPIPS</td>
+          <td>Peak Signal-to-Noise Ratio (PSNR), Structural Similarity Index (SSIM), and Learned Perceptual Image Patch Similarity (LPIPS).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 6 -->
+    <h2 id="references">6. References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Richard Szeliski, <em>Computer Vision: Algorithms and Applications</em>, 2nd ed. (Springer, 2022). DOI: <a href="https://doi.org/10.1007/978-3-030-34372-9" target="_blank" rel="noopener">10.1007/978-3-030-34372-9</a>.</li>
+      <li id="ref2"><span class="backlink">^</span> Richard Hartley and Andrew Zisserman, <em>Multiple View Geometry in Computer Vision</em>, 2nd ed. (Cambridge University Press, 2004).</li>
+      <li id="ref3"><span class="backlink">^</span> John Canny, "A Computational Approach to Edge Detection," <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em> 8(6), 679–698 (1986). DOI: <a href="https://doi.org/10.1109/TPAMI.1986.4767851" target="_blank" rel="noopener">10.1109/TPAMI.1986.4767851</a>.</li>
+      <li id="ref4"><span class="backlink">^</span> Chris Harris and Mike Stephens, "A Combined Corner and Edge Detector," <em>Procedings of the Alvey Vision Conference</em>, 147–151 (1988). DOI: <a href="https://doi.org/10.5244/C.2.23" target="_blank" rel="noopener">10.5244/C.2.23</a>.</li>
+      <li id="ref5"><span class="backlink">^</span> David G. Lowe, "Distinctive Image Features from Scale-Invariant Keypoints," <em>International Journal of Computer Vision</em> 60(2), 91–110 (2004). DOI: <a href="https://doi.org/10.1023/B:VISI.0000029664.99615.94" target="_blank" rel="noopener">10.1023/B:VISI.0000029664.99615.94</a>.</li>
+      <li id="ref6"><span class="backlink">^</span> Navneet Dalal and Bill Triggs, "Histograms of oriented gradients for human detection," <em>IEEE Computer Society Conference on Computer Vision and Pattern Recognition (CVPR)</em> 1, 886–893 (2005). DOI: <a href="https://doi.org/10.1109/CVPR.2005.177" target="_blank" rel="noopener">10.1109/CVPR.2005.177</a>.</li>
+      <li id="ref7"><span class="backlink">^</span> Yann LeCun, Bernhard Boser, John S. Denker, et al., "Backpropagation Applied to Handwritten Zip Code Recognition," <em>Neural Computation</em> 1(4), 541–551 (1989). DOI: <a href="https://doi.org/10.1162/neco.1989.1.4.541" target="_blank" rel="noopener">10.1162/neco.1989.1.4.541</a>.</li>
+      <li id="ref8"><span class="backlink">^</span> Alex Krizhevsky, Ilya Sutskever, and Geoffrey E. Hinton, "ImageNet Classification with Deep Convolutional Neural Networks," <em>Advances in Neural Information Processing Systems</em> 25 (NeurIPS 2012). URL: <a href="https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf" target="_blank" rel="noopener">NeurIPS Proceedings</a>.</li>
+      <li id="ref9"><span class="backlink">^</span> Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun, "Deep Residual Learning for Image Recognition," <em>IEEE Conference on Computer Vision and Pattern Recognition (CVPR)</em>, 770–778 (2016). DOI: <a href="https://doi.org/10.1109/CVPR.2016.90" target="_blank" rel="noopener">10.1109/CVPR.2016.90</a>.</li>
+      <li id="ref10"><span class="backlink">^</span> Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, et al., "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale," <em>International Conference on Learning Representations (ICLR 2021)</em>, <em>arXiv:2010.11929</em> (2020). DOI: <a href="https://doi.org/10.48550/arXiv.2010.11929" target="_blank" rel="noopener">10.48550/arXiv.2010.11929</a>.</li>
+      <li id="ref11"><span class="backlink">^</span> Joseph Redmon, Santosh Divvala, Ross Girshick, and Ali Farhadi, "You Only Look Once: Unified, Real-Time Object Detection," <em>IEEE Conference on Computer Vision and Pattern Recognition (CVPR)</em>, 779–788 (2016). DOI: <a href="https://doi.org/10.1109/CVPR.2016.91" target="_blank" rel="noopener">10.1109/CVPR.2016.91</a>.</li>
+      <li id="ref12"><span class="backlink">^</span> Tsung-Yi Lin, Priya Goyal, Ross Girshick, Kaiming He, and Piotr Dollár, "Focal Loss for Dense Object Detection," <em>IEEE International Conference on Computer Vision (ICCV)</em>, 2980–2988 (2017). DOI: <a href="https://doi.org/10.1109/ICCV.2017.324" target="_blank" rel="noopener">10.1109/ICCV.2017.324</a>.</li>
+      <li id="ref13"><span class="backlink">^</span> Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier, Alexander Kirillov, and Sergey Zagoruyko, "End-to-End Object Detection with Transformers," <em>European Conference on Computer Vision (ECCV)</em>, 213–229 (2020). DOI: <a href="https://doi.org/10.1007/978-3-030-58452-8_13" target="_blank" rel="noopener">10.1007/978-3-030-58452-8_13</a>.</li>
+      <li id="ref14"><span class="backlink">^</span> Olaf Ronneberger, Philipp Fischer, and Thomas Brox, "U-Net: Convolutional Networks for Biomedical Image Segmentation," <em>Medical Image Computing and Computer-Assisted Intervention (MICCAI)</em>, 234–241 (2015). DOI: <a href="https://doi.org/10.1007/978-3-319-24574-4_28" target="_blank" rel="noopener">10.1007/978-3-319-24574-4_28</a>.</li>
+      <li id="ref15"><span class="backlink">^</span> Kaiming He, Georgia Gkioxari, Piotr Dollár, and Ross Girshick, "Mask R-CNN," <em>IEEE International Conference on Computer Vision (ICCV)</em>, 2961–2969 (2017). DOI: <a href="https://doi.org/10.1109/ICCV.2017.322" target="_blank" rel="noopener">10.1109/ICCV.2017.322</a>.</li>
+      <li id="ref16"><span class="backlink">^</span> Alexander Kirillov, Eric Mintun, Nikhila Ravi, et al., "Segment Anything," <em>IEEE/CVF International Conference on Computer Vision (ICCV)</em>, 4015–4026 (2023). DOI: <a href="https://doi.org/10.1109/ICCV51070.2023.00371" target="_blank" rel="noopener">10.1109/ICCV51070.2023.00371</a>.</li>
+      <li id="ref17"><span class="backlink">^</span> Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Jonathan T. Barron, Ravi Ramamoorthi, and Ren Ng, "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis," <em>European Conference on Computer Vision (ECCV)</em>, 405–421 (2020). DOI: <a href="https://doi.org/10.1007/978-3-030-58452-8_24" target="_blank" rel="noopener">10.1007/978-3-030-58452-8_24</a>.</li>
+      <li id="ref18"><span class="backlink">^</span> Bernhard Kerbl, Georgios Kopanas, Thomas Leimkühler, and George Drettakis, "3D Gaussian Splatting for Real-Time Radiance Field Rendering," <em>ACM Transactions on Graphics</em> 42(4), 139:1–139:14 (2023). DOI: <a href="https://doi.org/10.1145/3592433" target="_blank" rel="noopener">10.1145/3592433</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
