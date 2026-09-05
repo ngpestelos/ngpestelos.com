@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supervised Learning · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Supervised Learning: empirical risk minimization, loss functions, bias-variance tradeoff, support vector machines, decision trees, and statistical learning bounds.">
+  <meta property="og:title" content="Supervised Learning · Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Supervised Learning: empirical risk minimization, loss functions, bias-variance tradeoff, support vector machines, decision trees, and statistical learning bounds.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/supervised-learning/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/supervised-learning/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-top: 0;
+    }
+    .toc ol {
+      padding-left: 1.3rem;
+      margin-bottom: 0;
+    }
+    .toc ol ol {
+      padding-left: 1.2rem;
+      margin-top: 0.15rem;
+    }
+    .toc li { margin: 0.25rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula-box {
+      text-align: center;
+      margin: 1.2rem 0;
+      background: var(--well);
+      padding: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    #references {
+      font-size: 0.92rem;
+    }
+    #references ol {
+      padding-left: 1.5rem;
+    }
+    #references li {
+      margin-bottom: 0.5rem;
+    }
+    #references .backlink {
+      margin-right: 0.3rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Supervised Learning","description":"A citable ground-truth reference on Supervised Learning: empirical risk minimization, loss functions, bias-variance tradeoff, support vector machines, decision trees, and statistical learning bounds.","url":"https://ngpestelos.com/reference/supervised-learning/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Machine Learning</p>
+    <h1>Supervised Learning</h1>
+    <p class="subtitle">A citable reference on Supervised Learning: mathematical problem formulation, empirical risk minimization, regression and classification loss functions, the bias-variance decomposition, algorithm taxonomy, and generalization bounds.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/machine-learning/"><strong>Reference: Machine Learning</strong></a>: Empirical risk minimization, learning paradigms, and generalization theory.</li>
+        <li>📖 <a href="/reference/unsupervised-learning/"><strong>Reference: Unsupervised Learning</strong></a>: Latent structure discovery, clustering, dimensionality reduction, and density estimation.</li>
+        <li>📖 <a href="/reference/reinforcement-learning/"><strong>Reference: Reinforcement Learning</strong></a>: Markov Decision Processes, policy gradients, and environmental reward optimization.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a>: Backpropagation, non-linear activation functions, and deep representations.</li>
+        <li>📖 <a href="/reference/neural-networks/"><strong>Reference: Neural Networks</strong></a>: Perceptrons, artificial neurons, and architecture topology.</li>
+      </ul>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#formal-formulation">1. Formal Mathematical Formulation</a>
+          <ol>
+            <li><a href="#data-spaces">1.1 Data Spaces and Training Experience</a></li>
+            <li><a href="#true-vs-empirical-risk">1.2 True Risk vs. Empirical Risk Minimization (ERM)</a></li>
+            <li><a href="#regularization-framework">1.3 Regularization Framework</a></li>
+          </ol>
+        </li>
+        <li><a href="#loss-functions">2. Canonical Loss Functions</a>
+          <ol>
+            <li><a href="#regression-losses">2.1 Regression Losses</a></li>
+            <li><a href="#classification-losses">2.2 Classification Losses</a></li>
+          </ol>
+        </li>
+        <li><a href="#bias-variance">3. The Bias-Variance Tradeoff</a>
+          <ol>
+            <li><a href="#bias-variance-decomp">3.1 Analytical Error Decomposition</a></li>
+            <li><a href="#double-descent">3.2 Overfitting, Underfitting, and Double Descent</a></li>
+          </ol>
+        </li>
+        <li><a href="#algorithm-taxonomy">4. Taxonomy of Supervised Algorithms</a>
+          <ol>
+            <li><a href="#linear-models">4.1 Generalized Linear and Logistic Models</a></li>
+            <li><a href="#svm-kernels">4.2 Support Vector Machines and Kernel Methods</a></li>
+            <li><a href="#tree-ensembles">4.3 Decision Trees and Ensemble Methods</a></li>
+            <li><a href="#deep-architectures">4.4 Supervised Neural Networks</a></li>
+          </ol>
+        </li>
+        <li><a href="#statistical-learning-theory">5. Generalization Bounds and Statistical Learning Theory</a>
+          <ol>
+            <li><a href="#pac-learning">5.1 PAC Learning Framework</a></li>
+            <li><a href="#vc-dimension">5.2 VC Dimension and Rademacher Complexity</a></li>
+          </ol>
+        </li>
+        <li><a href="#references">6. References</a></li>
+      </ol>
+    </nav>
+
+    <!-- Section 1 -->
+    <h2 id="formal-formulation">1. Formal Mathematical Formulation</h2>
+    <p>
+      <strong>Supervised Learning</strong> is a machine learning paradigm in which an algorithm learns a mapping function from input features to output targets based on training examples composed of labeled pairs.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>]</span> The objective is to produce a model that generalizes accurately to previously unseen inputs sampled from the underlying joint data distribution.
+    </p>
+
+    <h3 id="data-spaces">1.1 Data Spaces and Training Experience</h3>
+    <p>
+      Let \(\mathcal{X} \subseteq \mathbb{R}^d\) denote the input feature space and \(\mathcal{Y}\) denote the target output space. In the supervised setting, the training experience \(E\) consists of a dataset \(\mathcal{D}\) of \(N\) independent and identically distributed (i.i.d.) pairs drawn from a fixed but unknown probability distribution \(P(X, Y)\):
+    </p>
+    <div class="formula-box">
+      $$\mathcal{D} = \{(x_1, y_1), (x_2, y_2), \dots, (x_N, y_N)\} \sim P(X, Y)^N$$
+    </div>
+    <p>
+      The nature of \(\mathcal{Y}\) determines the fundamental task category:
+    </p>
+    <ul>
+      <li><strong>Regression:</strong> The target space is continuous, \(\mathcal{Y} \subseteq \mathbb{R}^k\) (typically \(k=1\)).</li>
+      <li><strong>Binary Classification:</strong> The target space contains discrete binary labels, \(\mathcal{Y} = \{-1, +1\}\) or \(\mathcal{Y} = \{0, 1\}\).</li>
+      <li><strong>Multiclass Classification:</strong> The target space contains \(C\) categorical labels, \(\mathcal{Y} = \{1, 2, \dots, C\}\).</li>
+      <li><strong>Multilabel / Structured Output:</strong> The target space consists of binary vectors \(\mathcal{Y} = \{0, 1\}^C\) or complex combinatorial objects such as parse trees, bounding boxes, or sequences.</li>
+    </ul>
+
+    <h3 id="true-vs-empirical-risk">1.2 True Risk vs. Empirical Risk Minimization (ERM)</h3>
+    <p>
+      Given a hypothesis class \(\mathcal{H}\) of parameterized candidate functions \(f_\theta: \mathcal{X} \to \mathcal{Y}\) and a loss function \(\mathcal{L}: \mathcal{Y} \times \mathcal{Y} \to \mathbb{R}_{\ge 0}\), the ideal goal is finding parameters \(\theta^*\) that minimize the <strong>True Risk</strong> (or generalization error) \(R(f_\theta)\):<span class="cite">[<a href="#ref3">3</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$R(f_\theta) = \mathbb{E}_{(x, y) \sim P(X, Y)} \left[ \mathcal{L}(f_\theta(x), y) \right] = \int_{\mathcal{X} \times \mathcal{Y}} \mathcal{L}(f_\theta(x), y) \, dP(x, y)$$
+    </div>
+    <p>
+      Because \(P(X, Y)\) is unknown, the true risk cannot be computed directly. Under the <strong>Empirical Risk Minimization (ERM)</strong> principle (Vapnik, 1998), the algorithm optimizes the sample average loss across the training set:<span class="cite">[<a href="#ref3">3</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$\hat{R}_{\text{emp}}(f_\theta, \mathcal{D}) = \frac{1}{N} \sum_{i=1}^N \mathcal{L}\big(f_\theta(x_i), y_i\big)$$
+    </div>
+
+    <h3 id="regularization-framework">1.3 Regularization Framework</h3>
+    <p>
+      Unconstrained minimization of empirical risk over complex hypothesis spaces leads to overfitting, where the model memorizes sample noise rather than generalizable functional relationships. <strong>Structural Risk Minimization (SRM)</strong> augments empirical risk with a complexity penalty \(\Omega(\theta)\) weighted by a hyperparameter \(\lambda > 0\):<span class="cite">[<a href="#ref2">2</a>, <a href="#ref3">3</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$\hat{\theta} = \arg\min_{\theta} \left( \frac{1}{N} \sum_{i=1}^N \mathcal{L}\big(f_\theta(x_i), y_i\big) + \lambda \Omega(\theta) \right)$$
+    </div>
+    <ul>
+      <li><strong>\(L_2\) Regularization (Ridge / Weight Decay):</strong> \(\Omega(\theta) = \|\theta\|_2^2 = \sum_j \theta_j^2\). Imposes a Gaussian prior on parameters, penalizing large weights and stabilizing ill-conditioned inversions.</li>
+      <li><strong>\(L_1\) Regularization (Lasso):</strong> \(\Omega(\theta) = \|\theta\|_1 = \sum_j |\theta_j|\). Imposes a Laplacian prior on parameters, driving uninformative feature weights to zero to perform embedded feature selection.</li>
+      <li><strong>Elastic Net:</strong> \(\Omega(\theta) = \alpha \|\theta\|_1 + (1 - \alpha) \|\theta\|_2^2\), combining sparsity induction with group selection for correlated predictors.</li>
+    </ul>
+
+    <!-- Section 2 -->
+    <h2 id="loss-functions">2. Canonical Loss Functions</h2>
+    <p>
+      The loss function specifies the penalty assigned to discrepancies between model predictions \(\hat{y} = f_\theta(x)\) and ground-truth targets \(y\). The selection of loss function dictates the probabilistic interpretation and robustness of the resulting estimator.
+    </p>
+
+    <h3 id="regression-losses">2.1 Regression Losses</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Loss Function</th>
+          <th>Mathematical Definition</th>
+          <th>Optimal Point Prediction</th>
+          <th>Properties &amp; Robustness</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Squared Error (MSE / \(L_2\))</strong></td>
+          <td>\(\mathcal{L}(f(x), y) = \frac{1}{2}(y - f(x))^2\)</td>
+          <td>Conditional Mean \(\mathbb{E}[Y \mid X=x]\)</td>
+          <td>Differentiable everywhere; highly sensitive to outliers. Corresponds to Gaussian likelihood.</td>
+        </tr>
+        <tr>
+          <td><strong>Absolute Error (MAE / \(L_1\))</strong></td>
+          <td>\(\mathcal{L}(f(x), y) = |y - f(x)|\)</td>
+          <td>Conditional Median \(\text{Med}(Y \mid X=x)\)</td>
+          <td>Robust to extreme outliers; non-differentiable at \(y - f(x) = 0\). Corresponds to Laplace likelihood.</td>
+        </tr>
+        <tr>
+          <td><strong>Huber Loss</strong></td>
+          <td>
+            \(\begin{cases} \frac{1}{2}(y - f(x))^2 & |y - f(x)| \le \delta \\ \delta |y - f(x)| - \frac{1}{2}\delta^2 & |y - f(x)| > \delta \end{cases}\)
+          </td>
+          <td>Hybrid conditional statistic</td>
+          <td>Smoothly transitions from quadratic for small residuals to linear for large residuals; robust and differentiable.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="classification-losses">2.2 Classification Losses</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Loss Function</th>
+          <th>Mathematical Definition</th>
+          <th>Target Setting</th>
+          <th>Properties &amp; Optimization</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cross-Entropy Loss (Log Loss)</strong></td>
+          <td>\(\mathcal{L}(f(x), y) = -\sum_{c=1}^C y_c \log \hat{p}_c(x)\)</td>
+          <td>Probabilistic multiclass \(y \in \{0,1\}^C\)</td>
+          <td>Maximizes likelihood under multinomial distribution; strictly convex when combined with linear parameterizations.</td>
+        </tr>
+        <tr>
+          <td><strong>Hinge Loss</strong></td>
+          <td>\(\mathcal{L}(f(x), y) = \max(0, 1 - y f(x))\)</td>
+          <td>Margin classification \(y \in \{-1, +1\}\)</td>
+          <td>Convex surrogate for 0-1 loss; yields sparse support vectors by penalizing margin violations.</td>
+        </tr>
+        <tr>
+          <td><strong>Exponential Loss</strong></td>
+          <td>\(\mathcal{L}(f(x), y) = e^{-y f(x)}\)</td>
+          <td>Margin classification \(y \in \{-1, +1\}\)</td>
+          <td>Underlying loss function of AdaBoost; places high penalty on misclassified samples.</td>
+        </tr>
+        <tr>
+          <td><strong>0-1 Loss</strong></td>
+          <td>\(\mathcal{L}(f(x), y) = \mathbb{I}(y \ne \text{sign}(f(x)))\)</td>
+          <td>Binary classification</td>
+          <td>True classification error rate; NP-hard and non-convex to optimize directly.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Section 3 -->
+    <h2 id="bias-variance">3. The Bias-Variance Tradeoff</h2>
+    <p>
+      The generalization performance of a supervised model is governed by the structural tension between model simplicity and model expressiveness.<span class="cite">[<a href="#ref2">2</a>, <a href="#ref4">4</a>]</span>
+    </p>
+
+    <h3 id="bias-variance-decomp">3.1 Analytical Error Decomposition</h3>
+    <p>
+      Assume a true data-generating process \(y = g(x) + \epsilon\), where \(\mathbb{E}[\epsilon] = 0\) and \(\text{Var}(\epsilon) = \sigma^2\). For a fixed query point \(x\) and an estimator \(\hat{f}_{\mathcal{D}}(x)\) fit on random training dataset \(\mathcal{D}\), the expected mean squared test error decomposes analytically into three mutually orthogonal terms:
+    </p>
+    <div class="formula-box">
+      $$\mathbb{E}_{\mathcal{D}, \epsilon} \left[ \big(y - \hat{f}_{\mathcal{D}}(x)\big)^2 \right] = \underbrace{\Big(\mathbb{E}_{\mathcal{D}}[\hat{f}_{\mathcal{D}}(x)] - g(x)\Big)^2}_{\text{Bias}^2} + \underbrace{\mathbb{E}_{\mathcal{D}}\left[ \Big(\hat{f}_{\mathcal{D}}(x) - \mathbb{E}_{\mathcal{D}}[\hat{f}_{\mathcal{D}}(x)]\Big)^2 \right]}_{\text{Variance}} + \underbrace{\sigma^2}_{\text{Irreducible Noise}}$$
+    </div>
+    <ul>
+      <li><strong>\(\text{Bias}^2\):</strong> Systematic error arising from faulty inductive assumptions or insufficient model capacity (underfitting). High-bias models fail to capture underlying functional complexities.</li>
+      <li><strong>\(\text{Variance}\):</strong> Error stemming from estimation sensitivity to idiosyncratic variations across training datasets (overfitting). High-variance models fit sample-specific noise.</li>
+      <li><strong>\(\sigma^2\):</strong> Inherent statistical noise in the data distribution that cannot be eliminated by any learning algorithm regardless of capacity.</li>
+    </ul>
+
+    <h3 id="double-descent">3.2 Overfitting, Underfitting, and Double Descent</h3>
+    <p>
+      Classical statistical learning posits a U-shaped generalization curve where increasing model capacity initially reduces bias, reaches an optimal trade-off point, and then causes test error to escalate due to explosive variance.
+    </p>
+    <p>
+      Modern empirical research demonstrates the <strong>Double Descent</strong> phenomenon (Belkin et al., 2019): as model parameters exceed the number of training samples (the interpolation threshold where training error reaches zero), test risk peaks and subsequently decreases as capacity grows further.<span class="cite">[<a href="#ref5">5</a>]</span> Overparameterized deep networks and kernel machines find minimum-norm interpolating solutions that generalize effectively despite having zero empirical training loss.
+    </p>
+
+    <!-- Section 4 -->
+    <h2 id="algorithm-taxonomy">4. Taxonomy of Supervised Algorithms</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Family</th>
+          <th>Primary Algorithms</th>
+          <th>Inductive Bias</th>
+          <th>Typical Applications</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Linear &amp; Logistic Models</strong></td>
+          <td>Ordinary Least Squares (OLS), Ridge, Lasso, Logistic Regression, Elastic Net</td>
+          <td>Linear relationship between input features (or basis expansions) and response</td>
+          <td>Econometrics, baseline tabular modeling, risk scoring, fast inference</td>
+        </tr>
+        <tr>
+          <td><strong>Maximum Margin</strong></td>
+          <td>Support Vector Machines (SVM), Support Vector Regression (SVR)</td>
+          <td>Maximal geometric margin between decision boundary and nearest support samples</td>
+          <td>High-dimensional bioinformatics, text categorization, image classification</td>
+        </tr>
+        <tr>
+          <td><strong>Tree Ensembles</strong></td>
+          <td>CART Decision Trees, Random Forests, Gradient Boosted Decision Trees (XGBoost, LightGBM, CatBoost)</td>
+          <td>Hierarchical axis-aligned orthogonal partitions of feature space</td>
+          <td>Tabular data competitions, fraud detection, credit scoring, ranking</td>
+        </tr>
+        <tr>
+          <td><strong>Instance-Based</strong></td>
+          <td>\(k\)-Nearest Neighbors (\(k\)-NN), Locally Weighted Regression</td>
+          <td>Local smoothness; similar instances in feature space share similar target values</td>
+          <td>Low-dimensional spatial interpolation, recommendation baselines</td>
+        </tr>
+        <tr>
+          <td><strong>Deep Neural Architectures</strong></td>
+          <td>Multilayer Perceptrons (MLP), Convolutional Networks (CNN), Supervised Transformers</td>
+          <td>Hierarchical compositional representations across layers</td>
+          <td>Computer vision, speech recognition, machine translation, protein folding</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="linear-models">4.1 Generalized Linear and Logistic Models</h3>
+    <p>
+      Linear models assume an expectation function \(g(\mathbb{E}[Y \mid X]) = w^T x + b\), where \(g\) is a link function.
+    </p>
+    <ul>
+      <li><strong>Ordinary Least Squares:</strong> \(\hat{w} = (X^T X)^{-1} X^T y\). Closed-form analytical solution minimizing sum of squared residuals.</li>
+      <li><strong>Logistic Regression:</strong> Utilizes the logit link function \(\log \frac{p}{1-p} = w^T x + b\), yielding posterior class probabilities modeled through the logistic sigmoid \(\sigma(z) = \frac{1}{1 + e^{-z}}\):
+        <div class="formula-box">
+          $$P(Y=1 \mid X=x) = \frac{1}{1 + e^{-(w^T x + b)}}$$
+        </div>
+      </li>
+    </ul>
+
+    <h3 id="svm-kernels">4.2 Support Vector Machines and Kernel Methods</h3>
+    <p>
+      Support Vector Machines (Cortes &amp; Vapnik, 1995) find a hyperplane \(w^T x + b = 0\) that maximizes the geometric margin \(\frac{2}{\|w\|_2}\) between two separable classes.<span class="cite">[<a href="#ref6">6</a>]</span> The primal optimization problem with soft margin slack variables \(\xi_i\) is:
+    </p>
+    <div class="formula-box">
+      $$\min_{w, b, \xi} \left( \frac{1}{2} \|w\|_2^2 + C \sum_{i=1}^N \xi_i \right) \quad \text{subject to} \quad y_i (w^T x_i + b) \ge 1 - \xi_i, \quad \xi_i \ge 0$$
+    </div>
+    <p>
+      The dual formulation depends only on pairwise inner products \(\langle x_i, x_j \rangle\). The <strong>Kernel Trick</strong> implicitly projects input vectors into a high-dimensional reproducing kernel Hilbert space (RKHS) \(\Phi(x)\) by replacing inner products with a Mercer kernel function \(K(x_i, x_j) = \langle \Phi(x_i), \Phi(x_j) \rangle\), such as the Radial Basis Function (RBF) kernel:
+    </p>
+    <div class="formula-box">
+      $$K_{\text{RBF}}(x_i, x_j) = \exp\left( -\gamma \|x_i - x_j\|_2^2 \right)$$
+    </div>
+
+    <h3 id="tree-ensembles">4.3 Decision Trees and Ensemble Methods</h3>
+    <p>
+      Decision trees recursively partition the input space into hyperrectangles by choosing greedy splits that maximize impurity reduction (measured via Gini impurity \(I_G(p) = 1 - \sum p_k^2\) or Entropy \(H(p) = -\sum p_k \log_2 p_k\)).
+    </p>
+    <ul>
+      <li><strong>Random Forests (Breiman, 2001):</strong> Bagging (Bootstrap Aggregation) ensemble of unpruned deep trees trained on bootstrap resamples of \(\mathcal{D}\) with random feature sub-sampling at each split.<span class="cite">[<a href="#ref7">7</a>]</span> Reduces variance without increasing bias.</li>
+      <li><strong>Gradient Boosted Decision Trees (Friedman, 2001):</strong> Sequential ensemble where each base learner \(h_m(x)\) fits the negative gradient (pseudo-residuals) of the loss function with respect to current ensemble predictions \(F_{m-1}(x)\):<span class="cite">[<a href="#ref8">8</a>]</span>
+        <div class="formula-box">
+          $$r_{im} = -\left[ \frac{\partial \mathcal{L}(y_i, F(x_i))}{\partial F(x_i)} \right]_{F(x) = F_{m-1}(x)}, \quad F_m(x) = F_{m-1}(x) + \eta \, h_m(x)$$
+        </div>
+      </li>
+    </ul>
+
+    <h3 id="deep-architectures">4.4 Supervised Neural Networks</h3>
+    <p>
+      In deep supervised learning, multilayer architectures perform end-to-end feature learning and target mapping. Parameters are optimized via mini-batch stochastic gradient descent (SGD) using backpropagation to compute analytical gradients of empirical loss with respect to all layer weights.<span class="cite">[<a href="#ref9">9</a>]</span>
+    </p>
+
+    <!-- Section 5 -->
+    <h2 id="statistical-learning-theory">5. Generalization Bounds and Statistical Learning Theory</h2>
+    <p>
+      Statistical learning theory provides rigorous mathematical bounds establishing conditions under which empirical risk on training data guarantees bounded true risk on unseen test distributions.
+    </p>
+
+    <h3 id="pac-learning">5.1 PAC Learning Framework</h3>
+    <p>
+      In Leslie Valiant's <strong>Probably Approximately Correct (PAC)</strong> framework (Valiant, 1984), a concept class \(\mathcal{C}\) is PAC-learnable if an algorithm can select a hypothesis \(h \in \mathcal{H}\) such that with probability at least \(1 - \delta\), the generalization error is bounded by \(\epsilon\), using a sample size polynomial in \(\frac{1}{\epsilon}\), \(\frac{1}{\delta}\), and instance size \(d\):<span class="cite">[<a href="#ref10">10</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$\mathbb{P}_{\mathcal{D} \sim P^N}\Big( R(h) \le \hat{R}_{\text{emp}}(h) + \epsilon \Big) \ge 1 - \delta$$
+    </div>
+
+    <h3 id="vc-dimension">5.2 VC Dimension and Rademacher Complexity</h3>
+    <p>
+      For an infinite hypothesis space \(\mathcal{H}\), generalization error is bounded by its <strong>Vapnik-Chervonenkis (VC) Dimension</strong> \(d_{\text{VC}}\), defined as the cardinality of the largest set of points that \(\mathcal{H}\) can shatter (assign all \(2^N\) possible binary label configurations):<span class="cite">[<a href="#ref3">3</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$R(h) \le \hat{R}_{\text{emp}}(h) + \sqrt{\frac{8 d_{\text{VC}} \ln(2N/d_{\text{VC}}) + 8 \ln(4/\delta)}{N}}$$
+    </div>
+    <p>
+      <strong>Rademacher Complexity</strong> \(\mathcal{R}_N(\mathcal{H})\) refines this bound by measuring the empirical capacity of hypothesis space \(\mathcal{H}\) to fit random Rademacher noise \(\sigma_i \in \{-1, +1\}\) on the actual dataset distribution, providing data-dependent generalization guarantees.
+    </p>
+
+    <!-- Section 6 -->
+    <h2 id="references">6. References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Tom M. Mitchell, <em>Machine Learning</em> (McGraw-Hill, 1997).</li>
+      <li id="ref2"><span class="backlink">^</span> Trevor Hastie, Robert Tibshirani, and Jerome Friedman, <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em>, 2nd ed. (Springer, 2009). DOI: <a href="https://doi.org/10.1007/978-0-387-84858-7" target="_blank" rel="noopener">10.1007/978-0-387-84858-7</a>.</li>
+      <li id="ref3"><span class="backlink">^</span> Vladimir N. Vapnik, <em>Statistical Learning Theory</em> (John Wiley &amp; Sons, 1998).</li>
+      <li id="ref4"><span class="backlink">^</span> Christopher M. Bishop, <em>Pattern Recognition and Machine Learning</em> (Springer, 2006).</li>
+      <li id="ref5"><span class="backlink">^</span> Mikhail Belkin, Daniel Hsu, Siyuan Ma, and Soumik Mandal, "Reconciling modern machine-learning practice and the classical bias–variance trade-off," <em>Proceedings of the National Academy of Sciences</em> 116(32), 15849–15854 (2019). DOI: <a href="https://doi.org/10.1073/pnas.1903070116" target="_blank" rel="noopener">10.1073/pnas.1903070116</a>.</li>
+      <li id="ref6"><span class="backlink">^</span> Corinna Cortes and Vladimir Vapnik, "Support-vector networks," <em>Machine Learning</em> 20(3), 273–297 (1995). DOI: <a href="https://doi.org/10.1007/BF00994018" target="_blank" rel="noopener">10.1007/BF00994018</a>.</li>
+      <li id="ref7"><span class="backlink">^</span> Leo Breiman, "Random Forests," <em>Machine Learning</em> 45(1), 5–32 (2001). DOI: <a href="https://doi.org/10.1023/A:1010933404324" target="_blank" rel="noopener">10.1023/A:1010933404324</a>.</li>
+      <li id="ref8"><span class="backlink">^</span> Jerome H. Friedman, "Greedy function approximation: A gradient boosting machine," <em>The Annals of Statistics</em> 29(5), 1189–1232 (2001). DOI: <a href="https://doi.org/10.1214/aos/1013203451" target="_blank" rel="noopener">10.1214/aos/1013203451</a>.</li>
+      <li id="ref9"><span class="backlink">^</span> Yann LeCun, Yoshua Bengio, and Geoffrey Hinton, "Deep learning," <em>Nature</em> 521(7553), 436–444 (2015). DOI: <a href="https://doi.org/10.1038/nature14539" target="_blank" rel="noopener">10.1038/nature14539</a>.</li>
+      <li id="ref10"><span class="backlink">^</span> Leslie G. Valiant, "A theory of the learnable," <em>Communications of the ACM</em> 27(11), 1134–1142 (1984). DOI: <a href="https://doi.org/10.1145/1968.1972" target="_blank" rel="noopener">10.1145/1968.1972</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
