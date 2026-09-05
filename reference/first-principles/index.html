@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>First Principles (Learning Method) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A first principle is a proposition that cannot be deduced from any other. In learning and writing, working from first principles means deriving a subject from its axioms, facts, and mechanisms rather than copying its conventions. Aristotle, Euclid, Descartes, Feynman, Musk, Merrill.">
+  <meta property="og:title" content="First Principles (Learning Method) · Reference">
+  <meta property="og:description" content="A first principle is a proposition that cannot be deduced from any other. In learning and writing, working from first principles means deriving a subject from its axioms, facts, and mechanisms rather than copying its conventions. Aristotle, Euclid, Descartes, Feynman, Musk, Merrill.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/first-principles/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/first-principles/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-top: 0;
+    }
+    .toc ol {
+      padding-left: 1.3rem;
+      margin-bottom: 0;
+    }
+    .toc ol ol {
+      padding-left: 1.2rem;
+      margin-top: 0.15rem;
+    }
+    .toc li { margin: 0.25rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula-box {
+      text-align: center;
+      margin: 1.2rem 0;
+      background: var(--well);
+      padding: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    #references {
+      font-size: 0.92rem;
+    }
+    #references ol {
+      padding-left: 1.5rem;
+    }
+    #references li {
+      margin-bottom: 0.5rem;
+    }
+    #references .backlink {
+      margin-right: 0.3rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"First Principles (Learning Method)","description":"A first principle is a proposition that cannot be deduced from any other. In learning and writing, working from first principles means deriving a subject from its axioms, facts, and mechanisms rather than copying its conventions. Aristotle, Euclid, Descartes, Feynman, Musk, Merrill.","url":"https://ngpestelos.com/reference/first-principles/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Learning</p>
+    <h1>First principles (learning method)</h1>
+    <p class="updated">Reference entry. Last updated 2026-09-06.</p>
+
+    <p class="lede"><strong>First principles</strong> are propositions that cannot be deduced from any other proposition.<span class="cite">[<a href="#ref1">1</a>]</span> A subject learned or written <em>from first principles</em> is derived from those propositions and the facts and mechanisms that follow from them, rather than reproduced from its existing conventions. This entry covers the term's origin in Aristotle, its forms in mathematics, philosophy, and physics, the popular problem-solving sense associated with Elon Musk, and its use as a method for learning and for writing instructional material.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#definition">Definition</a></li>
+        <li><a href="#origins">Origins in Aristotle</a></li>
+        <li><a href="#forms">Forms in mathematics, philosophy, and physics</a></li>
+        <li><a href="#problem-solving">First-principles thinking as problem solving</a></li>
+        <li><a href="#learning">Learning from first principles</a></li>
+        <li><a href="#writing">Writing from first principles</a></li>
+        <li><a href="#limits">Limits and criticism</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="definition">Definition</h2>
+    <p>A first principle is a basic proposition or assumption that cannot be deduced from any other proposition or assumption.<span class="cite">[<a href="#ref1">1</a>]</span> Aristotle states the requirement in the <em>Posterior Analytics</em>: the premisses of demonstrated knowledge "must be true, primary, immediate, better known than and prior to the conclusion," and the regress of premisses "must end in immediate truths," which are therefore indemonstrable.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Three uses of the term share this core and differ in scope. In the strict sense a first principle is an axiom or postulate of a formal system. In the broad sense it is any fact or mechanism a person accepts as given and reasons upward from, without further appeal to convention. In the method sense, "from first principles" names a procedure: strip a problem or subject to what is known to be true, then rebuild it.<span class="cite">[<a href="#ref7">7</a>]</span><span class="cite">[<a href="#ref8">8</a>]</span></p>
+
+    <h2 id="origins">Origins in Aristotle</h2>
+    <p>The Greek term is <em>archē</em> (plural <em>archai</em>), a beginning or starting point. Aristotle opens the <em>Physics</em> with the claim that knowledge of any subject that has "principles, conditions, or elements" is attained "through acquaintance with these," and that the natural order of inquiry is "to start from the things which are more knowable and obvious to us and proceed towards those which are clearer and more knowable by nature."<span class="cite">[<a href="#ref3">3</a>]</span> The <em>Metaphysics</em> makes the same point about wisdom: "Wisdom is knowledge about certain principles and causes."<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>Two features of Aristotle's account carry into every later use. First principles are the end of an explanatory regress, and they are known in a different way from what is derived from them. What is first "by nature" is often last in the order of learning, because a learner starts from what is obvious to them and works back toward the principle.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="forms">Forms in mathematics, philosophy, and physics</h2>
+    <p><em>Mathematics.</em> In mathematics and formal logic, first principles are called axioms or postulates.<span class="cite">[<a href="#ref1">1</a>]</span> Euclid's <em>Elements</em> is the model: Book I opens with five postulates ("To draw a straight line from any point to any point," and so on) and five common notions ("Things which equal the same thing also equal one another"), from which the propositions are proved in order.<span class="cite">[<a href="#ref5">5</a>]</span> The postulates are stated but not proved, and everything else is derived from them.</p>
+    <p><em>Philosophy.</em> Descartes set two conditions on a first principle: it must be "so clear and evident that the human mind, when it attentively considers them, cannot doubt of their truth," and "the knowledge of other things must be so dependent on them" that the principles can be known without those other things, but not the reverse. His method for reaching such principles was to doubt, "once in the course of our life," "as far as possible, of all things."<span class="cite">[<a href="#ref6">6</a>]</span> The proposition that survived the doubt, that the doubter exists, he called the first principle of his philosophy.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p><em>Physics.</em> A calculation is "from first principles," or <em>ab initio</em>, when it starts at the level of established physical law and does not use an empirical model or fitted parameters.<span class="cite">[<a href="#ref1">1</a>]</span> The phrase in this sense is a claim about provenance: no step in the result depends on a number taken from measurement rather than derived from law.</p>
+
+    <h2 id="problem-solving">First-principles thinking as problem solving</h2>
+    <p>The popular sense of the term dates from interviews Elon Musk gave in 2012 and 2013, in which he contrasted reasoning from first principles with reasoning by analogy. In an interview with Kevin Rose, quoted by Farnam Street, he said, "I think it's important to reason from first principles rather than by analogy," described first principles as "kind of a physics way of looking at the world," and added that the method "takes a lot more mental energy."<span class="cite">[<a href="#ref9">9</a>]</span> To <em>Wired</em> the same year he said, "I tend to approach things from a physics framework."<span class="cite">[<a href="#ref7">7</a>]</span></p>
+    <p>The example attached to the term is the cost of a rocket. Musk reported that when he priced launch vehicles the quoted figures were as high as US$65 million, and that when he asked what a rocket is made of, aerospace-grade aluminium alloys, titanium, copper, and carbon fibre, the materials cost came to about two percent of the typical price.<span class="cite">[<a href="#ref7">7</a>]</span> Paul Adams of Intercom restates the same figure: materials "turns out, was only 2% of the total cost. So 98% of the cost was in shaping those materials to build the rocket."<span class="cite">[<a href="#ref8">8</a>]</span></p>
+    <p>Practitioner accounts describe the method as a procedure rather than an insight. Clear's definition: "boiling a process down to the fundamental parts that you know are true and building up from there."<span class="cite">[<a href="#ref7">7</a>]</span> Adams's design-review instruction: "strip it back, removing all your existing biases and known constraints, until you can't strip it back anymore," then build back up.<span class="cite">[<a href="#ref8">8</a>]</span> Farnam Street separates "what we know is absolutely true from anything that is an assumption" and names two tools for the stripping step, Socratic questioning and the Five Whys.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+    <p>Richard Feynman's line from his 1974 Caltech commencement address is often attached to this sense: "The first principle is that you must not fool yourself," followed by the reason: you are the easiest person to fool.<span class="cite">[<a href="#ref10">10</a>]</span> In context the sentence is about scientific integrity, the obligation to report everything that might make a result wrong, rather than about the cost structure of a problem.</p>
+
+    <h2 id="learning">Learning from first principles</h2>
+    <p>Applied to learning, the method inverts the usual order of a textbook. A subject is taught by stating the small set of facts or laws on which it rests, deriving each result from them in front of the learner, and testing whether the learner can reproduce the derivation without the text. The contrast is with learning by memorising results and conventions whose origin is not shown.</p>
+    <p>The phrase appears in titles of technical texts that follow this order. Francis Bach's <em>Learning Theory from First Principles</em> (MIT Press, 2024) builds statistical learning theory from its mathematical foundations before treating specific models.<span class="cite">[<a href="#ref11">11</a>]</span></p>
+    <p>A distinct, unrelated use of the words is M. David Merrill's <em>First Principles of Instruction</em> (2002), an instructional-design theory whose five principles (a task-centred approach, activation of prior knowledge, demonstration, application, and integration) are "first" in the sense of being basic to effective instruction across models, not in the sense of axioms from which a subject is derived.<span class="cite">[<a href="#ref12">12</a>]</span> Merrill's principles concern how to teach. The method in this entry concerns what to teach first.</p>
+    <p>Aristotle's distinction between what is first for us and what is first by nature marks the practical limit of the method. A learner cannot start from the axioms of a field they have never seen, because the axioms are not yet obvious to them. Instruction from first principles therefore begins with a concrete case the learner already grasps, extracts the principle from it, and only then derives the rest.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="writing">Writing from first principles</h2>
+    <p>The same method applies to writing about a subject. A text written from first principles states the facts it rests on, gives the rule those facts force, and shows each later device as a consequence of the rule. The reader can then check any recommendation against the fact behind it instead of taking it as a convention.</p>
+    <p>This site's writing guide is built that way. It rests on eight facts about the reader, for example that a reader can stop at any sentence and that working memory holds about twenty words, and derives the structure of the essay, the paragraph, and the sentence from those facts. Each chapter ends with a test the writer can run without a second reader.<span class="cite">[<a href="#ref13">13</a>]</span></p>
+    <p class="unattributed">The guide is the author's own work and is cited here as a worked example, not as an external source for the method.</p>
+
+    <h2 id="limits">Limits and criticism</h2>
+    <p>Three limits follow from the definition. A first principle is only as good as the claim that it cannot be reduced further; a "principle" that is in fact a convention produces a derivation that inherits the convention's errors. The method is slow, because it refuses the shortcut that analogy provides, and analogy is the right tool when the situation resembles a known one closely enough. And in empirical fields the principles are themselves revisable, so a derivation from first principles is a derivation from the current best statement of them, not from certainties.</p>
+    <p>Musk's own framing concedes the cost: the method "takes a lot more mental energy."<span class="cite">[<a href="#ref9">9</a>]</span> Feynman's caution applies to the stripping step, since the person choosing which assumptions to strip is judging their own work.<span class="cite">[<a href="#ref10">10</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/epistemology/">Epistemology</a></li>
+      <li><a href="/reference/reasoning/">Reasoning</a></li>
+      <li><a href="/reference/steelmanning/">Steelmanning</a></li>
+      <li><a href="/reference/spaced-repetition/">Spaced repetition</a></li>
+      <li><a href="/reference/hanlons-razor/">Hanlon's razor</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#definition">↑</a> "First principle," <em>Wikipedia</em>. Lead definition; sections on formal logic, philosophy, and physics. <a href="https://en.wikipedia.org/wiki/First_principle">https://en.wikipedia.org/wiki/First_principle</a></li>
+      <li id="ref2"><a class="backlink" href="#definition">↑</a> Aristotle, <em>Posterior Analytics</em>, Book I, trans. G. R. G. Mure. Internet Classics Archive, MIT. <a href="https://classics.mit.edu/Aristotle/posterior.1.i.html">https://classics.mit.edu/Aristotle/posterior.1.i.html</a></li>
+      <li id="ref3"><a class="backlink" href="#origins">↑</a> Aristotle, <em>Physics</em>, Book I, Part 1, trans. R. P. Hardie and R. K. Gaye. Internet Classics Archive, MIT. <a href="https://classics.mit.edu/Aristotle/physics.1.i.html">https://classics.mit.edu/Aristotle/physics.1.i.html</a></li>
+      <li id="ref4"><a class="backlink" href="#origins">↑</a> Aristotle, <em>Metaphysics</em>, Book I, trans. W. D. Ross. Internet Classics Archive, MIT. <a href="https://classics.mit.edu/Aristotle/metaphysics.1.i.html">https://classics.mit.edu/Aristotle/metaphysics.1.i.html</a></li>
+      <li id="ref5"><a class="backlink" href="#forms">↑</a> Euclid, <em>Elements</em>, Book I, postulates and common notions. D. E. Joyce's edition, Clark University. <a href="https://mathcs.clarku.edu/~djoyce/elements/bookI/bookI.html">https://mathcs.clarku.edu/~djoyce/elements/bookI/bookI.html</a></li>
+      <li id="ref6"><a class="backlink" href="#forms">↑</a> René Descartes, <em>Selections from the Principles of Philosophy</em>, trans. John Veitch. Author's preface and Part I, §1. Project Gutenberg, eBook 4391, plain text. <a href="https://www.gutenberg.org/cache/epub/4391/pg4391.txt">https://www.gutenberg.org/cache/epub/4391/pg4391.txt</a></li>
+      <li id="ref7"><a class="backlink" href="#problem-solving">↑</a> James Clear, "First Principles: Elon Musk on the Power of Thinking for Yourself." Quotes Musk from Chris Anderson, "Elon Musk's Mission to Mars," <em>Wired</em>, October 2012, and a 2015 talk by Steve Jurvetson. <a href="https://jamesclear.com/first-principles">https://jamesclear.com/first-principles</a></li>
+      <li id="ref8"><a class="backlink" href="#problem-solving">↑</a> Paul Adams, "Peeling back to first principles," <em>Inside Intercom</em>, 9 February 2016. <a href="https://www.intercom.com/blog/peeling-back-to-first-principles/">https://www.intercom.com/blog/peeling-back-to-first-principles/</a></li>
+      <li id="ref9"><a class="backlink" href="#problem-solving">↑</a> Farnam Street, "What is First Principles Thinking?" Quotes Musk from an interview with Kevin Rose. Cites Aristotle, <em>Physics</em> 184a10–21 and <em>Metaphysics</em> 1013a14–15. <a href="https://fs.blog/first-principles/">https://fs.blog/first-principles/</a></li>
+      <li id="ref10"><a class="backlink" href="#problem-solving">↑</a> Richard P. Feynman, "Cargo Cult Science," Caltech commencement address, 1974. <em>Engineering and Science</em>, Caltech. <a href="https://calteches.library.caltech.edu/51/2/CargoCult.htm">https://calteches.library.caltech.edu/51/2/CargoCult.htm</a></li>
+      <li id="ref11"><a class="backlink" href="#learning">↑</a> Francis Bach, <em>Learning Theory from First Principles</em>, MIT Press, 2024. Free full text: author's draft, École normale supérieure. <a href="https://www.di.ens.fr/~fbach/ltfp_book.pdf">https://www.di.ens.fr/~fbach/ltfp_book.pdf</a></li>
+      <li id="ref12"><a class="backlink" href="#learning">↑</a> M. David Merrill, "First principles of instruction," <em>Educational Technology Research and Development</em>, vol. 50, no. 3, 2002, pp. 43–59. Summary: "First Principles of Instruction," <em>Wikipedia</em>. <a href="https://en.wikipedia.org/wiki/First_Principles_of_Instruction">https://en.wikipedia.org/wiki/First_Principles_of_Instruction</a></li>
+      <li id="ref13"><a class="backlink" href="#writing">↑</a> Nestor G. Pestelos Jr., <em>Writing from First Principles</em>, 2026. Unpublished guide; the case is described in this entry.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
