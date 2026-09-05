@@ -368,5 +368,38 @@ class ReferenceSeoTests(unittest.TestCase):
             self.assertIn(link, html, f"Missing cross-link in large-language-models: {link}")
 
 
+    def test_learning_paradigms_reference_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        for slug in ("supervised-learning", "unsupervised-learning"):
+            self.assertIn(f'href="/reference/{slug}/"', html, f"Missing from reference/index.html: {slug}")
+            self.assertIn(
+                f"https://ngpestelos.com/reference/{slug}/",
+                locs,
+                f"Missing from sitemap.xml: {slug}",
+            )
+            entry_html = (REF / slug / "index.html").read_text(encoding="utf-8")
+            self.assertIn("application/ld+json", entry_html)
+            self.assertIn('"@type":"DefinedTerm"', entry_html)
+
+        ml_html = (REF / "machine-learning" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/supervised-learning/"', ml_html)
+        self.assertIn('href="/reference/unsupervised-learning/"', ml_html)
+
+
+    def test_vector_reference_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn('href="/reference/vector/"', html, "Missing from reference/index.html: vector")
+        self.assertIn("https://ngpestelos.com/reference/vector/", locs, "Missing from sitemap.xml: vector")
+        entry_html = (REF / "vector" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("application/ld+json", entry_html)
+        self.assertIn('"@type":"DefinedTerm"', entry_html)
+        vs_html = (REF / "vector-search" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/vector/"', vs_html)
+
+
 if __name__ == "__main__":
     unittest.main()
+
+

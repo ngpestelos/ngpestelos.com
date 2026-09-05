@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unsupervised Learning · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Unsupervised Learning: density estimation, k-means, DBSCAN, spectral clustering, PCA, t-SNE, UMAP, VAEs, GANs, and self-supervised pre-training.">
+  <meta property="og:title" content="Unsupervised Learning · Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Unsupervised Learning: density estimation, k-means, DBSCAN, spectral clustering, PCA, t-SNE, UMAP, VAEs, GANs, and self-supervised pre-training.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/unsupervised-learning/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/unsupervised-learning/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-top: 0;
+    }
+    .toc ol {
+      padding-left: 1.3rem;
+      margin-bottom: 0;
+    }
+    .toc ol ol {
+      padding-left: 1.2rem;
+      margin-top: 0.15rem;
+    }
+    .toc li { margin: 0.25rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula-box {
+      text-align: center;
+      margin: 1.2rem 0;
+      background: var(--well);
+      padding: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    #references {
+      font-size: 0.92rem;
+    }
+    #references ol {
+      padding-left: 1.5rem;
+    }
+    #references li {
+      margin-bottom: 0.5rem;
+    }
+    #references .backlink {
+      margin-right: 0.3rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Unsupervised Learning","description":"A citable ground-truth reference on Unsupervised Learning: density estimation, k-means, DBSCAN, spectral clustering, PCA, t-SNE, UMAP, VAEs, GANs, and self-supervised pre-training.","url":"https://ngpestelos.com/reference/unsupervised-learning/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Machine Learning</p>
+    <h1>Unsupervised Learning</h1>
+    <p class="subtitle">A citable reference on Unsupervised Learning: density estimation, clustering taxonomy, linear and non-linear dimensionality reduction, manifold learning, latent variable models, and self-supervised representations.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/machine-learning/"><strong>Reference: Machine Learning</strong></a>: Empirical risk minimization, learning paradigms, and generalization theory.</li>
+        <li>📖 <a href="/reference/supervised-learning/"><strong>Reference: Supervised Learning</strong></a>: Labeled mapping functions, empirical risk minimization, loss functions, and bias-variance tradeoff.</li>
+        <li>📖 <a href="/reference/reinforcement-learning/"><strong>Reference: Reinforcement Learning</strong></a>: Markov Decision Processes, policy gradients, and environmental reward optimization.</li>
+        <li>📖 <a href="/reference/embeddings/"><strong>Reference: Embeddings</strong></a>: Dense vector representations, semantic manifolds, and metric spaces.</li>
+        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a>: Next-token prediction, sequential factorization, and causal language modeling.</li>
+      </ul>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#formal-problem">1. Formal Problem Formulation</a>
+          <ol>
+            <li><a href="#data-setting">1.1 Unlabeled Experience and Latent Structure</a></li>
+            <li><a href="#density-estimation">1.2 Probability Density Estimation</a></li>
+          </ol>
+        </li>
+        <li><a href="#clustering">2. Taxonomy of Clustering Algorithms</a>
+          <ol>
+            <li><a href="#kmeans">2.1 Partitioning: k-Means and k-Medoids</a></li>
+            <li><a href="#hierarchical">2.2 Hierarchical Clustering and Linkage Criteria</a></li>
+            <li><a href="#density-clustering">2.3 Density-Based: DBSCAN and HDBSCAN</a></li>
+            <li><a href="#spectral-clustering">2.4 Spectral Clustering and Graph Laplacians</a></li>
+          </ol>
+        </li>
+        <li><a href="#dimensionality-reduction">3. Dimensionality Reduction and Manifold Learning</a>
+          <ol>
+            <li><a href="#pca">3.1 Principal Component Analysis (PCA)</a></li>
+            <li><a href="#matrix-factorization">3.2 Matrix Factorization and Independent Component Analysis</a></li>
+            <li><a href="#tsne-umap">3.3 Non-Linear Manifold Learning: t-SNE and UMAP</a></li>
+          </ol>
+        </li>
+        <li><a href="#generative-latent">4. Generative Modeling and Latent Variable Models</a>
+          <ol>
+            <li><a href="#autoencoders">4.1 Autoencoder Architectures</a></li>
+            <li><a href="#vaes">4.2 Variational Autoencoders (VAEs)</a></li>
+            <li><a href="#gans">4.3 Generative Adversarial Networks (GANs)</a></li>
+            <li><a href="#self-supervised">4.4 Self-Supervised Learning and Masked Modeling</a></li>
+          </ol>
+        </li>
+        <li><a href="#cluster-validation">5. Cluster Validation Metrics</a></li>
+        <li><a href="#references">6. References</a></li>
+      </ol>
+    </nav>
+
+    <!-- Section 1 -->
+    <h2 id="formal-problem">1. Formal Problem Formulation</h2>
+    <p>
+      <strong>Unsupervised Learning</strong> is a machine learning paradigm in which an algorithm extracts underlying patterns, latent representations, or probability distributions from unlabeled datasets without external supervision or ground-truth targets.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>]</span> The learner discovers intrinsic geometric, topological, or statistical structure within the input space.
+    </p>
+
+    <h3 id="data-setting">1.1 Unlabeled Experience and Latent Structure</h3>
+    <p>
+      The training dataset \(\mathcal{D}\) consists of \(N\) observation vectors sampled independently from an unknown probability distribution \(P(X)\) defined over feature space \(\mathcal{X} \subseteq \mathbb{R}^d\):
+    </p>
+    <div class="formula-box">
+      $$\mathcal{D} = \{x_1, x_2, \dots, x_N\} \sim P(X)^N$$
+    </div>
+    <p>
+      Unlike supervised learning, no target vector \(y_i\) accompanies each sample. Unsupervised objectives generally solve one of four fundamental mathematical tasks:
+    </p>
+    <ul>
+      <li><strong>Density Estimation:</strong> Reconstruct the probability density function \(\hat{p}(x)\) that generated \(\mathcal{D}\).</li>
+      <li><strong>Clustering:</strong> Partition the sample indices \(\{1, \dots, N\}\) into \(K\) disjoint or overlapping subsets based on pairwise similarity metrics.</li>
+      <li><strong>Dimensionality Reduction:</strong> Learn a mapping \(g: \mathbb{R}^d \to \mathbb{R}^k\) (where \(k \ll d\)) that preserves critical geometric distances or topological relationships.</li>
+      <li><strong>Generative Representation:</strong> Learn a parameterized mapping from a low-dimensional prior distribution \(p(z)\) over latent space \(\mathcal{Z}\) to the data manifold \(\mathcal{X}\).</li>
+    </ul>
+
+    <h3 id="density-estimation">1.2 Probability Density Estimation</h3>
+    <p>
+      In <strong>Parametric Density Estimation</strong>, the data distribution is modeled as a parameterized family \(p(x \mid \theta)\). In a Gaussian Mixture Model (GMM) with \(K\) components, the marginal density is a convex combination of multivariate normals:<span class="cite">[<a href="#ref1">1</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$p(x \mid \theta) = \sum_{k=1}^K \pi_k \, \mathcal{N}(x \mid \mu_k, \Sigma_k), \quad \sum_{k=1}^K \pi_k = 1, \quad \pi_k \ge 0$$
+    </div>
+    <p>
+      Parameters \(\theta = \{\pi_k, \mu_k, \Sigma_k\}_{k=1}^K\) are estimated using the <strong>Expectation-Maximization (EM)</strong> algorithm (Dempster et al., 1977), which iteratively alternates between computing latent component responsibilities in the E-step and updating cluster parameters in the M-step:<span class="cite">[<a href="#ref3">3</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$\gamma_{ik} = \frac{\pi_k \mathcal{N}(x_i \mid \mu_k, \Sigma_k)}{\sum_{j=1}^K \pi_j \mathcal{N}(x_i \mid \mu_j, \Sigma_j)}, \quad \mu_k^{\text{new}} = \frac{\sum_{i=1}^N \gamma_{ik} x_i}{\sum_{i=1}^N \gamma_{ik}}$$
+    </div>
+    <p>
+      In <strong>Non-Parametric Density Estimation</strong>, Kernel Density Estimation (KDE) computes the empirical density without distributional assumptions via kernel function \(K\):
+    </p>
+    <div class="formula-box">
+      $$\hat{p}(x) = \frac{1}{N h^d} \sum_{i=1}^N K\left( \frac{x - x_i}{h} \right)$$
+    </div>
+
+    <!-- Section 2 -->
+    <h2 id="clustering">2. Taxonomy of Clustering Algorithms</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Clustering Paradigm</th>
+          <th>Representative Algorithms</th>
+          <th>Optimization Objective / Criterion</th>
+          <th>Cluster Shape Assumption</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Partitioning</strong></td>
+          <td>\(k\)-Means, \(k\)-Medoids (PAM), \(k\)-Means++</td>
+          <td>Minimize Within-Cluster Sum of Squares (WCSS)</td>
+          <td>Spherical, convex, equal variance</td>
+        </tr>
+        <tr>
+          <td><strong>Hierarchical</strong></td>
+          <td>Agglomerative (Single, Complete, Average, Ward)</td>
+          <td>Iterative pairwise merge based on linkage distance metric</td>
+          <td>Arbitrary tree hierarchies; dendrogram-based</td>
+        </tr>
+        <tr>
+          <td><strong>Density-Based</strong></td>
+          <td>DBSCAN, OPTICS, HDBSCAN</td>
+          <td>Discover connected dense regions separated by low-density noise</td>
+          <td>Arbitrary non-convex shapes; robust to outliers</td>
+        </tr>
+        <tr>
+          <td><strong>Model-Based</strong></td>
+          <td>Gaussian Mixture Models (GMM), Latent Dirichlet Allocation (LDA)</td>
+          <td>Maximize log-likelihood of mixture distributions via EM</td>
+          <td>Ellipsoidal distributions with variable covariance</td>
+        </tr>
+        <tr>
+          <td><strong>Graph / Spectral</strong></td>
+          <td>Spectral Clustering, Normalized Cuts</td>
+          <td>Min-cut partition of graph Laplacian eigenvectors</td>
+          <td>Complex manifolds, non-linear connectivity</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="kmeans">2.1 Partitioning: k-Means and k-Medoids</h3>
+    <p>
+      The standard <strong>\(k\)-Means</strong> algorithm (MacQueen, 1967; Lloyd, 1982) partitions \(N\) observations into \(K\) disjoint sets \(S = \{S_1, \dots, S_K\}\) to minimize the Within-Cluster Sum of Squares (WCSS):<span class="cite">[<a href="#ref4">4</a>, <a href="#ref5">5</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$\arg\min_S \sum_{k=1}^K \sum_{x \in S_k} \|x - \mu_k\|_2^2, \quad \text{where } \mu_k = \frac{1}{|S_k|} \sum_{x \in S_k} x$$
+    </div>
+    <p>
+      Because finding the global minimum is NP-hard in general metric spaces, Lloyd's heuristic alternates between assigning each sample to its nearest centroid \(\mu_k\) and recomputing centroids as sample means. <strong>\(k\)-Means++</strong> (Arthur &amp; Vassilvitskii, 2007) seeds initial centers with probability proportional to squared distance \(D(x)^2\) from existing centers, guaranteeing an \(O(\log K)\) competitive approximation ratio.<span class="cite">[<a href="#ref6">6</a>]</span>
+    </p>
+
+    <h3 id="hierarchical">2.2 Hierarchical Clustering and Linkage Criteria</h3>
+    <p>
+      Agglomerative hierarchical clustering begins with each point in its own singleton cluster and sequentially merges the closest pair of clusters until all points reside in a single root. Linkage functions define inter-cluster distance \(D(A, B)\):
+    </p>
+    <ul>
+      <li><strong>Single Linkage:</strong> \(D(A, B) = \min_{a \in A, b \in B} \|a - b\|\) (susceptible to chaining artifacts).</li>
+      <li><strong>Complete Linkage:</strong> \(D(A, B) = \max_{a \in A, b \in B} \|a - b\|\) (favors compact, equal-diameter clusters).</li>
+      <li><strong>Average Linkage (UPGMA):</strong> \(D(A, B) = \frac{1}{|A||B|} \sum_{a \in A} \sum_{b \in B} \|a - b\|\).</li>
+      <li><strong>Ward's Linkage:</strong> Minimizes total within-cluster variance increase upon merging:
+        <div class="formula-box">
+          $$\Delta \text{ESS}_{AB} = \frac{|A||B|}{|A| + |B|} \|\mu_A - \mu_B\|_2^2$$
+        </div>
+      </li>
+    </ul>
+
+    <h3 id="density-clustering">2.3 Density-Based: DBSCAN and HDBSCAN</h3>
+    <p>
+      <strong>DBSCAN</strong> (Ester et al., 1996) defines clusters as continuous density-reachable components.<span class="cite">[<a href="#ref7">7</a>]</span> For a radius \(\epsilon\) and minimum points threshold \(\text{MinPts}\):
+    </p>
+    <ul>
+      <li>A point \(p\) is a <strong>Core Point</strong> if \(|N_\epsilon(p)| \ge \text{MinPts}\), where \(N_\epsilon(p) = \{q \in \mathcal{D} \mid \|p - q\| \le \epsilon\}\).</li>
+      <li>A point \(q\) is <strong>Directly Density-Reachable</strong> from \(p\) if \(q \in N_\epsilon(p)\) and \(p\) is a core point.</li>
+      <li>Points that are not density-reachable from any core point are classified as noise (outliers).</li>
+    </ul>
+
+    <h3 id="spectral-clustering">2.4 Spectral Clustering and Graph Laplacians</h3>
+    <p>
+      Spectral clustering maps non-linearly separable data into a subspace defined by the lowest eigenvectors of a graph Laplacian.<span class="cite">[<a href="#ref8">8</a>]</span> Given an affinity adjacency matrix \(W\) and degree matrix \(D_{ii} = \sum_j W_{ij}\):
+    </p>
+    <ul>
+      <li><strong>Unnormalized Graph Laplacian:</strong> \(L = D - W\).</li>
+      <li><strong>Symmetric Normalized Laplacian:</strong> \(L_{\text{sym}} = D^{-1/2} L D^{-1/2} = I - D^{-1/2} W D^{-1/2}\).</li>
+      <li><strong>Random Walk Laplacian:</strong> \(L_{\text{rw}} = D^{-1} L = I - D^{-1} W\).</li>
+    </ul>
+    <p>
+      By the Rayleigh-Ritz theorem, the first \(K\) eigenvectors of \(L_{\text{sym}}\) solve the continuous relaxation of the Normalized Cut (NCut) graph partitioning problem.
+    </p>
+
+    <!-- Section 3 -->
+    <h2 id="dimensionality-reduction">3. Dimensionality Reduction and Manifold Learning</h2>
+    <p>
+      High-dimensional representations frequently lie near lower-dimensional smooth manifolds embedded in \(\mathbb{R}^d\). Dimensionality reduction algorithms extract these intrinsic degrees of freedom.
+    </p>
+
+    <h3 id="pca">3.1 Principal Component Analysis (PCA)</h3>
+    <p>
+      <strong>Principal Component Analysis</strong> (Pearson, 1901; Hotelling, 1933) finds an orthogonal linear transformation that projects centered data \(X \in \mathbb{R}^{N \times d}\) onto a \(k\)-dimensional subspace while maximizing preserved variance (or equivalently, minimizing reconstruction error).<span class="cite">[<a href="#ref9">9</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$\Sigma = \frac{1}{N} X^T X = V \Lambda V^T, \quad Z = X V_k$$
+    </div>
+    <p>
+      where \(V_k \in \mathbb{R}^{d \times k}\) contains the eigenvectors corresponding to the \(k\) largest eigenvalues \(\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_k\) of sample covariance matrix \(\Sigma\). Via Singular Value Decomposition (SVD) \(X = U S V^T\), the principal coordinates are computed directly as \(Z = U_k S_k\).
+    </p>
+
+    <h3 id="matrix-factorization">3.2 Matrix Factorization and Independent Component Analysis</h3>
+    <ul>
+      <li><strong>Non-Negative Matrix Factorization (NMF):</strong> Decomposes non-negative matrix \(V \approx W H\) subject to \(W \ge 0, H \ge 0\), learning additive, parts-based representations.</li>
+      <li><strong>Independent Component Analysis (ICA):</strong> Assumes observed signals \(x = A s\) are linear mixtures of statistically independent, non-Gaussian source signals \(s\). Algorithms maximize non-Gaussianity (measured via kurtosis or negentropy) to estimate unmixing matrix \(W = A^{-1}\).</li>
+    </ul>
+
+    <h3 id="tsne-umap">3.3 Non-Linear Manifold Learning: t-SNE and UMAP</h3>
+    <p>
+      <strong>t-SNE</strong> (van der Maaten &amp; Hinton, 2008) converts pairwise Euclidean distances in high-dimensional space into conditional Gaussian probabilities \(p_{j \mid i}\) and models low-dimensional points \(y_i, y_j \in \mathbb{R}^2\) using a heavy-tailed Student-t distribution \(q_{ij}\):<span class="cite">[<a href="#ref10">10</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$p_{j \mid i} = \frac{\exp(-\|x_i - x_j\|^2 / 2\sigma_i^2)}{\sum_{k \ne i} \exp(-\|x_i - x_k\|^2 / 2\sigma_i^2)}, \quad q_{ij} = \frac{(1 + \|y_i - y_j\|^2)^{-1}}{\sum_{k} \sum_{l \ne k} (1 + \|y_k - y_l\|^2)^{-1}}$$
+    </div>
+    <p>
+      The low-dimensional embedding is optimized by minimizing the Kullback-Leibler divergence \(\text{KL}(P \,\|\, Q) = \sum_{i \ne j} p_{ij} \log \frac{p_{ij}}{q_{ij}}\) via gradient descent. The heavy tail of the Student-t distribution eliminates the crowding problem by allowing moderate high-dimensional distances to expand in low dimensions.
+    </p>
+    <p>
+      <strong>UMAP</strong> (McInnes et al., 2018) builds on Riemannian geometry and algebraic topology, modeling the manifold with fuzzy simplicial sets and optimizing cross-entropy between high- and low-dimensional fuzzy sets.<span class="cite">[<a href="#ref11">11</a>]</span> UMAP preserves both local and global manifold structure while exhibiting faster computational scaling than t-SNE.
+    </p>
+
+    <!-- Section 4 -->
+    <h2 id="generative-latent">4. Generative Modeling and Latent Variable Models</h2>
+    <p>
+      Deep unsupervised architectures learn generative representations that map simple latent priors to complex target data manifolds.
+    </p>
+
+    <h3 id="autoencoders">4.1 Autoencoder Architectures</h3>
+    <p>
+      An autoencoder consists of an encoder \(z = f_\phi(x)\) and a decoder \(\hat{x} = g_\theta(z)\) trained to minimize reconstruction error \(\mathcal{L}(x, g_\theta(f_\phi(x)))\). Undercomplete bottlenecks (\(\dim(z) \ll \dim(x)\)), sparsity penalties (\(L_1\) norm on \(z\)), or contractive Jacobian regularizers (\(\|J_f(x)\|_F^2\)) force the network to discard noise and retain latent manifold coordinates.
+    </p>
+
+    <h3 id="vaes">4.2 Variational Autoencoders (VAEs)</h3>
+    <p>
+      <strong>Variational Autoencoders</strong> (Kingma &amp; Welling, 2013; Rezende et al., 2014) introduce probabilistic latent variables \(z \sim p(z) = \mathcal{N}(0, I)\).<span class="cite">[<a href="#ref12">12</a>]</span> Because the true posterior \(p_\theta(z \mid x)\) is intractable, a variational encoder \(q_\phi(z \mid x) = \mathcal{N}(\mu_\phi(x), \Sigma_\phi(x))\) approximates it by maximizing the <strong>Evidence Lower Bound (ELBO)</strong>:
+    </p>
+    <div class="formula-box">
+      $$\log p_\theta(x) \ge \mathcal{L}_{\text{ELBO}}(\theta, \phi; x) = \mathbb{E}_{q_\phi(z \mid x)} \left[ \log p_\theta(x \mid z) \right] - D_{\text{KL}}\big(q_\phi(z \mid x) \,\|\, p(z)\big)$$
+    </div>
+    <p>
+      Differentiability during backpropagation is achieved through the <strong>Reparameterization Trick</strong>, expressing stochastic latent vectors as a deterministic transformation of standard normal noise:
+    </p>
+    <div class="formula-box">
+      $$z = \mu_\phi(x) + \sigma_\phi(x) \odot \epsilon, \quad \text{where } \epsilon \sim \mathcal{N}(0, I)$$
+    </div>
+
+    <h3 id="gans">4.3 Generative Adversarial Networks (GANs)</h3>
+    <p>
+      <strong>Generative Adversarial Networks</strong> (Goodfellow et al., 2014) formulate generative modeling as a two-player zero-sum minimax game between a Generator \(G_\theta\) and a Discriminator \(D_\phi\):<span class="cite">[<a href="#ref13">13</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$\min_G \max_D V(D, G) = \mathbb{E}_{x \sim P_{\text{data}}(x)} \left[ \log D(x) \right] + \mathbb{E}_{z \sim p_z(z)} \left[ \log\big(1 - D(G(z))\big) \right]$$
+    </div>
+    <p>
+      For an optimal discriminator \(D^*(x) = \frac{p_{\text{data}}(x)}{p_{\text{data}}(x) + p_g(x)}\), the minimax objective reduces to minimizing the Jensen-Shannon divergence \(2 D_{\text{JS}}(p_{\text{data}} \,\|\, p_g) - 2 \log 2\) between the data distribution and the model distribution.
+    </p>
+
+    <h3 id="self-supervised">4.4 Self-Supervised Learning and Masked Modeling</h3>
+    <p>
+      In modern machine learning, self-supervised learning uses structural aspects of the unlabeled data itself as supervisory targets.
+    </p>
+    <ul>
+      <li><strong>Masked Autoencoding (MAE / BERT):</strong> Masks a fraction of input tokens or image patches and trains a transformer to reconstruct missing components from unmasked context.</li>
+      <li><strong>Contrastive Learning (SimCLR / InfoNCE):</strong> Maximizes agreement between differently augmented views of the same sample while minimizing similarity to negative distractors using the InfoNCE objective:<span class="cite">[<a href="#ref14">14</a>]</span>
+        <div class="formula-box">
+          $$\mathcal{L}_{\text{InfoNCE}} = -\log \frac{\exp(\text{sim}(z_i, z_j)/\tau)}{\sum_{k=1}^{2K} \mathbb{I}_{[k \ne i]} \exp(\text{sim}(z_i, z_k)/\tau)}$$
+        </div>
+      </li>
+    </ul>
+
+    <!-- Section 5 -->
+    <h2 id="cluster-validation">5. Cluster Validation Metrics</h2>
+    <p>
+      Because unsupervised tasks lack external ground truth, clustering quality is evaluated via internal geometry or external partition comparisons:
+    </p>
+    <ul>
+      <li><strong>Silhouette Coefficient:</strong> For sample \(i\), let \(a(i)\) be mean intra-cluster distance and \(b(i)\) be minimum mean distance to points in any other cluster:
+        <div class="formula-box">
+          $$s(i) = \frac{b(i) - a(i)}{\max(a(i), b(i))}, \quad s(i) \in [-1, 1]$$
+        </div>
+      </li>
+      <li><strong>Davies-Bouldin Index:</strong> Measures the similarity between each cluster \(R_{ij} = \frac{s_i + s_j}{d(\mu_i, \mu_j)}\) and computes \(\frac{1}{K}\sum_{i} \max_{j \ne i} R_{ij}\); lower values indicate superior partition separation.</li>
+      <li><strong>Adjusted Rand Index (ARI):</strong> Evaluates agreement between cluster assignments and ground-truth classes, normalized for chance:
+        <div class="formula-box">
+          $$\text{ARI} = \frac{\text{Index} - \text{Expected Index}}{\text{Max Index} - \text{Expected Index}} \in [-1, 1]$$
+        </div>
+      </li>
+    </ul>
+
+    <!-- Section 6 -->
+    <h2 id="references">6. References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Christopher M. Bishop, <em>Pattern Recognition and Machine Learning</em> (Springer, 2006).</li>
+      <li id="ref2"><span class="backlink">^</span> Trevor Hastie, Robert Tibshirani, and Jerome Friedman, <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em>, 2nd ed. (Springer, 2009). DOI: <a href="https://doi.org/10.1007/978-0-387-84858-7" target="_blank" rel="noopener">10.1007/978-0-387-84858-7</a>.</li>
+      <li id="ref3"><span class="backlink">^</span> Arthur P. Dempster, Nan M. Laird, and Donald B. Rubin, "Maximum likelihood from incomplete data via the EM algorithm," <em>Journal of the Royal Statistical Society: Series B</em> 39(1), 1–38 (1977). DOI: <a href="https://doi.org/10.1111/j.2517-6161.1977.tb01600.x" target="_blank" rel="noopener">10.1111/j.2517-6161.1977.tb01600.x</a>.</li>
+      <li id="ref4"><span class="backlink">^</span> J. B. MacQueen, "Some Methods for classification and Analysis of Multivariate Observations," <em>Proceedings of 5th Berkeley Symposium on Mathematical Statistics and Probability</em> 1, 281–297 (1967).</li>
+      <li id="ref5"><span class="backlink">^</span> Stuart P. Lloyd, "Least squares quantization in PCM," <em>IEEE Transactions on Information Theory</em> 28(2), 129–137 (1982). DOI: <a href="https://doi.org/10.1109/TIT.1982.1056489" target="_blank" rel="noopener">10.1109/TIT.1982.1056489</a>.</li>
+      <li id="ref6"><span class="backlink">^</span> David Arthur and Sergei Vassilvitskii, "k-means++: The advantages of careful seeding," <em>Proceedings of the Eighteenth Annual ACM-SIAM Symposium on Discrete Algorithms</em>, 1027–1035 (2007). URL: <a href="https://dl.acm.org/doi/10.5555/1283383.1283494" target="_blank" rel="noopener">ACM Digital Library</a>.</li>
+      <li id="ref7"><span class="backlink">^</span> Martin Ester, Hans-Peter Kriegel, Jörg Sander, and Xiaowei Xu, "A density-based algorithm for discovering clusters in large spatial databases with noise," <em>Proceedings of the Second International Conference on Knowledge Discovery and Data Mining (KDD-96)</em>, 226–231 (1996).</li>
+      <li id="ref8"><span class="backlink">^</span> Ulrike von Luxburg, "A tutorial on spectral clustering," <em>Statistics and Computing</em> 17(4), 395–416 (2007). DOI: <a href="https://doi.org/10.1007/s11222-007-9033-z" target="_blank" rel="noopener">10.1007/s11222-007-9033-z</a>.</li>
+      <li id="ref9"><span class="backlink">^</span> Karl Pearson, "On lines and planes of closest fit to systems of points in space," <em>Philosophical Magazine</em> 2(11), 559–572 (1901). DOI: <a href="https://doi.org/10.1080/14786440109462720" target="_blank" rel="noopener">10.1080/14786440109462720</a>.</li>
+      <li id="ref10"><span class="backlink">^</span> Laurens van der Maaten and Geoffrey Hinton, "Visualizing data using t-SNE," <em>Journal of Machine Learning Research</em> 9, 2579–2605 (2008). URL: <a href="https://www.jmlr.org/papers/v9/vandermaaten08a.html" target="_blank" rel="noopener">JMLR</a>.</li>
+      <li id="ref11"><span class="backlink">^</span> Leland McInnes, John Healy, and James Melville, "UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction," <em>arXiv:1802.03426</em> (2018). DOI: <a href="https://doi.org/10.48550/arXiv.1802.03426" target="_blank" rel="noopener">10.48550/arXiv.1802.03426</a>.</li>
+      <li id="ref12"><span class="backlink">^</span> Diederik P. Kingma and Max Welling, "Auto-Encoding Variational Bayes," <em>International Conference on Learning Representations (ICLR 2014)</em>, <em>arXiv:1312.6114</em> (2013). DOI: <a href="https://doi.org/10.48550/arXiv.1312.6114" target="_blank" rel="noopener">10.48550/arXiv.1312.6114</a>.</li>
+      <li id="ref13"><span class="backlink">^</span> Ian J. Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio, "Generative Adversarial Nets," <em>Advances in Neural Information Processing Systems</em> 27 (NeurIPS 2014). URL: <a href="https://proceedings.neurips.cc/paper/2014/file/5ca3e9b122f61f8f06494c97b1afccf3-Paper.pdf" target="_blank" rel="noopener">NeurIPS Proceedings</a>.</li>
+      <li id="ref14"><span class="backlink">^</span> Ting Chen, Simon Kornblith, Mohammad Norouzi, and Geoffrey Hinton, "A Simple Framework for Contrastive Learning of Visual Representations," <em>International Conference on Machine Learning (ICML 2020)</em>, <em>arXiv:2002.05709</em> (2020). DOI: <a href="https://doi.org/10.48550/arXiv.2002.05709" target="_blank" rel="noopener">10.48550/arXiv.2002.05709</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
