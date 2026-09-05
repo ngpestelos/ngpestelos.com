@@ -399,7 +399,20 @@ class ReferenceSeoTests(unittest.TestCase):
         self.assertIn('href="/reference/vector/"', vs_html)
 
 
+    def test_computer_vision_reference_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn('href="/reference/computer-vision/"', html, "Missing from reference/index.html: computer-vision")
+        self.assertIn("https://ngpestelos.com/reference/computer-vision/", locs, "Missing from sitemap.xml: computer-vision")
+        entry_html = (REF / "computer-vision" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("application/ld+json", entry_html)
+        self.assertIn('"@type":"DefinedTerm"', entry_html)
+        p_html = (REF / "perception" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/computer-vision/"', p_html)
+
+
 if __name__ == "__main__":
     unittest.main()
+
 
 
