@@ -46,6 +46,12 @@ def is_snapshot_slug(slug: str) -> bool:
     return bool(SNAPSHOT_SLUG.search(slug))
 
 
+def parse_iso_datetime(value: str) -> datetime:
+    if value.endswith("Z"):
+        value = f"{value[:-1]}+00:00"
+    return datetime.fromisoformat(value)
+
+
 def bucket_datetimes(html: str) -> dict[str, list[str]]:
     sections = re.findall(
         r'<section class="bucket" id="([^"]+)">(.*?)</section>',
@@ -228,7 +234,7 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         if not entries:
             entries = root.findall("entry")
         self.assertEqual(len(entries), len(items))
-        feed_updated = datetime.fromisoformat(root.findtext("atom:updated", namespaces=ATOM_NS))
+        feed_updated = parse_iso_datetime(root.findtext("atom:updated", namespaces=ATOM_NS))
         for entry in entries:
             entry_id = entry.findtext("atom:id", namespaces=ATOM_NS)
             self.assertIn(entry_id, items_by_url)
@@ -240,7 +246,7 @@ class SiteDiscoverabilityTests(unittest.TestCase):
             summaries = entry.findall("atom:summary", ATOM_NS)
             self.assertEqual(len(summaries), 1, entry_id)
             self.assertEqual(summaries[0].text, parser.descriptions[0])
-            entry_updated = datetime.fromisoformat(
+            entry_updated = parse_iso_datetime(
                 entry.findtext("atom:updated", namespaces=ATOM_NS)
             )
             self.assertEqual(entry_updated.utcoffset(), timedelta(hours=8))
@@ -364,4 +370,3 @@ class ReferenceSeoTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
