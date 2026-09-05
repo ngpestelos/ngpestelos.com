@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vector (Mathematics and Computing) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on vectors: formal vector space axioms, linear independence, inner product and Hilbert spaces, norms, matrix transformations, SIMD hardware vectorization, and high-dimensional semantic embeddings.">
+  <meta property="og:title" content="Vector (Mathematics and Computing) · Reference">
+  <meta property="og:description" content="A citable ground-truth reference on vectors: formal vector space axioms, linear independence, inner product and Hilbert spaces, norms, matrix transformations, SIMD hardware vectorization, and high-dimensional semantic embeddings.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/vector/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/vector/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .companion-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--link);
+      border-radius: 4px;
+      padding: 1rem 1.3rem;
+      margin-bottom: 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    .companion-box h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      color: var(--ink);
+    }
+    .companion-box ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 0;
+      font-size: 0.92rem;
+    }
+    .companion-box li { margin-bottom: 0.4rem; }
+    .companion-box li:last-child { margin-bottom: 0; }
+    .companion-box a { color: var(--link); text-decoration: none; }
+    .companion-box a:hover { text-decoration: underline; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-top: 0;
+    }
+    .toc ol {
+      padding-left: 1.3rem;
+      margin-bottom: 0;
+    }
+    .toc ol ol {
+      padding-left: 1.2rem;
+      margin-top: 0.15rem;
+    }
+    .toc li { margin: 0.25rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .formula-box {
+      text-align: center;
+      margin: 1.2rem 0;
+      background: var(--well);
+      padding: 0.8rem;
+      border-radius: 4px;
+      border: 1px solid var(--line);
+      overflow-x: auto;
+    }
+    #references {
+      font-size: 0.92rem;
+    }
+    #references ol {
+      padding-left: 1.5rem;
+    }
+    #references li {
+      margin-bottom: 0.5rem;
+    }
+    #references .backlink {
+      margin-right: 0.3rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Vector (Mathematics and Computing)","description":"A citable ground-truth reference on vectors: formal vector space axioms, linear independence, inner product and Hilbert spaces, norms, matrix transformations, SIMD hardware vectorization, and high-dimensional semantic embeddings.","url":"https://ngpestelos.com/reference/vector/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Mathematics &amp; Computer Science</p>
+    <h1>Vector (Mathematics and Computing)</h1>
+    <p class="subtitle">A citable reference on vectors: formal vector space axioms, linear independence and bases, inner products, norm metrics, linear transformations, SIMD execution, and high-dimensional representations in machine learning.</p>
+
+    <div class="companion-box">
+      <h2>See Also &amp; Related References</h2>
+      <ul>
+        <li>📖 <a href="/reference/vector-search/"><strong>Reference: Vector Search</strong></a>: Approximate Nearest Neighbor (ANN) search, HNSW graphs, and product quantization.</li>
+        <li>📖 <a href="/reference/embeddings/"><strong>Reference: Embeddings</strong></a>: Dense vector representations, semantic manifolds, and continuous metric spaces.</li>
+        <li>📖 <a href="/reference/machine-learning/"><strong>Reference: Machine Learning</strong></a>: Empirical risk minimization, feature representations, and generalization theory.</li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a>: Multilayer weight matrices, tensor operations, and hidden state activations.</li>
+        <li>📖 <a href="/reference/transformer-architecture/"><strong>Reference: Transformer Architecture</strong></a>: Multi-head attention projections, residual streams, and contextual vector representations.</li>
+      </ul>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#formal-axioms">1. Formal Vector Space Axioms</a>
+          <ol>
+            <li><a href="#vector-space-def">1.1 Algebraic Definition</a></li>
+            <li><a href="#linear-comb-span">1.2 Linear Combinations, Span, and Independence</a></li>
+            <li><a href="#basis-dimension">1.3 Basis, Dimension, and Coordinate Isomorphisms</a></li>
+          </ol>
+        </li>
+        <li><a href="#inner-product-normed">2. Inner Product, Normed, and Metric Spaces</a>
+          <ol>
+            <li><a href="#inner-product">2.1 Inner Product and Hilbert Spaces</a></li>
+            <li><a href="#norms-lp">2.2 Vector Norms and Lp Spaces</a></li>
+            <li><a href="#cosine-similarity">2.3 Angles and Cosine Similarity</a></li>
+            <li><a href="#metric-distances">2.4 Induced Metric Spaces</a></li>
+          </ol>
+        </li>
+        <li><a href="#operations-transforms">3. Vector Operations and Linear Transformations</a>
+          <ol>
+            <li><a href="#products">3.1 Dot, Cross, and Outer Products</a></li>
+            <li><a href="#linear-maps">3.2 Linear Maps and Matrix Representations</a></li>
+            <li><a href="#orthogonality">3.3 Orthogonality and Gram-Schmidt Process</a></li>
+            <li><a href="#eigensystems">3.4 Eigenvectors and Spectral Decomposition</a></li>
+          </ol>
+        </li>
+        <li><a href="#computational-hardware">4. Computational Representation and Hardware Vectorization</a>
+          <ol>
+            <li><a href="#memory-layout">4.1 Memory Layout, Alignment, and Strides</a></li>
+            <li><a href="#simd-parallelism">4.2 SIMD Instruction Sets and Parallel Execution</a></li>
+            <li><a href="#sparse-vectors">4.3 Dense vs. Sparse Vector Encodings</a></li>
+          </ol>
+        </li>
+        <li><a href="#vectors-in-ml">5. High-Dimensional Vectors in Machine Learning and AI</a>
+          <ol>
+            <li><a href="#feature-vectors">5.1 Feature Vectors and Coordinate Mapping</a></li>
+            <li><a href="#dense-embeddings">5.2 Latent Representations and Semantic Embeddings</a></li>
+            <li><a href="#curse-geometry">5.3 Geometric Peculiarities of High Dimensions</a></li>
+            <li><a href="#vector-indexing">5.4 Vector Indexing and Search</a></li>
+          </ol>
+        </li>
+        <li><a href="#references">6. References</a></li>
+      </ol>
+    </nav>
+
+    <!-- Section 1 -->
+    <h2 id="formal-axioms">1. Formal Vector Space Axioms</h2>
+    <p>
+      <strong>Vector</strong> (in mathematics and computing) is an element of a vector space, represented geometrically as a directed line segment with magnitude and direction, algebraically as an ordered tuple of scalars, or computationally as a contiguous array of numerical data.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>]</span>
+    </p>
+
+    <h3 id="vector-space-def">1.1 Algebraic Definition</h3>
+    <p>
+      Formally, a <strong>vector space</strong> (or linear space) over a field \(\mathbb{F}\) (typically the real numbers \(\mathbb{R}\) or complex numbers \(\mathbb{C}\)) is a set \(V\) equipped with two binary operations:
+    </p>
+    <ul>
+      <li><strong>Vector Addition:</strong> \(+: V \times V \to V\), denoted \((u, v) \mapsto u + v\).</li>
+      <li><strong>Scalar Multiplication:</strong> \(\cdot: \mathbb{F} \times V \to V\), denoted \((a, v) \mapsto a v\).</li>
+    </ul>
+    <p>
+      The set \(V\) must satisfy eight fundamental algebraic axioms for all \(u, v, w \in V\) and all \(a, b \in \mathbb{F}\):<span class="cite">[<a href="#ref2">2</a>]</span>
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Axiom Name</th>
+          <th>Formal Mathematical Statement</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="4"><strong>Addition</strong></td>
+          <td>Associativity</td>
+          <td>\(u + (v + w) = (u + v) + w\)</td>
+        </tr>
+        <tr>
+          <td>Commutativity</td>
+          <td>\(u + v = v + u\)</td>
+        </tr>
+        <tr>
+          <td>Identity Element</td>
+          <td>\(\exists \, 0 \in V \text{ such that } v + 0 = v\)</td>
+        </tr>
+        <tr>
+          <td>Inverse Element</td>
+          <td>\(\forall \, v \in V, \, \exists \, (-v) \in V \text{ such that } v + (-v) = 0\)</td>
+        </tr>
+        <tr>
+          <td rowspan="4"><strong>Multiplication</strong></td>
+          <td>Scalar Compatibility</td>
+          <td>\(a(b v) = (ab)v\)</td>
+        </tr>
+        <tr>
+          <td>Scalar Identity</td>
+          <td>\(1 v = v\), where \(1 \in \mathbb{F}\) is the multiplicative identity</td>
+        </tr>
+        <tr>
+          <td>Vector Distributivity</td>
+          <td>\(a(u + v) = a u + a v\)</td>
+        </tr>
+        <tr>
+          <td>Scalar Distributivity</td>
+          <td>\((a + b)v = a v + b v\)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="linear-comb-span">1.2 Linear Combinations, Span, and Independence</h3>
+    <p>
+      Given vectors \(v_1, v_2, \dots, v_k \in V\) and scalars \(c_1, c_2, \dots, c_k \in \mathbb{F}\), the sum \(w = \sum_{i=1}^k c_i v_i\) is a <strong>linear combination</strong>. The <strong>span</strong> of a subset \(S \subseteq V\) is the set of all linear combinations of elements in \(S\):
+    </p>
+    <div class="formula-box">
+      $$\text{span}(S) = \left\{ \sum_{i=1}^k c_i v_i \;\middle|\; k \in \mathbb{N}, \, c_i \in \mathbb{F}, \, v_i \in S \right\}$$
+    </div>
+    <p>
+      A set of vectors \(\{v_1, \dots, v_k\}\) is <strong>linearly independent</strong> if the only scalars satisfying \(\sum_{i=1}^k c_i v_i = 0\) are \(c_1 = c_2 = \dots = c_k = 0\). If non-trivial scalars exist, the set is linearly dependent, meaning at least one vector can be expressed as a linear combination of the remaining vectors.
+    </p>
+
+    <h3 id="basis-dimension">1.3 Basis, Dimension, and Coordinate Isomorphisms</h3>
+    <p>
+      A subset \(\mathcal{B} = \{e_1, e_2, \dots, e_n\} \subset V\) is a <strong>basis</strong> of \(V\) if \(\mathcal{B}\) is linearly independent and \(\text{span}(\mathcal{B}) = V\). Every vector \(v \in V\) has a unique expansion in terms of basis \(\mathcal{B}\):
+    </p>
+    <div class="formula-box">
+      $$v = \sum_{i=1}^n x_i e_i, \quad [v]_\mathcal{B} = \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \in \mathbb{F}^n$$
+    </div>
+    <p>
+      The number of basis vectors \(n\) is an invariant of the vector space, termed the <strong>dimension</strong> \(\dim(V) = n\). Every finite-dimensional vector space over \(\mathbb{F}\) with dimension \(n\) is linearly isomorphic to the coordinate space \(\mathbb{F}^n\).
+    </p>
+
+    <!-- Section 2 -->
+    <h2 id="inner-product-normed">2. Inner Product, Normed, and Metric Spaces</h2>
+    <p>
+      Geometric concepts of length, angle, and distance require endowing bare vector spaces with additional algebraic structures.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref3">3</a>]</span>
+    </p>
+
+    <h3 id="inner-product">2.1 Inner Product and Hilbert Spaces</h3>
+    <p>
+      An <strong>inner product space</strong> is a vector space \(V\) over \(\mathbb{R}\) (or \(\mathbb{C}\)) equipped with an inner product \(\langle \cdot, \cdot \rangle: V \times V \to \mathbb{F}\) satisfying:
+    </p>
+    <ul>
+      <li><strong>Conjugate Symmetry:</strong> \(\langle u, v \rangle = \overline{\langle v, u \rangle}\) (for real spaces, \(\langle u, v \rangle = \langle v, u \rangle\)).</li>
+      <li><strong>Linearity in the First Argument:</strong> \(\langle a u + b v, w \rangle = a \langle u, w \rangle + b \langle v, w \rangle\).</li>
+      <li><strong>Positive-Definiteness:</strong> \(\langle v, v \rangle \ge 0\), and \(\langle v, v \rangle = 0 \iff v = 0\).</li>
+    </ul>
+    <p>
+      The <strong>Cauchy-Schwarz Inequality</strong> bounds the inner product by the product of induced norms:<span class="cite">[<a href="#ref2">2</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$|\langle u, v \rangle|^2 \le \langle u, u \rangle \langle v, v \rangle$$
+    </div>
+    <p>
+      An inner product space that is complete with respect to its induced metric (every Cauchy sequence converges within the space) is a <strong>Hilbert Space</strong> \(\mathcal{H}\).
+    </p>
+
+    <h3 id="norms-lp">2.2 Vector Norms and Lp Spaces</h3>
+    <p>
+      A <strong>norm</strong> \(\|\cdot\|: V \to \mathbb{R}_{\ge 0}\) assigns a non-negative scalar length to each vector, satisfying non-negativity (\(\|v\| \ge 0\)), absolute homogeneity (\(\|a v\| = |a| \|v\|\)), and subadditivity (the Triangle Inequality: \(\|u + v\| \le \|u\| + \|v\|\)).
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Norm Family</th>
+          <th>Mathematical Formula</th>
+          <th>Geometric Intuition &amp; Properties</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>\(L_2\) Norm (Euclidean)</strong></td>
+          <td>\(\|v\|_2 = \sqrt{\sum_{i=1}^d v_i^2} = \sqrt{\langle v, v \rangle}\)</td>
+          <td>Straight-line geometric length; strictly convex unit ball; rotationally invariant.</td>
+        </tr>
+        <tr>
+          <td><strong>\(L_1\) Norm (Manhattan / Taxicab)</strong></td>
+          <td>\(\|v\|_1 = \sum_{i=1}^d |v_i|\)</td>
+          <td>Sum of absolute coordinate differences; induces sparse parameter solutions in optimization (Lasso).</td>
+        </tr>
+        <tr>
+          <td><strong>\(L_\infty\) Norm (Chebyshev / Max)</strong></td>
+          <td>\(\|v\|_\infty = \max_{1 \le i \le d} |v_i|\)</td>
+          <td>Maximum coordinate displacement; unit ball is a hypercube.</td>
+        </tr>
+        <tr>
+          <td><strong>\(L_p\) Norm</strong></td>
+          <td>\(\|v\|_p = \left( \sum_{i=1}^d |v_i|^p \right)^{1/p}, \quad p \ge 1\)</td>
+          <td>Generalization across norms; dual norm to \(L_q\) where \(\frac{1}{p} + \frac{1}{q} = 1\) (Hölder's Inequality).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 id="cosine-similarity">2.3 Angles and Cosine Similarity</h3>
+    <p>
+      In an inner product space, the angle \(\theta \in [0, \pi]\) between two non-zero vectors \(u, v\) is defined through the Cauchy-Schwarz inequality:
+    </p>
+    <div class="formula-box">
+      $$\cos(\theta) = \frac{\langle u, v \rangle}{\|u\|_2 \|v\|_2} = \frac{u \cdot v}{\|u\|_2 \|v\|_2}$$
+    </div>
+    <p>
+      In high-dimensional information retrieval and language modeling, <strong>Cosine Similarity</strong> measures directional alignment regardless of vector magnitude. <strong>Cosine Distance</strong> is defined as \(d_{\text{cos}}(u, v) = 1 - \cos(\theta)\).
+    </p>
+
+    <h3 id="metric-distances">2.4 Induced Metric Spaces</h3>
+    <p>
+      Every normed vector space induces a <strong>metric space</strong> \((V, d)\) with distance function \(d(u, v) = \|u - v\|\). Common induced metrics include Euclidean distance \(d_2(u, v) = \sqrt{\sum (u_i - v_i)^2}\), Manhattan distance \(d_1(u, v) = \sum |u_i - v_i|\), and Minkowski distance \(d_p(u, v) = \left(\sum |u_i - v_i|^p\right)^{1/p}\).
+    </p>
+
+    <!-- Section 3 -->
+    <h2 id="operations-transforms">3. Vector Operations and Linear Transformations</h2>
+
+    <h3 id="products">3.1 Dot, Cross, and Outer Products</h3>
+    <ul>
+      <li><strong>Dot Product (Scalar Product):</strong> Maps two vectors \(u, v \in \mathbb{R}^d\) to a scalar \(u \cdot v = u^T v = \sum_{i=1}^d u_i v_i\).</li>
+      <li><strong>Cross Product (Vector Product):</strong> Defined for \(\mathbb{R}^3\), produces an orthogonal vector with magnitude \(\|u \times v\| = \|u\| \|v\| \sin(\theta)\):
+        <div class="formula-box">
+          $$u \times v = \begin{bmatrix} u_2 v_3 - u_3 v_2 \\ u_3 v_1 - u_1 v_3 \\ u_1 v_2 - u_2 v_1 \end{bmatrix}$$
+        </div>
+      </li>
+      <li><strong>Outer Product (Tensor Product):</strong> Produces a rank-1 matrix \(u \otimes v = u v^T \in \mathbb{R}^{m \times n}\) with entries \((u v^T)_{ij} = u_i v_j\).</li>
+    </ul>
+
+    <h3 id="linear-maps">3.2 Linear Maps and Matrix Representations</h3>
+    <p>
+      A function \(T: V \to W\) between vector spaces is a <strong>linear transformation</strong> if it preserves vector addition and scalar multiplication: \(T(a u + b v) = a T(u) + b T(v)\). Given ordered bases for \(V\) and \(W\), every linear transformation is uniquely represented by matrix multiplication:
+    </p>
+    <div class="formula-box">
+      $$[T(v)]_W = A \, [v]_V, \quad \text{where } A \in \mathbb{F}^{m \times n}$$
+    </div>
+
+    <h3 id="orthogonality">3.3 Orthogonality and Gram-Schmidt Process</h3>
+    <p>
+      Two vectors are <strong>orthogonal</strong> if \(\langle u, v \rangle = 0\), denoted \(u \perp v\). An <strong>orthonormal set</strong> satisfies \(\langle u_i, u_j \rangle = \delta_{ij}\) (where \(\delta_{ij}\) is the Kronecker delta).
+    </p>
+    <p>
+      The <strong>Gram-Schmidt Orthogonalization Process</strong> converts any linearly independent basis \(\{v_1, \dots, v_k\}\) into an orthonormal basis \(\{u_1, \dots, u_k\}\) by iteratively subtracting vector projections:<span class="cite">[<a href="#ref1">1</a>]</span>
+    </p>
+    <div class="formula-box">
+      $$u_1 = \frac{v_1}{\|v_1\|}, \quad w_k = v_k - \sum_{j=1}^{k-1} \langle v_k, u_j \rangle u_j, \quad u_k = \frac{w_k}{\|w_k\|}$$
+    </div>
+
+    <h3 id="eigensystems">3.4 Eigenvectors and Spectral Decomposition</h3>
+    <p>
+      For a linear operator represented by square matrix \(A \in \mathbb{F}^{n \times n}\), a non-zero vector \(v\) is an <strong>eigenvector</strong> with corresponding <strong>eigenvalue</strong> \(\lambda\) if:
+    </p>
+    <div class="formula-box">
+      $$A v = \lambda v \iff (A - \lambda I) v = 0$$
+    </div>
+    <p>
+      By the <strong>Spectral Theorem</strong>, any symmetric real matrix \(A = A^T\) can be factored into an orthonormal basis of eigenvectors: \(A = Q \Lambda Q^T\), where \(Q\) is an orthogonal matrix (\(Q^T Q = I\)) and \(\Lambda\) is diagonal.<span class="cite">[<a href="#ref3">3</a>]</span>
+    </p>
+
+    <!-- Section 4 -->
+    <h2 id="computational-hardware">4. Computational Representation and Hardware Vectorization</h2>
+
+    <h3 id="memory-layout">4.1 Memory Layout, Alignment, and Strides</h3>
+    <p>
+      In computer memory, a dense vector \(v \in \mathbb{R}^d\) is represented as a contiguous block of \(d\) IEEE 754 floating-point numbers (e.g. 32-bit <code>float</code> or 64-bit <code>double</code>). Key performance parameters include:
+    </p>
+    <ul>
+      <li><strong>Stride:</strong> The byte offset between consecutive vector elements in memory. A stride of 1 (unit stride) ensures optimal cache line utilization.</li>
+      <li><strong>Memory Alignment:</strong> Aligning vector starting addresses to 32-byte or 64-byte hardware boundaries allows single-cycle vector load/store instructions without crossing cache line splits.</li>
+    </ul>
+
+    <h3 id="simd-parallelism">4.2 SIMD Instruction Sets and Parallel Execution</h3>
+    <p>
+      Modern microprocessors exploit data-level parallelism via <strong>SIMD (Single Instruction, Multiple Data)</strong> execution units.<span class="cite">[<a href="#ref4">4</a>]</span> Rather than executing operations element-by-element in scalar registers, SIMD instructions operate simultaneously on packed vector registers:
+    </p>
+    <ul>
+      <li><strong>x86-64:</strong> AVX2 (256-bit registers, 8 \(\times\) float32 per cycle) and AVX-512 (512-bit registers, 16 \(\times\) float32 per cycle).</li>
+      <li><strong>ARM:</strong> ARM Neon (128-bit) and Scalable Vector Extension (SVE/SVE2 with variable hardware vector lengths).</li>
+      <li><strong>GPUs &amp; TPUs:</strong> Massive SIMT (Single Instruction, Multiple Threads) execution across warps (NVIDIA, 32 threads) or wavefronts (AMD, 64 threads), computing matrix-vector products with high memory bandwidth.</li>
+    </ul>
+
+    <h3 id="sparse-vectors">4.3 Dense vs. Sparse Vector Encodings</h3>
+    <p>
+      When a high-dimensional vector contains predominantly zero values (for example, bag-of-words text representations or term-frequency indices like BM25), dense storage becomes inefficient:
+    </p>
+    <ul>
+      <li><strong>Coordinate List (COO):</strong> Stores parallel arrays of non-zero indices and scalar values: <code>indices = [2, 14, 89]</code>, <code>values = [0.5, 1.2, -0.8]</code>.</li>
+      <li><strong>Compressed Sparse Row / Column (CSR / CSC):</strong> Compact representation for sparse matrix-vector computations optimizing cache locality and arithmetic throughput.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    </ul>
+
+    <!-- Section 5 -->
+    <h2 id="vectors-in-ml">5. High-Dimensional Vectors in Machine Learning and AI</h2>
+
+    <h3 id="feature-vectors">5.1 Feature Vectors and Coordinate Mapping</h3>
+    <p>
+      In classical machine learning, raw entities (tabular rows, audio signals, pixels) are mapped into a \(d\)-dimensional numerical coordinate space as a <strong>feature vector</strong> \(x = [x_1, x_2, \dots, x_d]^T \in \mathbb{R}^d\). Supervised decision boundaries (e.g. SVM separating hyperplanes \(w^T x + b = 0\)) operate directly on these geometric representations.<span class="cite">[<a href="#ref5">5</a>]</span>
+    </p>
+
+    <h3 id="dense-embeddings">5.2 Latent Representations and Semantic Embeddings</h3>
+    <p>
+      Deep neural networks transform discrete tokens, images, or multimodal artifacts into dense continuous vectors termed <strong>embeddings</strong>. The internal activations of hidden layers project inputs onto low-dimensional semantic manifolds where geometric distance approximates semantic similarity:
+    </p>
+    <ul>
+      <li><strong>Word Embeddings (Word2Vec / GloVe):</strong> Learned vector spaces capturing linear relational analogies: \(\vec{v}_{\text{King}} - \vec{v}_{\text{Man}} + \vec{v}_{\text{Woman}} \approx \vec{v}_{\text{Queen}}\).<span class="cite">[<a href="#ref6">6</a>]</span></li>
+      <li><strong>Transformer Residual Streams:</strong> Contextual vectors \(h_t \in \mathbb{R}^{d_{\text{model}}}\) updated sequentially across layers via multi-head self-attention mechanisms.<span class="cite">[<a href="#ref7">7</a>]</span></li>
+    </ul>
+
+    <h3 id="curse-geometry">5.3 Geometric Peculiarities of High Dimensions</h3>
+    <p>
+      As dimensionality \(d\) scales to hundreds or thousands (e.g. \(d = 1536\) or \(d = 4096\)), geometry behaves counter-intuitively due to the <strong>Curse of Dimensionality</strong>:<span class="cite">[<a href="#ref5">5</a>, <a href="#ref8">8</a>]</span>
+    </p>
+    <ul>
+      <li><strong>Concentration of Measure:</strong> Almost all volume of a \(d\)-dimensional hypersphere of radius \(r\) resides in a thin outer shell of thickness \(\approx r/d\).</li>
+      <li><strong>Near-Orthogonality:</strong> For independent random vectors uniformly distributed on the unit sphere \(\mathbb{S}^{d-1}\), their inner product concentrates sharply around zero with variance \(\text{Var}(\langle u, v \rangle) = \frac{1}{d}\). Any two random vectors in high dimensions are nearly orthogonal.</li>
+      <li><strong>Distance Metric Collapse:</strong> The relative contrast between the distance to the nearest neighbor and the distance to the farthest neighbor diminishes:
+        <div class="formula-box">
+          $$\lim_{d \to \infty} \frac{d_{\max} - d_{\min}}{d_{\min}} \to 0$$
+        </div>
+      </li>
+    </ul>
+
+    <h3 id="vector-indexing">5.4 Vector Indexing and Search</h3>
+    <p>
+      Because exhaustive brute-force \(k\)-Nearest Neighbor search over \(N\) high-dimensional vectors requires \(O(N \cdot d)\) comparisons per query, production retrieval systems rely on <strong>Approximate Nearest Neighbor (ANN)</strong> indexing:<span class="cite">[<a href="#ref9">9</a>]</span>
+    </p>
+    <ul>
+      <li><strong>Hierarchical Navigable Small World (HNSW):</strong> Multi-layer proximity graphs providing \(O(\log N)\) logarithmic search latency.</li>
+      <li><strong>Inverted File Index (IVF):</strong> Voronoi partitioning of vector space into clusters via \(k\)-means, restricting query searches to adjacent centroids.</li>
+      <li><strong>Product Quantization (PQ):</strong> Sub-vector decomposition into quantized codebooks, compressing high-dimensional vectors to compact byte codes and enabling fast distance estimation via precomputed lookup tables.</li>
+    </ul>
+
+    <!-- Section 6 -->
+    <h2 id="references">6. References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Gilbert Strang, <em>Introduction to Linear Algebra</em>, 5th ed. (Wellesley-Cambridge Press, 2016).</li>
+      <li id="ref2"><span class="backlink">^</span> Sheldon Axler, <em>Linear Algebra Done Right</em>, 3rd ed. (Springer, 2015). DOI: <a href="https://doi.org/10.1007/978-3-319-11080-6" target="_blank" rel="noopener">10.1007/978-3-319-11080-6</a>.</li>
+      <li id="ref3"><span class="backlink">^</span> Gene H. Golub and Charles F. Van Loan, <em>Matrix Computations</em>, 4th ed. (Johns Hopkins University Press, 2013).</li>
+      <li id="ref4"><span class="backlink">^</span> John L. Hennessy and David A. Patterson, <em>Computer Architecture: A Quantitative Approach</em>, 6th ed. (Morgan Kaufmann, 2017).</li>
+      <li id="ref5"><span class="backlink">^</span> Christopher M. Bishop, <em>Pattern Recognition and Machine Learning</em> (Springer, 2006).</li>
+      <li id="ref6"><span class="backlink">^</span> Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg S. Corrado, and Jeffrey Dean, "Distributed Representations of Words and Phrases and their Compositionality," <em>Advances in Neural Information Processing Systems</em> 26 (NeurIPS 2013). URL: <a href="https://proceedings.neurips.cc/paper/2013/file/9aa42b31882ec039965f3c4923ce901b-Paper.pdf" target="_blank" rel="noopener">NeurIPS Proceedings</a>.</li>
+      <li id="ref7"><span class="backlink">^</span> Ashish Vaswani, Noam Shazeer, Niki Parmar, et al., "Attention Is All You Need," <em>Advances in Neural Information Processing Systems</em> 30 (NeurIPS 2017). URL: <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">arXiv:1706.03762</a>.</li>
+      <li id="ref8"><span class="backlink">^</span> Thomas M. Cover and Joy A. Thomas, <em>Elements of Information Theory</em>, 2nd ed. (Wiley-Interscience, 2006).</li>
+      <li id="ref9"><span class="backlink">^</span> Yu A. Malkov and D. A. Yashunin, "Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs," <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em> 42(4), 824–836 (2020). DOI: <a href="https://doi.org/10.1109/TPAMI.2018.2889473" target="_blank" rel="noopener">10.1109/TPAMI.2018.2889473</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
