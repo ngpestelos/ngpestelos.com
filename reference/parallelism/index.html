@@ -213,7 +213,7 @@
     <nav class="toc" aria-label="Table of contents">
       <h2>Contents</h2>
       <ol>
-        <li><a href="#physical-simultaneity">Physical Simultaneity vs. Interleaved Execution</a></li>
+        <li><a href="#first-principles">First Principles: Physical Simultaneity</a></li>
         <li><a href="#architectural-levels">Architectural Levels and Flynn's Taxonomy</a>
           <ol>
             <li><a href="#instruction-and-vector">Instruction and Vector Parallelism</a></li>
@@ -233,7 +233,7 @@
       </ol>
     </nav>
 
-    <h2 id="physical-simultaneity">1. Physical Simultaneity vs. Interleaved Execution</h2>
+    <h2 id="first-principles">1. First Principles: Physical Simultaneity</h2>
     <p>The defining characteristic of parallelism is physical simultaneity: at time \(t\), instruction \(I_A\) executes on hardware execution unit \(E_1\) while instruction \(I_B\) simultaneously executes on distinct hardware execution unit \(E_2\). If a system has only a single physical core, true parallelism cannot occur; multiple tasks can only progress via rapid context switching (concurrency via time-slicing).</p>
 
     <div class="diagram-box">

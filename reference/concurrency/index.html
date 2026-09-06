@@ -213,7 +213,7 @@
     <nav class="toc" aria-label="Table of contents">
       <h2>Contents</h2>
       <ol>
-        <li><a href="#structural-nature">The Structural Nature of Concurrency</a></li>
+        <li><a href="#first-principles">First Principles: The Structural Nature of Concurrency</a></li>
         <li><a href="#formal-models">Formal Models of Concurrency</a>
           <ol>
             <li><a href="#csp">Communicating Sequential Processes (CSP)</a></li>
@@ -241,7 +241,7 @@
       </ol>
     </nav>
 
-    <h2 id="structural-nature">1. The Structural Nature of Concurrency</h2>
+    <h2 id="first-principles">1. First Principles: The Structural Nature of Concurrency</h2>
     <p>A system is concurrent if two or more state sequences \(S_1 = (s_{1,1}, s_{1,2}, \dots)\) and \(S_2 = (s_{2,1}, s_{2,2}, \dots)\) make progress across a shared time interval \([t_{\text{start}}, t_{\text{end}}]\), such that the exact order of operation execution is non-deterministic. This non-determinism distinguishes concurrent programming from sequential programming: program correctness cannot assume an invariant total ordering of events.</p>
     <p>Concurrency can execute on a single CPU core via an event loop or preemptive scheduler that interleaves process time slices. When multiple physical cores are available, a concurrent program may additionally execute in parallel, but concurrency itself remains an architectural separation of concerns rather than a hardware speedup mechanism <span class="cite">[<a href="#ref-5">5</a>]</span>.</p>
 
@@ -330,7 +330,7 @@
         <li id="ref-2"><a class="backlink" href="#csp">&uarr;</a> C. A. R. Hoare, "Communicating Sequential Processes," <em>Communications of the ACM</em>, vol. 21, no. 8, 1978, pp. 666&ndash;677.</li>
         <li id="ref-3"><a class="backlink" href="#actor-model">&uarr;</a> C. Hewitt, P. Bishop, and R. Steiger, "A Universal Modular ACTOR Formalism for Artificial Intelligence," in <em>Proceedings of the 3rd International Joint Conference on Artificial Intelligence (IJCAI)</em>, 1973, pp. 235&ndash;245.</li>
         <li id="ref-4"><a class="backlink" href="#deadlock-coffman">&uarr;</a> E. G. Coffman, M. J. Elphick, and A. Shoshani, "System Deadlocks," <em>Computing Surveys</em>, vol. 3, no. 2, 1971, pp. 67&ndash;78.</li>
-        <li id="ref-5"><a class="backlink" href="#structural-nature">&uarr;</a> R. Pike, "Concurrency is not Parallelism," Waza conference presentation, Heroku, 2012. Slides: <a href="https://go.dev/talks/2012/waza.slide">https://go.dev/talks/2012/waza.slide</a></li>
+        <li id="ref-5"><a class="backlink" href="#first-principles">&uarr;</a> R. Pike, "Concurrency is not Parallelism," Waza conference presentation, Heroku, 2012. Slides: <a href="https://go.dev/talks/2012/waza.slide">https://go.dev/talks/2012/waza.slide</a></li>
         <li id="ref-6"><a class="backlink" href="#lock-free">&uarr;</a> M. Herlihy and N. Shavit, <em>The Art of Multiprocessor Programming</em>, Revised 1st ed., Morgan Kaufmann, 2012.</li>
       </ol>
     </div>
