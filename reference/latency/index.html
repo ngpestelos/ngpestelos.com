@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latency (Systems and Computing) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Latency is the time interval elapsed between initiating an operation and observing its result. First principles, structural components, Little's Law, Kingman's formula, tail latency, and LLM serving.">
+  <meta property="og:title" content="Latency (Systems and Computing) &middot; Reference">
+  <meta property="og:description" content="First principles of latency, physical delay components, queuing dynamics, tail amplification at scale, and inference timing metrics.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/latency/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/latency/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Latency (Systems and Computing)","description":"Latency is the time interval elapsed between the initiation of an operation or request and the observation of its initial result or complete delivery.","url":"https://ngpestelos.com/reference/latency/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.5rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <div class="kicker">Reference Entry</div>
+    <h1>Latency (Systems and Computing)</h1>
+    <p class="updated">Reference entry &middot; last updated September 7, 2026</p>
+
+    <p class="lede"><strong>Latency</strong> is the time interval elapsed between the initiation of an operation or request and the observation of its initial result or complete delivery. While <a href="/reference/throughput/">throughput</a> measures the aggregate rate of completed production units over time, latency quantifies individual turnaround duration or delay. In computer systems, network engineering, distributed services, and machine learning inference, latency is decomposed into physical propagation, transmission delay, serialization, processing execution time, and queuing overhead.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">First Principles: Latency vs. Throughput</a></li>
+        <li><a href="#structural-components">Structural Components of Latency</a>
+          <ol>
+            <li><a href="#propagation-transmission">Propagation and Transmission Delays</a></li>
+            <li><a href="#processing-serialization">Processing and Memory Delays</a></li>
+            <li><a href="#queuing-delays">Queuing Delays</a></li>
+          </ol>
+        </li>
+        <li><a href="#mathematical-models">Mathematical Models and Queuing Dynamics</a>
+          <ol>
+            <li><a href="#littles-law">Little's Law and Capacity Bounds</a></li>
+            <li><a href="#kingmans-formula">Kingman's Heavy Traffic Approximation</a></li>
+          </ol>
+        </li>
+        <li><a href="#tail-latency">Tail Latency and Percentile Distributions</a>
+          <ol>
+            <li><a href="#tail-amplification">The Amplification of Tail Latency at Scale</a></li>
+            <li><a href="#tail-tolerant-architectures">Tail-Tolerant Architectural Techniques</a></li>
+          </ol>
+        </li>
+        <li><a href="#ml-inference">Latency in Machine Learning and LLM Serving</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Latency vs. Throughput</h2>
+    <p>In computer architecture, David A. Patterson and John L. Hennessy distinguish between performance metrics: response time (latency) is the total elapsed time required to complete a single task, whereas <a href="/reference/throughput/">throughput</a> is the total amount of work accomplished per unit time <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>The relationship is often illustrated by physical pipeline dynamics:</p>
+    <ul>
+      <li><strong>Latency:</strong> The travel time required for a single data unit to traverse a channel from source to destination (measured in seconds, milliseconds, or nanoseconds).</li>
+      <li><strong>Throughput:</strong> The volumetric rate at which data units exit the channel per unit time (measured in operations per second, bytes per second, or tokens per second).</li>
+    </ul>
+    <p>A high-throughput system is not necessarily low-latency. For instance, transporting terabytes of data across continents via physical magnetic tape shipments delivers massive throughput, but exhibits extreme latency (measured in hours or days). Conversely, an audio streaming connection requires minimal latency (sub-10ms) while demanding modest throughput.</p>
+
+    <div class="diagram-box">
+[Request Origin] &rarr; (Propagation + Transmission) &rarr; [Queue Wait] &rarr; [Service Execution] &rarr; [Response Delivery]
+|&larr;------------------------------------ Total Response Latency (W) ------------------------------------&rarr;|
+    </div>
+
+    <h2 id="structural-components">2. Structural Components of Latency</h2>
+    <p>In network and distributed systems engineering, end-to-end latency \(L_{\text{total}}\) decomposes into four additive components <span class="cite">[<a href="#ref-2">2</a>]</span>:</p>
+    \[L_{\text{total}} = T_{\text{prop}} + T_{\text{trans}} + T_{\text{proc}} + T_{\text{queue}}\]
+
+    <h3 id="propagation-transmission">2.1 Propagation and Transmission Delays</h3>
+    <ul>
+      <li><strong>Propagation Delay (\(T_{\text{prop}}\)):</strong> The physical duration required for an electromagnetic signal to travel through a physical medium (copper cable, optical fiber, or free space). Bounded fundamentally by the speed of light in vacuum (\(c \approx 3 \times 10^8\,\text{m/s}\)) and the refractive index of glass (\(n \approx 1.47\)), light travels through fiber optic strands at approximately \(2 \times 10^8\,\text{m/s}\) (\(\approx 5\,\mu\text{s}\) per kilometer).</li>
+      <li><strong>Transmission Delay (\(T_{\text{trans}}\)):</strong> The time required for a network interface card to push all packet bits onto the wire. Determined strictly by packet size \(B\) and link bandwidth \(R\):
+        \[T_{\text{trans}} = \frac{B}{R}\]
+      </li>
+    </ul>
+
+    <h3 id="processing-serialization">2.2 Processing and Memory Delays</h3>
+    <ul>
+      <li><strong>Processing Delay (\(T_{\text{proc}}\)):</strong> The CPU time required to inspect headers, check error-correcting codes, execute business logic, or deserialize data buffers.</li>
+      <li><strong>Memory Hierarchy Access:</strong> Instruction execution is bounded by cache access latency. While L1 cache lookups complete in \(\approx 1\,\text{ns}\), main memory (DRAM) accesses require \(50\text{--}100\,\text{ns}\), and disk/network reads require milliseconds.</li>
+    </ul>
+
+    <h3 id="queuing-delays">2.3 Queuing Delays</h3>
+    <p><strong>Queuing Delay (\(T_{\text{queue}}\)):</strong> The time a job spends waiting in buffers or scheduler queues before an idle execution worker begins servicing it. While propagation, transmission, and processing times are relatively deterministic for a given payload size, queuing delay is highly variable and depends on resource contention and arrival distribution.</p>
+
+    <h2 id="mathematical-models">3. Mathematical Models and Queuing Dynamics</h2>
+    <p>Queuing theory establishes formal mathematical bounds governing how latency escalates under increasing operational load.</p>
+
+    <h3 id="littles-law">3.1 Little's Law and Capacity Bounds</h3>
+    <p>John D. C. Little proved in 1961 that for any stable queuing system, the long-term average number of concurrent items inside the system \(L\) equals the arrival rate (throughput) \(\lambda\) multiplied by the average time \(W\) an item spends in the system <span class="cite">[<a href="#ref-3">3</a>]</span>:</p>
+    \[L = \lambda W \quad \implies \quad W = \frac{L}{\lambda}\]
+    <p>Little's Law demonstrates that average latency \(W\) cannot be reduced without either reducing concurrency \(L\) (limiting in-flight work) or increasing processing rate \(\lambda\).</p>
+
+    <h3 id="kingmans-formula">3.2 Kingman's Heavy Traffic Approximation</h3>
+    <p>In single-server queuing systems (\(G/G/1\)), J. F. C. Kingman (1961) proved that average waiting time \(W_q\) diverges non-linearly as system utilization \(\rho\) approaches 100% (\(\rho \to 1\)) <span class="cite">[<a href="#ref-4">4</a>]</span>:</p>
+    \[W_q \approx \left( \frac{\rho}{1 - \rho} \right) \left( \frac{c_a^2 + c_s^2}{2} \right) \tau\]
+    <p>where \(\rho = \lambda \tau\) is utilization, \(\tau\) is mean service time, \(c_a\) is the coefficient of variation of arrivals, and \(c_s\) is the coefficient of variation of service times.</p>
+    <p>As utilization climbs past 80%, the term \(\frac{\rho}{1 - \rho}\) escalates rapidly. Running hardware or agent pipelines near 100% capacity guarantees queuing collapse and severe latency spikes.</p>
+
+    <h2 id="tail-latency">4. Tail Latency and Percentile Distributions</h2>
+    <p>In production environments, mean (average) latency obscures user experience because distribution tails follow heavy-tailed or multi-modal patterns. Systems performance engineers evaluate latency via percentiles:</p>
+    <ul>
+      <li><strong>p50 (Median):</strong> The latency experienced by the 50th percentile of requests.</li>
+      <li><strong>p95 / p99:</strong> The latency threshold that 95% or 99% of requests beat, exposing queue contention and garbage collection pauses.</li>
+      <li><strong>p99.9 / Maximum:</strong> The extreme tail, driven by server timeouts, thread pool starvation, or packet retransmission.</li>
+    </ul>
+
+    <h3 id="tail-amplification">4.1 The Amplification of Tail Latency at Scale</h3>
+    <p>In modern microservice and distributed retrieval architectures, a single user request fans out to \(M\) distinct backend workers (such as database shards or vector search partitions). In their landmark paper <em>The Tail at Scale</em> (2013), Jeffrey Dean and Luiz André Barroso demonstrated that overall user latency is determined by the slowest responding shard <span class="cite">[<a href="#ref-5">5</a>]</span>:</p>
+    \[P(\text{user request encounters } 99\text{th percentile tail}) = 1 - (1 - 0.01)^M\]
+
+    <table>
+      <thead>
+        <tr>
+          <th>Fan-Out Degree (\(M\))</th>
+          <th>Fraction of User Requests Delayed by 99th Percentile Tail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>1.0%</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>9.6%</td>
+        </tr>
+        <tr>
+          <td>100</td>
+          <td>63.4%</td>
+        </tr>
+        <tr>
+          <td>1,000</td>
+          <td>99.99%</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>When a request queries 1,000 servers in parallel, virtually 100% of user interactions will experience the slowest server's 99th percentile delay.</p>
+
+    <h3 id="tail-tolerant-architectures">4.2 Tail-Tolerant Architectural Techniques</h3>
+    <p>Dean and Barroso outlined techniques to tame tail latency in distributed architectures:</p>
+    <ul>
+      <li><strong>Hedged Requests:</strong> The client dispatches a request to one replica; if no response is received by the 95th percentile expected latency, a duplicate request is sent to a second replica. The client uses whichever response arrives first and cancels the other.</li>
+      <li><strong>Tied Requests:</strong> The client enqueues identical requests on two replicas simultaneously. When one server begins execution, it notifies the second server to cancel its duplicate work.</li>
+      <li><strong>Micro-Partitioning:</strong> Dividing work into granular task chunks to avoid head-of-line blocking on uneven workloads.</li>
+    </ul>
+
+    <h2 id="ml-inference">5. Latency in Machine Learning and LLM Serving</h2>
+    <p>In large language model serving, latency divides into two distinct operational phases <span class="cite">[<a href="#ref-7">7</a>]</span>:</p>
+    <ul>
+      <li><strong><a href="/reference/time-to-first-token/">Time to First Token (TTFT)</a>:</strong> The latency required to ingest the input prompt and run the initial matrix multiplications (the prefill phase). Bound primarily by compute and memory bandwidth across total prompt length.</li>
+      <li><strong>Inter-Token Latency (ITL) / Time Per Output Token (TPOT):</strong> The elapsed time to emit each subsequent token (the decode phase). Because autoregressive decoding emits one token at a time, each step requires reloading model weights from High Bandwidth Memory (HBM), making ITL memory-bandwidth bound.</li>
+    </ul>
+    <p>Techniques like continuous batching, chunked prefill, and speculative decoding specifically balance the trade-off between maximizing server throughput and minimizing per-user generation latency.</p>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/throughput/">Throughput</a> &middot; Volumetric capacity, Little's Law, and load saturation curves.</li>
+        <li><a href="/reference/time-to-first-token/">Time to First Token</a> &middot; Prefill latency metrics in generative model inference.</li>
+        <li><a href="/reference/continuous-batching/">Continuous Batching</a> &middot; Dynamic iteration-level scheduling balancing throughput and queuing latency.</li>
+        <li><a href="/reference/parallelism/">Parallelism (Computing)</a> &middot; Physical simultaneity and hardware acceleration models.</li>
+        <li><a href="/reference/concurrency/">Concurrency (Computer Science)</a> &middot; Managing overlapping task executions and asynchronous event handling.</li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a> &middot; Prefill and decode phase serving dynamics.</li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> D. A. Patterson and J. L. Hennessy, <em>Computer Organization and Design: The Hardware/Software Interface</em>, 6th ed., Morgan Kaufmann, 2020. Ch. 1: "Computer Abstractions and Technology."</li>
+        <li id="ref-2"><a class="backlink" href="#structural-components">&uarr;</a> J. F. Kurose and K. W. Ross, <em>Computer Networking: A Top-Down Approach</em>, 8th ed., Pearson, 2021. Ch. 1: "Delay, Loss, and Throughput in Packet-Switched Networks."</li>
+        <li id="ref-3"><a class="backlink" href="#littles-law">&uarr;</a> J. D. C. Little, "A Proof for the Queuing Formula: \(L = \lambda W\)," <em>Operations Research</em>, vol. 9, no. 3, 1961, pp. 383&ndash;387.</li>
+        <li id="ref-4"><a class="backlink" href="#kingmans-formula">&uarr;</a> J. F. C. Kingman, "The Single Server Queue in Heavy Traffic," <em>Mathematical Proceedings of the Cambridge Philosophical Society</em>, vol. 57, no. 4, 1961, pp. 902&ndash;904.</li>
+        <li id="ref-5"><a class="backlink" href="#tail-amplification">&uarr;</a> J. Dean and L. A. Barroso, "The Tail at Scale," <em>Communications of the ACM</em>, vol. 56, no. 2, 2013, pp. 74&ndash;80. Free full text: <a href="https://cacm.acm.org/practice/the-tail-at-scale/">https://cacm.acm.org/practice/the-tail-at-scale/</a></li>
+        <li id="ref-6"><a class="backlink" href="#tail-latency">&uarr;</a> B. Gregg, <em>Systems Performance: Enterprise and the Cloud</em>, 2nd ed., Addison-Wesley, 2020. Ch. 2: "Methodologies and Concepts."</li>
+        <li id="ref-7"><a class="backlink" href="#ml-inference">&uarr;</a> W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention," in <em>Proceedings of the 29th ACM Symposium on Operating Systems Principles (SOSP)</em>, 2023, pp. 611&ndash;626.</li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
