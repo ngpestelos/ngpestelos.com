@@ -111,7 +111,7 @@ def render(slug: str, title: str, body_html: str, desc: str, css_ver: str,
         },
         separators=(",", ":"),
         ensure_ascii=False,
-    )
+    ).replace("</", "<\\/")  # never let a value close the script element
     desc_esc = html.escape(desc, quote=True)
     tab_esc = html.escape(tab_title)
     h1_esc = html.escape(headline)

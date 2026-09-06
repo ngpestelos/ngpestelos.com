@@ -439,6 +439,14 @@ class WritingFromFirstPrinciplesTests(unittest.TestCase):
         html = (REF / "first-principles" / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="/writing-from-first-principles/"', html)
 
+    def test_build_render_escapes_script_close(self):
+        import wffp_build
+
+        out = wffp_build.render("reader", "A </script><b>", "<p>x</p>", "d </script>", "v", None, None)
+        ld = re.search(r'<script type="application/ld\+json">(.*?)</script>', out, re.S).group(1)
+        self.assertNotIn("</", ld)
+        self.assertEqual(json.loads(ld)["headline"], "A </script><b>")
+
 
 if __name__ == "__main__":
     unittest.main()
