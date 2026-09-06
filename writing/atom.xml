@@ -4,10 +4,17 @@
   <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
   <link href="https://ngpestelos.com/writing/"/>
   <id>https://ngpestelos.com/writing/</id>
-  <updated>2026-09-04T01:55:09Z</updated>
+  <updated>2026-09-06T11:27:53Z</updated>
   <author>
     <name>Nestor G Pestelos Jr</name>
   </author>
+  <entry>
+    <id>https://ngpestelos.com/writing/reading-aloud-is-pointing-and-calling-for-your-brain/</id>
+    <title>Reading Aloud Is Pointing and Calling for Your Brain</title>
+    <summary>When dense text stops flowing, reading aloud acts like railway pointing-and-calling. It sets a physical speed ceiling, keeps the sound of early clauses available while the eyes finish the sentence…</summary>
+    <updated>2026-09-06T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/reading-aloud-is-pointing-and-calling-for-your-brain/"/>
+  </entry>
   <entry>
     <id>https://ngpestelos.com/writing/adversarial-review-prompt-claude-code-codex/</id>
     <title>An Adversarial Review Prompt for Claude Code and Codex</title>
