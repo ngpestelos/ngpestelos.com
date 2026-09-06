@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test-Time Compute &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Test-time compute is the allocation of computational resources during inference to generate, evaluate, and refine reasoning steps before outputting a final answer. Scaling laws, search strategies, process reward models, and systems trade-offs.">
+  <meta property="og:title" content="Test-Time Compute &middot; Reference">
+  <meta property="og:description" content="Scaling inference computation via search, verification, process supervision, and extended reasoning traces.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/test-time-compute/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/test-time-compute/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Test-Time Compute","description":"Test-time compute is the computational resources allocated during inference to generate, evaluate, and refine intermediate reasoning steps prior to emitting a final response.","url":"https://ngpestelos.com/reference/test-time-compute/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.5rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <div class="kicker">Reference Entry</div>
+    <h1>Test-Time Compute</h1>
+    <p class="updated">Reference entry &middot; last updated September 7, 2026</p>
+
+    <p class="lede"><strong>Test-time compute</strong> (also termed inference-time compute or test-time computation) is the computational resource allocated to a machine learning model during inference to generate, evaluate, and refine reasoning steps before outputting a final answer. While historical neural network scaling laws focused primarily on pre-training compute (model parameters and training tokens), test-time compute scaling establishes that dedicating additional floating-point operations (FLOPs) during inference systematically improves performance on multi-step reasoning, mathematical proof, code synthesis, and planning tasks.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#core-concept">Core Concept and Paradigm Shift</a></li>
+        <li><a href="#mechanisms">Primary Mechanisms</a>
+          <ol>
+            <li><a href="#search-and-verification">Search and Verification</a></li>
+            <li><a href="#extended-reasoning-traces">Extended Internal Reasoning Traces</a></li>
+          </ol>
+        </li>
+        <li><a href="#compute-optimal-scaling">Compute-Optimal Scaling Laws</a></li>
+        <li><a href="#supervision-architectures">Process Supervision and Step-Level Verification</a></li>
+        <li><a href="#systems-and-economics">Systems Engineering and Economic Trade-offs</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="core-concept">1. Core Concept and Paradigm Shift</h2>
+    <p>In standard autoregressive language model serving, inference cost per query is roughly constant for a given output length. Generating each token requires a single forward pass through the network parameters \(P\), costing approximately \(2P\) FLOPs per token. Under this setup, the model operates as a fast, intuitive system (often analogized to System-1 cognition), relying entirely on representations internalized during pre-training and post-training.</p>
+    <p>Early scaling laws (such as Kaplan et al. and Chinchilla) quantified performance gains achieved by expanding parameter counts \(N\) and pre-training dataset size \(D\). However, pre-training compute faces rising capital costs, hardware limits, and data exhaustion. Test-time compute provides an orthogonal scaling axis: trading runtime latency and operational expenditure for accuracy on difficult tasks without modifying the base model weights.</p>
+    <p>This development aligns with Richard Sutton's historical observation in <em>The Bitter Lesson</em>: general methods that leverage computation through search and learning consistently outperform hand-crafted heuristics as compute availability increases <span class="cite">[<a href="#ref-8">8</a>]</span>. Test-time compute implements the search half of this principle within language model inference.</p>
+
+    <h2 id="mechanisms">2. Primary Mechanisms</h2>
+    <p>Test-time compute is operationalized through two complementary architectures: external algorithmic search and internal sequential token generation.</p>
+
+    <h3 id="search-and-verification">2.1 Search and Verification</h3>
+    <p>External search wraps a frozen base model with an orchestration loop and one or more evaluators:</p>
+    <ul>
+      <li><strong>Parallel Sampling (Best-of-\(N\)):</strong> The system samples \(N\) independent candidate trajectories from the model at non-zero temperature (\(\tau > 0\)). A verifier model, outcome reward model (ORM), or external execution sandbox evaluates each output, selecting the candidate with the highest predicted correctness score.</li>
+      <li><strong>Self-Consistency (Majority Voting):</strong> Introduced by Wang et al., the model generates multiple reasoning paths; the final answer is selected by marginal majority vote across candidate outputs, filtering out individual calculation errors <span class="cite">[<a href="#ref-5">5</a>]</span>.</li>
+      <li><strong>Tree Search (ToT and MCTS):</strong> Systems such as Tree of Thoughts (Yao et al.) structure reasoning as a tree of deliberate semantic steps <span class="cite">[<a href="#ref-6">6</a>]</span>. The generator proposes candidate actions at each node, while an evaluator scores step promise. Algorithms such as beam search or Monte Carlo Tree Search explore high-value branches and backtrack from dead ends.</li>
+    </ul>
+
+    <h3 id="extended-reasoning-traces">2.2 Extended Internal Reasoning Traces</h3>
+    <p>Rather than requiring an external search harness, models can be trained through large-scale reinforcement learning to perform deliberative reasoning entirely within their autoregressive token stream (often termed "thinking tokens"). OpenAI demonstrated this paradigm with the o1 and o3 models <span class="cite">[<a href="#ref-2">2</a>]</span>, and DeepSeek detailed open weights implementations with DeepSeek-R1 <span class="cite">[<a href="#ref-3">3</a>]</span>.</p>
+    <p>During training with rule-based or model-based verification, models incentivize behavior such as self-correction, double-checking arithmetic steps, evaluating alternative problem decompositions, and discarding unpromising intermediate hypotheses. These intermediate reasoning traces are generated prior to producing the final user-facing answer.</p>
+
+    <div class="diagram-box">
+[Standard Inference]
+Prompt &rarr; [Single Forward Pass per Token] &rarr; Direct Response
+
+[Test-Time Compute: External Search]
+Prompt &rarr; [Parallel Branches / Tree Search] &rarr; [Verifier / PRM Scoring] &rarr; Selected Best Response
+
+[Test-Time Compute: Internal Reasoning Tokens]
+Prompt &rarr; [Extended Chain-of-Thought / Backtracking] &rarr; [Self-Verification] &rarr; Final Answer
+    </div>
+
+    <h2 id="compute-optimal-scaling">3. Compute-Optimal Scaling Laws</h2>
+    <p>Snell et al. (2024) formalized the trade-off between test-time compute and pre-training compute, demonstrating that test-time computation can often substitute for orders of magnitude more parameters on complex reasoning tasks <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>For an input problem \(x\), total test-time compute \(C_{\text{test}}\) allocated across \(K\) candidate reasoning paths of average length \(L\) generated by a model of parameter count \(P\) satisfies:</p>
+    \[C_{\text{test}} \approx 2 \cdot P \cdot \sum_{k=1}^{K} L_k\]
+    <p>Snell et al. identified two critical scaling properties:</p>
+    <ul>
+      <li><strong>Task Difficulty Dependency:</strong> On straightforward questions, allocating additional test-time compute yields rapid saturation with negligible accuracy gains. On challenging problems (such as competition mathematics or formal logic), accuracy scales smoothly as a power law of the allocated test-time compute.</li>
+      <li><strong>Optimal Strategy Selection:</strong> Given a fixed compute budget, the optimal allocation strategy changes depending on problem hardness. For intermediate-difficulty questions, search against a learned verifier outperforms repeated revision; for open-ended or hard problems, adaptive revision and search work best in combination.</li>
+    </ul>
+
+    <h2 id="supervision-architectures">4. Process Supervision and Step-Level Verification</h2>
+    <p>The success of test-time search depends on the reliability of the verifier. Early approaches relied on Outcome Reward Models (ORMs), which assign a scalar score to a completed solution: \(r(x, y) \in [0, 1]\). However, ORMs suffer from false positives, where an incorrect reasoning path accidentally arrives at the right numerical result, inducing reward hacking during search.</p>
+    <p>Lightman et al. (2023) established that <em>Process Supervision</em> significantly improves search efficacy <span class="cite">[<a href="#ref-4">4</a>]</span>. A Process Reward Model (PRM) evaluates the logical validity of each individual step \(t\) in a reasoning chain:</p>
+    \[r_t = P(\text{step } t \text{ is correct} \mid x, s_{1:t-1})\]
+    <p>By providing localized feedback, PRMs enable fine-grained credit assignment. Search algorithms can prune an unpromising branch immediately upon an invalid deduction rather than generating hundreds of downstream tokens before evaluating the final answer.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Dimension</th>
+          <th>Outcome Supervision (ORM)</th>
+          <th>Process Supervision (PRM)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Evaluation Target</td>
+          <td>Full solution output</td>
+          <td>Individual reasoning step</td>
+        </tr>
+        <tr>
+          <td>Credit Assignment</td>
+          <td>Global (sparse)</td>
+          <td>Local (dense)</td>
+        </tr>
+        <tr>
+          <td>Vulnerability to Reward Hacking</td>
+          <td>High (false positives)</td>
+          <td>Low (verifies logical steps)</td>
+        </tr>
+        <tr>
+          <td>Search Utility</td>
+          <td>Rejection sampling / Best-of-\(N\)</td>
+          <td>Tree search / Early pruning</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="systems-and-economics">5. Systems Engineering and Economic Trade-offs</h2>
+    <p>Deploying test-time compute introduces structural systems and economic trade-offs in model serving infrastructure:</p>
+    <ul>
+      <li><strong>Latency vs. Accuracy:</strong> Sequential reasoning tokens increase time-to-first-token (TTFT) and total generation latency. While parallel Best-of-\(N\) sampling can scale horizontally across parallel GPUs, sequential autoregressive reasoning is bound by memory bandwidth and single-stream decode speed.</li>
+      <li><strong>Memory and KV Cache Footprint:</strong> Generating thousands of intermediate thinking tokens consumes substantial Key-Value (KV) cache memory, reducing server concurrency and batch sizes. Techniques like prompt caching and discarding thinking tokens from session history mitigate storage overhead.</li>
+      <li><strong>Controllable Inference Budgets:</strong> Modern APIs expose adjustable reasoning effort parameters (such as low, medium, and high budgets), allowing applications to match inference expenditure to problem difficulty.</li>
+      <li><strong>The Risk of Overthinking:</strong> Allocating excessive compute to simple tasks can lead to performance degradation, where models second-guess correct deductions or enter repetitive verification cycles.</li>
+    </ul>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/reasoning/">Reasoning in Large Language Models</a> &middot; Theoretical foundations, Chain-of-Thought formalisms, and evaluation benchmarks.</li>
+        <li><a href="/reference/tokens/">Tokens and Tokenization</a> &middot; Token structures, pricing mechanics, and hidden thinking tokens.</li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a> &middot; Prefill and decode phases, memory bandwidth, and serving dynamics.</li>
+        <li><a href="/reference/frontier-models/">Frontier Models</a> &middot; Architecture paradigms, capabilities, and frontier scaling vectors.</li>
+        <li><a href="/reference/reinforcement-learning/">Reinforcement Learning</a> &middot; Policy optimization, reward modeling, and post-training alignment.</li>
+        <li><a href="/reference/throughput/">Throughput</a> &middot; Serving capacity, Little's Law, and inference queue management.</li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#compute-optimal-scaling">&uarr;</a> C. Snell, J. Lee, K. Xu, and A. Kumar, "Scaling LLM Test-Time Compute Optimally can be More Effective than Scaling Model Parameters," <em>arXiv preprint arXiv:2408.03314</em>, 2024. Free full text: <a href="https://arxiv.org/abs/2408.03314">https://arxiv.org/abs/2408.03314</a></li>
+        <li id="ref-2"><a class="backlink" href="#extended-reasoning-traces">&uarr;</a> OpenAI, "Learning to Reason with LLMs," <em>OpenAI Research Blog</em>, September 12, 2024. Free full text: <a href="https://openai.com/index/learning-to-reason-with-llms/">https://openai.com/index/learning-to-reason-with-llms/</a></li>
+        <li id="ref-3"><a class="backlink" href="#extended-reasoning-traces">&uarr;</a> DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning," <em>arXiv preprint arXiv:2501.12948</em>, 2025. Free full text: <a href="https://arxiv.org/abs/2501.12948">https://arxiv.org/abs/2501.12948</a></li>
+        <li id="ref-4"><a class="backlink" href="#supervision-architectures">&uarr;</a> H. Lightman, V. Kosaraju, Y. Burda, H. Edwards, B. Baker, T. Lee, J. Leike, J. Schulman, I. Sutskever, and K. Cobbe, "Let's Verify Step by Step," <em>arXiv preprint arXiv:2305.20050</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2305.20050">https://arxiv.org/abs/2305.20050</a></li>
+        <li id="ref-5"><a class="backlink" href="#search-and-verification">&uarr;</a> X. Wang, J. Wei, D. Schuurmans, Q. Le, E. Chi, S. Narang, A. Chowdhery, and D. Zhou, "Self-Consistency Improves Chain of Thought Reasoning in Language Models," in <em>International Conference on Learning Representations (ICLR)</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2203.11171">https://arxiv.org/abs/2203.11171</a></li>
+        <li id="ref-6"><a class="backlink" href="#search-and-verification">&uarr;</a> S. Yao, D. Yu, J. Zhao, I. Shafran, T. L. Griffiths, Y. Cao, and K. Narasimhan, "Tree of Thoughts: Deliberate Problem Solving with Large Language Models," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2305.10601">https://arxiv.org/abs/2305.10601</a></li>
+        <li id="ref-7"><a class="backlink" href="#core-concept">&uarr;</a> J. Wei, X. Wang, D. Schuurmans, M. Bosma, B. Ichter, F. Xia, E. Chi, Q. Le, and D. Zhou, "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 2022. Free full text: <a href="https://arxiv.org/abs/2201.11903">https://arxiv.org/abs/2201.11903</a></li>
+        <li id="ref-8"><a class="backlink" href="#core-concept">&uarr;</a> R. Sutton, "The Bitter Lesson," <em>Incomplete Ideas</em>, March 13, 2019.</li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

@@ -222,7 +222,7 @@
     </ul>
 
     <h2 id="test-time-compute">3. Test-Time Compute Scaling Laws</h2>
-    <p>Historically, language model performance scaled with pre-training compute (model parameters \(N\) and training tokens \(D\)). In 2024, frontier research established a parallel scaling law: <em>test-time compute scaling</em> <span class="cite">[<a href="#ref-5">5</a>]</span>. Performance on complex mathematics, competitive programming, and formal logic improves as a power law of the inference compute allocated to generating and verifying intermediate thinking tokens:</p>
+    <p>Historically, language model performance scaled with pre-training compute (model parameters \(N\) and training tokens \(D\)). In 2024, frontier research established a parallel scaling law: <em><a href="/reference/test-time-compute/">test-time compute scaling</a></em> <span class="cite">[<a href="#ref-5">5</a>]</span>. Performance on complex mathematics, competitive programming, and formal logic improves as a power law of the inference compute allocated to generating and verifying intermediate thinking tokens:</p>
     $$\text{Accuracy} \propto (\text{Inference Compute})^{\gamma}$$
     <p>Reasoning models (such as OpenAI o1/o3 and DeepSeek-R1) leverage this principle by generating long, internal "chains of thought" (often thousands of tokens) prior to delivering the final user-facing response <span class="cite">[<a href="#ref-6">6</a>]</span>. During this internal generation, models evaluate sub-problems, test counterexamples, catch early errors, and rewrite failed proofs.</p>
 
@@ -253,6 +253,7 @@
     <section class="see-also" id="see-also">
       <h2>See also</h2>
       <ul>
+        <li><a href="/reference/test-time-compute/">Test-Time Compute</a> &middot; Scaling inference computation via search, verification, and extended reasoning tokens.</li>
         <li><a href="/eli5/reasoning/">ELI5: Reasoning</a> &middot; Visual picture-book explainer of System 1 intuition vs. System 2 scratchpads.</li>
         <li><a href="/reference/prompt-engineering/">Prompt Engineering</a> &middot; Chain-of-Thought prompting and in-context task scaffolding.</li>
         <li><a href="/reference/fine-tuning/">Fine-Tuning and Alignment</a> &middot; RLHF, DPO, and reinforcement learning training procedures.</li>
