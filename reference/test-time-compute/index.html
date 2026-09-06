@@ -213,7 +213,7 @@
     <nav class="toc" aria-label="Table of contents">
       <h2>Contents</h2>
       <ol>
-        <li><a href="#core-concept">Core Concept and Paradigm Shift</a></li>
+        <li><a href="#first-principles">First Principles: Search vs. Pre-Training Scaling</a></li>
         <li><a href="#mechanisms">Primary Mechanisms</a>
           <ol>
             <li><a href="#search-and-verification">Search and Verification</a></li>
@@ -228,7 +228,7 @@
       </ol>
     </nav>
 
-    <h2 id="core-concept">1. Core Concept and Paradigm Shift</h2>
+    <h2 id="first-principles">1. First Principles: Search vs. Pre-Training Scaling</h2>
     <p>In standard autoregressive language model serving, inference cost per query is roughly constant for a given output length. Generating each token requires a single forward pass through the network parameters \(P\), costing approximately \(2P\) FLOPs per token. Under this setup, the model operates as a fast, intuitive system (often analogized to System-1 cognition), relying entirely on representations internalized during pre-training and post-training.</p>
     <p>Early scaling laws (such as Kaplan et al. and Chinchilla) quantified performance gains achieved by expanding parameter counts \(N\) and pre-training dataset size \(D\). However, pre-training compute faces rising capital costs, hardware limits, and data exhaustion. Test-time compute provides an orthogonal scaling axis: trading runtime latency and operational expenditure for accuracy on difficult tasks without modifying the base model weights.</p>
     <p>This development aligns with Richard Sutton's historical observation in <em>The Bitter Lesson</em>: general methods that leverage computation through search and learning consistently outperform hand-crafted heuristics as compute availability increases <span class="cite">[<a href="#ref-8">8</a>]</span>. Test-time compute implements the search half of this principle within language model inference.</p>
@@ -337,8 +337,8 @@ Prompt &rarr; [Extended Chain-of-Thought / Backtracking] &rarr; [Self-Verificati
         <li id="ref-4"><a class="backlink" href="#supervision-architectures">&uarr;</a> H. Lightman, V. Kosaraju, Y. Burda, H. Edwards, B. Baker, T. Lee, J. Leike, J. Schulman, I. Sutskever, and K. Cobbe, "Let's Verify Step by Step," <em>arXiv preprint arXiv:2305.20050</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2305.20050">https://arxiv.org/abs/2305.20050</a></li>
         <li id="ref-5"><a class="backlink" href="#search-and-verification">&uarr;</a> X. Wang, J. Wei, D. Schuurmans, Q. Le, E. Chi, S. Narang, A. Chowdhery, and D. Zhou, "Self-Consistency Improves Chain of Thought Reasoning in Language Models," in <em>International Conference on Learning Representations (ICLR)</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2203.11171">https://arxiv.org/abs/2203.11171</a></li>
         <li id="ref-6"><a class="backlink" href="#search-and-verification">&uarr;</a> S. Yao, D. Yu, J. Zhao, I. Shafran, T. L. Griffiths, Y. Cao, and K. Narasimhan, "Tree of Thoughts: Deliberate Problem Solving with Large Language Models," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2305.10601">https://arxiv.org/abs/2305.10601</a></li>
-        <li id="ref-7"><a class="backlink" href="#core-concept">&uarr;</a> J. Wei, X. Wang, D. Schuurmans, M. Bosma, B. Ichter, F. Xia, E. Chi, Q. Le, and D. Zhou, "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 2022. Free full text: <a href="https://arxiv.org/abs/2201.11903">https://arxiv.org/abs/2201.11903</a></li>
-        <li id="ref-8"><a class="backlink" href="#core-concept">&uarr;</a> R. Sutton, "The Bitter Lesson," <em>Incomplete Ideas</em>, March 13, 2019.</li>
+        <li id="ref-7"><a class="backlink" href="#first-principles">&uarr;</a> J. Wei, X. Wang, D. Schuurmans, M. Bosma, B. Ichter, F. Xia, E. Chi, Q. Le, and D. Zhou, "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 2022. Free full text: <a href="https://arxiv.org/abs/2201.11903">https://arxiv.org/abs/2201.11903</a></li>
+        <li id="ref-8"><a class="backlink" href="#first-principles">&uarr;</a> R. Sutton, "The Bitter Lesson," <em>Incomplete Ideas</em>, March 13, 2019.</li>
       </ol>
     </div>
   </main>
