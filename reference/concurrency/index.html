@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concurrency (Computer Science) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Concurrency is the composition and management of independently executing computations whose lifetimes overlap. Formal models, CSP, Actor model, synchronization primitives, race conditions, deadlocks, and multi-agent coordination.">
+  <meta property="og:title" content="Concurrency (Computer Science) &middot; Reference">
+  <meta property="og:description" content="Formal models of concurrent execution, synchronization primitives, deadlock conditions, and coordination in asynchronous systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/concurrency/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/concurrency/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Concurrency (Computer Science)","description":"Concurrency is the composition of independently executing computations whose execution lifetimes overlap in time, regardless of whether they execute simultaneously on separate processors.","url":"https://ngpestelos.com/reference/concurrency/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.5rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <div class="kicker">Reference Entry</div>
+    <h1>Concurrency (Computer Science)</h1>
+    <p class="updated">Reference entry &middot; last updated September 7, 2026</p>
+
+    <p class="lede"><strong>Concurrency</strong> is the composition and management of independently executing computations whose execution lifetimes overlap in time. While parallelism concerns the simultaneous physical execution of tasks on distinct hardware units, concurrency is a structural property of software design that enables a system to make progress on multiple concerns through non-deterministic interleaving, cooperative yielding, or preemptive scheduling. Concurrency enables operating systems, database engines, event-driven web servers, and distributed multi-agent systems to handle asynchronous input/output (I/O), maintain interface responsiveness, and coordinate shared resources.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#structural-nature">The Structural Nature of Concurrency</a></li>
+        <li><a href="#formal-models">Formal Models of Concurrency</a>
+          <ol>
+            <li><a href="#csp">Communicating Sequential Processes (CSP)</a></li>
+            <li><a href="#actor-model">The Actor Model</a></li>
+          </ol>
+        </li>
+        <li><a href="#synchronization-primitives">Synchronization and Coordination Primitives</a>
+          <ol>
+            <li><a href="#shared-memory">Shared Memory, Mutexes, and Semaphores</a></li>
+            <li><a href="#message-passing">Message-Passing and Channels</a></li>
+            <li><a href="#lock-free">Lock-Free and Atomic Primitives</a></li>
+          </ol>
+        </li>
+        <li><a href="#hazards-failure-modes">Classical Hazards and Failure Modes</a>
+          <ol>
+            <li><a href="#race-conditions">Race Conditions and Data Races</a></li>
+            <li><a href="#deadlock-coffman">Deadlock and the Coffman Conditions</a></li>
+            <li><a href="#livelock-starvation">Livelock and Starvation</a></li>
+            <li><a href="#toctou-hazard">Time-of-Check to Time-of-Use (TOCTOU)</a></li>
+          </ol>
+        </li>
+        <li><a href="#multi-agent-systems">Concurrency in Asynchronous Multi-Agent Systems</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="structural-nature">1. The Structural Nature of Concurrency</h2>
+    <p>A system is concurrent if two or more state sequences \(S_1 = (s_{1,1}, s_{1,2}, \dots)\) and \(S_2 = (s_{2,1}, s_{2,2}, \dots)\) make progress across a shared time interval \([t_{\text{start}}, t_{\text{end}}]\), such that the exact order of operation execution is non-deterministic. This non-determinism distinguishes concurrent programming from sequential programming: program correctness cannot assume an invariant total ordering of events.</p>
+    <p>Concurrency can execute on a single CPU core via an event loop or preemptive scheduler that interleaves process time slices. When multiple physical cores are available, a concurrent program may additionally execute in parallel, but concurrency itself remains an architectural separation of concerns rather than a hardware speedup mechanism <span class="cite">[<a href="#ref-5">5</a>]</span>.</p>
+
+    <h2 id="formal-models">2. Formal Models of Concurrency</h2>
+    <p>Computer scientists have formulated algebraic and behavioral models to specify and verify concurrent interactions mathematically.</p>
+
+    <h3 id="csp">2.1 Communicating Sequential Processes (CSP)</h3>
+    <p>Proposed by C. A. R. Hoare in 1978, CSP models concurrent systems as independent sequential processes that interact exclusively by exchanging messages over synchronous, unbuffered channels <span class="cite">[<a href="#ref-2">2</a>]</span>. In CSP, communication is a rendezvous: the sender blocks until the receiver is ready, and the receiver blocks until the sender emits data. CSP forms the theoretical underpinning of the channel primitives in Occam, Limbo, and Go.</p>
+
+    <h3 id="actor-model">2.2 The Actor Model</h3>
+    <p>Formulated by Carl Hewitt, Peter Bishop, and Richard Steiger in 1973, the Actor Model treats the "actor" as the universal primitive of concurrent computation <span class="cite">[<a href="#ref-3">3</a>]</span>. An actor encapsulates private state, a mailbox queue, and a behavior function. In response to an incoming message, an actor can concurrently:</p>
+    <ul>
+      <li>Send a finite number of messages to other actors with known addresses.</li>
+      <li>Create a finite number of new actors.</li>
+      <li>Designate the behavior to be used for the next message it receives.</li>
+    </ul>
+    <p>Unlike CSP's synchronous channels, actors communicate via asynchronous message passing with unbounded mailboxes, eliminating shared mutable memory and providing fault isolation (exemplified by Erlang, Elixir/OTP, and Akka).</p>
+
+    <h2 id="synchronization-primitives">3. Synchronization and Coordination Primitives</h2>
+    <p>Concurrent execution requires coordination mechanisms to maintain data invariants across overlapping computations.</p>
+
+    <h3 id="shared-memory">3.1 Shared Memory, Mutexes, and Semaphores</h3>
+    <p>In shared-memory environments, multiple threads share a single address space. Edsger W. Dijkstra introduced the semaphore in 1965 as an integer variable \(S\) accessed only through two atomic operations: \(P(S)\) (wait / decrement) and \(V(S)\) (signal / increment) <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <ul>
+      <li><strong>Binary Semaphore / Mutual Exclusion Lock (Mutex):</strong> Restricts access to a critical section of code to exactly one executing thread at a time.</li>
+      <li><strong>Counting Semaphore:</strong> Regulates access to a finite pool of identical resources.</li>
+      <li><strong>Condition Variables and Monitors:</strong> Pair a mutex with a wait queue, allowing threads to suspend execution until a specific predicate condition is signaled by another thread.</li>
+    </ul>
+
+    <h3 id="message-passing">3.2 Message-Passing and Channels</h3>
+    <p>Message-passing avoids shared state by transferring ownership of data across communication queues. Channels can be unbuffered (synchronous handoff) or buffered (asynchronous FIFO queue with capacity \(C\)). Message-passing aligns with the design principle: <em>"Do not communicate by sharing memory; instead, share memory by communicating."</em></p>
+
+    <h3 id="lock-free">3.3 Lock-Free and Atomic Primitives</h3>
+    <p>Locks introduce overhead, priority inversion, and potential deadlock. Lock-free data structures rely on hardware-supported atomic read-modify-write instructions, predominantly Compare-and-Swap (CAS) <span class="cite">[<a href="#ref-6">6</a>]</span>:</p>
+    \[\text{CAS}(\text{address}, \text{expected}, \text{new}) \to \text{boolean}\]
+    <p>A CAS operation atomically compares the contents of a memory location to an expected value; only if they are equal does it update the location to the new value. If another thread modified the location concurrently, the operation fails cleanly, allowing the calling algorithm to retry.</p>
+
+    <h2 id="hazards-failure-modes">4. Classical Hazards and Failure Modes</h2>
+    <p>The non-deterministic interleaving of concurrent tasks introduces several fundamental classes of runtime bugs:</p>
+
+    <h3 id="race-conditions">4.1 Race Conditions and Data Races</h3>
+    <p>A <strong>data race</strong> occurs when two concurrent threads access the same memory location simultaneously, at least one access is a write, and no synchronization (mutex or memory barrier) orders the accesses. A <strong>race condition</strong> is a higher-level algorithmic flaw where the correctness of a program depends on the relative timing or interleaving of external events.</p>
+
+    <h3 id="deadlock-coffman">4.2 Deadlock and the Coffman Conditions</h3>
+    <p>A deadlock occurs when a set of concurrent processes are permanently blocked because each process holds a resource that another process needs, and neither can proceed. In 1971, Edward G. Coffman Jr., Michael J. Elphick, and Arie Shoshani proved that a deadlock can arise if and only if four necessary and sufficient conditions hold simultaneously <span class="cite">[<a href="#ref-4">4</a>]</span>:</p>
+    <ol>
+      <li><strong>Mutual Exclusion:</strong> At least one resource must be held in a non-shareable mode (only one process can use it at a time).</li>
+      <li><strong>Hold and Wait:</strong> A process must currently hold at least one resource while waiting to acquire additional resources held by other processes.</li>
+      <li><strong>No Preemption:</strong> Resources cannot be forcibly confiscated from a process; they can only be released voluntarily after the holding process completes its task.</li>
+      <li><strong>Circular Wait:</strong> A closed chain of processes \(\{P_0, P_1, \dots, P_n\}\) exists such that \(P_0\) is waiting for a resource held by \(P_1\), \(P_1\) is waiting for \(P_2\), and \(P_n\) is waiting for \(P_0\).</li>
+    </ol>
+    <p>Preventing deadlock requires mathematically eliminating at least one of these four conditions (e.g. establishing a global lock acquisition hierarchy to prevent circular wait).</p>
+
+    <h3 id="livelock-starvation">4.3 Livelock and Starvation</h3>
+    <ul>
+      <li><strong>Livelock:</strong> Processes continuously change their state in response to each other without making functional forward progress (analogous to two polite people attempting to step around each other in a hallway and continually mirroring each other's steps).</li>
+      <li><strong>Starvation:</strong> A runnable process is perpetually denied access to necessary resources because other higher-priority processes continually preempt it.</li>
+    </ul>
+
+    <h3 id="toctou-hazard">4.4 Time-of-Check to Time-of-Use (TOCTOU)</h3>
+    <p>A TOCTOU flaw occurs when a system inspects a state condition (e.g. checking file access permissions or balance availability) and subsequently acts upon that state, but a concurrent operation modifies the underlying condition in the interval between the check and the use, invalidating the authorization or invariant.</p>
+
+    <h2 id="multi-agent-systems">5. Concurrency in Asynchronous Multi-Agent Systems</h2>
+    <p>In modern artificial intelligence agent architectures, concurrency governs fleet coordination and tool dispatch:</p>
+    <ul>
+      <li><strong>Tool Call Interleaving:</strong> An agent orchestrator launches multiple asynchronous tool requests (web scrapes, sandbox code executions, database queries) concurrently. Result streams must be safely aggregated and sequenced into the model's context window.</li>
+      <li><strong>State Contention across Subagents:</strong> When multiple autonomous subagents operate concurrently on a shared repository or knowledge graph, uncoordinated file edits produce race conditions and merge conflicts. Architectural patterns like dedicated worktree isolation, branching pipelines, and immutable append-only logs prevent destructive concurrency hazards.</li>
+      <li><strong>Deadlock in Agent Handoffs:</strong> Two autonomous agents waiting mutually for outputs or authorization handoffs can form a circular dependency, replicating classic distributed deadlocks at the cognitive orchestration level.</li>
+    </ul>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/parallelism/">Parallelism (Computing)</a> &middot; Physical simultaneity, Flynn's taxonomy, and hardware scaling bounds.</li>
+        <li><a href="/reference/toctou-race-condition/">TOCTOU Race Condition</a> &middot; Concurrency vulnerabilities caused by un-atomic check and execution windows.</li>
+        <li><a href="/reference/throughput/">Throughput</a> &middot; System capacity, Little's Law, and concurrency-latency trade-offs.</li>
+        <li><a href="/reference/amdahls-law/">Amdahl's Law for Parallel AI Agents</a> &middot; Speedup limits imposed by strictly serial coordination bottlenecks.</li>
+        <li><a href="/reference/gustafsons-law/">Gustafson's Law for Parallel AI Agents</a> &middot; Scaled speedup across distributed agent fleets.</li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#shared-memory">&uarr;</a> E. W. Dijkstra, "Cooperating Sequential Processes," Technological University Eindhoven, 1965. EWD123 transcription: <a href="https://www.cs.utexas.edu/~EWD/transcriptions/EWD01xx/EWD123.html">https://www.cs.utexas.edu/~EWD/transcriptions/EWD01xx/EWD123.html</a></li>
+        <li id="ref-2"><a class="backlink" href="#csp">&uarr;</a> C. A. R. Hoare, "Communicating Sequential Processes," <em>Communications of the ACM</em>, vol. 21, no. 8, 1978, pp. 666&ndash;677.</li>
+        <li id="ref-3"><a class="backlink" href="#actor-model">&uarr;</a> C. Hewitt, P. Bishop, and R. Steiger, "A Universal Modular ACTOR Formalism for Artificial Intelligence," in <em>Proceedings of the 3rd International Joint Conference on Artificial Intelligence (IJCAI)</em>, 1973, pp. 235&ndash;245.</li>
+        <li id="ref-4"><a class="backlink" href="#deadlock-coffman">&uarr;</a> E. G. Coffman, M. J. Elphick, and A. Shoshani, "System Deadlocks," <em>Computing Surveys</em>, vol. 3, no. 2, 1971, pp. 67&ndash;78.</li>
+        <li id="ref-5"><a class="backlink" href="#structural-nature">&uarr;</a> R. Pike, "Concurrency is not Parallelism," Waza conference presentation, Heroku, 2012. Slides: <a href="https://go.dev/talks/2012/waza.slide">https://go.dev/talks/2012/waza.slide</a></li>
+        <li id="ref-6"><a class="backlink" href="#lock-free">&uarr;</a> M. Herlihy and N. Shavit, <em>The Art of Multiprocessor Programming</em>, Revised 1st ed., Morgan Kaufmann, 2012.</li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
