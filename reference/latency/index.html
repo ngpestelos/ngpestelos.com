@@ -340,15 +340,18 @@
     <p>In large language model serving, latency divides into two distinct operational phases <span class="cite">[<a href="#ref-7">7</a>]</span>:</p>
     <ul>
       <li><strong><a href="/reference/time-to-first-token/">Time to First Token (TTFT)</a>:</strong> The latency required to ingest the input prompt and run the initial matrix multiplications (the prefill phase). Bound primarily by compute and memory bandwidth across total prompt length.</li>
-      <li><strong>Inter-Token Latency (ITL) / Time Per Output Token (TPOT):</strong> The elapsed time to emit each subsequent token (the decode phase). Because autoregressive decoding emits one token at a time, each step requires reloading model weights from High Bandwidth Memory (HBM), making ITL memory-bandwidth bound.</li>
+      <li><strong><a href="/reference/time-per-output-token/">Inter-Token Latency (ITL) / Time Per Output Token (TPOT)</a>:</strong> The elapsed time to emit each subsequent token (the decode phase). Because autoregressive decoding emits one token at a time, each step requires reloading model weights from High Bandwidth Memory (HBM), making ITL memory-bandwidth bound.</li>
     </ul>
-    <p>Techniques like continuous batching, chunked prefill, and speculative decoding specifically balance the trade-off between maximizing server throughput and minimizing per-user generation latency.</p>
+    <p>Techniques like <a href="/reference/continuous-batching/">continuous batching</a>, <a href="/reference/chunked-prefill/">chunked prefill</a>, and <a href="/reference/speculative-decoding/">speculative decoding</a> specifically balance the trade-off between maximizing server throughput and minimizing per-user generation latency.</p>
 
     <div id="see-also">
       <h2>See also</h2>
       <ul>
         <li><a href="/reference/throughput/">Throughput</a> &middot; Volumetric capacity, Little's Law, and load saturation curves.</li>
         <li><a href="/reference/time-to-first-token/">Time to First Token</a> &middot; Prefill latency metrics in generative model inference.</li>
+        <li><a href="/reference/time-per-output-token/">Time Per Output Token</a> &middot; Inter-token generation latency and decode memory-bandwidth limits.</li>
+        <li><a href="/reference/chunked-prefill/">Chunked Prefill</a> &middot; Interleaving prompt evaluations to eliminate decode latency spikes.</li>
+        <li><a href="/reference/speculative-decoding/">Speculative Decoding</a> &middot; Parallel draft token verification accelerating generation velocity.</li>
         <li><a href="/reference/continuous-batching/">Continuous Batching</a> &middot; Dynamic iteration-level scheduling balancing throughput and queuing latency.</li>
         <li><a href="/reference/parallelism/">Parallelism (Computing)</a> &middot; Physical simultaneity and hardware acceleration models.</li>
         <li><a href="/reference/concurrency/">Concurrency (Computer Science)</a> &middot; Managing overlapping task executions and asynchronous event handling.</li>

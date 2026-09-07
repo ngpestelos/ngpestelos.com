@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Per Output Token &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Time Per Output Token (TPOT), also known as Inter-Token Latency (ITL), is the duration required to generate each token during autoregressive decode. Memory bandwidth, roofline model, and acceleration.">
+  <meta property="og:title" content="Time Per Output Token &middot; Reference">
+  <meta property="og:description" content="Memory-bandwidth bottlenecks in autoregressive decode, arithmetic intensity, TPOT vs ITL, batch size trade-offs, and acceleration techniques.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/time-per-output-token/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/time-per-output-token/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Time Per Output Token","description":"Time Per Output Token (TPOT), also known as Inter-Token Latency (ITL), is the duration required to generate each individual token during autoregressive language model decoding.","url":"https://ngpestelos.com/reference/time-per-output-token/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.5rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      display: none;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+    .back-to-top:hover {
+      background: var(--line);
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Systems Engineering &middot; Machine Learning</p>
+    <h1>Time Per Output Token</h1>
+    <p class="updated">Reference entry &middot; last updated September 8, 2026</p>
+
+    <p class="lede"><strong>Time Per Output Token (TPOT)</strong>, also measured as <strong>Inter-Token Latency (ITL)</strong>, is the time elapsed between emitting successive tokens during the autoregressive decode phase of a large language model. While <a href="/reference/time-to-first-token/">Time to First Token (TTFT)</a> dictates initial interactive response delay, TPOT governs generation velocity and human-perceived streaming smoothness across multi-token responses.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First Principles: Memory-Bandwidth Bottlenecks in Autoregressive Decode</a></li>
+        <li><a href="#formulations">2. Formulations and Measurement</a>
+          <ol>
+            <li><a href="#tpot-vs-itl">2.1 TPOT vs. Inter-Token Latency</a></li>
+            <li><a href="#latency-composition">2.2 End-to-End Latency Composition</a></li>
+          </ol>
+        </li>
+        <li><a href="#batch-throughput-tradeoff">3. The Batch Size and Throughput Trade-off</a></li>
+        <li><a href="#mitigations">4. Engineering Strategies to Reduce TPOT</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Memory-Bandwidth Bottlenecks in Autoregressive Decode</h2>
+    <p>Autoregressive transformer inference proceeds in two fundamentally distinct execution regimes: prefill and decode <span class="cite">[<a href="#ref-1">1</a>]</span>. The prefill phase evaluates prompt tokens in parallel, achieving high arithmetic intensity (floating-point operations performed per byte of data loaded from memory). In contrast, the decode phase is strictly memory-bandwidth bound.</p>
+    <p>During decoding, each forward pass generates exactly one new token per sequence. To emit that token, the hardware execution units must stream the entire model parameter weight matrix \(P\) from High Bandwidth Memory (HBM) into on-chip static RAM (SRAM) and register files <span class="cite">[<a href="#ref-2">2</a>]</span>. For a model with \(P\) parameters stored in 16-bit precision (2 bytes per parameter), loading weights requires reading \(2P\) bytes. The matrix-vector arithmetic performs approximately \(2P\) floating-point operations (FLOPs). The arithmetic intensity \(I_{\text{decode}}\) for batch size \(B = 1\) is therefore:</p>
+    \[I_{\text{decode}} \approx \frac{2P \text{ FLOPs}}{2P \text{ bytes}} = 1 \text{ FLOP/byte}\]
+    <p>Modern accelerator hardware (such as an NVIDIA H100 GPU) provides approximately 3.35 TB/sec of memory bandwidth and up to 1,979 TFLOPs of FP16 tensor core compute. A processor capable of nearly 2,000 trillion operations per second but limited to 3.35 trillion bytes per second has a hardware balance point above 150 FLOPs/byte <span class="cite">[<a href="#ref-3">3</a>]</span>. At 1 FLOP/byte, the compute units spend over 98% of their cycles idle, waiting for memory controllers to stream weights. TPOT is therefore determined almost entirely by parameter count and memory bandwidth rather than peak arithmetic capability.</p>
+
+    <h2 id="formulations">2. Formulations and Measurement</h2>
+    <h3 id="tpot-vs-itl">2.1 TPOT vs. Inter-Token Latency</h3>
+    <p>In systems benchmarks, <strong>Time Per Output Token (TPOT)</strong> is defined as the mean duration spent per output token over the entire generation sequence:</p>
+    \[\text{TPOT} = \frac{T_{\text{total}} - \text{TTFT}}{N_{\text{out}} - 1}\]
+    <p>where \(T_{\text{total}}\) is total elapsed request latency, \(\text{TTFT}\) is time to first token, and \(N_{\text{out}}\) is the total count of emitted tokens. TPOT is often inverted to describe single-stream generation throughput:</p>
+    \[\text{Tokens Per Second (TPS)} = \frac{1}{\text{TPOT}}\]
+    <p>While TPOT measures sequence-wide averages, <strong>Inter-Token Latency (ITL)</strong> evaluates instantaneous delay between consecutive individual tokens \(t_k\) and \(t_{k-1}\):</p>
+    \[\text{ITL}_k = \tau(t_k) - \tau(t_{k-1})\]
+    <p>Per-token ITL exposes latency jitter caused by iteration-level scheduling, memory paging, and prefill interference. High-percentile ITL (P90, P99) reflects pauses or hitching that degrade human reading experience, even when average TPOT appears satisfactory.</p>
+
+    <h3 id="latency-composition">2.2 End-to-End Latency Composition</h3>
+    <p>Total request response duration decomposes cleanly into prefill latency and cumulative decode latency:</p>
+    \[T_{\text{total}} = \text{TTFT} + \sum_{k=2}^{N_{\text{out}}} \text{ITL}_k \approx \text{TTFT} + (N_{\text{out}} - 1) \times \text{TPOT}\]
+    <p>For conversational workloads where output lengths reach hundreds of tokens, cumulative decode time dominates end-to-end response latency.</p>
+
+    <h2 id="batch-throughput-tradeoff">3. The Batch Size and Throughput Trade-off</h2>
+    <p>Serving systems batch multiple concurrent client requests to overcome memory-bandwidth starvation <span class="cite">[<a href="#ref-1">1</a>]</span>. When batch size increases from 1 to \(B\), the accelerator reads model weights once from HBM and reuses them across all \(B\) tokens in parallel. Arithmetic intensity scales linearly with batch size:</p>
+    \[I(B) \approx \frac{B \times 2P}{2P + B \times 2 \times S_{\text{KV}}} \approx B \text{ FLOPs/byte}\]
+    <p>where \(S_{\text{KV}}\) represents per-token Key-Value (KV) cache memory. Larger batch sizes increase total cluster throughput (tokens served per second per dollar). However, larger batches increase cache memory contention and lengthen each iteration step, gradually degrading per-user TPOT. Serving architectures operate on an efficient frontier balancing hardware cost against per-stream generation latency.</p>
+
+    <h2 id="mitigations">4. Engineering Strategies to Reduce TPOT</h2>
+    <p>Engineers employ several hardware and algorithmic techniques to lower TPOT and improve generation responsiveness:</p>
+    <ul>
+      <li><strong><a href="/reference/speculative-decoding/">Speculative Decoding</a>:</strong> A small, fast draft model guesses candidate tokens, which the larger target model verifies in a single forward pass. Because verification parallelizes across speculative tokens, effective TPOT drops without changing output quality <span class="cite">[<a href="#ref-4">4</a>]</span>.</li>
+      <li><strong>Weight Quantization:</strong> Compressing weights from FP16 to INT8, INT4, or FP4 cuts byte transfer volume by 50% to 75%, directly reducing weight loading duration per decode iteration.</li>
+      <li><strong><a href="/reference/chunked-prefill/">Chunked Prefill</a>:</strong> Slicing compute-dense prompt evaluations into smaller pieces prevents incoming queries from interrupting decode iterations, eliminating P99 ITL spikes.</li>
+      <li><strong>Disaggregated Serving:</strong> Physically separating prefill nodes from decode nodes (such as Splitwise and DistServe) isolates memory-bandwidth-bound decode clusters from compute-bound prefill workloads <span class="cite">[<a href="#ref-5">5</a>]</span>.</li>
+    </ul>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/time-to-first-token/">Time to First Token</a> &middot; Prompt prefill duration and interactive response latency.</li>
+        <li><a href="/reference/latency/">Latency (Systems and Computing)</a> &middot; Queuing models, delay decomposition, and tail amplification.</li>
+        <li><a href="/reference/throughput/">Throughput</a> &middot; Volumetric capacity and batch saturation dynamics.</li>
+        <li><a href="/reference/continuous-batching/">Continuous Batching</a> &middot; Dynamic iteration-level scheduling.</li>
+        <li><a href="/reference/chunked-prefill/">Chunked Prefill</a> &middot; Interleaving prompt chunks to stabilize inter-token latency.</li>
+        <li><a href="/reference/speculative-decoding/">Speculative Decoding</a> &middot; Parallel draft validation accelerating decode steps.</li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> R. Pope et al., "Efficiently Scaling Transformer Inference," in <em>Proceedings of Machine Learning and Systems (MLSys)</em>, vol. 5, 2023, pp. 606&ndash;624. Free full text: <a href="https://proceedings.mlsys.org/paper_files/paper/2023/file/523f66f8510f27eb6f29633e73507d4c-Paper-Conference.pdf">https://proceedings.mlsys.org/paper_files/paper/2023/file/523f66f8510f27eb6f29633e73507d4c-Paper-Conference.pdf</a></li>
+        <li id="ref-2"><a class="backlink" href="#first-principles">&uarr;</a> W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention," in <em>Proceedings of the 29th ACM Symposium on Operating Systems Principles (SOSP)</em>, 2023, pp. 611&ndash;626. Free full text: <a href="https://arxiv.org/abs/2309.06180">https://arxiv.org/abs/2309.06180</a></li>
+        <li id="ref-3"><a class="backlink" href="#first-principles">&uarr;</a> S. Williams, A. Waterman, and D. Patterson, "Roofline: An Insightful Visual Performance Model for Multicore Architectures," <em>Communications of the ACM</em>, vol. 52, no. 4, 2009, pp. 65&ndash;76.</li>
+        <li id="ref-4"><a class="backlink" href="#mitigations">&uarr;</a> Y. Leviathan, M. Kalman, and Y. Matias, "Fast Inference from Transformers via Speculative Decoding," in <em>Proceedings of the 40th International Conference on Machine Learning (ICML)</em>, 2023, pp. 19274&ndash;19286. Free full text: <a href="https://arxiv.org/abs/2211.17192">https://arxiv.org/abs/2211.17192</a></li>
+        <li id="ref-5"><a class="backlink" href="#mitigations">&uarr;</a> P. Patel et al., "Splitwise: Efficient Generative LLM Serving Using Phase Separation," in <em>Proceedings of the 51st Annual International Symposium on Computer Architecture (ISCA)</em>, 2024, pp. 1008&ndash;1024. Free full text: <a href="https://arxiv.org/abs/2311.18677">https://arxiv.org/abs/2311.18677</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Speculative Decoding &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Speculative decoding is an exact acceleration technique for autoregressive model inference using an auxiliary draft mechanism verified in parallel by a target model in a single step.">
+  <meta property="og:title" content="Speculative Decoding &middot; Reference">
+  <meta property="og:description" content="Parallel verification vs sequential generation, modified rejection sampling, speedup bounds, Medusa and EAGLE multi-head drafting, and systems trade-offs.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/speculative-decoding/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/speculative-decoding/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Speculative Decoding","description":"Speculative decoding is an exact acceleration technique for autoregressive language model inference that uses a small draft model to generate candidate tokens verified in parallel by the target model in a single forward pass.","url":"https://ngpestelos.com/reference/speculative-decoding/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.5rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      display: none;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+    .back-to-top:hover {
+      background: var(--line);
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Machine Learning &middot; Systems Engineering</p>
+    <h1>Speculative Decoding</h1>
+    <p class="updated">Reference entry &middot; last updated September 8, 2026</p>
+
+    <p class="lede"><strong>Speculative decoding</strong> (also termed assisted generation or speculative sampling) is an exact acceleration technique for autoregressive language model inference that uses an auxiliary draft mechanism to hypothesize candidate tokens for parallel validation by a larger target model in a single execution step. Because validating multiple tokens concurrently is compute-bound rather than memory-bound, speculative decoding reduces generation latency while provably preserving the target model's output probability distribution.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First Principles: Parallel Verification vs. Sequential Generation</a></li>
+        <li><a href="#algorithm">2. Algorithmic Formulation and Distribution Preservation</a>
+          <ol>
+            <li><a href="#rejection-sampling">2.1 Modified Rejection Sampling</a></li>
+            <li><a href="#speedup-bounds">2.2 Expected Speedup and Acceptance Rate</a></li>
+          </ol>
+        </li>
+        <li><a href="#drafting-architectures">3. Drafting Architectures</a>
+          <ol>
+            <li><a href="#draft-models">3.1 Auxiliary Draft Models</a></li>
+            <li><a href="#multi-head">3.2 Multi-Head and Non-Neural Drafting</a></li>
+          </ol>
+        </li>
+        <li><a href="#systems-tradeoffs">4. Operating Regimes and Systems Trade-offs</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Parallel Verification vs. Sequential Generation</h2>
+    <p>Autoregressive text generation requires \(K\) sequential steps to emit \(K\) tokens. Because decoding each token is memory-bandwidth bound, generating \(K\) tokens requires reading the target model's entire parameter weight matrix \(P\) from memory \(K\) times <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>. This serial dependency enforces an architectural latency barrier governed by memory bus throughput.</p>
+    <p>However, verifying \(K\) candidate tokens simultaneously requires only a single forward pass of the target model. Evaluating a sequence of length \(K\) performs matrix-matrix operations (GEMM) across the sequence dimension rather than matrix-vector operations (GEMV), unlocking high tensor core arithmetic intensity. Verifying \(K\) candidate tokens takes approximately the same wall-clock time on a modern GPU as generating a single token sequentially.</p>
+    <p>Speculative decoding exploits this asymmetry: a lightweight, fast draft mechanism generates \(K\) candidate tokens at low computational cost, and the large target model inspects all \(K\) candidates in parallel in one forward pass <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+
+    <h2 id="algorithm">2. Algorithmic Formulation and Distribution Preservation</h2>
+    <h3 id="rejection-sampling">2.1 Modified Rejection Sampling</h3>
+    <p>A key property of speculative decoding is mathematical exactness: the generated text distribution matches sampling from the target model \(M_{\text{target}}\) exactly, introducing zero degradation in output quality or reasoning capability <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>.</p>
+    <p>Let \(q(x)\) denote the token probability distribution from the draft model, and \(p(x)\) denote the true distribution from the target model. For each draft token \(x_i\) conditioned on preceding accepted tokens, the verification step accepts \(x_i\) with probability:</p>
+    \[P(\text{accept } x_i) = \min\left(1, \frac{p(x_i)}{q(x_i)}\right)\]
+    <p>If draft token \(x_i\) is accepted, the process evaluates candidate \(x_{i+1}\). If token \(x_i\) is rejected, speculative execution halts for that iteration. The algorithm draws a replacement token from adjusted distribution \(p'(x)\):</p>
+    \[p'(x) = \frac{\max(0, p(x) - q(x))}{\sum_y \max(0, p(y) - q(y))}\]
+    <p>This rejection sampling formulation guarantees that whether a token is accepted from the draft or sampled from the residual distribution, the marginal probability of emitting token \(x\) equals \(p(x)\) identically.</p>
+
+    <h3 id="speedup-bounds">2.2 Expected Speedup and Acceptance Rate</h3>
+    <p>If the draft model produces \(\gamma\) candidate tokens per iteration and achieves an average per-token acceptance rate \(\alpha \in [0, 1]\), the expected count of generated tokens \(\mathbb{E}[N]\) per verification pass is:</p>
+    \[\mathbb{E}[N] = \frac{1 - \alpha^{\gamma + 1}}{1 - \alpha}\]
+    <p>Let \(c\) represent the latency ratio between one draft step and one target model forward pass (\(c = T_{\text{draft}} / T_{\text{target}} \ll 1\)). The wall-clock speedup \(S\) is expressed as:</p>
+    \[S = \frac{\mathbb{E}[N]}{\gamma \times c + 1} = \frac{1 - \alpha^{\gamma + 1}}{(1 - \alpha)(\gamma \times c + 1)}\]
+    <p>When \(\alpha \approx 0.7\) to \(0.9\) and \(c \le 0.05\), speculative decoding yields a 2x to 3x reduction in <a href="/reference/time-per-output-token/">Time Per Output Token (TPOT)</a>.</p>
+
+    <h2 id="drafting-architectures">3. Drafting Architectures</h2>
+    <h3 id="draft-models">3.1 Auxiliary Draft Models</h3>
+    <p>The standard architecture pairs a small model from the same family with the large target model (for example, a 7B parameter draft model proposing tokens for a 70B parameter target model) <span class="cite">[<a href="#ref-1">1</a>]</span>. Both models share the same vocabulary and tokenization scheme, allowing straightforward probability mapping.</p>
+
+    <h3 id="multi-head">3.2 Multi-Head and Non-Neural Drafting</h3>
+    <p>Modern serving frameworks also support draft mechanisms that eliminate secondary models:</p>
+    <ul>
+      <li><strong>Multi-Head Speculation (Medusa):</strong> Several lightweight feed-forward heads are trained on top of the target model's final hidden state, predicting subsequent tokens \(t+1, t+2, \dots\) simultaneously without running a secondary model <span class="cite">[<a href="#ref-3">3</a>]</span>.</li>
+      <li><strong>Feature-Recurrent Drafting (EAGLE):</strong> Extends multi-head prediction by feeding target transformer feature vectors into a single transformer decoder layer, capturing contextual representations with high acceptance accuracy <span class="cite">[<a href="#ref-4">4</a>]</span>.</li>
+      <li><strong>Prompt Lookup / N-Gram Matching:</strong> Reuses matching token n-grams from the input context without neural execution. Effective in summarization, translation, and code editing where output strings heavily repeat prompt text.</li>
+    </ul>
+
+    <h2 id="systems-tradeoffs">4. Operating Regimes and Systems Trade-offs</h2>
+    <p>Speculative decoding operates most effectively under specific system constraints:</p>
+    <ul>
+      <li><strong>Low Concurrency Regimes:</strong> Speculative decoding provides maximum acceleration at small batch sizes (concurrency = 1 to 4), where the GPU is memory-bandwidth bound. At very large batch sizes, target model execution is already compute-saturated, reducing the efficiency of speculative verification.</li>
+      <li><strong>Entropy Dependence:</strong> Acceptance rate \(\alpha\) depends on output entropy. Predictable syntax (JSON structures, code boilerplate, factual names) yields \(\alpha > 0.85\), producing dramatic acceleration. High-entropy creative text or dense mathematical reasoning yields lower acceptance rates (\(\alpha < 0.5\)), attenuating speedup.</li>
+      <li><strong>Memory Footprint:</strong> Running a dual-model setup requires loading both draft and target weights into accelerator memory, slightly reducing available KV cache capacity.</li>
+    </ul>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/time-per-output-token/">Time Per Output Token</a> &middot; Inter-token generation latency in autoregressive serving.</li>
+        <li><a href="/reference/time-to-first-token/">Time to First Token</a> &middot; Prompt prefill duration and interactive response timing.</li>
+        <li><a href="/reference/latency/">Latency (Systems and Computing)</a> &middot; Fundamental delay models and tail latency dynamics.</li>
+        <li><a href="/reference/throughput/">Throughput</a> &middot; Amdahl's Law and hardware saturation curves.</li>
+        <li><a href="/reference/continuous-batching/">Continuous Batching</a> &middot; Iteration-level scheduling algorithms.</li>
+        <li><a href="/reference/chunked-prefill/">Chunked Prefill</a> &middot; Mitigating prefill-decode interference.</li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> Y. Leviathan, M. Kalman, and Y. Matias, "Fast Inference from Transformers via Speculative Decoding," in <em>Proceedings of the 40th International Conference on Machine Learning (ICML)</em>, 2023, pp. 19274&ndash;19286. Free full text: <a href="https://arxiv.org/abs/2211.17192">https://arxiv.org/abs/2211.17192</a></li>
+        <li id="ref-2"><a class="backlink" href="#first-principles">&uarr;</a> C. Chen et al., "Accelerating Large Language Model Decoding with Speculative Sampling," <em>arXiv preprint arXiv:2302.01318</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2302.01318">https://arxiv.org/abs/2302.01318</a></li>
+        <li id="ref-3"><a class="backlink" href="#multi-head">&uarr;</a> T. Cai et al., "Medusa: Simple LLM Inference Acceleration Framework with Multiple Decoding Heads," in <em>Proceedings of the 41st International Conference on Machine Learning (ICML)</em>, 2024. Free full text: <a href="https://arxiv.org/abs/2401.10774">https://arxiv.org/abs/2401.10774</a></li>
+        <li id="ref-4"><a class="backlink" href="#multi-head">&uarr;</a> Y. Li et al., "EAGLE: Speculative Sampling Requires Rethinking Feature Uncertainty," in <em>Proceedings of the 41st International Conference on Machine Learning (ICML)</em>, 2024. Free full text: <a href="https://arxiv.org/abs/2401.15077">https://arxiv.org/abs/2401.15077</a></li>
+        <li id="ref-5"><a class="backlink" href="#first-principles">&uarr;</a> R. Pope et al., "Efficiently Scaling Transformer Inference," in <em>Proceedings of Machine Learning and Systems (MLSys)</em>, vol. 5, 2023, pp. 606&ndash;624. Free full text: <a href="https://proceedings.mlsys.org/paper_files/paper/2023/file/523f66f8510f27eb6f29633e73507d4c-Paper-Conference.pdf">https://proceedings.mlsys.org/paper_files/paper/2023/file/523f66f8510f27eb6f29633e73507d4c-Paper-Conference.pdf</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
