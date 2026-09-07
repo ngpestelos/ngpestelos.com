@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chunked Prefill &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Chunked prefill is an inference scheduling optimization that slices long prompt prefills into token chunks, interleaving them with decode steps to bound tail inter-token latency.">
+  <meta property="og:title" content="Chunked Prefill &middot; Reference">
+  <meta property="og:description" content="Prefill-decode interference, token budget allocation, mixed batching piggybacking, and tail ITL stabilization in LLM serving.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/chunked-prefill/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/chunked-prefill/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Chunked Prefill","description":"Chunked prefill is an LLM inference scheduling technique that slices compute-heavy prompt prefills into smaller token chunks, co-scheduling prefill and decode iterations to eliminate head-of-line blocking.","url":"https://ngpestelos.com/reference/chunked-prefill/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.5rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      display: none;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+    .back-to-top:hover {
+      background: var(--line);
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Systems Engineering &middot; Machine Learning</p>
+    <h1>Chunked Prefill</h1>
+    <p class="updated">Reference entry &middot; last updated September 8, 2026</p>
+
+    <p class="lede"><strong>Chunked prefill</strong> is an inference scheduling optimization for large language models that partitions long prompt prefill requests into smaller token chunks across multiple execution iterations. By interleaving chunked prompt evaluation with active token decoding, chunked prefill prevents long input prompts from blocking decode steps, bounding tail inter-token latency without sacrificing GPU compute saturation.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First Principles: The Prefill-Decode Interference Problem</a></li>
+        <li><a href="#mechanism">2. Mechanism and Token Budget Allocation</a>
+          <ol>
+            <li><a href="#budget-slicing">2.1 Budgeting and Slicing</a></li>
+            <li><a href="#mixed-batching">2.2 Piggybacking and Mixed Batching</a></li>
+          </ol>
+        </li>
+        <li><a href="#tradeoffs">3. Performance Trade-offs: ITL Stability vs. TTFT</a></li>
+        <li><a href="#architecture-disaggregation">4. Systems Architecture and Disaggregation</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: The Prefill-Decode Interference Problem</h2>
+    <p>Serving systems for autoregressive language models handle two fundamentally asymmetric computational phases <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <ul>
+      <li><strong>Prefill:</strong> Ingests the entire user prompt of length \(N_{\text{prompt}}\). Computes all Key-Value (KV) activations simultaneously using dense matrix multiplications. Operates at high arithmetic intensity and compute saturation, taking tens to hundreds of milliseconds.</li>
+      <li><strong>Decode:</strong> Emits one token at a time autoregressively. Each step loads model weights from memory for a single token per stream, operating at low arithmetic intensity and memory-bandwidth saturation. Each step requires 15 to 30 milliseconds.</li>
+    </ul>
+    <p>In standard <a href="/reference/continuous-batching/">continuous batching</a> systems, the scheduler prioritizes whole requests. When an incoming request carries a long prompt (such as a 16k or 32k token document), the GPU spends hundreds of milliseconds exclusively computing the prefill. During this window, all ongoing decode streams are paused. This head-of-line blocking creates extreme tail latency spikes in <a href="/reference/time-per-output-token/">Inter-Token Latency (ITL)</a>, degrading user streaming experiences.</p>
+
+    <h2 id="mechanism">2. Mechanism and Token Budget Allocation</h2>
+    <h3 id="budget-slicing">2.1 Budgeting and Slicing</h3>
+    <p>Chunked prefill resolves phase contention by setting a maximum token budget \(T_{\text{budget}}\) per iteration step (for instance, 512, 1,024, or 2,048 tokens) <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>. When a request arrives with prompt length \(N_{\text{prompt}} > C_{\text{chunk}}\), the scheduler slices the prompt into consecutive chunks:</p>
+    \[C_1, C_2, \dots, C_m \quad \text{where} \quad \sum_{j=1}^m |C_j| = N_{\text{prompt}}\]
+    <p>In each forward pass, the model processes only one chunk \(C_j\) for that request, caching its resulting KV activations into memory before yielding to the next scheduling iteration.</p>
+
+    <h3 id="mixed-batching">2.2 Piggybacking and Mixed Batching</h3>
+    <p>Rather than executing prefill chunks and decode steps in separate batches, chunked prefill co-schedules them in a single mixed batch. The iteration batch satisfies:</p>
+    \[B_{\text{decode}} + \sum_{i} |C_{\text{chunk}, i}| \le T_{\text{budget}}\]
+    <p>This technique (termed "piggybacking" in Sarathi) creates a complementary hardware synergy: the memory-bandwidth-bound decode tokens piggyback on the compute-heavy prefill chunk forward pass <span class="cite">[<a href="#ref-1">1</a>]</span>. Tensor cores remain saturated with chunk GEMM (General Matrix Multiply) operations while weights are streamed to advance decode streams, maximizing aggregate hardware efficiency.</p>
+
+    <h2 id="tradeoffs">3. Performance Trade-offs: ITL Stability vs. TTFT</h2>
+    <p>Chunked prefill introduces a deliberate engineering trade-off between tail inter-token latency and time to first token:</p>
+    <ul>
+      <li><strong>ITL Tail Stabilization:</strong> Because iteration duration is strictly bounded by \(T_{\text{budget}}\), decode streams advance smoothly. High-percentile ITL (P99) drops dramatically, eliminating interactive pauses.</li>
+      <li><strong>TTFT Inflation:</strong> Spreading prompt evaluation across \(m\) scheduling iterations introduces minor overheads and scheduling intervals, slightly increasing overall <a href="/reference/time-to-first-token/">Time to First Token (TTFT)</a> for the incoming long prompt compared to unchunked dedicated execution.</li>
+      <li><strong>Attention Computation Overheads:</strong> Evaluating self-attention across multiple chunks requires attending back to previously cached chunks. While attention mechanisms like FlashAttention support chunked caching, total attention memory transfers increase moderately compared to single-pass full-context attention.</li>
+    </ul>
+
+    <h2 id="architecture-disaggregation">4. Systems Architecture and Disaggregation</h2>
+    <p>Chunked prefill is standard in modern inference engines including vLLM and TensorRT-LLM. In larger multi-node production clusters, chunked prefill coexists with physical disaggregation (such as Splitwise and DistServe) <span class="cite">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span>. While disaggregated serving assigns separate GPU pools to prefill and decode workloads, chunked prefill remains essential within homogeneous clusters and within prefill workers handling variable context lengths.</p>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/time-per-output-token/">Time Per Output Token</a> &middot; Inter-token latency and decode memory-bandwidth limits.</li>
+        <li><a href="/reference/time-to-first-token/">Time to First Token</a> &middot; Prompt prefill latency and interactive metrics.</li>
+        <li><a href="/reference/continuous-batching/">Continuous Batching</a> &middot; Iteration-level scheduling in generative model serving.</li>
+        <li><a href="/reference/speculative-decoding/">Speculative Decoding</a> &middot; Accelerating token emission through parallel draft verification.</li>
+        <li><a href="/reference/latency/">Latency (Systems and Computing)</a> &middot; Queuing delays and structural latency components.</li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> A. Agrawal et al., "Sarathi: Efficient LLM Inference by Chunked Prefills with Piggybacking," <em>arXiv preprint arXiv:2308.16369</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2308.16369">https://arxiv.org/abs/2308.16369</a></li>
+        <li id="ref-2"><a class="backlink" href="#budget-slicing">&uarr;</a> A. Agrawal et al., "Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve," in <em>Proceedings of the 18th USENIX Symposium on Operating Systems Design and Implementation (OSDI)</em>, 2024, pp. 117&ndash;134. Free full text: <a href="https://www.usenix.org/conference/osdi24/presentation/agrawal">https://www.usenix.org/conference/osdi24/presentation/agrawal</a></li>
+        <li id="ref-3"><a class="backlink" href="#architecture-disaggregation">&uarr;</a> Y. Zhong et al., "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving," in <em>Proceedings of the 18th USENIX Symposium on Operating Systems Design and Implementation (OSDI)</em>, 2024, pp. 193&ndash;210. Free full text: <a href="https://www.usenix.org/conference/osdi24/presentation/zhong">https://www.usenix.org/conference/osdi24/presentation/zhong</a></li>
+        <li id="ref-4"><a class="backlink" href="#architecture-disaggregation">&uarr;</a> P. Patel et al., "Splitwise: Efficient Generative LLM Serving Using Phase Separation," in <em>Proceedings of the 51st Annual International Symposium on Computer Architecture (ISCA)</em>, 2024, pp. 1008&ndash;1024. Free full text: <a href="https://arxiv.org/abs/2311.18677">https://arxiv.org/abs/2311.18677</a></li>
+        <li id="ref-5"><a class="backlink" href="#first-principles">&uarr;</a> W. Kwon et al., "Efficient Memory Management for Large Language Model Serving with PagedAttention," in <em>Proceedings of the 29th ACM Symposium on Operating Systems Principles (SOSP)</em>, 2023, pp. 611&ndash;626. Free full text: <a href="https://arxiv.org/abs/2309.06180">https://arxiv.org/abs/2309.06180</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

@@ -254,7 +254,7 @@
     <p>TTFT measures the duration required to complete network ingress, queuing, and the entire prefill phase.</p>
 
     <h2 id="tpot-definition">Time Per Output Token (TPOT)</h2>
-    <p>While TTFT evaluates initial response delay, <strong>Time Per Output Token (TPOT)</strong> measures the generation speed of subsequent tokens:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>While TTFT evaluates initial response delay, <strong><a href="/reference/time-per-output-token/">Time Per Output Token (TPOT)</a></strong> measures the generation speed of subsequent tokens:<span class="cite">[<a href="#ref2">2</a>]</span></p>
     \[\text{TPOT} = \frac{\text{Total Latency} - \text{TTFT}}{N_{\text{out}} - 1}\]
     <p>where \(N_{\text{out}}\) is the count of generated output tokens. The inverse of TPOT represents generation throughput per user stream (in tokens per second). Total end-to-end latency \(T_{\text{total}}\) is expressed as:<span class="cite">[<a href="#ref2">2</a>]</span></p>
     \[T_{\text{total}} = \text{TTFT} + (N_{\text{out}} - 1) \times \text{TPOT}\]
@@ -270,12 +270,16 @@
     <p>Systems employ distinct architectural patterns to minimize TTFT:<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <ul>
       <li><strong>Prompt caching</strong>: Storing pre-computed KV cache activations for static prefixes (such as system instructions, tool definitions, and few-shot examples). Reused prefixes bypass prefill computation, reducing TTFT by 50% to 90%.<span class="cite">[<a href="#ref5">5</a>]</span></li>
-      <li><strong>Chunked prefill</strong>: Splitting long prompt prefill tasks into smaller token chunks that are interleaved into decode batches, preventing head-of-line blocking for concurrent users.</li>
-      <li><strong>Speculative decoding</strong>: Using a lightweight draft model to speculate multiple tokens in parallel, which a larger model verifies in a single forward pass, reducing effective TPOT.<span class="cite">[<a href="#ref6">6</a>]</span></li>
+      <li><strong><a href="/reference/chunked-prefill/">Chunked prefill</a></strong>: Splitting long prompt prefill tasks into smaller token chunks that are interleaved into decode batches, preventing head-of-line blocking for concurrent users.</li>
+      <li><strong><a href="/reference/speculative-decoding/">Speculative decoding</a></strong>: Using a lightweight draft model to speculate multiple tokens in parallel, which a larger model verifies in a single forward pass, reducing effective TPOT.<span class="cite">[<a href="#ref6">6</a>]</span></li>
     </ul>
 
     <h2 id="see-also">See also</h2>
     <ul>
+      <li><a href="/reference/time-per-output-token/">Time Per Output Token</a></li>
+      <li><a href="/reference/chunked-prefill/">Chunked Prefill</a></li>
+      <li><a href="/reference/speculative-decoding/">Speculative Decoding</a></li>
+      <li><a href="/reference/continuous-batching/">Continuous Batching</a></li>
       <li><a href="/reference/throughput/">Throughput</a></li>
       <li><a href="/reference/tokens/">Tokens and Tokenization</a></li>
       <li><a href="/reference/autoregressive/">Autoregressive Models</a></li>
