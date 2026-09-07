@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parallelism (Computing) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Parallelism is the simultaneous execution of multiple computational operations across physically distinct processing units. Architectural levels, Flynn's taxonomy, Amdahl's and Gustafson's laws, and communication bottlenecks.">
+  <meta property="og:title" content="Parallelism (Computing) &middot; Reference">
+  <meta property="og:description" content="Physical simultaneity, Flynn's taxonomy, strong vs. weak scaling models, and hardware limits in parallel computing systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/parallelism/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/parallelism/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Parallelism (Computing)","description":"Parallelism is the simultaneous execution of multiple computational operations across physically distinct processing units at the exact same physical instant.","url":"https://ngpestelos.com/reference/parallelism/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.5rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      line-height: 1.45;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <div class="kicker">Reference Entry</div>
+    <h1>Parallelism (Computing)</h1>
+    <p class="updated">Reference entry &middot; last updated September 7, 2026</p>
+
+    <p class="lede"><strong>Parallelism</strong> is the simultaneous execution of multiple computational operations across physically separate processing units at the exact same physical instant. Unlike concurrency (which structures a system as independent computations with overlapping lifetimes), parallelism requires underlying hardware with multiple physical execution units (such as multi-core CPUs, GPUs, TPUs, or networked cluster nodes). Parallelism serves as the primary engineering mechanism for accelerating throughput and reducing wall-clock runtime across scientific simulation, deep learning training, inference serving, and database query engines.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">First Principles: Physical Simultaneity</a></li>
+        <li><a href="#architectural-levels">Architectural Levels and Flynn's Taxonomy</a>
+          <ol>
+            <li><a href="#instruction-and-vector">Instruction and Vector Parallelism</a></li>
+            <li><a href="#thread-data-accelerator">Thread, Data, and Tensor Parallelism</a></li>
+          </ol>
+        </li>
+        <li><a href="#scaling-laws">Mathematical Scaling Models</a>
+          <ol>
+            <li><a href="#amdahls-law">Amdahl's Law and Strong Scaling</a></li>
+            <li><a href="#gustafsons-law">Gustafson's Law and Weak Scaling</a></li>
+          </ol>
+        </li>
+        <li><a href="#concurrency-distinction">Parallelism vs. Concurrency</a></li>
+        <li><a href="#communication-bottlenecks">Communication Overheads and Interconnect Limits</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Physical Simultaneity</h2>
+    <p>The defining characteristic of parallelism is physical simultaneity: at time \(t\), instruction \(I_A\) executes on hardware execution unit \(E_1\) while instruction \(I_B\) simultaneously executes on distinct hardware execution unit \(E_2\). If a system has only a single physical core, true parallelism cannot occur; multiple tasks can only progress via rapid context switching (concurrency via time-slicing).</p>
+
+    <div class="diagram-box">
+[Single-Core Concurrency (Time-Sliced)]
+Core 0: [Task A] [Task B] [Task A] [Task C] [Task B] ... &rarr; Time (Interleaved)
+
+[Multi-Core Parallelism (Simultaneous)]
+Core 0: [Task A ===============================]
+Core 1: [Task B ===============================] &rarr; Time (Physical Simultaneity)
+Core 2: [Task C ===============================]
+    </div>
+
+    <h2 id="architectural-levels">2. Architectural Levels and Flynn's Taxonomy</h2>
+    <p>In 1972, Michael J. Flynn classified computer architectures into four categories based on the cardinality of instruction and data streams <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <ul>
+      <li><strong>SISD (Single Instruction, Single Data):</strong> Conventional uniprocessor execution where a single instruction stream operates on one data stream at a time.</li>
+      <li><strong>SIMD (Single Instruction, Multiple Data):</strong> A single control unit issues one instruction that executes simultaneously across multiple processing elements on distinct data elements (e.g. vector extensions, graphics processing units).</li>
+      <li><strong>MISD (Multiple Instruction, Single Data):</strong> Multiple instruction streams operate on a single data stream (rare in general computing; used primarily in fault-tolerant voting systems like space flight computers).</li>
+      <li><strong>MIMD (Multiple Instruction, Multiple Data):</strong> Multiple autonomous processors concurrently execute distinct instructions on distinct data sets (e.g. multi-core microprocessors, distributed compute clusters).</li>
+    </ul>
+
+    <h3 id="instruction-and-vector">2.1 Instruction and Vector Parallelism</h3>
+    <p>Within a single processor core, modern microarchitectures exploit sub-nanosecond parallelism without developer intervention:</p>
+    <ul>
+      <li><strong>Instruction-Level Parallelism (ILP):</strong> Pipelining divides instruction execution into discrete clock stages (fetch, decode, execute, memory access, write-back). Superscalar processors dispatch multiple independent instructions per clock cycle to parallel execution units (ALUs, FPUs) using out-of-order execution logic <span class="cite">[<a href="#ref-5">5</a>]</span>.</li>
+      <li><strong>Vector Parallelism:</strong> Vector registers (AVX-512, ARM Neon) pack multiple numeric scalars into wide registers, applying arithmetic operations across lanes in a single clock cycle.</li>
+    </ul>
+
+    <h3 id="thread-data-accelerator">2.2 Thread, Data, and Tensor Parallelism</h3>
+    <p>Higher levels of parallelism require software-visible partitioning across physical hardware:</p>
+    <ul>
+      <li><strong>Thread-Level Parallelism (TLP):</strong> Operating system threads execute simultaneously on distinct physical cores or simultaneous multithreading (SMT) hardware threads.</li>
+      <li><strong>Data Parallelism:</strong> Large datasets are partitioned into chunks processed by identical kernels across hundreds or thousands of processor cores (the primary execution model of GPUs).</li>
+      <li><strong>Tensor and Pipeline Parallelism:</strong> In deep learning, large models that exceed single-accelerator memory are partitioned: tensor parallelism splits matrix multiplications across devices via collective communications, while pipeline parallelism partitions layers sequentially across devices.</li>
+    </ul>
+
+    <h2 id="scaling-laws">3. Mathematical Scaling Models</h2>
+    <p>The speedup achieved by allocating \(N\) parallel processors is governed by the structural ratio of serial to parallel work in the workload.</p>
+
+    <h3 id="amdahls-law">3.1 Amdahl's Law and Strong Scaling</h3>
+    <p>Gene Amdahl (1967) modeled <em>strong scaling</em>: running a fixed problem size on an increasing number of processors \(N\) <span class="cite">[<a href="#ref-2">2</a>]</span>. Let \(s \in [0, 1]\) be the strictly serial fraction of execution time, and \(p = 1 - s\) be the parallel fraction. The total execution time \(T(N)\) on \(N\) processors is:</p>
+    \[T(N) = T(1) \left( s + \frac{1 - s}{N} \right)\]
+    <p>The resulting speedup factor \(S(N) = \frac{T(1)}{T(N)}\) is bounded by:</p>
+    \[S(N) = \frac{1}{s + \frac{1 - s}{N}}\]
+    <p>As \(N \to \infty\), the maximum achievable speedup is strictly capped by the serial fraction:</p>
+    \[\lim_{N \to \infty} S(N) = \frac{1}{s}\]
+    <p>If even 5% of a program is strictly serial (\(s = 0.05\)), the maximum speedup can never exceed \(20\times\), regardless of whether 100 or 1,000,000 cores are allocated.</p>
+
+    <h3 id="gustafsons-law">3.2 Gustafson's Law and Weak Scaling</h3>
+    <p>John Gustafson (1988) demonstrated that Amdahl's pessimistic ceiling assumes a fixed problem size <span class="cite">[<a href="#ref-3">3</a>]</span>. In high-performance computing, practitioners scale the problem size with the available processor count to maintain roughly constant wall-clock execution time (<em>weak scaling</em>). Measuring the serial fraction \(s\) on the parallel system with \(N\) processors, the scaled speedup \(S_{\text{scaled}}(N)\) is:</p>
+    \[S_{\text{scaled}}(N) = s + N(1 - s) = N - s(N - 1)\]
+    <p>Gustafson's Law demonstrates that speedup can scale near-linearly with \(N\) if the parallel workload grows proportionally with processor capacity.</p>
+
+    <h2 id="concurrency-distinction">4. Parallelism vs. Concurrency</h2>
+    <p>While frequently conflated in engineering discourse, parallelism and concurrency address distinct architectural concerns. In the formulation articulated by Rob Pike in 2012 <span class="cite">[<a href="#ref-4">4</a>]</span>:</p>
+    <blockquote>
+      "Concurrency is about dealing with lots of things at once. Parallelism is about doing lots of things at once."
+    </blockquote>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Attribute</th>
+          <th>Parallelism</th>
+          <th>Concurrency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Primary Focus</td>
+          <td>Execution speed and throughput</td>
+          <td>Program structure and modularity</td>
+        </tr>
+        <tr>
+          <td>Hardware Requirement</td>
+          <td>Multiple physical execution units mandatory</td>
+          <td>Can execute on a single core via time-slicing</td>
+        </tr>
+        <tr>
+          <td>Core Objective</td>
+          <td>Minimize wall-clock execution time for a job</td>
+          <td>Manage asynchronous events, I/O, and latency</td>
+        </tr>
+        <tr>
+          <td>Typical Workloads</td>
+          <td>Matrix multiplication, ray tracing, scientific simulation</td>
+          <td>Web servers, UI event dispatching, multi-agent coordination</td>
+        </tr>
+        <tr>
+          <td>Failure Modes</td>
+          <td>Amdahl bottlenecks, communication bus saturation</td>
+          <td>Race conditions, deadlocks, livelocks, starvation</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="communication-bottlenecks">5. Communication Overheads and Interconnect Limits</h2>
+    <p>In physical hardware, adding processors does not produce linear speedup indefinitely due to communication bottlenecks and memory bandwidth constraints:</p>
+    <ul>
+      <li><strong>The Memory Wall:</strong> Processor execution speed scales faster than dynamic RAM (DRAM) access latency. As formalized in the Roofline Model (Williams et al.), throughput is bounded by either raw compute capability or operational memory bandwidth <span class="cite">[<a href="#ref-6">6</a>]</span>:
+        \[P_{\text{achievable}} = \min(P_{\text{peak}}, I \cdot B)\]
+        where \(I\) is arithmetic intensity (FLOPs per byte transferred) and \(B\) is memory bandwidth.</li>
+      <li><strong>Cache Coherence Traffic:</strong> In shared-memory multi-core systems, protocols like MESI maintain consistent cache states across cores. High contention on shared memory addresses causes cache lines to bounce between cores (false sharing), degrading parallel execution speed.</li>
+      <li><strong>Interconnect Latency:</strong> In distributed clusters, inter-node communication primitives (such as AllReduce in multi-GPU training) are constrained by physical network bandwidth and switch topology.</li>
+    </ul>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/concurrency/">Concurrency (Computer Science)</a> &middot; Composition of overlapping computations, synchronization primitives, and failure modes.</li>
+        <li><a href="/reference/amdahls-law/">Amdahl's Law for Parallel AI Agents</a> &middot; Mathematical speedup limits imposed by strictly serial coordination.</li>
+        <li><a href="/reference/gustafsons-law/">Gustafson's Law for Parallel AI Agents</a> &middot; Weak scaling and scaled speedup across distributed agent fleets.</li>
+        <li><a href="/reference/throughput/">Throughput</a> &middot; Capacity measurement, Little's Law, and queuing dynamics.</li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a> &middot; Prefill and decode dynamics in high-throughput accelerator serving.</li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#architectural-levels">&uarr;</a> M. J. Flynn, "Some Computer Organizations and Their Effectiveness," <em>IEEE Transactions on Computers</em>, vol. C-21, no. 9, 1972, pp. 948&ndash;960.</li>
+        <li id="ref-2"><a class="backlink" href="#amdahls-law">&uarr;</a> G. M. Amdahl, "Validity of the single processor approach to achieving large scale computing capabilities," in <em>AFIPS Conference Proceedings</em>, vol. 30, 1967, pp. 483&ndash;485.</li>
+        <li id="ref-3"><a class="backlink" href="#gustafsons-law">&uarr;</a> J. L. Gustafson, "Reevaluating Amdahl's Law," <em>Communications of the ACM</em>, vol. 31, no. 5, 1988, pp. 532&ndash;533.</li>
+        <li id="ref-4"><a class="backlink" href="#concurrency-distinction">&uarr;</a> R. Pike, "Concurrency is not Parallelism," Waza conference presentation, Heroku, 2012. Slides: <a href="https://go.dev/talks/2012/waza.slide">https://go.dev/talks/2012/waza.slide</a></li>
+        <li id="ref-5"><a class="backlink" href="#instruction-and-vector">&uarr;</a> D. A. Patterson and J. L. Hennessy, <em>Computer Organization and Design: The Hardware/Software Interface</em>, 6th ed., Morgan Kaufmann, 2020.</li>
+        <li id="ref-6"><a class="backlink" href="#communication-bottlenecks">&uarr;</a> S. Williams, A. Waterman, and D. Patterson, "Roofline: An Insightful Visual Performance Model for Multicore Architectures," <em>Communications of the ACM</em>, vol. 52, no. 4, 2009, pp. 65&ndash;76.</li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
