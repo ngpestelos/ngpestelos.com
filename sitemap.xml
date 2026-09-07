@@ -546,6 +546,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/test-time-compute/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/theory-of-constraints/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
