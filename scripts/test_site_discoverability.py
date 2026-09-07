@@ -23,6 +23,9 @@ PRIVACY = ROOT / "privacy.html"
 DEEP_DIVE = ROOT / "writing" / "legacy-rails-upgrade-with-agents" / "index.html"
 COMPARISON = ROOT / "writing" / "upgrade-or-rewrite" / "index.html"
 REF = ROOT / "reference"
+WFFP = ROOT / "writing-from-first-principles"
+WFFP_SLUGS = ["reader", "reading", "essay", "paragraph", "sentence", "practice-card", "glossary"]
+WFFP_FORBIDDEN = ("SympleHost", "Macquarie", "Draft.dev", "para.ngpcloud.org", "[[")
 
 PAYMENTS = {
     "instapay-is-not-ach",
@@ -409,6 +412,40 @@ class ReferenceSeoTests(unittest.TestCase):
         self.assertIn('"@type":"DefinedTerm"', entry_html)
         p_html = (REF / "perception" / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="/reference/computer-vision/"', p_html)
+
+
+class WritingFromFirstPrinciplesTests(unittest.TestCase):
+    def test_pages_have_head_sitemap_and_no_private_names(self):
+        sitemap = SITEMAP.read_text(encoding="utf-8")
+        index = (WFFP / "index.html").read_text(encoding="utf-8")
+        for slug in ["index"] + WFFP_SLUGS:
+            path = WFFP / "index.html" if slug == "index" else WFFP / slug / "index.html"
+            url = "https://ngpestelos.com/writing-from-first-principles/" + (
+                "" if slug == "index" else f"{slug}/"
+            )
+            html = path.read_text(encoding="utf-8")
+            with self.subTest(slug=slug):
+                self.assertIn(f'<link rel="canonical" href="{url}">', html)
+                self.assertIn('<main class="article">', html)
+                self.assertIn("application/ld+json", html)
+                self.assertIn('"@type":"Article"', html)
+                self.assertIn(f"<loc>{url}</loc>", sitemap)
+                for token in WFFP_FORBIDDEN:
+                    self.assertNotIn(token, html)
+                if slug != "index":
+                    self.assertIn(f'href="/writing-from-first-principles/{slug}/"', index)
+
+    def test_reference_entry_links_guide(self):
+        html = (REF / "first-principles" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/writing-from-first-principles/"', html)
+
+    def test_build_render_escapes_script_close(self):
+        import wffp_build
+
+        out = wffp_build.render("reader", "A </script><b>", "<p>x</p>", "d </script>", "v", None, None)
+        ld = re.search(r'<script type="application/ld\+json">(.*?)</script>', out, re.S).group(1)
+        self.assertNotIn("</", ld)
+        self.assertEqual(json.loads(ld)["headline"], "A </script><b>")
 
 
 if __name__ == "__main__":
