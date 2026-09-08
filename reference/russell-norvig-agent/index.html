@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent (Russell and Norvig Definition) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Russell and Norvig's definition of an agent: sensors, actuators, percepts, environment, rationality, and how the definition maps onto LLM-based agents.">
+  <meta property="og:title" content="Agent (Russell and Norvig Definition) &middot; Reference">
+  <meta property="og:description" content="Russell and Norvig's definition of an agent: sensors, actuators, percepts, environment, rationality, and how the definition maps onto LLM-based agents.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/russell-norvig-agent/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/russell-norvig-agent/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .subtitle {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      color: var(--mute);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc a { color: var(--link); }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.9rem 1.1rem;
+      margin: 1rem 0 1.4rem;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+    .def-box {
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px dashed #d0d7de;
+    }
+    .def-box:last-child { border-bottom: none; }
+    .term-title { font-weight: 700; font-size: 1.05rem; display: inline; }
+    .term-desc { display: inline; margin-left: 0.35rem; }
+    .table-scroll { max-width: 100%; overflow-x: auto; }
+    .table-scroll:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    .katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+    .cite { font-size: 0.75em; vertical-align: super; }
+    .updated, .unattributed { color: var(--mute); font-size: 0.9rem; }
+    .unattributed { font-style: italic; }
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer h3 { font-size: 0.95rem; margin-top: 0; margin-bottom: 0.5rem; }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+      .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Agent (Russell and Norvig Definition)","description":"Russell and Norvig's definition of an agent: sensors, actuators, percepts, environment, rationality, and how the definition maps onto LLM-based agents.","url":"https://ngpestelos.com/reference/russell-norvig-agent/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main>
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Artificial Intelligence · Agent Theory</p>
+    <h1>Agent (Russell and Norvig Definition)</h1>
+    <p class="subtitle">The textbook definition of an agent, its components, its rivals, and its mapping onto LLM-based agents.</p>
+    <p class="updated">Reference entry &middot; last updated September 8, 2026</p>
+    <p><strong>An agent</strong>, in the definition given by Stuart Russell and Peter Norvig in <em>Artificial Intelligence: A Modern Approach</em>, is anything that can be viewed as perceiving its environment through sensors and acting upon that environment through actuators. <span class="cite">[<a href="#ref1">1</a>]</span> The definition is deliberately broad. It covers a thermostat, a chess program, a robot, and a person, and it says nothing about intelligence, autonomy, or goals. Those properties are added by later definitions and by the notion of a rational agent. This entry covers the definition itself and how it applies to the <a href="/reference/agents/">LLM-based agents</a> that the term now usually refers to.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <strong>Contents</strong>
+      <ol>
+        <li><a href="#first-principles">First Principles: The Definition and Its Parts</a></li>
+        <li><a href="#rationality">Rational Agents and the Performance Measure</a></li>
+        <li><a href="#classification">Russell and Norvig's Classification of Agent Programs</a></li>
+        <li><a href="#rival-definitions">Rival Definitions from the 1990s</a></li>
+        <li><a href="#llm-mapping">Mapping the Definition onto LLM-Based Agents</a></li>
+        <li><a href="#limits">What the Definition Does Not Settle</a></li>
+        <li><a href="#references">References</a></li>
+        <li><a href="#see-also">See Also</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: The Definition and Its Parts</h2>
+    <p>The definition names four things. An <strong>environment</strong> is the world the agent operates in. <strong>Sensors</strong> deliver <strong>percepts</strong>, the agent's inputs at a given instant. <strong>Actuators</strong> carry out actions that change the environment. The <strong>agent</strong> is whatever sits between them and chooses actions from percepts. <span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Russell and Norvig separate two further ideas. The <strong>agent function</strong> is an abstract mapping from every possible percept sequence to an action. It is a mathematical description of behavior. The <strong>agent program</strong> is the concrete implementation that runs on some physical architecture and computes that function. Two programs can implement the same agent function, and a lookup table could in principle implement any of them, so the interesting engineering question is how compactly a program can realize a good function. <span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The wording has changed across editions. The first edition (1995) used "effectors"; Franklin and Graesser quote it in that form from page 33. Later editions, including the fourth (2020), use "actuators". The structure of the definition is otherwise unchanged. <span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>]</span></p>
+    <p>The definition can be read as a minimal statement of the perception-action loop:</p>
+    <ol>
+      <li>The environment is in some state.</li>
+      <li>Sensors produce a percept from that state.</li>
+      <li>The agent program selects an action given the percept and, usually, the percept history.</li>
+      <li>Actuators apply the action, changing the environment state.</li>
+    </ol>
+    <p>Nothing in the loop requires the agent to be intelligent, to learn, or to have goals. That is why Russell and Norvig immediately introduce rationality as a separate criterion.</p>
+
+    <h2 id="rationality">2. Rational Agents and the Performance Measure</h2>
+    <p>A <strong>rational agent</strong> is one that, for each possible percept sequence, selects the action expected to maximize a <strong>performance measure</strong>, given the evidence in the percept sequence and whatever built-in knowledge it has. The performance measure is defined by the designer over environment states, not over the agent's own opinion of how well it is doing. Rationality is judged on expected outcomes with the information available, so an agent can be rational and still fail when the environment withholds information. <span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Russell and Norvig summarize the design problem with the acronym <strong>PEAS</strong>: Performance measure, Environment, Actuators, Sensors. Specifying the four fixes the task before any program is written. They also classify environments along axes such as fully versus partially observable, deterministic versus stochastic, episodic versus sequential, static versus dynamic, discrete versus continuous, and single-agent versus multi-agent. The hardest combination, partially observable and stochastic and sequential and dynamic and continuous and multi-agent, describes the textbook's taxi-driving example and many real settings in which an agent acts. <span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="classification">3. Russell and Norvig's Classification of Agent Programs</h2>
+    <p>The textbook orders agent programs by how much internal structure they use to choose an action. <span class="cite">[<a href="#ref1">1</a>, <a href="#ref6">6</a>]</span></p>
+    <div class="def-box">
+      <p class="term-title">Simple reflex agent:</p>
+      <p class="term-desc">Selects an action from the current percept alone, using condition-action rules. It has no memory of earlier percepts.</p>
+    </div>
+    <div class="def-box">
+      <p class="term-title">Model-based reflex agent:</p>
+      <p class="term-desc">Maintains an internal state that tracks aspects of the world it cannot currently see, updated with a model of how the world changes and how its own actions affect it.</p>
+    </div>
+    <div class="def-box">
+      <p class="term-title">Goal-based agent:</p>
+      <p class="term-desc">Adds goal information and chooses actions that lead toward goal states, which may require search or planning over sequences of actions.</p>
+    </div>
+    <div class="def-box">
+      <p class="term-title">Utility-based agent:</p>
+      <p class="term-desc">Replaces binary goals with a utility function over states, so it can trade off conflicting goals and act under uncertainty by maximizing expected utility.</p>
+    </div>
+    <div class="def-box">
+      <p class="term-title">Learning agent:</p>
+      <p class="term-desc">Adds a learning element that improves the performance element from feedback, plus a critic that supplies that feedback and a problem generator that proposes exploratory actions.</p>
+    </div>
+    <p>The classification is about the agent program, not the agent function. Any of the five can implement the same external behavior in principle; they differ in what they must store and compute to do so.</p>
+
+    <h2 id="rival-definitions">4. Rival Definitions from the 1990s</h2>
+    <p>Franklin and Graesser's 1996 survey collected the definitions then in use and argued that the Russell and Norvig version, taken alone, admits almost any program, because whether something "perceives" and "acts" depends on what is chosen as the environment. They proposed a stricter definition: an autonomous agent is a system situated within and a part of an environment that senses that environment and acts on it, over time, in pursuit of its own agenda and so as to effect what it senses in the future. The additions are persistence over time and an agenda of the agent's own. <span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>The same survey quotes three other definitions from the period. <span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ul>
+      <li><strong>Maes (1995):</strong> autonomous agents are computational systems that inhabit some complex dynamic environment, sense and act autonomously in it, and by doing so realize a set of goals or tasks for which they are designed.</li>
+      <li><strong>Hayes-Roth (1995):</strong> intelligent agents continuously perform three functions: perception of dynamic conditions in the environment, action to affect those conditions, and reasoning to interpret perceptions, solve problems, draw inferences, and determine actions.</li>
+      <li><strong>Wooldridge and Jennings (1995):</strong> a hardware or, more usually, software-based computer system with autonomy, social ability, reactivity, and pro-activeness. Franklin and Graesser quote this from page 2 of the original paper; the paper itself is cited here through their survey.</li>
+    </ul>
+    <p>Each rival definition adds a property that Russell and Norvig leave out: goals, reasoning, autonomy, or social interaction. Russell and Norvig's choice to keep the base definition minimal and move those properties into rationality and the agent-program taxonomy is what makes it durable. A new kind of agent can be described in its terms before anyone agrees on how autonomous or intelligent it is.</p>
+
+    <h2 id="llm-mapping">5. Mapping the Definition onto LLM-Based Agents</h2>
+    <p>Grootendorst and Alammar adopt the Russell and Norvig definition as the foundation for LLM-based agents on the grounds that the fundamentals of agents stay fixed while the working definition in industry keeps changing. They map the four parts as follows. <span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <div class="table-scroll" role="region" tabindex="0" aria-labelledby="llm-mapping">
+    <table>
+      <thead><tr><th>Russell and Norvig term</th><th>LLM-based agent component</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Agent program</strong></td><td>A reasoning language model, extended by memory, tools, and planning modules.</td></tr>
+        <tr><td><strong>Actuators</strong></td><td>The tools the model can request: search, code execution, file edits, APIs.</td></tr>
+        <tr><td><strong>Sensors</strong></td><td>The model's input channels, including image and audio understanding where the model supports them.</td></tr>
+        <tr><td><strong>Environment</strong></td><td>The digital surroundings the tools act on, and the user, who usually initiates the task with a request.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>Two refinements matter in practice. First, the language model by itself is only the agent program's core. A model with memory and tools is what Anthropic calls an "augmented LLM"; Grootendorst and Alammar treat that as a building block and reserve "agent" for the system that also plans and reflects. <span class="cite">[<a href="#ref3">3</a>, <a href="#ref4">4</a>]</span> Second, the model cannot operate the actuators directly. It emits text that expresses an intent to call a tool, and host software parses that text, decides whether the call is permitted, executes it, and returns the result. In Russell and Norvig's terms, the actuator is the host's tool layer, not the model's output. <span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Read this way, a typical coding agent is a goal-based or utility-based agent in the taxonomy above, with a learned rather than hand-written agent program, operating in a partially observable, sequential, dynamic environment.</p>
+    <p class="unattributed">The placement of LLM-based agents within the five-type taxonomy is this entry's reading, not a claim made by either cited textbook.</p>
+
+    <h2 id="limits">6. What the Definition Does Not Settle</h2>
+    <p><strong>Autonomy.</strong> The definition says nothing about how much freedom the agent has. Grootendorst and Alammar treat autonomy as a spectrum, from a model that executes a single step while choosing among tools to a loop with no guardrails, and count both as agents as long as the system shows goal-directed behavior and makes decisions. Mitchell and colleagues argue that fully autonomous agents should not be developed at all. Both positions are compatible with the Russell and Norvig definition, which is one reason it remains the neutral starting point. <span class="cite">[<a href="#ref3">3</a>, <a href="#ref5">5</a>]</span></p>
+    <p><strong>Where the agent boundary lies.</strong> Franklin and Graesser's objection still applies. Whether a chat model with retrieval "acts on" its environment depends on what counts as the environment. The stricter definitions, and the augmented-LLM distinction above, exist to draw that line.</p>
+    <p><strong>Evaluation.</strong> The performance measure is defined by the designer, and the definition does not say how to measure it for a system whose actions are sequences of tool calls. That is the subject of <a href="/reference/llm-evaluations/">agent evaluation</a>, which judges outcomes and trajectories separately.</p>
+
+    <footer id="sources">
+      <h2 id="references">7. References</h2>
+      <ol>
+        <li id="ref1">Stuart Russell and Peter Norvig. <em>Artificial Intelligence: A Modern Approach</em>, 4th edition. Pearson, 2020. Chapter 2, "Intelligent Agents". Print; no verified open-access text.</li>
+        <li id="ref2">Stan Franklin and Art Graesser. <a href="https://www.cs.memphis.edu/~franklin/AgentProg.html">Is it an Agent, or just a Program?: A Taxonomy for Autonomous Agents</a>. Proceedings of the Third International Workshop on Agent Theories, Architectures, and Languages, Springer-Verlag, 1996. Free full text on the author's site. Quotes Russell and Norvig (1995), Maes (1995), Hayes-Roth (1995), and Wooldridge and Jennings (1995).</li>
+        <li id="ref3">Maarten Grootendorst and Jay Alammar. <a href="https://www.oreilly.com/library/view/an-illustrated-guide/9798341662681/">An Illustrated Guide to AI Agents: Concepts and Code for Building Agents with LLMs, Tools, and Memory</a>. O'Reilly Media, 2026. Chapter 1, "Introduction". Subscription access.</li>
+        <li id="ref4">Anthropic. <a href="https://www.anthropic.com/engineering/building-effective-agents">Building effective agents</a> (2024). Source of the term "augmented LLM".</li>
+        <li id="ref5">Margaret Mitchell et al. <a href="https://arxiv.org/abs/2502.02649">Fully Autonomous AI Agents Should Not be Developed</a> (2025). DOI: 10.48550/arXiv.2502.02649.</li>
+        <li id="ref6">Wikipedia. <a href="https://en.wikipedia.org/wiki/Intelligent_agent">Intelligent agent</a>. Section "Russell and Norvig's classification". Used for the five-type list; the textbook is the primary source.</li>
+      </ol>
+      <h2 id="see-also">8. See Also</h2>
+      <ul>
+        <li><a href="/reference/agents/">AI Agents (LLM-Based)</a></li>
+        <li><a href="/reference/agent-harness/">Agent Harness</a></li>
+        <li><a href="/reference/pomdp/">POMDPs for AI Agents</a></li>
+        <li><a href="/reference/ooda-loop/">OODA Loop</a></li>
+        <li><a href="/reference/artificial-intelligence/">Artificial Intelligence</a></li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a></li>
+        <li><a href="/eli5/agents/">ELI5: How Do AI Agents Work?</a></li>
+      </ul>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
