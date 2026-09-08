@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What I Check Before Accepting Agent-Written Code — Nestor G Pestelos Jr</title>
+  <meta name="description" content="A test can reject the fix you need when it preserves a known limitation. Check what the test accepts, whether policy uses trusted inputs, and which commit a review covers.">
+  <meta property="og:title" content="What I Check Before Accepting Agent-Written Code">
+  <meta property="og:description" content="A test can reject the fix you need when it preserves a known limitation. Check what the test accepts, whether policy uses trusted inputs, and which commit a review covers.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/accepting-agent-written-code/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/accepting-agent-written-code/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"What I Check Before Accepting Agent-Written Code","description":"A test can reject the fix you need when it preserves a known limitation. Check what the test accepts, whether policy uses trusted inputs, and which commit a review covers.","url":"https://ngpestelos.com/writing/accepting-agent-written-code/","author":{"@type":"Person","name":"Nestor G Pestelos Jr","url":"https://ngpestelos.com/"},"datePublished":"2026-09-08"}
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
+    <h1>What I Check Before Accepting Agent-Written Code</h1>
+<p class="byline">Published September 8, 2026</p>
+
+
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>A test can reject the fix you need when it preserves a known limitation. Check what the test accepts, whether policy uses trusted inputs, and which commit a review covers.</p></div>
+
+<hr>
+
+<p>A refund operation in a client application returned success and changed the record&#x27;s state without publishing an event. The test required that absence. Publishing the missing event would fail its assertion.</p>
+
+<p>This was one of three different acceptance problems in my agent-assisted work. The refund needed a different expected result. My guest-agent demo needed trusted data before a memory write. My development tooling needed to detect commits added after review.</p>
+
+<h2 id="a-zero-amount-still-changed-state">A zero amount still changed state</h2>
+
+<p>There was no money left to return. In the refund method, an early <code>return</code> sat inside a transaction block. It exited the method, so execution never reached the event publisher after the block.</p>
+
+<p>The fix replaced <code>return</code> with <code>next</code>. Execution could leave the block and continue to the publisher.</p>
+
+<p><em>Snippets are simplified illustrations with generic names, not client source code. Supporting paths and helpers are omitted.</em></p>
+
+<pre><code>def finish_refund
+  result = transaction do
+    mark_refunded!
+    next { success: true, refunds: [] } # Previously: return
+  end
+  publish_event if result[:success]
+  result
+end</code></pre>
+
+<p>The revised test still expected a successful result and an empty list of refunds. It now also required the event, recorded for that order and carrying the refund reason.</p>
+
+<p>The change needed both the control-flow fix and a new expectation. More tests around the old expectation would not settle whether the limitation stays.</p>
+
+<p>The failure case also mattered. A separate test continued to require no event when the transaction failed. Publishing after a successful zero-amount operation and withholding publication after failure were both requirements.</p>
+
+<h2 id="the-policy-needed-trusted-data">The policy needed trusted data</h2>
+
+<p>My <a href="https://github.com/ngpestelos/guest-stay-agent/commit/a008fe71a69138710c17c0949682eec2662631a4">guest-stay agent demo</a> gained a path that could persist memory. The demo uses synthetic fixtures; its earlier proposal endpoint had no persistent side effect.</p>
+
+<p>The new endpoint loads stay data and test fixtures from the server&#x27;s own assets. Its policy code evaluates the proposed choice against that data. It then builds a memory record from the verdict, validates the record, and attempts persistence.</p>
+
+<pre><code>const trustedData = await loadServerData();
+const verdict = evaluatePolicy(trustedData, proposal);
+const record = buildMemory(verdict);
+const validated = validateMemory(record);
+if (validated) await persistMemory(validated);</code></pre>
+
+<p>If the server accepted client-supplied fixtures, a request could change the permission fields used to evaluate its own proposal. The server therefore loads its own copy of that data.</p>
+
+<p>The policy code and the record validator also have to agree about what they exchange. A hand-built test record can pass validation even while the policy produces a different shape.</p>
+
+<p>For an escalation record, the policy adds a field identifying its stage. A validator built only around the original fixture could reject that legitimate output. The tests pass actual policy-produced memory into the validator, including the escalation path. They also check that unexpected fields are rejected.</p>
+
+<p>That is a limited claim about the record&#x27;s shape. A string in an allowed field can still contain inappropriate content.</p>
+
+<h2 id="new-commits-need-another-review">New commits need another review</h2>
+
+<p>Suppose a review covers commit A. Then another commit, B, is added to the pull request. The earlier review may still appear complete, but it does not cover B.</p>
+
+<p>My development tooling records the commit that was reviewed. Before merging, its verifier checks whether the code still matches that commit. If the code has changed, it marks the change not ready to merge and requires another review.</p>
+
+<pre><code>if live_revision != reviewed_revision:
+    state[&quot;merge_ready&quot;] = False
+    state[&quot;next&quot;] = &quot;review&quot;
+    save(state)
+    raise ReviewRequired()</code></pre>
+
+<p>The recorded review stays attached to commit A. Replacing its commit ID with B would make B appear reviewed without anyone examining it.</p>
+
+<p>The regression test reproduces this sequence: record a review, add a commit, then run the check. It verifies that the tool refuses to mark the change ready and preserves the original review record. A separate test checks that matching commits pass.</p>
+
+<p>This catches changes present when the check runs. Another commit could still arrive before the merge.</p>
+
+<h2 id="before-accepting-a-change">Before accepting a change</h2>
+
+<p>For one proposed change, inspect what its passing checks accept. Does a test preserve a limitation you mean to remove? Can the request supply data used to authorize itself? Does the review cover the current commit? Record the answer and its evidence before calling the change ready.</p>
+
+<h2 id="files-demo">Files (demo)</h2>
+
+<p>The public demo&#x27;s source at the referenced commit:</p>
+
+<ul>
+
+<li><a href="https://github.com/ngpestelos/guest-stay-agent/blob/a008fe71a69138710c17c0949682eec2662631a4/src/worker.js">src/worker.js</a></li>
+
+<li><a href="https://github.com/ngpestelos/guest-stay-agent/blob/a008fe71a69138710c17c0949682eec2662631a4/src/lib/trusted-fixtures.mjs">src/lib/trusted-fixtures.mjs</a></li>
+
+<li><a href="https://github.com/ngpestelos/guest-stay-agent/blob/a008fe71a69138710c17c0949682eec2662631a4/src/lib/memory-record.mjs">src/lib/memory-record.mjs</a></li>
+
+<li><a href="https://github.com/ngpestelos/guest-stay-agent/blob/a008fe71a69138710c17c0949682eec2662631a4/scripts/run-guest-memory-record-tests.mjs">scripts/run-guest-memory-record-tests.mjs</a></li>
+
+<li><a href="https://github.com/ngpestelos/guest-stay-agent/blob/a008fe71a69138710c17c0949682eec2662631a4/public/policy.js">public/policy.js</a></li>
+
+</ul>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
