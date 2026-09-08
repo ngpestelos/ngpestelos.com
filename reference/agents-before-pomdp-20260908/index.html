@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Agents (LLM-Based) · Reference · Nestor G Pestelos Jr</title>
+  <title>AI Agents (LLM-Based), archived 20260908 · Reference · Nestor G Pestelos Jr</title>
   <meta name="description" content="LLM-based agents: definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.">
-  <meta property="og:title" content="AI Agents (LLM-Based) · Reference">
+  <meta property="og:title" content="AI Agents (LLM-Based), archived 20260908 · Reference">
   <meta property="og:description" content="LLM-based agents: definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ngpestelos.com/reference/agents/">
-  <link rel="canonical" href="https://ngpestelos.com/reference/agents/">
+  <meta property="og:url" content="https://ngpestelos.com/reference/agents-before-pomdp-20260908/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/agents-before-pomdp-20260908/">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
   <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
   <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
@@ -205,23 +205,24 @@
     }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"AI Agents (LLM-Based)","description":"LLM-based agents: definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.","url":"https://ngpestelos.com/reference/agents/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"AI Agents (LLM-Based), archived 20260908","description":"LLM-based agents: definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.","url":"https://ngpestelos.com/reference/agents-before-pomdp-20260908/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
   <main>
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Artificial Intelligence · Autonomous Agents</p>
-    <h1>AI Agents (LLM-Based)</h1>
+    <h1>AI Agents (LLM-Based), archived 20260908</h1>
+    <p class="updated">Archived before the POMDP extraction on 20260908. <a href="/reference/agents/">Read the current entry</a>.</p>
     <p class="subtitle">Definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.</p>
     <p class="updated">Reference entry &middot; last updated 20260908</p>
-    <p><em><a href="/reference/agents-before-pomdp-20260908/">Previous version (before the POMDP extraction, 20260908)</a>.</em></p>
+    <p><em><a href="/reference/agents-20260908/">Previous version (before the 20260908 revision)</a>.</em></p>
     <p><strong>An LLM-based AI agent</strong> is a system in which a language model selects actions and uses their results to pursue a task. Its host controls which tools and permissions are available. <span class="cite">[<a href="#ref1">1</a>]</span></p>
 
     <nav class="toc" aria-label="Contents">
       <strong>Contents</strong>
       <ol>
-        <li><a href="#first-principles">First Principles: Choosing the Next Action</a></li>
+        <li><a href="#first-principles">First Principles: Scope &amp; Model</a></li>
         <li><a href="#core-subsystems">Agent Subsystems</a></li>
         <li><a href="#execution-loops">Execution Patterns</a></li>
         <li><a href="#tool-calling">Tool Calling &amp; Sandboxing</a></li>
@@ -234,18 +235,20 @@
     </nav>
 
     <span id="definition"></span>
-    <h2 id="first-principles">1. First Principles: Choosing the Next Action</h2>
-    <p>This entry covers tool-using LLM systems. A <strong>workflow</strong> follows steps set in code. An <strong>agent</strong> lets the model choose the next action from the information available. A system can combine both. Explicit plans and persistent memory are optional. <span class="cite">[<a href="#ref1">1</a>]</span></p>
-    <p>For example, an agent given the task “fix a failing test” might:</p>
-    <ol>
-      <li>Read the failure message.</li>
-      <li>Choose a source file to inspect.</li>
-      <li>Edit the suspected cause and run the test.</li>
-      <li>Use the result to decide whether to investigate further or finish.</li>
-    </ol>
-    <p>The model chooses each next step from what it finds; the host software executes permitted tool calls and returns their results. The host also enforces limits on what the agent can do. <span class="cite">[<a href="#ref1">1</a>, <a href="#ref7">7</a>]</span></p>
-    <p>The agent has <strong>observations</strong>, such as file contents and test output. The <strong>state</strong> is the underlying situation, including code and environment details it may not have inspected. A failure message gives evidence about a bug without revealing its cause.</p>
-    <p>A <a href="/reference/pomdp/">partially observable Markov decision process (POMDP)</a> formalizes decisions under incomplete information. It is an optional mathematical model for this loop; building an agent does not require a POMDP solver. <span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <h2 id="first-principles">1. First Principles: Scope &amp; Model</h2>
+    <p>This entry covers tool-using LLM systems. Following Anthropic's distinction, a <strong>workflow</strong> follows predefined control paths; an <strong>agent</strong> lets the model choose its next steps. A system can combine both. Explicit plans and persistent memory are optional design choices. <span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>A partially observable Markov decision process (POMDP) can model action selection under incomplete information. It assumes the state captures what determines subsequent transitions and rewards. The stationary model below also assumes these rules do not change over time. <span class="cite">[<a href="#ref2">2</a>]</span></p>
+    $$\mathcal{M} = \langle \mathcal{S}, \mathcal{A}, \mathcal{O}, \mathcal{T}, \mathcal{Z}, \mathcal{R}, \gamma \rangle$$
+    <ul>
+      <li>\(\mathcal{S}\): states; \(\mathcal{A}\): available actions; \(\mathcal{O}\): observations.</li>
+      <li>\(\mathcal{T}(s_{t+1} \mid s_t,a_t)\): transition probabilities.</li>
+      <li>\(\mathcal{Z}(o_{t+1} \mid s_{t+1},a_t)\): observation probabilities.</li>
+      <li>\(\mathcal{R}(s_t,a_t)\): expected reward.</li>
+      <li>\(\gamma \in [0,1]\): discount factor for a finite horizon \(H\).</li>
+    </ul>
+    <p>An initial state distribution completes the model. A policy maps available history \(h_t\) to actions. One objective is:</p>
+    $$\pi^* = \arg\max_\pi \mathbb{E}_{\pi}\left[\sum_{t=0}^{H}\gamma^t\mathcal{R}(s_t,a_t)\right]$$
+    <p>This is a modeling objective. An LLM tool loop need not compute transition probabilities, update a belief distribution, or solve this optimization at runtime.</p>
 
     <h2 id="core-subsystems">2. Agent Subsystems</h2>
     <p class="unattributed">The four-part grouping below is this entry's organizational model. Implementations can combine or omit parts.</p>
@@ -377,7 +380,6 @@
         <li><a href="/writing/ai-writes-code-plan-becomes-work/">When the AI Writes the Code, the Plan Becomes the Work</a></li>
         <li><a href="/writing/agent-didnt-get-dumber-chat-got-contaminated/">The Agent Didn't Get Dumber, the Chat Got Contaminated</a></li>
         <li><a href="/writing/debug-system-not-prompt/">Debug the System Not the Prompt</a></li>
-        <li><a href="/reference/pomdp/">POMDPs for AI Agents</a></li>
         <li><a href="/reference/ooda-loop/">OODA Loop</a></li>
         <li><a href="/reference/context-engineering/">Context Engineering</a></li>
         <li><a href="/reference/prompt-engineering/">Prompt Engineering</a></li>
