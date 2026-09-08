@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Large Language Models · Reference · Nestor G Pestelos Jr</title>
-  <meta name="description" content="A citable ground-truth reference on Large Language Models (LLMs): transformer architecture, tokenization, context engineering, RAG, gateways, and evaluation.">
+  <meta name="description" content="Large language models: training, next-token generation, context, retrieval, evaluation, and production limits.">
   <meta property="og:title" content="Large Language Models · Reference">
-  <meta property="og:description" content="A citable ground-truth reference on Large Language Models (LLMs): transformer architecture, tokenization, context engineering, RAG, gateways, and evaluation.">
+  <meta property="og:description" content="Large language models: training, next-token generation, context, retrieval, evaluation, and production limits.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/reference/large-language-models/">
   <link rel="canonical" href="https://ngpestelos.com/reference/large-language-models/">
@@ -30,7 +30,6 @@
     onload="renderMathInElement(document.body, {
       delimiters: [
         {left: '$$', right: '$$', display: true},
-        {left: '$', right: '$', display: false},
         {left: '\\[', right: '\\]', display: true},
         {left: '\\(', right: '\\)', display: false}
       ]
@@ -45,6 +44,9 @@
     .back a:hover { text-decoration: underline; }
     .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
     h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1rem; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.9rem; }
+    .cite { font-size: 0.75em; vertical-align: super; white-space: nowrap; }
     .subtitle { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 1rem; color: var(--mute); margin-bottom: 1.6rem; line-height: 1.5; }
     .companion-box { background: var(--well); border: 1px solid var(--line); border-left: 4px solid var(--link); border-radius: 4px; padding: 1rem 1.3rem; margin-bottom: 1.8rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; }
     .companion-box h2 { font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0; margin-bottom: 0.5rem; border-bottom: none; padding-bottom: 0; color: var(--ink); }
@@ -80,7 +82,7 @@
     @media print { .back-to-top { display: none !important; } }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"Large Language Models","description":"A citable ground-truth reference on Large Language Models (LLMs): transformer architecture, tokenization, context engineering, RAG, gateways, and evaluation.","url":"https://ngpestelos.com/reference/large-language-models/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Large Language Models","description":"Large language models: training, next-token generation, context, retrieval, evaluation, and production limits.","url":"https://ngpestelos.com/reference/large-language-models/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
@@ -88,193 +90,132 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Artificial Intelligence · Language Modeling</p>
     <h1>Large Language Models</h1>
-    <p class="subtitle">A citable reference on Large Language Models (LLMs): transformer mechanics, tokenization, context engineering, RAG pipelines, architectural resilience patterns, and evaluation frameworks.</p>
+    <p id="definition"><strong>Large language models (LLMs)</strong> are neural networks trained on large text datasets to learn patterns in language. This entry focuses on <a href="/reference/autoregressive/">autoregressive</a> models, which generate text one token at a time from a probability distribution conditioned on preceding tokens.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p class="updated">Last updated 20260908 · <a href="/reference/large-language-models-20260908/">Previous version, archived 20260908</a></p>
+    <p class="subtitle"><a href="/eli5/large-language-models/">Visual introduction</a> · <a href="/trees/large-language-models/">LLM system design learning tree</a></p>
 
-    <div class="companion-box">
-      <h2>Companion Formats &amp; Related References</h2>
-      <ul>
-        <li>🎨 <a href="/eli5/large-language-models/"><strong>ELI5: How Large Language Models Work</strong></a>: Visual picture-book explainer for intuitive understanding.</li>
-        <li>🌳 <a href="/trees/large-language-models/"><strong>LLM System Design Knowledge Tree</strong></a>: Prerequisite curriculum map and active learning frontier.</li>
-        <li>📖 <a href="/reference/transformer-architecture/"><strong>Reference: Transformer Architecture</strong></a>: Multi-head self-attention and projection mechanics.</li>
-        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a>: Sequential factorization and causal attention masks.</li>
-        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a>: Multi-layer architectures, backpropagation, and representation learning.</li>
-        <li>📖 <a href="/reference/tokens/"><strong>Reference: Tokens</strong></a>: Discrete units, subword tokenizers, and vocabulary projections.</li>
-        <li>📖 <a href="/reference/embeddings/"><strong>Reference: Embeddings</strong></a>: High-dimensional semantic vector spaces and similarity metrics.</li>
-        <li>📖 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a>: Attention dynamics, memory tiers, and token budgeting.</li>
-        <li>📖 <a href="/reference/retrieval-augmented-generation/"><strong>Reference: Retrieval-Augmented Generation</strong></a>: Dedicated ground-truth page on RAG architectures.</li>
-        <li>📖 <a href="/reference/llm-inference/"><strong>Reference: LLM Inference</strong></a>: Prefill-decode lifecycle, KV caching, and continuous batching.</li>
-        <li>📖 <a href="/reference/llm-gateway/"><strong>Reference: LLM Gateway</strong></a>: Reverse proxy normalization, rate limiting, and circuit breakers.</li>
-        <li>📖 <a href="/reference/prompt-injection/"><strong>Reference: Prompt Injection</strong></a>: Threat taxonomy, delimiter confusion, and defense patterns.</li>
-      </ul>
-    </div>
+    <nav class="toc" aria-label="Contents">
+      <strong>Contents</strong>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#training">Training and post-training</a></li>
+        <li><a href="#tokenization-embeddings">Tokens, architecture, and generation</a>
+          <ul><li><a href="#tokenization">Tokenization</a></li><li><a href="#embeddings">Embeddings</a></li><li><a href="#generation">Next-token generation</a></li></ul>
+        </li>
+        <li><a href="#context-engineering">Context, retrieval, and tools</a></li>
+        <li><a href="#capability-stack">Capabilities and model selection</a></li>
+        <li><a href="#evals-benchmarks">Evaluation and limitations</a></li>
+        <li><a href="#failure-modes">Security and failure modes</a>
+          <ul><li><a href="#prompt-injection">Prompt injection</a></li><li><a href="#excessive-agency">Excessive agency</a></li><li><a href="#data-poisoning">Data poisoning</a></li></ul>
+        </li>
+        <li><a href="#system-patterns">Production considerations</a>
+          <ul><li><a href="#gateway-pattern">Gateways</a></li><li><a href="#tiered-fallback">Fallback</a></li><li><a href="#caching-tiers">Caching</a></li></ul>
+        </li>
+        <li><a href="#references">References</a></li>
+        <li><a href="#related">Related pages</a></li>
+      </ol>
+    </nav>
 
-    <div class="toc">
-      <h2>Jump to Section</h2>
-      <div class="toc-grid">
-        <a href="#definition">Definition &amp; Core Model</a> &middot;
-        <a href="#capability-stack">The AI Capability Stack</a> &middot;
-        <a href="#tokenization-embeddings">Tokens &amp; Embeddings</a> &middot;
-        <a href="#context-engineering">Context Engineering</a> &middot;
-        <a href="#system-patterns">Production Architecture</a> &middot;
-        <a href="#evals-benchmarks">Evaluation &amp; Evals</a> &middot;
-        <a href="#failure-modes">Failure Modes &amp; Security</a> &middot;
-        <a href="#sources">Sources</a>
-      </div>
-    </div>
+    <h2 id="first-principles">1. First principles and definitions</h2>
+    <p>A language model assigns probabilities to sequences of <a href="/reference/tokens/">tokens</a>, the discrete units used to represent text. An autoregressive model factors a sequence probability into successive next-token probabilities:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>$$P(x_1,\ldots,x_n)=\prod_{t=1}^{n} P(x_t\mid x_1,\ldots,x_{t-1})$$</p>
+    <p>The model's learned parameters encode patterns acquired during training. Its context contains the input available for generation. An application's documents, databases, and tool permissions are managed outside those parameters. Retrieval-augmented generation combines a model with an external source of information.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref6">6</a>]</span></p>
 
-    <!-- Section 1: Definition & Core Model -->
-    <h2 id="definition">1. Definition &amp; Core Mechanism</h2>
-    <p>
-      A <strong>Large Language Model (LLM)</strong> is an <a href="/reference/autoregressive/">autoregressive</a> <a href="/reference/deep-neural-networks/">deep neural network</a> trained on vast text corpora to model the conditional probability distribution of text tokens. Based primarily on the <a href="/reference/transformer-architecture/">Transformer decoder architecture</a> (Vaswani et al., 2017), an LLM generates output by iteratively predicting the single most plausible next token given all preceding context tokens.
-    </p>
-    <p>
-      At its core, an LLM is a mathematical function mapping an input sequence of token IDs \((x_1, x_2, \dots, x_t)\) to a probability distribution over the vocabulary \(V\) projected through a <a href="/reference/softmax/">softmax function</a>:
-    </p>
-    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      $$P(x_{t+1} \mid x_1, x_2, \dots, x_t) = \text{softmax}(W_v \cdot h_t)$$
-    </p>
-    <p>
-      <strong>Next-Token Prediction Default:</strong> Because generation optimizes for statistical plausibility across training data rather than factual truth, an unconstrained LLM will generate hallucinated text with high statistical confidence whenever source facts are absent.
-    </p>
+    <h2 id="training">2. Training and post-training</h2>
+    <p><strong>Pretraining</strong> fits model parameters to a large dataset. For autoregressive language models, a common objective is predicting the next token. GPT-3 is a published example of this approach.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p><strong>Supervised <a href="/reference/fine-tuning/">fine-tuning</a></strong> can then train the model on demonstrations of desired responses. Further training may use human preferences or <a href="/reference/reinforcement-learning/">reinforcement learning</a>. InstructGPT used demonstrations, rankings of model outputs, a learned reward model, and reinforcement learning. This is one training recipe.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p><strong><a href="/reference/llm-inference/">Inference</a></strong> uses the trained model to produce outputs. Supplying instructions or retrieved text changes the context for that generation; ordinary inference leaves model parameters unchanged.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref6">6</a>]</span></p>
 
-    <!-- Section 2: Capability Stack -->
-    <h2 id="capability-stack">2. The AI Capability Stack</h2>
-    <p>
-      Modern AI systems select models across a four-tier capability spectrum based on latency budgets, cost constraints, and reasoning depth:
-    </p>
-    <table>
-      <thead>
-        <tr>
-          <th>Tier</th>
-          <th>Parameter Scale</th>
-          <th>Typical Use Cases</th>
-          <th>Tradeoffs</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><a href="/reference/frontier-models/"><strong>Frontier Models</strong></a> (e.g. Claude Opus, GPT-4.5)</td>
-          <td>&gt;500B (MoE)</td>
-          <td>Complex multi-step reasoning, architectural planning, system synthesis, edge-case analysis.</td>
-          <td>Highest cost ($5–$30 / 1M tokens), high latency (<a href="/reference/time-to-first-token/">TTFT</a> &gt; 1.5s), external API dependency.</td>
-        </tr>
-        <tr>
-          <td><strong>Workhorse Models</strong> (e.g. Claude Sonnet, GPT-4o)</td>
-          <td>70B–200B</td>
-          <td>Production coding, automated PR reviews, complex extraction, agent tool orchestration.</td>
-          <td>Balanced performance, moderate cost, primary production driver.</td>
-        </tr>
-        <tr>
-          <td><strong>Fast / Flash Models</strong> (e.g. Claude Haiku, Gemini Flash)</td>
-          <td>8B–35B</td>
-          <td>Triage, summarization, classifier gates, firewall intent filtering, high-throughput routing.</td>
-          <td>Sub-second <a href="/reference/time-to-first-token/">TTFT</a>, low cost ($0.10–$0.50 / 1M tokens), lower deep-reasoning ceiling.</td>
-        </tr>
-        <tr>
-          <td><strong>Specialized SLMs</strong> (e.g. Llama 3 8B, Qwen 2.5)</td>
-          <td>1B–8B</td>
-          <td>On-device <a href="/reference/llm-inference/">inference</a>, air-gapped data compliance, narrow fine-tuned classification, parsing.</td>
-          <td>Runs locally / on CPU/edge, zero API cost, strict single-task specialization.</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2 id="tokenization-embeddings">3. Tokens, architecture, and generation</h2>
+    <h3 id="tokenization">Tokenization</h3>
+    <p>A tokenizer converts text into token IDs. Subword methods can split a word into smaller pieces; byte-level methods also represent text through bytes or groups of bytes. Token counts depend on the tokenizer and input language, so a fixed words-per-token ratio is only an estimate.<span class="cite">[<a href="#ref3">3</a>]</span></p>
 
-    <!-- Section 3: Tokenization & Embeddings -->
-    <h2 id="tokenization-embeddings">3. <a href="/reference/tokens/">Tokens</a>, <a href="/reference/embeddings/">Embeddings</a> &amp; <a href="/reference/vector-search/">Vector Search</a></h2>
-    
-    <h3 id="tokenization">Tokenization Mechanics</h3>
-    <p>
-      LLMs do not process raw text or characters directly. Text is converted into discrete integer <a href="/reference/tokens/">tokens</a> using subword algorithms such as Byte-Pair Encoding (BPE) or WordPiece. 
-      On average in English, 1 token &approx; 0.75 words (or 4 characters). Numbers, whitespace, non-Latin scripts, and complex code syntax consume substantially higher token density.
-    </p>
+    <h3 id="embeddings">Embeddings</h3>
+    <p>A model maps token IDs to learned vectors called <a href="/reference/embeddings/">embeddings</a>. In a <a href="/reference/transformer-architecture/">Transformer</a>, attention and other layers transform these vectors using information from permitted positions in the sequence.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>Retrieval embeddings represent queries or passages for <a href="/reference/vector-search/">vector search</a>. Their training objective and use differ from the token embeddings inside a generator. Dense Passage Retrieval, for example, trained separate question and passage encoders and scored their vectors with a dot product.<span class="cite">[<a href="#ref5">5</a>]</span></p>
 
-    <h3 id="embeddings">Dense Vector Embeddings</h3>
-    <p>
-      An <a href="/reference/embeddings/">embedding model</a> projects text tokens into a continuous high-dimensional vector space (e.g., 768 to 3072 dimensions). 
-      Geometric proximity in this space captures semantic meaning: two text passages with similar conceptual meaning cluster closely together as measured by <strong>cosine similarity</strong>, regardless of whether they share exact vocabulary.
-    </p>
+    <h3 id="generation">Next-token generation</h3>
+    <p>The model computes scores for possible next tokens. A <a href="/reference/softmax/">softmax</a> converts scores to a probability distribution. Greedy decoding selects the highest-probability token; sampling draws a token from a distribution, which decoding settings may modify. The selected token is appended and generation repeats until a stopping condition is met.<span class="cite">[<a href="#ref4">4</a>, <a href="#ref7">7</a>]</span></p>
+    <p>A plausible continuation can contain false or unsupported claims. Missing information does not make hallucination inevitable: a model may also abstain or request context. TruthfulQA found substantial errors in the models and questions it tested; its scores are a dated evaluation, not a universal error rate.<span class="cite">[<a href="#ref8">8</a>]</span></p>
 
-    <!-- Section 4: Context Engineering -->
-    <h2 id="context-engineering">4. <a href="/reference/context-engineering/">Context Engineering</a> &amp; Memory Strategies</h2>
-    <p>
-      <a href="/reference/context-engineering/">Context engineering</a> is the systematic discipline of curating the token payload submitted to an LLM on each call. It is a data-pipeline engineering problem, not prompt styling.
-    </p>
+    <h2 id="context-engineering">4. Context, retrieval, and tools</h2>
+    <p><a href="/reference/context-engineering/">Context engineering</a> concerns the instructions, examples, conversation history, and external information supplied to a model. A <a href="/reference/context-window/">context window</a> limits how much tokenized material a model can process in a call. Capacity alone does not establish reliable use of that material.</p>
+    <p><em>Lost in the Middle</em> tested multi-document question answering and synthetic key-value retrieval. In the evaluated models, performance often fell when relevant information appeared in the middle of the input. The findings concern those models, tasks, and positions; they do not establish that every increase in context length reduces accuracy.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+    <p><a href="/reference/retrieval-augmented-generation/">Retrieval-augmented generation (RAG)</a> retrieves external material for use during generation. Lewis et al. combined a retriever with a generator on knowledge-intensive tasks. Retrieval quality and source quality remain part of the application's evaluation.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <p>An illustrative application might retain recent turns, store session records, and retrieve selected documents. A <a href="/reference/prompt-engineering/">prompt</a> might separate the task, supporting material, constraints, and output format. These are design choices; neither defines a required memory hierarchy or guarantees reliable behavior.</p>
+    <p class="unattributed">The memory and prompt examples are illustrative designs by the author.</p>
+    <p>Tools let application code perform actions requested by a model, such as a database lookup. The host must enforce authorization and validate arguments before executing a request.<span class="cite">[<a href="#ref10">10</a>]</span></p>
+
+    <h2 id="capability-stack">5. Capabilities and model selection</h2>
+    <p>Model size alone does not determine usefulness. In InstructGPT's evaluation, human raters preferred outputs from a fine-tuned 1.3-billion-parameter model to those from the original 175-billion-parameter GPT-3. The result concerns the evaluated prompt distribution and preference criteria.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p class="unattributed">Illustrative selection checklist by the author:</p>
     <ul>
-      <li><strong>The <a href="/reference/context-window/">Context Window</a> Budget:</strong> Every LLM has a finite context length (e.g. 128k to 2M tokens). However, "effective recall" degrades as context grows (the <em>Lost in the Middle</em> phenomenon).</li>
-      <li><strong>Context Overflow Strategy:</strong> Massive context windows do not replace a structured memory hierarchy. Production systems split state into:
-        <ul>
-          <li><em>Short-term Working Memory:</em> Immediate session turn buffer and current active files.</li>
-          <li><em>Episodic Memory:</em> Git commit logs, session transcripts, and daily worklogs.</li>
-          <li><em>Semantic Long-Term Memory:</em> Curated atomic notes, vector databases, and knowledge graphs.</li>
-        </ul>
-      </li>
-      <li><strong>Structured Prompt Framework:</strong> High-reliability <a href="/reference/prompt-engineering/">prompts</a> partition instructions into four deterministic sections: <code>Role &amp; Identity</code>, <code>Task &amp; Context</code>, <code>Constraints &amp; Safety Guards</code>, and <code>Output Format / Schema</code>.</li>
+      <li>Task quality measured on representative examples and important failure cases.</li>
+      <li>Measured response latency and total cost, including retries, retrieval, and hosting.</li>
+      <li>Deployment options, data handling constraints, and required tool interfaces.</li>
+      <li>Context capacity and performance with the expected inputs.</li>
     </ul>
 
-    <!-- Section 5: Production Architecture -->
-    <h2 id="system-patterns">5. Production System Architecture Patterns</h2>
-    <p>
-      Deploying LLMs in production requires isolating application code from non-deterministic, high-latency external model APIs through specialized <a href="/reference/llm-inference/">inference</a> and serving infrastructure (Mitra, 2026):
-    </p>
+    <h2 id="evals-benchmarks">6. Evaluation and limitations</h2>
+    <p><a href="/reference/llm-evaluations/">Evaluation</a> should match the task. Exact-match scoring is useful when a fixed answer or label is required. Structured outputs can be checked against a schema; generated code can be compiled and tested. Open-ended responses require criteria that allow valid alternative wording.<span class="cite">[<a href="#ref11">11</a>]</span></p>
+    <p>A model judge can score responses against a rubric, but its judgments need validation against human assessments. Zheng et al. documented position, verbosity, and self-enhancement biases, as well as reasoning limits, in the judges they tested.<span class="cite">[<a href="#ref12">12</a>]</span></p>
+    <p>A task-specific evaluation set can include unsupported factual claims, incomplete retrieval, malformed tool requests, and adversarial inputs. Benchmark results should retain the model version, task definition, scoring method, and test conditions needed to interpret them.<span class="cite">[<a href="#ref10">10</a>, <a href="#ref11">11</a>]</span></p>
 
-    <h3 id="gateway-pattern">1. The <a href="/reference/llm-gateway/">LLM Gateway Pattern</a></h3>
-    <p>
-      Decouples business services from proprietary vendor SDKs. The gateway acts as a reverse proxy providing centralized API key rotation, unified request/response normalization, token-bucket rate limiting, and observability metrics.
-    </p>
+    <h2 id="failure-modes">7. Security and failure modes</h2>
+    <h3 id="prompt-injection">Prompt injection</h3>
+    <p><a href="/reference/prompt-injection/">Prompt injection</a> attempts to steer model behavior through malicious instructions, including instructions embedded in retrieved material. Separating instructions from data and using filters may help, but these do not establish a security boundary. Application code must restrict access, validate outputs, and test adversarial inputs.<span class="cite">[<a href="#ref10">10</a>]</span></p>
+    <h3 id="excessive-agency">Excessive agency</h3>
+    <p>Broad tool permissions increase the consequences of a model error or injection. Enforce least privilege in the host, authorize each action against the user's permissions, and require human approval for sensitive operations. A model-generated statement that an action is allowed is insufficient authorization.<span class="cite">[<a href="#ref10">10</a>]</span></p>
+    <h3 id="data-poisoning">Data poisoning</h3>
+    <p>Attackers may alter training data or retrieved documents to influence outputs. Source provenance, controlled ingestion, and data review help address this risk. A cryptographic hash can detect changes against a trusted digest; it does not establish that the original content is true or safe.<span class="cite">[<a href="#ref13">13</a>, <a href="#ref15">15</a>]</span></p>
 
-    <h3 id="tiered-fallback">2. Circuit Breakers &amp; Tiered Model Fallback</h3>
-    <p>
-      When an upstream provider experiences elevated 5xx errors or latency spikes, a circuit breaker in the <a href="/reference/model-router/">model router</a> trips from <em>Closed</em> to <em>Open</em>, instantly routing incoming traffic to secondary providers (e.g., Primary Claude Sonnet &rarr; Fallback DeepSeek-V3 on Nous / OpenAI GPT-4o) without user-facing downtime.
-    </p>
+    <h2 id="system-patterns">8. Production considerations</h2>
+    <p class="unattributed">The gateway, fallback, and response-cache guidance below is application-design synthesis by the author. These patterns are optional.</p>
+    <h3 id="gateway-pattern">Gateways</h3>
+    <p>An <a href="/reference/llm-gateway/">LLM gateway</a> can centralize credentials, request routing, and observability. Provider differences still require compatibility checks for supported tools, input limits, and response formats.</p>
+    <h3 id="tiered-fallback">Fallback</h3>
+    <p>A <a href="/reference/model-router/">model router</a> can send requests to an alternative service after an error. Fallback can also fail or change output quality. Test compatibility, data handling rules, retry limits, and partial failures before relying on it for availability.</p>
+    <h3 id="caching-tiers">Caching</h3>
+    <p>A response cache reuses a saved answer. Its key and invalidation policy must account for relevant instructions, user access, source versions, and generation settings. <a href="/reference/semantic-caching/">Semantic caching</a> also risks reusing an answer for a meaningfully different request; any similarity threshold requires task-specific validation.</p>
+    <p><a href="/reference/prompt-caching/">Prefix caching</a> reuses computation for a shared input prefix while generating a new response. It is distinct from reusing a stored answer. Neither approach removes all lookup, network, or generation latency.<span class="cite">[<a href="#ref14">14</a>]</span></p>
 
-    <h3 id="caching-tiers">3. Three-Level Caching Strategy</h3>
-    <ul>
-      <li><strong>Level 1 (Exact Match):</strong> Hash lookup over raw prompt strings and temperature settings (0ms latency, zero token cost).</li>
-      <li><strong>Level 2 (<a href="/reference/semantic-caching/">Semantic Caching</a>):</strong> Cosine distance matching over prompt embeddings to serve cached answers for semantically identical questions within a cosine threshold (e.g., \(&gt;0.96\)).</li>
-      <li><strong>Level 3 (Proactive Caching):</strong> Pre-populating responses for anticipated high-frequency queries and leveraging <a href="/reference/prompt-caching/">prompt caching</a> for shared prefixes.</li>
-    </ul>
-
-    <!-- Section 6: Evals & Benchmarks -->
-    <h2 id="evals-benchmarks">6. <a href="/reference/llm-evaluations/">Evaluation, Testing &amp; LLM-as-a-Judge</a></h2>
-    <p>
-      Because LLM output is non-deterministic and natural language-based, classical string-equality unit tests fail. Production systems rely on three testing layers:
-    </p>
-    <ol>
-      <li><strong>Deterministic Rule Checks:</strong> JSON Schema validation, regex constraints, forbidden keyword filters, and execution compiler checks.</li>
-      <li><strong>Golden Set Benchmarking:</strong> Curated suites of input-output test cases evaluated by a frontier model (LLM-as-a-Judge) using explicit, rubric-based scoring.</li>
-      <li><strong><a href="/reference/llm-mutation-testing/">Mutation &amp; Red-Team Testing</a>:</strong> Programmatically injecting deliberate errors (syntax mutations, adversarial prompt injections) to verify that guardrails catch regressions.</li>
-    </ol>
-
-    <!-- Section 7: Failure Modes & Security -->
-    <h2 id="failure-modes">7. Failure Modes &amp; AI Security</h2>
-    <div class="def-box">
-      <h3 class="term-title" id="prompt-injection"><a href="/reference/prompt-injection/">Prompt Injection</a>:</h3>
-      <p class="term-desc">An attacker embeds instructions inside untrusted user data that override the system instructions. Mitigated by the <a href="/reference/firewall-llm/">Firewall LLM pattern</a> (filtering data before main model), strict instruction/data separation, and treating all model outputs as untrusted input.</p>
-    </div>
-
-    <div class="def-box">
-      <h3 class="term-title" id="excessive-agency">Excessive Agency:</h3>
-      <p class="term-desc">Granting an LLM autonomous write or execution permissions without validation gates. Mitigated by the <a href="/reference/plan-approve-execute/"><strong>Plan-Approve-Execute</strong> pattern</a>: the model proposes an action, but a deterministic policy or human operator executes the gate.</p>
-    </div>
-
-    <div class="def-box">
-      <h3 class="term-title" id="data-poisoning">Data Poisoning:</h3>
-      <p class="term-desc">Adversarial manipulation of training corpora or RAG knowledge bases to induce biased, false, or backdoored completions. Mitigated by cryptographic hash verification of data sources and trusted ingest curation.</p>
-    </div>
-
-    <!-- Section 8: Sources -->
     <footer id="sources">
-      <h3>Sources &amp; Foundational Literature</h3>
+      <h2 id="references">9. References</h2>
+      <ol>
+        <li id="ref1">Brown et al. (2020). <a href="https://arxiv.org/abs/2005.14165">Language Models are Few-Shot Learners</a>.</li>
+        <li id="ref2">Ouyang et al. (2022). <a href="https://arxiv.org/abs/2203.02155">Training language models to follow instructions with human feedback</a>.</li>
+        <li id="ref3">Hugging Face. <a href="https://huggingface.co/docs/transformers/tokenizer_summary">Tokenization algorithms</a>.</li>
+        <li id="ref4">Vaswani et al. (2017). <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>.</li>
+        <li id="ref5">Karpukhin et al. (2020). <a href="https://arxiv.org/abs/2004.04906">Dense Passage Retrieval for Open-Domain Question Answering</a>.</li>
+        <li id="ref6">Lewis et al. (2020). <a href="https://arxiv.org/abs/2005.11401">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a>.</li>
+        <li id="ref7">Hugging Face. <a href="https://huggingface.co/docs/transformers/generation_strategies">Generation strategies</a>.</li>
+        <li id="ref8">Lin, Hilton, and Evans (2021). <a href="https://arxiv.org/abs/2109.07958">TruthfulQA: Measuring How Models Mimic Human Falsehoods</a>.</li>
+        <li id="ref9">Liu et al. (2023). <a href="https://arxiv.org/abs/2307.03172">Lost in the Middle: How Language Models Use Long Contexts</a>.</li>
+        <li id="ref10">OWASP. <a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">LLM01:2025 Prompt Injection</a>.</li>
+        <li id="ref11">OpenAI. <a href="https://developers.openai.com/api/docs/guides/evaluation-best-practices">Evaluation best practices</a>.</li>
+        <li id="ref12">Zheng et al. (2023). <a href="https://arxiv.org/abs/2306.05685">Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena</a>.</li>
+        <li id="ref13">OWASP. <a href="https://genai.owasp.org/llmrisk/llm042025-data-and-model-poisoning/">LLM04:2025 Data and Model Poisoning</a>.</li>
+        <li id="ref14">vLLM. <a href="https://docs.vllm.ai/en/latest/features/automatic_prefix_caching/">Automatic Prefix Caching</a>.</li>
+        <li id="ref15">OWASP. <a href="https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html">RAG Security Cheat Sheet</a>.</li>
+      </ol>
+      <h2 id="related">10. Related pages</h2>
       <ul>
-        <li>Vaswani et al. (2017): <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (Transformer Architecture)</li>
-        <li>Sampriti Mitra (2026): <a href="https://www.packtpub.com/en-us/product/system-design-for-the-llm-era-9781807789930" target="_blank" rel="noopener">System Design for the LLM Era</a> (Packt Publishing)</li>
-        <li>Lewis et al. (2020): <a href="https://arxiv.org/abs/2005.11401" target="_blank" rel="noopener">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</a></li>
-        <li>Anthropic Research: <a href="https://www.anthropic.com/research/contextual-retrieval" target="_blank" rel="noopener">Contextual Retrieval &amp; Prompt Engineering Guides</a></li>
-        <li>OpenAI: <a href="https://platform.openai.com/docs/guides/evals" target="_blank" rel="noopener">Model Evaluation &amp; Evals Framework</a></li>
+        <li><a href="/reference/transformer-architecture/">Transformer architecture</a></li>
+        <li><a href="/reference/deep-neural-networks/">Deep neural networks</a></li>
+        <li><a href="/reference/autoregressive/">Autoregressive models</a></li>
+        <li><a href="/reference/tokens/">Tokens</a></li>
+        <li><a href="/reference/embeddings/">Embeddings</a></li>
+        <li><a href="/reference/fine-tuning/">Fine-tuning</a></li>
+        <li><a href="/reference/reinforcement-learning/">Reinforcement learning</a></li>
+        <li><a href="/reference/context-engineering/">Context engineering</a></li>
+        <li><a href="/reference/retrieval-augmented-generation/">Retrieval-augmented generation</a></li>
+        <li><a href="/reference/llm-inference/">LLM inference</a></li>
+        <li><a href="/reference/llm-gateway/">LLM gateway</a></li>
+        <li><a href="/reference/prompt-injection/">Prompt injection</a></li>
+        <li><a href="/reference/firewall-llm/">Firewall LLM</a></li>
+        <li><a href="/reference/plan-approve-execute/">Plan-approve-execute</a></li>
+        <li><a href="/reference/llm-mutation-testing/">LLM mutation testing</a></li>
       </ul>
-      <p style="margin-top: 1rem;">
-        Related: <a href="/reference/transformer-architecture/">Transformer Architecture</a> &middot; <a href="/reference/llm-inference/">LLM Inference</a> &middot; <a href="/reference/retrieval-augmented-generation/">RAG</a> &middot; <a href="/reference/prompt-injection/">Prompt Injection</a> &middot; <a href="/reference/llm-gateway/">LLM Gateway</a> &middot; <a href="/eli5/large-language-models/">ELI5: Large Language Models</a> &middot; <a href="/trees/large-language-models/">LLM System Design Tree</a>
-      </p>
     </footer>
   </main>
   <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
