@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 import unittest
+from html import unescape
 from html.parser import HTMLParser
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
@@ -274,6 +275,21 @@ class SiteDiscoverabilityTests(unittest.TestCase):
 
 
 class ReferenceSeoTests(unittest.TestCase):
+    def test_reference_entries_have_semantic_paragraph_kickers(self):
+        generic_labels = {"reference", "reference entry", "reference document", "reference guide"}
+        for path in sorted(REF.glob("*/index.html")):
+            html = path.read_text(encoding="utf-8")
+            with self.subTest(slug=path.parent.name):
+                kickers = re.findall(
+                    r'<(\w+) class="kicker">(.*?)</\1>', html, re.S
+                )
+                self.assertEqual(len(kickers), 1)
+                tag, content = kickers[0]
+                self.assertEqual(tag, "p")
+                label = " ".join(unescape(re.sub(r"<[^>]+>", "", content)).split())
+                self.assertTrue(label)
+                self.assertNotIn(label.casefold(), generic_labels)
+
     def test_reference_titles_use_middot_not_emdash(self):
         for path in sorted(REF.rglob("index.html")):
             raw = path.read_bytes()
