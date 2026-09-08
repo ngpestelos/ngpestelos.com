@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Queueing Theory for Software Delivery · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Queueing theory applied to software delivery: arrivals, service capacity, Little’s law, and model limits.">
+  <meta property="og:title" content="Queueing Theory for Software Delivery · Reference">
+  <meta property="og:description" content="Queueing theory applied to software delivery: arrivals, service capacity, Little’s law, and model limits.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/queueing-theory/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/queueing-theory/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+      .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+    .unattributed { color: var(--mute); font-style: italic; }
+    main > ul, main > ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    main > ul li, main > ol li { margin-bottom: 0.5rem; }
+    .table-scroll { overflow-x: auto; margin: 1rem 0; }
+    table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+    th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 0.5rem; }
+    td:last-child { white-space: nowrap; }
+    @media print { .back { display: none; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Queueing Theory for Software Delivery","description":"Queueing theory applied to software delivery: arrivals, service capacity, Little\u2019s law, and model limits.","url":"https://ngpestelos.com/reference/queueing-theory/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Mathematics · Operations Research</p>
+    <h1>Queueing Theory for Software Delivery</h1>
+    <p class="updated">Reference entry · last updated 20260908</p>
+    <p class="lede"><strong>Queueing theory</strong> is the mathematical study of work arriving for service, waiting when service is unavailable, and departing after completion. Software review queues are one application.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <nav class="toc" aria-label="Contents"><p class="toc-title">Contents</p><ol>
+      <li><a href="#first-principles">First principles and definitions</a></li>
+      <li><a href="#littles-law">Little’s law</a></li>
+      <li><a href="#limits">Application and limits</a></li>
+      <li><a href="#see-also">See also</a></li>
+      <li><a href="#references">References</a></li>
+</ol></nav>
+    <h2 id="first-principles">First principles and definitions</h2>
+<p>An arrival rate counts work entering a system per unit time. Service capacity measures how much work its servers can complete per unit time. The system boundary determines whether a waiting room, a service stage, or both are counted.</p><p>For a stable single-server model, utilization is the arrival rate divided by the service rate. Random arrivals and service times can produce queues even when average utilization is below one.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <h2 id="littles-law">Little’s law</h2>
+<p>For a stable system with consistent boundaries and finite long-run averages, Little’s law relates average work in the system, throughput, and time in the system:<span class="cite">[<a href="#ref1">1</a>]</span></p><p><code>L = λ × W</code>, where L is average work in progress, λ is average throughput, and W is average time from entry to departure.</p><p>Illustrative example: a review process completing 10 PRs per day with an average of 20 PRs waiting or under review has an average residence time of two days.</p>
+    <h2 id="limits">Application and limits</h2>
+<p>A review system can limit incoming work, reduce service time, or increase available capacity. These are model-derived options. Actual review includes interruptions, rework, priorities, and reviewers with different expertise.</p><p>Little’s law is an accounting relationship, not proof that changing one quantity alone causes another to change. Sustained overload violates the stable finite-backlog assumption.</p>
+    <h2 id="see-also">See also</h2>
+<ul>
+<li><a href="/reference/acceleration-whiplash/">Acceleration Whiplash</a></li>
+<li><a href="/reference/throughput/">Throughput</a></li>
+<li><a href="/reference/latency/">Latency</a></li>
+<li><a href="/reference/theory-of-constraints/">Theory of Constraints</a></li>
+<li><a href="/reference/code-review/">Code Review</a></li>
+</ul>
+    <h2 id="references">References</h2>
+<ol>
+<li id="ref1">MIT OpenCourseWare, 2.854, Fall 2016. <a href="https://ocw.mit.edu/courses/2-854-introduction-to-manufacturing-systems-fall-2016/5d3e9532c2ff6e156d48e41f9bd9576f_MIT2_854F16_Queueing.pdf">Markov Processes and Queues</a>.</li>
+</ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
