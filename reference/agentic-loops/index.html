@@ -24,6 +24,29 @@
     gtag('js', new Date());
     gtag('config', 'G-TLBY8P4GG9');
   </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#fffaf3',
+        primaryTextColor: '#1c1915',
+        primaryBorderColor: '#d8d2c6',
+        lineColor: '#5c564e',
+        secondaryColor: '#f4efe6',
+        tertiaryColor: '#fffaf3',
+        mainBkg: '#fffaf3',
+        nodeBorder: '#d8d2c6',
+        clusterBkg: '#fdfbf7',
+        clusterBorder: '#9a3412',
+        titleColor: '#9a3412',
+        edgeLabelBackground: '#f4efe6',
+        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        fontSize: '13px'
+      }
+    });
+  </script>
   <style>
     
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -128,6 +151,21 @@
       max-width: 100%;
       height: auto;
     }
+    .agent-diagram .diagram-scroll { overflow-x: auto; }
+    .agent-diagram pre.mermaid {
+      margin: 0;
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+    }
+    .agent-diagram .mermaid svg { min-width: 600px; }
+    .agent-diagram figcaption {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--mute);
+      text-align: left;
+    }
     footer.meta {
       margin-top: 3rem;
       padding-top: 1.2rem;
@@ -188,7 +226,7 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Systems Architecture · Artificial Intelligence</p>
     <h1>Agentic Loops</h1>
-    <p class="updated">Reference entry · last updated August 25, 2026</p>
+    <p class="updated">Reference entry · last updated 20260909</p>
 
     <p class="lede">An <strong>agentic loop</strong> is an autonomous execution cycle that drives an artificial intelligence agent toward a specified objective through iterative observation, reasoning, tool execution, and verification.<span class="cite">[<a href="#ref1">1</a>]</span> Positioned as the fourth and outermost layer of modern AI systems, the loop orchestrates prompts, context pipelines, and runtime harnesses into a self-directed feedback cycle.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 
@@ -239,6 +277,30 @@
         <text x="602" y="93" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#166534">Tests Passed ✅</text>
       </svg>
     </div>
+
+    <figure class="diagram-box agent-diagram">
+      <div class="diagram-scroll" tabindex="0" role="region" aria-label="Agent architecture diagram; scroll horizontally on small screens">
+        <pre class="mermaid">
+flowchart LR
+    accTitle: Agent architecture and feedback loop
+    accDescr: The user sends a query to the agent and receives an answer. The agent sends actions to the environment and receives feedback. The agent contains reasoning through a large language model, with memory, tools, and planning as parallel supporting components.
+    U[User]
+    subgraph A[Agent]
+        direction TB
+        R["Reasoning&lt;br/&gt;Large Language Model"]
+        R --- M[Memory]
+        R --- T[Tools]
+        R --- P[Planning]
+    end
+    E[Environment]
+    U -->|Query| A
+    A -->|Answer| U
+    A -->|Action| E
+    E -->|Feedback| A
+        </pre>
+      </div>
+      <figcaption>Adapted from Maarten Grootendorst and Jay Alammar, <a href="https://learning.oreilly.com/library/view/an-illustrated-guide/9798341662681/ch01.html#ch01_large_language_models_1783538923685647"><cite>An Illustrated Guide to AI Agents</cite>, Chapter 1, “Introduction”</a> (O’Reilly Media, 2026).</figcaption>
+    </figure>
 
     <nav class="toc" aria-label="Contents">
       <p class="toc-title">Contents</p>
