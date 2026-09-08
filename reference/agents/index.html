@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agents · Reference · Nestor G Pestelos Jr</title>
-  <meta name="description" content="A citable ground-truth reference on Autonomous Agents: MDP formulation, perception-action-reflection loops, tool calling protocols, memory tiers, and multi-agent orchestration.">
-  <meta property="og:title" content="Agents · Reference">
-  <meta property="og:description" content="A citable ground-truth reference on Autonomous AI Agents: MDP formulation, perception-action-reflection loops, tool calling protocols, memory tiers, and multi-agent orchestration.">
+  <title>AI Agents (LLM-Based) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="LLM-based agents: definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.">
+  <meta property="og:title" content="AI Agents (LLM-Based) · Reference">
+  <meta property="og:description" content="LLM-based agents: definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/reference/agents/">
   <link rel="canonical" href="https://ngpestelos.com/reference/agents/">
@@ -78,36 +78,6 @@
       margin-bottom: 1.6rem;
       line-height: 1.5;
     }
-    .companion-box {
-      background: var(--well);
-      border: 1px solid var(--line);
-      border-left: 4px solid var(--link);
-      border-radius: 4px;
-      padding: 1rem 1.3rem;
-      margin-bottom: 1.8rem;
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    }
-    .companion-box h2 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      border-bottom: none;
-      padding-bottom: 0;
-      color: var(--ink);
-    }
-    .companion-box ul {
-      list-style: none;
-      padding-left: 0;
-      margin-bottom: 0;
-      font-size: 0.92rem;
-    }
-    .companion-box li { margin-bottom: 0.4rem; }
-    .companion-box li:last-child { margin-bottom: 0; }
-    .companion-box a { color: var(--link); text-decoration: none; }
-    .companion-box a:hover { text-decoration: underline; }
     .toc {
       background: var(--well);
       border: 1px solid var(--line);
@@ -117,22 +87,7 @@
       font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.9rem;
     }
-    .toc h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-      color: var(--ink);
-    }
-    .toc-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem 0.6rem;
-      line-height: 1.4;
-    }
-    .toc-grid a { color: var(--link); text-decoration: none; }
-    .toc-grid a:hover { text-decoration: underline; }
+    .toc a { color: var(--link); }
     h2 {
       font-size: 1.45rem;
       font-weight: 700;
@@ -192,6 +147,12 @@
     .def-box:last-child { border-bottom: none; }
     .term-title { font-weight: 700; font-size: 1.05rem; display: inline; }
     .term-desc { display: inline; margin-left: 0.35rem; }
+    .table-scroll { max-width: 100%; overflow-x: auto; }
+    .table-scroll:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    .katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+    .cite { font-size: 0.75em; vertical-align: super; }
+    .updated, .unattributed { color: var(--mute); font-size: 0.9rem; }
+    .unattributed { font-style: italic; }
     footer {
       border-top: 1px solid var(--line);
       margin-top: 3rem;
@@ -244,123 +205,94 @@
     }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"Agents","description":"A citable ground-truth reference on Autonomous Agents: MDP formulation, perception-action-reflection loops, tool calling protocols, memory tiers, and multi-agent orchestration.","url":"https://ngpestelos.com/reference/agents/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"AI Agents (LLM-Based)","description":"LLM-based agents: definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.","url":"https://ngpestelos.com/reference/agents/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
   <main>
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Artificial Intelligence · Autonomous Agents</p>
-    <h1>Agents</h1>
-    <p class="subtitle">A citable ground-truth reference on Autonomous Agents: MDP formulation, perception-action-reflection loops, tool calling protocols, memory tiers, and multi-agent orchestration.</p>
+    <h1>AI Agents (LLM-Based)</h1>
+    <p class="subtitle">Definitions, execution patterns, tool boundaries, memory, and multi-agent trade-offs.</p>
+    <p class="updated">Reference entry &middot; last updated 20260908</p>
+    <p><em><a href="/reference/agents-20260908/">Previous version (before the 20260908 revision)</a>.</em></p>
+    <p><strong>An LLM-based AI agent</strong> is a system in which a language model selects actions and uses their results to pursue a task. Its host controls which tools and permissions are available. <span class="cite">[<a href="#ref1">1</a>]</span></p>
 
-    <div class="companion-box">
-      <h2>Companion Formats &amp; Essays</h2>
-      <ul>
-        <li>🎨 <a href="/eli5/agents/"><strong>ELI5: How Do AI Agents Work?</strong></a> — Visual picture-book explainer.</li>
-        <li>🌳 <a href="/trees/agents/"><strong>AI Agents Knowledge Tree</strong></a> — Prerequisite curriculum map and active frontier.</li>
-        <li>📖 <a href="/writing/ai-writes-code-plan-becomes-work/"><strong>Essay: When the AI Writes the Code, the Plan Becomes the Work</strong></a> — Agent autonomy and human specification.</li>
-        <li>📖 <a href="/writing/agent-didnt-get-dumber-chat-got-contaminated/"><strong>Essay: The Agent Didn't Get Dumber, the Chat Got Contaminated</strong></a> — Context degradation in stateful agent sessions.</li>
-        <li>📖 <a href="/writing/debug-system-not-prompt/"><strong>Essay: Debug the System Not the Prompt</strong></a> — Agent harness architecture over prompt tuning.</li>
-        <li>📚 <a href="/reference/ooda-loop/"><strong>Reference: OODA Loop</strong></a> &middot; <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> &middot; <a href="/reference/prompt-engineering/"><strong>Reference: Prompt Engineering</strong></a> &middot; <a href="/reference/adversarial-agent-review/"><strong>Reference: Adversarial Review</strong></a></li>
-      </ul>
-    </div>
+    <nav class="toc" aria-label="Contents">
+      <strong>Contents</strong>
+      <ol>
+        <li><a href="#first-principles">First Principles: Scope &amp; Model</a></li>
+        <li><a href="#core-subsystems">Agent Subsystems</a></li>
+        <li><a href="#execution-loops">Execution Patterns</a></li>
+        <li><a href="#tool-calling">Tool Calling &amp; Sandboxing</a></li>
+        <li><a href="#multi-agent">Multi-Agent Topologies</a></li>
+        <li><a href="#failure-modes">Failure Modes &amp; Defenses</a></li>
+        <li><a href="#topology-matrix">Architecture Comparison</a></li>
+        <li><a href="#references">References</a></li>
+        <li><a href="#see-also">See Also</a></li>
+      </ol>
+    </nav>
 
-    <div class="toc">
-      <h2>Jump to Section</h2>
-      <div class="toc-grid">
-        <a href="#definition">Formal Definition &amp; MDP</a> &middot;
-        <a href="#core-subsystems">Core Subsystems</a> &middot;
-        <a href="#execution-loops">Execution Loops</a> &middot;
-        <a href="#tool-calling">Tool Calling &amp; Sandboxing</a> &middot;
-        <a href="#multi-agent">Multi-Agent Topologies</a> &middot;
-        <a href="#failure-modes">Failure Modes &amp; Defenses</a> &middot;
-        <a href="#topology-matrix">Architecture Matrix</a> &middot;
-        <a href="#sources">Sources</a>
-      </div>
-    </div>
-
-    <!-- Section 1: Formal Definition -->
-    <h2 id="definition">1. Formal Definition &amp; Mathematical Model</h2>
-    <p>
-      An <strong>AI Agent</strong> is an autonomous computational system that perceives its environment through multimodal sensors/context inputs, maintains internal state and goals, formulates sequential reasoning plans, and executes discrete actions via external tools to affect environmental state across multi-turn trajectories.
-    </p>
-    <p>
-      Formally, an agent operates within a Partially Observable Markov Decision Process (POMDP) defined by the tuple:
-    </p>
+    <span id="definition"></span>
+    <h2 id="first-principles">1. First Principles: Scope &amp; Model</h2>
+    <p>This entry covers tool-using LLM systems. Following Anthropic's distinction, a <strong>workflow</strong> follows predefined control paths; an <strong>agent</strong> lets the model choose its next steps. A system can combine both. Explicit plans and persistent memory are optional design choices. <span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>A partially observable Markov decision process (POMDP) can model action selection under incomplete information. It assumes the state captures what determines subsequent transitions and rewards. The stationary model below also assumes these rules do not change over time. <span class="cite">[<a href="#ref2">2</a>]</span></p>
     $$\mathcal{M} = \langle \mathcal{S}, \mathcal{A}, \mathcal{O}, \mathcal{T}, \mathcal{Z}, \mathcal{R}, \gamma \rangle$$
     <ul>
-      <li>$\mathcal{S}$: Environmental state space (e.g., codebase filesystem, database records, API server state).</li>
-      <li>$\mathcal{A}$: Discrete action space parameterized by structured tool calls: $a_t = (\text{tool\_name}, \text{arguments})$.</li>
-      <li>$\mathcal{O}$: Observation space (e.g., shell stdout/stderr, API responses, compiler outputs).</li>
-      <li>$\mathcal{T}(s_{t+1} \mid s_t, a_t)$: State transition probability density function governed by the external system.</li>
-      <li>$\mathcal{Z}(o_t \mid s_t, a_{t-1})$: Observation emission function mapping system state to tokenized observations.</li>
-      <li>$\mathcal{R}(s_t, a_t)$: Reward function (or binary evaluation success criteria $\mathcal{M}(s_{\text{final}}) \in \{0, 1\}$).</li>
-      <li>$\gamma \in [0, 1]$: Temporal discount factor for multi-turn planning horizon.</li>
+      <li>\(\mathcal{S}\): states; \(\mathcal{A}\): available actions; \(\mathcal{O}\): observations.</li>
+      <li>\(\mathcal{T}(s_{t+1} \mid s_t,a_t)\): transition probabilities.</li>
+      <li>\(\mathcal{Z}(o_{t+1} \mid s_{t+1},a_t)\): observation probabilities.</li>
+      <li>\(\mathcal{R}(s_t,a_t)\): expected reward.</li>
+      <li>\(\gamma \in [0,1]\): discount factor for a finite horizon \(H\).</li>
     </ul>
-    <p>
-      The agent parameterizes an autoregressive policy $\pi_\theta(a_t \mid h_t)$ conditioned on the cumulative trajectory history $h_t = (o_0, a_0, o_1, a_1, \dots, o_t)$, optimizing expected cumulative utility:
-    </p>
-    $$\pi^* = \arg\max_\pi \mathbb{E}\left[ \sum_{t=0}^T \gamma^t \mathcal{R}(s_t, a_t) \;\Bigg|\; a_t \sim \pi(\cdot \mid h_t) \right]$$
+    <p>An initial state distribution completes the model. A policy maps available history \(h_t\) to actions. One objective is:</p>
+    $$\pi^* = \arg\max_\pi \mathbb{E}_{\pi}\left[\sum_{t=0}^{H}\gamma^t\mathcal{R}(s_t,a_t)\right]$$
+    <p>This is a modeling objective. An LLM tool loop need not compute transition probabilities, update a belief distribution, or solve this optimization at runtime.</p>
 
-    <!-- Section 2: Four Core Subsystems -->
-    <h2 id="core-subsystems">2. The Four Core Agent Subsystems</h2>
-
+    <h2 id="core-subsystems">2. Agent Subsystems</h2>
+    <p class="unattributed">The four-part grouping below is this entry's organizational model. Implementations can combine or omit parts.</p>
     <div class="def-box">
-      <p class="term-title">1. Planning &amp; Reasoning Core:</p>
-      <p class="term-desc">Decomposes high-level natural language objectives into executable DAGs (Directed Acyclic Graphs) of sub-tasks. Utilizes tree search (MCTS/ToT), linear rationales (CoT), or dynamic replanning upon encountering unexpected environment errors.</p>
+      <p class="term-title">Planning &amp; Reasoning:</p>
+      <p class="term-desc">The model selects a next action or produces a plan. A host can add task decomposition and programmatic checks. <span class="cite">[<a href="#ref1">1</a>]</span></p>
+    </div>
+    <div class="def-box">
+      <p class="term-title">Memory:</p>
+      <ul>
+        <li><strong>Working context:</strong> Instructions, observations, and intermediate results supplied for the current model call.</li>
+        <li><strong>External memory:</strong> Stored records retrieved for later calls. Text buffers, files, and vector search are possible implementations.</li>
+        <li><strong>Parametric knowledge:</strong> Information encoded in model weights. Ordinary context updates do not themselves change those weights.</li>
+      </ul>
+      <p>Reflexion is one implementation that stores textual feedback across trials without updating model weights. <span class="cite">[<a href="#ref4">4</a>]</span></p>
+    </div>
+    <div class="def-box">
+      <p class="term-title">Tool &amp; Action Interface:</p>
+      <p class="term-desc">Host code checks a requested action, invokes an allowed tool, and returns its result. A tool request alone grants no authority to execute it. <span class="cite">[<a href="#ref7">7</a>]</span></p>
+    </div>
+    <div class="def-box">
+      <p class="term-title">Observation Processing:</p>
+      <p class="term-desc">For example, a coding host can select file diffs or compiler output for the next call. Truncation and summaries trade detail for context space.</p>
     </div>
 
+    <h2 id="execution-loops">3. Execution Patterns</h2>
     <div class="def-box">
-      <p class="term-title">2. Memory Hierarchy:</p>
-      <p class="term-desc">
-        <ul>
-          <li><strong>Short-Term (Working Memory):</strong> Active KV-cache token context containing system instructions, recent turn observations, and scratchpad state.</li>
-          <li><strong>Episodic Memory:</strong> Vector-indexed past conversation transcripts and tool execution histories retrieved via semantic similarity ($k$-NN RAG).</li>
-          <li><strong>Parametric Memory:</strong> Frozen foundation model weights $\theta$ capturing general world knowledge and code representations.</li>
-        </ul>
-      </p>
-    </div>
-
-    <div class="def-box">
-      <p class="term-title">3. Tool &amp; Action Interface:</p>
-      <p class="term-desc">A deterministic bridge translating LLM-generated JSON/symbolic tokens into RPC, HTTP, or POSIX system calls, capturing outputs and packing them back into observations.</p>
-    </div>
-
-    <div class="def-box">
-      <p class="term-title">4. Environment &amp; Sensor Ingestion:</p>
-      <p class="term-desc">Parsers converting unstructured external state (file diffs, DOM trees, compiler logs) into clean, token-efficient, schema-validated prompt payloads.</p>
-    </div>
-
-    <!-- Section 3: Execution Loops -->
-    <h2 id="execution-loops">3. Execution Loops (ReAct, Reflexion, Plan-and-Solve)</h2>
-
-    <div class="def-box">
-      <p class="term-title">ReAct Loop (Yao et al., 2022):</p>
-      <p class="term-desc">Interleaves internal deduction with external interaction in a continuous three-phase step:
+      <p class="term-title">ReAct (Yao et al.):</p>
+      <p>Interleaves generated reasoning, actions, and observations:</p>
       $$\text{Thought}_t \to \text{Action}_t \to \text{Observation}_t \to \text{Thought}_{t+1}$$
-      Prevents error compounding by grounding each reasoning step against real-time environment observations rather than hallucinating world transitions.</p>
+      <p>The paper reports reduced hallucination and error propagation on HotpotQA and FEVER using a Wikipedia API, and improved task success on ALFWorld and WebShop against its tested baselines. Observations can correct unsupported reasoning; they do not guarantee that later steps are correct. <span class="cite">[<a href="#ref3">3</a>]</span></p>
     </div>
-
     <div class="def-box">
-      <p class="term-title">Reflexion (Shinn et al., 2023):</p>
-      <p class="term-desc">Introduces episodic self-reflection across trials. When a trajectory fails validation ($\mathcal{R}=0$), a reflection model analyzes the error trace and generates a natural language self-critique $r \in \mathcal{L}$, which is prepended into working memory for the next trial:
-      $$h_{t}^{\text{trial } k+1} = h_0 \circ r_k \circ (o_0, a_0, \dots)$$</p>
+      <p class="term-title">Reflexion (Shinn et al.):</p>
+      <p>Uses feedback to generate textual reflections stored for later trials. Feedback can be scalar or free-form, and externally supplied or internally simulated. It does not require a binary failure signal or weight updates. <span class="cite">[<a href="#ref4">4</a>]</span></p>
     </div>
-
     <div class="def-box">
-      <p class="term-title">Plan-and-Solve (Wang et al., 2023):</p>
-      <p class="term-desc">Separates strategic planning from tactical execution. A planner agent produces a static sub-task list, and an executor agent executes each task sequentially, updating plan progress after each verification gate.</p>
+      <p class="term-title">Plan-and-Solve (Wang et al.):</p>
+      <p>A prompting strategy that asks a language model to devise a plan, then solve its subtasks. The paper evaluates GPT-3 on ten reasoning datasets. Separate planner and executor agents, progress tracking, and verification gates are additional architecture choices. They are not requirements of Plan-and-Solve prompting. <span class="cite">[<a href="#ref5">5</a>]</span></p>
     </div>
+    <p>For example, a host could pass a plan to a separate executor and require a passing test before the next task. This is an illustrative gated workflow.</p>
 
-    <!-- Section 4: Tool Calling & Sandboxing -->
-    <h2 id="tool-calling">4. Tool Calling Protocols &amp; Sandboxing</h2>
-    <p>
-      Modern agents interact with host operating systems via standardized tool calling protocols (such as Anthropic Tool Use API, OpenAI Function Calling, and the <a href="/reference/model-context-protocol/">Model Context Protocol</a>).
-    </p>
-
-    <pre><code>// Formal Tool Schema Specification (JSON Schema)
-{
+    <h2 id="tool-calling">4. Tool Calling &amp; Sandboxing</h2>
+    <p>A tool interface describes available actions and their inputs. The following is an illustrative tool definition with a JSON Schema parameter object; provider formats vary. A schema checks input shape, not whether an edit is authorized or correct.</p>
+    <pre><code>{
   "name": "replace_file_content",
   "description": "Edits an existing file via exact block match replacement.",
   "parameters": {
@@ -373,133 +305,88 @@
     "required": ["target_file", "target_content", "replacement_content"]
   }
 }</code></pre>
-
-    <p><strong>Sandboxing &amp; Execution Safety:</strong></p>
+    <p>Containment depends on controls enforced outside the model. Anthropic describes permissions, execution isolation, and network restrictions as ways to limit an agent's reach. These controls have implementation limits and require testing. <span class="cite">[<a href="#ref7">7</a>]</span></p>
     <ul>
-      <li><strong>Process Isolation:</strong> Running arbitrary shell and interpreter execution inside ephemeral containers (Docker/gVisor), Linux namespaces, or isolated WASM runtimes.</li>
-      <li><strong>Path Traversal &amp; Permission Gates:</strong> Strict allowlisting of workspace directories and explicit human approval gates for destructive commands (e.g., <code>rm -rf</code>, <code>DROP TABLE</code>, cloud infrastructure provisioning).</li>
-      <li><strong>Idempotent Operations:</strong> Designing tools such that repeated invocation does not cause corrupting side effects (e.g., git patch verification, atomic writes).</li>
+      <li><strong>Permissions:</strong> Restrict file access and tool operations; require approval where policy calls for it.</li>
+      <li><strong>Isolation:</strong> Limit access from the execution environment to the host and other workloads.</li>
+      <li><strong>Network controls:</strong> Restrict reachable services and outbound destinations, including alternate paths available to tools.</li>
     </ul>
 
-    <!-- Section 5: Multi-Agent Topologies -->
     <h2 id="multi-agent">5. Multi-Agent Topologies &amp; Orchestration</h2>
-    <p>
-      Complex workflows exceed the context window and cognitive capacity of a single monolithic agent. Multi-agent systems distribute work across specialized agent nodes.
-    </p>
-
+    <p>Multiple agents can divide work or compare candidate answers. Coordination adds cost and handoff risks; a single agent can be sufficient. <span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p class="unattributed">The topology descriptions and comparison below are this entry's design synthesis, except for the cited debate result.</p>
     <div class="def-box">
       <p class="term-title">Hierarchical (Supervisor-Worker):</p>
-      <p class="term-desc">An orchestrator decomposes the primary goal, spawns specialized subagents (e.g., Code Searcher, Test Writer, Refactorer), collects structured results, and handles task transitions. Subagent context windows remain clean and focused.</p>
+      <p class="term-desc">An orchestrator assigns work and collects results. Separate contexts can limit irrelevant input, but workers still share any files, tools, and permissions the host exposes.</p>
     </div>
-
     <div class="def-box">
-      <p class="term-title">Sequential Pipeline (Assembly Line):</p>
-      <p class="term-desc">Output of Agent $A$ (e.g., Architectural Spec) forms the input prompt for Agent $B$ (Code Implementation), which passes artifacts to Agent $C$ (Security Auditor).</p>
+      <p class="term-title">Sequential Pipeline:</p>
+      <p class="term-desc">One stage's artifact becomes the next stage's input. For example, a specification can pass to an implementer, then a reviewer. Fixed stage routing is a workflow even when its stages use agents.</p>
     </div>
-
     <div class="def-box">
       <p class="term-title">Blackboard Architecture:</p>
-      <p class="term-desc">Multiple autonomous agents read from and write to a shared, persistent state repository (e.g., a shared git repository or KV store) asynchronously without point-to-point message routing.</p>
+      <p class="term-desc">Agents coordinate through a shared state store. The host must define ownership and conflict handling for concurrent writes.</p>
     </div>
-
     <div class="def-box">
-      <p class="term-title">Multi-Agent Debate &amp; Consensus (Du et al., 2023):</p>
-      <p class="term-desc">Multiple independent agents generate candidate solutions and critique each other's outputs across debate rounds, converging on truth via adversarial peer review.</p>
+      <p class="term-title">Multi-Agent Debate (Du et al.):</p>
+      <p>Multiple model instances propose answers and critique them over rounds. The paper reports improved reasoning and factuality on its evaluated tasks. Those results do not establish a general correctness guarantee. <span class="cite">[<a href="#ref6">6</a>]</span></p>
+      <p>Agreement can preserve a shared mistake. Claims still need source checks or task-specific tests; a formal verification claim requires a formal specification and a checked proof.</p>
     </div>
 
-    <!-- Section 6: Failure Modes -->
-    <h2 id="failure-modes">6. Failure Modes &amp; Defensive Guardrails</h2>
+    <h2 id="failure-modes">6. Failure Modes &amp; Defenses</h2>
+    <p class="unattributed">These are example failure scenarios and mitigations, not measured guarantees.</p>
+    <div class="table-scroll" role="region" tabindex="0" aria-labelledby="failure-modes">
     <table>
-      <thead>
-        <tr>
-          <th>Failure Mode</th>
-          <th>Root Cause</th>
-          <th>Defensive Mitigation</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Failure Mode</th><th>Example</th><th>Mitigation &amp; Limit</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>Infinite Error-Fix Loops</strong></td>
-          <td>Agent encounters tool failure, reprompts with identical strategy, and exhausts token budget.</td>
-          <td>Anti-loop watchdog counters; deterministic circuit breaker after $N=3$ identical errors.</td>
-        </tr>
-        <tr>
-          <td><strong>Context Contamination</strong></td>
-          <td>Verbose tool outputs (gigabyte logs, minified JS) push system instructions out of effective attention span.</td>
-          <td>Observation truncation, intermediate summarization, and ephemeral subagent scoping.</td>
-        </tr>
-        <tr>
-          <td><strong>Compounding Trajectory Drift</strong></td>
-          <td>Small incorrect assumption at Step 1 snowballs into invalid refactors by Step 10.</td>
-          <td>Plan-gate verification: enforcing test assertions before advancing to subsequent sub-tasks.</td>
-        </tr>
-        <tr>
-          <td><strong>Indirect Prompt Injection</strong></td>
-          <td>Agent reads untrusted webpage/file containing malicious override instructions.</td>
-          <td>Dual-LLM reader-actor privilege separation; XML boundary delimiters.</td>
-        </tr>
+        <tr><td><strong>Error-Fix Loop</strong></td><td>The same failing action repeats.</td><td>A host counter can stop repeated attempts. Three identical errors is an example cutoff; the suitable limit depends on the task.</td></tr>
+        <tr><td><strong>Context Contamination</strong></td><td>Irrelevant or misleading tool output enters later model calls.</td><td>Select observations and summarize long output. Summaries can omit evidence, so retain access to originals.</td></tr>
+        <tr><td><strong>Trajectory Drift</strong></td><td>An early false assumption affects later edits.</td><td>Check intermediate artifacts against requirements. Tests only cover their assertions.</td></tr>
+        <tr><td><strong>Indirect Prompt Injection</strong></td><td>An untrusted file or webpage contains instructions that redirect the task.</td><td>XML delimiters organize input; they do not enforce permissions. Host-enforced file, tool, and network limits constrain possible actions. <span class="cite">[<a href="#ref7">7</a>]</span></td></tr>
       </tbody>
     </table>
+    </div>
+    <p>A reader with no action privileges can reduce direct exposure of a privileged actor to untrusted text. This design only helps if the host constrains their communication and validates what crosses the boundary. Passing unrestricted reader output to the actor can carry the injection onward.</p>
 
-    <!-- Section 7: Topology Matrix -->
-    <h2 id="topology-matrix">7. Architecture Comparison Matrix</h2>
+    <h2 id="topology-matrix">7. Architecture Comparison</h2>
+    <div class="table-scroll" role="region" tabindex="0" aria-labelledby="topology-matrix">
     <table>
-      <thead>
-        <tr>
-          <th>Architecture</th>
-          <th>Coordination Overhead</th>
-          <th>Context Isolation</th>
-          <th>Fault Tolerance</th>
-          <th>Best Suited For</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Architecture</th><th>Conditional Benefit</th><th>Failure Condition</th><th>Verification Requirement</th></tr></thead>
       <tbody>
-        <tr>
-          <td><strong>Monolithic Single-Agent</strong></td>
-          <td>None</td>
-          <td>Low (Single context window)</td>
-          <td>Low (Error halts session)</td>
-          <td>Targeted scripting, single-file edits, interactive chat assistants.</td>
-        </tr>
-        <tr>
-          <td><strong>Hierarchical Orchestrator</strong></td>
-          <td>Medium</td>
-          <td>High (Subagents have fresh context)</td>
-          <td>High (Subagent failure isolated)</td>
-          <td>Full-stack software engineering, multi-repo migrations, deep research.</td>
-        </tr>
-        <tr>
-          <td><strong>Sequential Pipeline</strong></td>
-          <td>Low</td>
-          <td>Medium (Handoff artifacts)</td>
-          <td>Medium (Stage-gated verification)</td>
-          <td>Content publishing, automated code review &amp; static analysis.</td>
-        </tr>
-        <tr>
-          <td><strong>Multi-Agent Debate</strong></td>
-          <td>High</td>
-          <td>High (Independent perspectives)</td>
-          <td>Very High (Consensus filtering)</td>
-          <td>Fact-checking, security vulnerability audits, formal verification.</td>
-        </tr>
+        <tr><td><strong>Single Agent</strong></td><td>Simple coordination for tasks that fit its context and tools.</td><td>Errors persist if the same assumptions drive all checks.</td><td>Check the output against external evidence or executable tests.</td></tr>
+        <tr><td><strong>Hierarchical</strong></td><td>Workers can handle separable tasks in focused contexts.</td><td>Bad decomposition or shared writes can spread errors.</td><td>Validate worker outputs and the combined result; control shared writes.</td></tr>
+        <tr><td><strong>Sequential Pipeline</strong></td><td>Explicit artifacts and checks at each handoff.</td><td>A faulty artifact passes a weak gate.</td><td>Check handoff contracts and final acceptance.</td></tr>
+        <tr><td><strong>Multi-Agent Debate</strong></td><td>Critiques may expose errors in candidate answers.</td><td>Participants share a false premise or accept an unsupported answer.</td><td>Verify claims independently of agreement. Debate itself supplies no formal proof.</td></tr>
       </tbody>
     </table>
+    </div>
 
-    <!-- Section 8: Sources -->
     <footer id="sources">
-      <h3>Sources &amp; Foundational Literature</h3>
+      <h2 id="references">8. References</h2>
+      <ol>
+        <li id="ref1">Anthropic. <a href="https://www.anthropic.com/engineering/building-effective-agents">Building effective agents</a> (2024). Practitioner architecture guidance.</li>
+        <li id="ref2">David L. Poole and Alan K. Mackworth. <a href="https://artint.info/3e/html/ArtInt3e.Ch12.S5.html">Artificial Intelligence: Foundations of Computational Agents, 3rd edition, §12.5: Decision Processes</a>. Textbook treatment.</li>
+        <li id="ref3">Shunyu Yao et al. <a href="https://arxiv.org/abs/2210.03629">ReAct: Synergizing Reasoning and Acting in Language Models</a>. ICLR 2023; preprint 2022. DOI: 10.48550/arXiv.2210.03629.</li>
+        <li id="ref4">Noah Shinn et al. <a href="https://arxiv.org/abs/2303.11366">Reflexion: Language Agents with Verbal Reinforcement Learning</a> (2023). DOI: 10.48550/arXiv.2303.11366.</li>
+        <li id="ref5">Lei Wang et al. <a href="https://arxiv.org/abs/2305.04091">Plan-and-Solve Prompting: Improving Zero-Shot Chain-of-Thought Reasoning by Large Language Models</a>. ACL 2023. DOI: 10.48550/arXiv.2305.04091.</li>
+        <li id="ref6">Yilun Du et al. <a href="https://arxiv.org/abs/2305.14325">Improving Factuality and Reasoning in Language Models through Multiagent Debate</a> (2023 preprint). DOI: 10.48550/arXiv.2305.14325.</li>
+        <li id="ref7">Anthropic. <a href="https://www.anthropic.com/engineering/how-we-contain-claude">How we contain Claude across products</a> (2026). Practitioner containment guidance.</li>
+      </ol>
+      <h2 id="see-also">9. See Also</h2>
       <ul>
-        <li>Stuart Russell and Peter Norvig (2020): <a href="https://aima.cs.berkeley.edu/" target="_blank" rel="noopener">Artificial Intelligence: A Modern Approach</a> (4th Edition, Pearson — Rational Agents &amp; POMDPs).</li>
-        <li>Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, Yuan Cao (2022): <a href="https://arxiv.org/abs/2210.03629" target="_blank" rel="noopener">ReAct: Synergizing Reasoning and Acting in Language Models</a> (ICLR 2023).</li>
-        <li>Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, Shunyu Yao (2023): <a href="https://arxiv.org/abs/2303.11366" target="_blank" rel="noopener">Reflexion: Language Agents with Verbal Reinforcement Learning</a> (NeurIPS 2023).</li>
-        <li>Joon Sung Park, Joseph C. O'Brien, Carrie J. Cai, Meredith Ringel Morris, Percy Liang, Michael S. Bernstein (2023): <a href="https://arxiv.org/abs/2304.03442" target="_blank" rel="noopener">Generative Agents: Interactive Simulacra of Human Behavior</a> (UIST 2023).</li>
-        <li>Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Shaokun Zhang, Erkang Zhu, et al. (2023): <a href="https://arxiv.org/abs/2308.08155" target="_blank" rel="noopener">AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation</a>.</li>
-        <li>Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, et al. (2023): <a href="https://arxiv.org/abs/2308.00352" target="_blank" rel="noopener">MetaGPT: Meta Programming for A Multi-Agent Collaborative Framework</a> (ICLR 2024).</li>
-        <li>Yilun Du, Shuang Li, Antonio Torralba, Joshua B. Tenenbaum, Igor Mordatch (2023): <a href="https://arxiv.org/abs/2305.14325" target="_blank" rel="noopener">Improving Factuality and Reasoning in Language Models through Multiagent Debate</a> (ICML 2024).</li>
+        <li><a href="/eli5/agents/">ELI5: How Do AI Agents Work?</a></li>
+        <li><a href="/trees/agents/">AI Agents Knowledge Tree</a></li>
+        <li><a href="/writing/ai-writes-code-plan-becomes-work/">When the AI Writes the Code, the Plan Becomes the Work</a></li>
+        <li><a href="/writing/agent-didnt-get-dumber-chat-got-contaminated/">The Agent Didn't Get Dumber, the Chat Got Contaminated</a></li>
+        <li><a href="/writing/debug-system-not-prompt/">Debug the System Not the Prompt</a></li>
+        <li><a href="/reference/ooda-loop/">OODA Loop</a></li>
+        <li><a href="/reference/context-engineering/">Context Engineering</a></li>
+        <li><a href="/reference/prompt-engineering/">Prompt Engineering</a></li>
+        <li><a href="/reference/adversarial-agent-review/">Adversarial Review</a></li>
+        <li><a href="/reference/agent-harness/">Agent Harness</a></li>
+        <li><a href="/reference/model-context-protocol/">Model Context Protocol</a></li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a></li>
       </ul>
-      <p style="margin-top: 1rem;">
-        Related: <a href="/reference/agent-harness/">Agent Harness</a> &middot; <a href="/reference/model-context-protocol/">Model Context Protocol</a> &middot; <a href="/reference/context-engineering/">Context Engineering</a> &middot; <a href="/reference/prompt-engineering/">Prompt Engineering</a> &middot; <a href="/reference/large-language-models/">Large Language Models</a>
-      </p>
     </footer>
   </main>
   <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">

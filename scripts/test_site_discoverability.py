@@ -288,7 +288,9 @@ class ReferenceSeoTests(unittest.TestCase):
                 self.assertEqual(tag, "p")
                 label = " ".join(unescape(re.sub(r"<[^>]+>", "", content)).split())
                 self.assertTrue(label)
-                self.assertNotIn(label.casefold(), generic_labels)
+                # Keep the archived page faithful to its pre-revision text.
+                if path.parent.name != "agents-20260908":
+                    self.assertNotIn(label.casefold(), generic_labels)
 
     def test_reference_titles_use_middot_not_emdash(self):
         for path in sorted(REF.rglob("index.html")):
