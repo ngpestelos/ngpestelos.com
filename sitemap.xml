@@ -781,6 +781,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/shisa-kanko/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/writing/legacy-rails-upgrade-with-agents/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -794,6 +799,11 @@
     <loc>https://ngpestelos.com/writing/atom.xml</loc>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/writing/accepting-agent-written-code/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://ngpestelos.com/writing/reading-aloud-is-pointing-and-calling-for-your-brain/</loc>
@@ -1094,10 +1104,5 @@
     <loc>https://ngpestelos.com/writing/juanito-p-galvez-1928-2022/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://ngpestelos.com/reference/shisa-kanko/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
 </urlset>
