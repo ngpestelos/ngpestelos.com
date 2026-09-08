@@ -39,6 +39,29 @@
     gtag("js", new Date());
     gtag("config", "G-TLBY8P4GG9");
   </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#fffaf3',
+        primaryTextColor: '#1c1915',
+        primaryBorderColor: '#d8d2c6',
+        lineColor: '#5c564e',
+        secondaryColor: '#f4efe6',
+        tertiaryColor: '#fffaf3',
+        mainBkg: '#fffaf3',
+        nodeBorder: '#d8d2c6',
+        clusterBkg: '#fdfbf7',
+        clusterBorder: '#9a3412',
+        titleColor: '#9a3412',
+        edgeLabelBackground: '#f4efe6',
+        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        fontSize: '13px'
+      }
+    });
+  </script>
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"DefinedTerm","name":"Latency (Systems and Computing)","description":"Latency is the time interval elapsed between the initiation of an operation or request and the observation of its initial result or complete delivery.","url":"https://ngpestelos.com/reference/latency/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
@@ -166,10 +189,21 @@
       border-radius: 6px;
       padding: 1.2rem;
       margin: 1.4rem 0;
-      font-family: "SF Mono", Consolas, Monaco, monospace;
-      font-size: 0.85rem;
       overflow-x: auto;
-      line-height: 1.45;
+      text-align: center;
+    }
+    .diagram-box pre.mermaid {
+      margin: 0;
+      background: transparent;
+      border: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      font-family: inherit;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
     }
     #see-also ul, #references ol {
       padding-left: 1.5rem;
@@ -198,13 +232,13 @@
     }
   </style>
 </head>
-<body>
+<body class="reference">
   <main>
     <nav class="back" aria-label="Breadcrumb">
       <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
     </nav>
 
-    <div class="kicker">Reference Entry</div>
+    <p class="kicker">Systems Engineering &middot; Performance</p>
     <h1>Latency (Systems and Computing)</h1>
     <p class="updated">Reference entry &middot; last updated September 7, 2026</p>
 
@@ -249,8 +283,19 @@
     <p>A high-throughput system is not necessarily low-latency. For instance, transporting terabytes of data across continents via physical magnetic tape shipments delivers massive throughput, but exhibits extreme latency (measured in hours or days). Conversely, an audio streaming connection requires minimal latency (sub-10ms) while demanding modest throughput.</p>
 
     <div class="diagram-box">
-[Request Origin] &rarr; (Propagation + Transmission) &rarr; [Queue Wait] &rarr; [Service Execution] &rarr; [Response Delivery]
-|&larr;------------------------------------ Total Response Latency (W) ------------------------------------&rarr;|
+      <pre class="mermaid">
+flowchart LR
+    subgraph Total["Total Response Latency (W)"]
+        direction LR
+        A["Request Origin<br/><small style='color:#5c564e'>Client</small>"]
+        B["Network Transit<br/><small style='color:#5c564e'>Propagation + Transmission</small>"]
+        C["Queue Wait<br/><small style='color:#5c564e'>Buffering Delay</small>"]
+        D["Service Execution<br/><small style='color:#5c564e'>Processing Time</small>"]
+        E["Response Delivery<br/><small style='color:#5c564e'>Return Transit</small>"]
+
+        A --> B --> C --> D --> E
+    end
+      </pre>
     </div>
 
     <h2 id="structural-components">2. Structural Components of Latency</h2>
