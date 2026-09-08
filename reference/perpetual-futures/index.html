@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perpetual Futures (Cryptocurrency) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="How cryptocurrency perpetual futures work: funding, margin, leverage, liquidation, linear payoffs, hedging, costs, and automated execution.">
+  <meta property="og:title" content="Perpetual Futures (Cryptocurrency) · Reference">
+  <meta property="og:description" content="How cryptocurrency perpetual futures work: funding, margin, leverage, liquidation, linear payoffs, hedging, costs, and automated execution.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/perpetual-futures/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/perpetual-futures/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { line-height:1.65; }
+main { max-width:48rem; margin:auto; padding:1.4rem 1.4rem 4rem; }
+h1 { font-size:clamp(1.9rem,5vw,2.4rem); font-weight:400; line-height:1.2; border-bottom:1px solid var(--line); padding-bottom:.5rem; }
+h2 { margin-top:2rem; font-size:1.45rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+p,li { margin-bottom:.7rem; }
+.back,.kicker,.updated,.toc,footer { font-family:"Segoe UI",Helvetica,Arial,sans-serif; }
+.back,.updated,footer { font-size:.85rem; color:var(--mute); }
+.kicker { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--mute); }
+.lede { margin:1.4rem 0; }
+.toc { background:var(--well); border:1px solid var(--line); border-radius:4px; padding:1rem 1.3rem; margin:1.7rem 0; font-size:.9rem; }
+.toc ol { margin-bottom:0; padding-left:1.5rem; }
+.toc li { margin-bottom:.25rem; }
+.cite { font-size:.75em; vertical-align:super; }
+.cite a { text-decoration:none; }
+.formula-box,.table-wrap { overflow-x:auto; margin:1rem 0; }
+.formula-box { text-align:center; background:var(--well); border:1px solid var(--line); padding:.8rem; border-radius:4px; }
+table { width:100%; border-collapse:collapse; font-size:.9rem; }
+th,td { padding:.5rem; border:1px solid var(--line); text-align:left; }
+th { background:var(--well); }
+#references ~ ol { font-size:.9rem; overflow-wrap:anywhere; }
+footer { border-top:1px solid var(--line); margin-top:2rem; }
+.back-to-top { position:fixed; bottom:1.5rem; right:1.5rem; width:2.6rem; height:2.6rem; border-radius:50%; background:var(--bg); color:var(--ink); border:1px solid var(--line); cursor:pointer; opacity:0; visibility:hidden; }
+.back-to-top.visible { opacity:1; visibility:visible; }
+@media print { .back,.back-to-top { display:none !important; } main { max-width:none; padding:0; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"Perpetual Futures (Cryptocurrency)","description":"How cryptocurrency perpetual futures work: funding, margin, leverage, liquidation, linear payoffs, hedging, costs, and automated execution.","url":"https://ngpestelos.com/reference/perpetual-futures/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script>
+</head>
+<body class="reference">
+<main id="top">
+<p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Finance · Derivatives</p>
+<h1>Perpetual futures (cryptocurrency)</h1>
+<p class="updated">Reference entry &middot; last updated September 9, 2026</p>
+<p class="lede"><strong>A perpetual futures contract</strong>, often called a <em>perp</em> or <em>perpetual swap</em>, is a derivative that provides exposure to an asset's price without a fixed expiry date. Positions require margin, and periodic funding payments help align the contract with its underlying market.<span class="cite">[<a href="#ref1">1</a>]</span> This entry covers cryptocurrency perps. Products marketed as <em>perpetual-style futures</em> may have a distant expiry; Coinbase's US product, for example, has a five-year term.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
+<li><a href="#first-principles">First principles: contracts and exposure</a></li>
+<li><a href="#prices">Trade, index, and mark prices</a></li>
+<li><a href="#funding">Funding payments</a></li>
+<li><a href="#margin">Margin and liquidation</a></li>
+<li><a href="#payoffs">Linear payoffs and costs</a></li>
+<li><a href="#example">Worked example at 1× initial leverage</a></li>
+<li><a href="#hedging">Spot hedges and token baskets</a></li>
+<li><a href="#automation">Automated execution</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">1. First principles: contracts and exposure</h2>
+<p>A spot purchase acquires the asset. A perpetual position establishes a contractual payoff linked to its price. A long position gains from a price rise; a short gains from a fall, before costs. A dated future settles or expires on a specified date. A perp can remain open while its margin requirements are met and the venue continues supporting the contract.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>Three quantities describe a position: its size, its current <em>notional value</em>, and the equity backing it. For a linear contract representing <em>q</em> units at price <em>P</em>, notional is <em>qP</em>. Contract counts must first be converted using the contract's multiplier.<span class="cite">[<a href="#ref2">2</a>]</span><span class="cite">[<a href="#ref3">3</a>]</span></p>
+<h2 id="prices">2. Trade, index, and mark prices</h2>
+<ul>
+<li><strong>Trade price:</strong> the price at which an order fills.</li>
+<li><strong>Index or oracle price:</strong> an external reference for the underlying asset.</li>
+<li><strong>Mark price:</strong> the valuation price used by the venue for specified account calculations.</li>
+</ul>
+<p>These prices can differ. Hyperliquid uses a mark price combining external prices and its own order book for liquidation, but uses its spot oracle price to calculate funding notional. The last traded price alone therefore cannot reproduce either calculation.<span class="cite">[<a href="#ref4">4</a>]</span><span class="cite">[<a href="#ref5">5</a>]</span></p>
+<h2 id="funding">3. Funding payments</h2>
+<p>Funding transfers value between the two sides of a position. Under Hyperliquid's convention, positive funding means longs pay shorts; negative funding means shorts pay longs. Its rate includes both an interest component and a market-premium component, and payments occur hourly. A rising asset price alone does not determine funding's sign.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+<div class="formula-box">$$\text{Funding amount} = q\,P_{\mathrm{oracle}}\,r$$</div>
+<p>Here <em>r</em> is the applicable payment-period rate, expressed as a decimal. This formula is Hyperliquid's stated calculation. Other contracts can use different reference prices or intervals. Funding is charged on notional exposure, rather than on the deposited margin. A displayed annualized rate is an extrapolation; future rates can change sign.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+<h2 id="margin">4. Margin and liquidation</h2>
+<p><strong>Initial margin</strong> is required to open a position. <strong>Maintenance margin</strong> is the minimum equity required to keep it open. Equity includes the collateral balance and relevant unrealized gains or losses. Falling below maintenance requirements can trigger forced closure. Liquidation can begin before the initial deposit is exhausted.<span class="cite">[<a href="#ref4">4</a>]</span><span class="cite">[<a href="#ref6">6</a>]</span></p>
+<p>Effective leverage measures current exposure against the equity backing it:</p>
+<div class="formula-box">$$L=\frac{\text{current notional exposure}}{\text{equity backing the position}}$$</div>
+<p>A leverage setting at entry is not a permanent risk level. For a fixed-size short, a price rise increases notional while losses reduce equity, raising effective leverage.<span class="cite">[<a href="#ref3">3</a>]</span><span class="cite">[<a href="#ref6">6</a>]</span></p>
+<p><strong>Cross margin</strong> shares collateral among eligible positions. <strong>Isolated margin</strong> assigns collateral to a particular position. Hyperliquid's exact sharing boundaries depend on its account mode and collateral asset. Funds elsewhere cannot be assumed to support a losing position. These accounting boundaries do not remove custody, software, or collateral risks.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+<p>Liquidation prices depend on maintenance rules, funding, and other positions where margin is shared. An approximation such as “a 10% move liquidates 10× leverage” omits those inputs. A liquidation price is also distinct from an intended stop-loss exit.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+<h2 id="payoffs">5. Linear payoffs and costs</h2>
+<p>For a linear contract with <em>q</em> underlying units and prices quoted in its settlement unit, gross profit or loss (PnL) is:</p>
+<div class="formula-box">$$\mathrm{PnL}_{\mathrm{long}}=q(P_{\mathrm{exit}}-P_{\mathrm{entry}})$$
+$$\mathrm{PnL}_{\mathrm{short}}=q(P_{\mathrm{entry}}-P_{\mathrm{exit}})$$</div>
+<p>These are gross trading payoffs. Net results include trading fees and funding credits or debits. Inverse contracts use a different calculation and may settle in the underlying cryptocurrency; the linear formulas must not be applied to them unchanged.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+<p>Execution also incurs bid-ask spread and slippage. When actual fill prices are used in the payoff formula, these execution effects are already reflected in those prices. Subtracting them again would double-count them. Transfer costs belong in total strategy costs when transfers occur. Venue fee schedules and funding rules must be checked for the actual contract.<span class="cite">[<a href="#ref3">3</a>]</span><span class="cite">[<a href="#ref7">7</a>]</span></p>
+<h2 id="example">6. Worked example at 1× initial leverage</h2>
+<p>This hypothetical example uses a linear short of 100 tokens at 10 quote units each, backed by 1,000 quote units of stable-value collateral. It excludes funding, fees, and liquidation. Starting notional and collateral are both 1,000, so initial leverage is 1×.</p>
+<div class="table-wrap"><table><caption>Hypothetical short, unchanged position size</caption><thead><tr><th scope="col">Token price</th><th scope="col">Short PnL</th><th scope="col">Equity</th><th scope="col">Notional</th><th scope="col">Effective leverage</th></tr></thead><tbody>
+<tr><th scope="row">8</th><td>+200</td><td>1,200</td><td>800</td><td>0.67×</td></tr>
+<tr><th scope="row">10</th><td>0</td><td>1,000</td><td>1,000</td><td>1.00×</td></tr>
+<tr><th scope="row">12</th><td>−200</td><td>800</td><td>1,200</td><td>1.50×</td></tr>
+</tbody></table></div>
+<p>The final row follows directly from the payoff formula: a 20% price rise produces a 200-unit loss and raises effective leverage to 1.5×. A short opened at 1× still has price risk. Whether a position reaches any later scenario depends on the venue's maintenance and liquidation rules.</p>
+<h2 id="hedging">7. Spot hedges and token baskets</h2>
+<p>Adding 100 spot tokens to the example offsets the short's price exposure if spot and perp prices move together. At a price of 12, the spot holding is worth 1,200 and the short account has 800: total value remains 2,000 before costs.</p>
+<p>Actual hedges retain <em>basis risk</em>, the risk that spot and perp prices diverge. Positive funding may provide income to the short, but funding can reverse. If the spot and margin accounts are separate, the spot gain may be unavailable when the short needs collateral. The hedge also requires both legs to remain open.<span class="cite">[<a href="#ref4">4</a>]</span><span class="cite">[<a href="#ref5">5</a>]</span><span class="cite">[<a href="#ref6">6</a>]</span></p>
+<p>A basket adds exposures rather than automatically removing them. Diversification depends on how positions move together. Correlated token declines and shared collateral can transmit losses across positions. A count of token symbols is insufficient to establish diversification.<span class="cite">[<a href="#ref6">6</a>]</span><span class="cite">[<a href="#ref8">8</a>]</span></p>
+<h2 id="automation">8. Automated execution</h2>
+<p>Trading APIs allow software to submit and cancel orders. Hyperliquid's exchange API includes client order identifiers, reduce-only orders, and scheduled cancellation. Reduce-only orders constrain an exit to reducing a position; scheduled cancellation removes orders rather than closing an existing position.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+<p>An execution system needs to reconcile orders, fills, open positions, collateral, and funding. After a timeout, an unknown order state must be checked before a retry can safely create another order. These are engineering implications of stateful trading APIs. An agent's proposed trade and permission to submit it are separate system decisions.</p>
+<p>Backtests help examine a rule, but repeated selection among strategies can fit historical noise. Bailey and colleagues describe this as backtest overfitting. A profitable historical result alone does not establish future profitability.<span class="cite">[<a href="#ref10">10</a>]</span></p>
+<h2 id="see-also">9. See also</h2>
+<ul><li><a href="/reference/first-principles/">First principles</a>: deriving calculations from explicit assumptions.</li>
+<li><a href="/reference/agentic-loops/">Agentic loops</a>: execution, observation, and feedback in automated systems.</li></ul>
+<h2 id="references">10. References</h2>
+<p>Sources checked September 9, 2026. Exchange documentation describes its own products; rules and availability can change.</p>
+<ol>
+<li id="ref1">Coinbase. <a href="https://www.coinbase.com/advanced-perpetuals">Understand perpetuals trading</a>.</li>
+<li id="ref2">Coinbase. <a href="https://help.coinbase.com/en/coinbase/derivatives/us-perpetual-futures-overview">US perpetual-style futures: Overview</a>.</li>
+<li id="ref3">Bybit. <a href="https://www.bybit.com/en/help-center/article/FAQ-Profit-Loss-Calculation">FAQ: P&L Calculation</a>.</li>
+<li id="ref4">Hyperliquid. <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/trading/liquidations">Liquidations</a>.</li>
+<li id="ref5">Hyperliquid. <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/trading/funding">Funding</a>.</li>
+<li id="ref6">Hyperliquid. <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/trading/margining">Margining</a>.</li>
+<li id="ref7">Hyperliquid. <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/trading/fees">Fees</a>.</li>
+<li id="ref8">Investor.gov, US Securities and Exchange Commission. <a href="https://www.investor.gov/introduction-investing/investing-basics/save-and-invest/diversify-your-investments">Diversify Your Investments</a>.</li>
+<li id="ref9">Hyperliquid. <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint">Exchange endpoint</a>.</li>
+<li id="ref10">David H. Bailey, Jonathan M. Borwein, Marcos López de Prado, and Qiji Jim Zhu. <a href="https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf">The Probability of Backtest Overfitting (2015 working paper)</a>.</li>
+</ol>
+<footer><p><a href="#top">Back to top</a></p></footer>
+</main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
