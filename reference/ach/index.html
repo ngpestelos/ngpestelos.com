@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACH (United States) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="The US Automated Clearing House network: credit and debit entries, Nacha rules, FedACH and EPN, settlement timing, Same Day ACH limits, returns, and reversals.">
+  <meta property="og:title" content="ACH (United States) · Reference">
+  <meta property="og:description" content="The US Automated Clearing House network: credit and debit entries, Nacha rules, FedACH and EPN, settlement timing, Same Day ACH limits, returns, and reversals.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ach/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ach/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { line-height:1.65; }
+main { max-width:48rem; margin:auto; padding:1.4rem 1.4rem 4rem; }
+h1 { font-size:clamp(1.9rem,5vw,2.4rem); font-weight:400; line-height:1.2; border-bottom:1px solid var(--line); padding-bottom:.5rem; }
+h2 { font-weight:400; margin-top:2rem; font-size:1.45rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+p,li { margin-bottom:.7rem; }
+.back,.kicker,.updated,.toc,footer { font-family:"Segoe UI",Helvetica,Arial,sans-serif; }
+.back,.updated,footer { font-size:.85rem; color:var(--mute); }
+.kicker { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--mute); }
+.lede { margin:1.4rem 0; }
+.toc { background:var(--well); border:1px solid var(--line); border-radius:4px; padding:1rem 1.3rem; margin:1.7rem 0; font-size:.9rem; }
+.toc ol { margin-bottom:0; padding-left:1.5rem; }
+.toc li { margin-bottom:.25rem; }
+.cite { font-size:.75em; vertical-align:super; }
+.cite a { text-decoration:none; }
+#references ~ ol { font-size:.9rem; overflow-wrap:anywhere; }
+footer { border-top:1px solid var(--line); margin-top:2rem; }
+.back-to-top { position:fixed; bottom:1.5rem; right:1.5rem; width:2.6rem; height:2.6rem; border-radius:50%; background:var(--bg); color:var(--ink); border:1px solid var(--line); cursor:pointer; opacity:0; visibility:hidden; }
+.back-to-top.visible { opacity:1; visibility:visible; }
+@media print { .back,.back-to-top { display:none !important; } main { max-width:none; padding:0; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"ACH (United States)","description":"The US Automated Clearing House network: credit and debit entries, Nacha rules, FedACH and EPN, settlement timing, Same Day ACH limits, returns, and reversals.","url":"https://ngpestelos.com/reference/ach/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script>
+</head>
+<body class="reference">
+<main id="top">
+<p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Finance · Payments</p>
+<h1>ACH (United States)</h1>
+<p class="updated">Reference entry &middot; last updated September 9, 2026</p>
+<p class="lede"><strong>The Automated Clearing House (ACH) network</strong> is a US electronic payment network that processes batches of credit and debit entries between financial institutions. Nacha sets its operating rules; FedACH and EPN operate its processing services.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+<nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
+<li><a href="#first-principles">First principles: credit and debit entries</a></li>
+<li><a href="#participants">Participants and operators</a></li>
+<li><a href="#timing">Processing and settlement timing</a></li>
+<li><a href="#same-day">Same Day ACH and its limit</a></li>
+<li><a href="#returns">Returns and reversals</a></li>
+<li><a href="#other-systems">Instant payments and Philippine terminology</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">1. First principles: credit and debit entries</h2>
+<p>An <em>ACH credit</em> pushes funds from the originator’s account toward another account, as in payroll. An <em>ACH debit</em> pulls funds from an account under authorization, as in an agreed bill payment. Credit and debit describe the direction of the entry.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>ACH carries batches of payment instructions. Clearing processes those instructions between institutions; <a href="/writing/payments-glossary/#settlement">settlement</a> transfers the corresponding value. Common uses include direct deposit, consumer bills, and business payments.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<h2 id="participants">2. Participants and operators</h2>
+<p>An ACH transaction has an originator, financial institutions, an operator, and a receiver. The roles apply to credits and debits, so the receiver of an entry is not always the person receiving money.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<ul>
+<li><strong>Originator:</strong> initiates an authorized ACH entry.</li>
+<li><strong>Originating Depository Financial Institution (ODFI):</strong> submits entries on the originator’s behalf.</li>
+<li><strong>ACH operator:</strong> sorts and delivers entries between financial institutions.</li>
+<li><strong>Receiving Depository Financial Institution (RDFI):</strong> receives entries and posts them to the receiver’s account.</li>
+<li><strong>Receiver:</strong> the account holder whose account is credited or debited.</li>
+</ul>
+<p>Nacha administers the operating rules. The Federal Reserve’s FedACH and The Clearing House’s Electronic Payments Network (EPN) process ACH transactions. EPN exchanges transactions with FedACH so institutions served by different operators can exchange payments.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+<h2 id="timing">3. Processing and settlement timing</h2>
+<p>ACH credits can settle on the same banking day, the next banking day, or in two banking days. ACH debits can settle on the same or next banking day. The available timing depends on the entry, its effective date, and when it reaches processing.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+<p>A customer’s submission time is separate from an operator’s deadline. For example, FedACH SameDay processes an eligible item on the current processing day when it arrives by a same-day deadline and is not future-dated. Bank submission cutoffs and account posting are additional steps in the payment path. The settlement date alone does not establish an exact customer crediting time.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+<h2 id="same-day">4. Same Day ACH and its limit</h2>
+<p>Same Day ACH adds settlement opportunities within a banking day. It uses ACH batch processing and remains subject to eligibility rules and deadlines. FedACH excludes international ACH transactions (IAT), automated enrollment entries (ENR), and items above the applicable same-day dollar limit.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+<p>As of September 9, 2026, the Same Day ACH limit is $1 million per payment. Nacha has announced an increase to $10 million effective September 17, 2027. This is a limit for same-day eligibility, not a network-wide cap on all ACH payments.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+<h2 id="returns">5. Returns and reversals</h2>
+<p>A <em>return</em> sends an entry back for a reason allowed by the network’s rules, such as insufficient funds or an account problem. A <em>reversal</em> corrects a qualifying error in an originated entry. Nacha limits reversals to specified circumstances, including duplicate entries and certain incorrect payment details.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+<p>A reversal is not a general right to cancel a completed payment or undo a fraud loss. It must meet the applicable rules, and recovery can depend on whether funds remain available. Settlement, the right to return an entry, and successful recovery of money are separate questions.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+<h2 id="other-systems">6. Instant payments and Philippine terminology</h2>
+<p>FedNow handles individual payments in near real time, with immediate end-user access to funds and interbank settlement available 24 hours a day, every day. Same Day ACH uses scheduled batch processing. A same-day settlement date therefore does not describe the same service as an instant payment.<span class="cite">[<a href="#ref7">7</a>]</span><span class="cite">[<a href="#ref4">4</a>]</span></p>
+<p>BSP uses <em>automated clearing house</em> for a multilateral agreement governing a Philippine payment stream under NRPS. That use includes arrangements with different processing models. <a href="/reference/instapay/">InstaPay</a> belongs to this Philippine framework; the abbreviation alone does not make it part of the US ACH network or imply US ACH timing and return rules.<span class="cite">[<a href="#ref8">8</a>]</span></p>
+<h2 id="see-also">7. See also</h2>
+<ul>
+<li><a href="/reference/instapay/">InstaPay (Philippines)</a></li>
+<li><a href="/reference/online-payments/">Online Payments</a></li>
+<li><a href="/writing/us-and-philippine-payment-rails/">US and Philippine Payment Rails</a></li>
+<li><a href="/writing/instapay-is-not-ach/">InstaPay Is Not ACH</a></li>
+<li><a href="/writing/payments-glossary/">Payments Glossary</a></li>
+</ul>
+<h2 id="references">8. References</h2>
+<p>Sources checked September 9, 2026.</p>
+<ol>
+<li id="ref1">Nacha. <a href="https://achdevguide.nacha.org/how-ach-works">How ACH works</a>.</li>
+<li id="ref2">The Clearing House. <a href="https://www.theclearinghouse.org/payment-systems/ach">Electronic Payments Network (EPN)</a>.</li>
+<li id="ref3">Nacha. <a href="https://www.nacha.org/news/significant-majority-ach-payments-settle-one-business-day-or-less">Significant majority of ACH payments settle in one business day or less</a>.</li>
+<li id="ref4">Federal Reserve Financial Services. <a href="https://www.frbservices.org/financial-services/ach/same-day-service.html">FedACH SameDay Service</a>.</li>
+<li id="ref5">Nacha. <a href="https://www.nacha.org/news/same-day-ach-payment-limit-increase-10-million">Same Day ACH payment limit to increase to $10 million (April 27, 2026)</a>.</li>
+<li id="ref6">Olivia Maciel, Nacha. <a href="https://www.nacha.org/news/second-chance-understanding-ach-reversals">Second Chance: Understanding ACH Reversals (August 6, 2026)</a>.</li>
+<li id="ref7">Federal Reserve Board. <a href="https://www.federalreserve.gov/paymentsystems/fednow-additional-questions-and-answers.htm">FedNow Service: Additional questions and answers</a>.</li>
+<li id="ref8">Bangko Sentral ng Pilipinas. <a href="https://www.bsp.gov.ph/Regulations/Issuances/2017/c980.pdf">Circular No. 980: National Retail Payment System framework (2017)</a>.</li>
+</ol>
+<footer><p><a href="#top">Back to top</a></p></footer>
+</main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
