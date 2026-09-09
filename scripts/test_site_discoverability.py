@@ -150,7 +150,7 @@ class SiteDiscoverabilityTests(unittest.TestCase):
                 rendered = index.read_text(encoding="utf-8")
                 latest = re.search(r'<section id="latest">(.*?)</section>', rendered, re.S)
                 self.assertIsNotNone(latest, "index rebuild must generate Latest")
-                rows = re.findall(r"<li>(.*?)</li>", latest.group(1), re.S)
+                rows = re.findall(r"<li[^>]*>(.*?)</li>", latest.group(1), re.S)
                 expected = sorted(catalog, key=lambda item: item["date"], reverse=True)[:3]
                 self.assertEqual(len(rows), 3)
                 for row, item in zip(rows, expected):
@@ -161,12 +161,12 @@ class SiteDiscoverabilityTests(unittest.TestCase):
                     self.assertIn(dict(writing_catalog.BUCKETS)[item["bucket"]], row)
                 self.assertRegex(rendered, r'<h1>Writing</h1>\s*<section id="latest">')
                 self.assertLess(rendered.index('</section>', latest.start()), rendered.index('class="next-step"'))
-                topics = re.search(r'<nav aria-label="Browse by topic">(.*?)</nav>\s*<section id="writing">', rendered, re.S)
+                topics = re.search(r'<nav aria-label="Browse by topic"[^>]*>(.*?)</nav>\s*<section id="writing">', rendered, re.S)
                 self.assertIsNotNone(topics)
                 for bucket, label in writing_catalog.BUCKETS:
                     self.assertIn(f'<a href="#{bucket}">{label}</a>', topics.group(1))
                 self.assertEqual(rendered.count('id="latest"'), 1)
-                self.assertEqual(rendered.count('<nav aria-label="Browse by topic">'), 1)
+                self.assertEqual(rendered.count('<nav aria-label="Browse by topic"'), 1)
                 writing_catalog.apply_index_inner(root, catalog)
                 self.assertEqual(index.read_text(encoding="utf-8"), rendered)
                 if catalog is items:
