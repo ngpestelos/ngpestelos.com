@@ -25,15 +25,31 @@
     gtag('js', new Date());
     gtag('config', 'G-TLBY8P4GG9');
   </script>
+  <style>
+    #latest h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+    #latest ul { list-style: none; padding: 0; }
+    #latest li { padding: 0.5rem 0; }
+    #latest small { display: block; color: var(--mute); font-size: 0.85em; }
+    nav[aria-label="Browse by topic"] { margin-bottom: 2rem; line-height: 1.8; }
+  </style>
 </head>
 <body>
   <main>
     <header>
       <p class="back"><a href="/">← Nestor G Pestelos Jr</a><span class="print"> · <a href="#print" onclick="window.print();return false">Print</a></span></p>
       <h1>Writing</h1>
+      <section id="latest">
+        <h2>Latest</h2>
+        <ul>
+          <li><a href="/writing/the-programmer-was-only-ever-one-incarnation/">The Programmer Was Only Ever One Incarnation</a> <time datetime="2026-09-10">10 Sep 2026</time><small>Essays</small></li>
+          <li><a href="/writing/accepting-agent-written-code/">What I Check Before Accepting Agent-Written Code</a> <time datetime="2026-09-08">8 Sep 2026</time><small>Production systems and agents</small></li>
+          <li><a href="/writing/reading-aloud-is-pointing-and-calling-for-your-brain/">Reading Aloud Is Pointing and Calling for Your Brain</a> <time datetime="2026-09-06">6 Sep 2026</time><small>Essays</small></li>
+        </ul>
+      </section>
       <p class="next-step">To understand legacy <a href="https://rubyonrails.org/">Ruby on Rails</a> or wire agents into a real codebase, <a href="mailto:nestor@pestelos.net?subject=About%20the%20codebase%20(writing)&amp;body=What%20does%20the%20product%20do%2C%20and%20who%20uses%20it%3F%0A%0AWhat%20prompted%20you%20to%20look%20at%20this%20now%3F%0A%0AStack%20and%20versions%20%28language%2C%20framework%2C%20database%2C%20hosting%2C%20agents%20if%20any%29%3A%0A">write me</a> or <a href="https://calendly.com/ngpestelos/25min">book 25 minutes</a>.</p>
     </header>
 
+    <nav aria-label="Browse by topic">Browse by topic: <a href="#systems">Production systems and agents</a> · <a href="#payments">Payments</a> · <a href="#essays">Essays</a></nav>
     <section id="writing">
       <section class="bucket" id="systems">
         <h2>Production systems and agents</h2>

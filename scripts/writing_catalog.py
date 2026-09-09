@@ -103,14 +103,33 @@ def replace_writing_inner(html_text: str, inner: str) -> str:
     return html_text[: start + len(open_tag)] + "\n" + inner + "    " + html_text[end:]
 
 
+def latest_html(items: list[dict]) -> str:
+    labels = dict(BUCKETS)
+    lines = ['      <section id="latest">', '        <h2>Latest</h2>', '        <ul>']
+    for item in sorted(items, key=lambda item: item["date"], reverse=True)[:3]:
+        title = html.escape(item["title"], quote=True)
+        lines.append(
+            f'          <li><a href="/writing/{item["slug"]}/">{title}</a>'
+            f' <time datetime="{item["date"]}">{display_date(item["date"])}</time>'
+            f'<small>{labels[item["bucket"]]}</small></li>'
+        )
+    lines.extend(['        </ul>', '      </section>'])
+    return "\n".join(lines)
+
+
 def apply_index_inner(root: Path | None = None, items: list[dict] | None = None) -> Path:
     base = root or ROOT
     path = base / "writing" / "index.html"
     catalog = items if items is not None else load_catalog()
-    path.write_text(
-        replace_writing_inner(path.read_text(encoding="utf-8"), index_inner_html(catalog)),
-        encoding="utf-8",
-    )
+    rendered = replace_writing_inner(path.read_text(encoding="utf-8"), index_inner_html(catalog))
+    # Replace only generated landing blocks; retain contact copy and archive chrome.
+    rendered = re.sub(r'\n      <section id="latest">.*?</section>', '', rendered, flags=re.S)
+    rendered = rendered.replace('<h1>Writing</h1>', '<h1>Writing</h1>\n' + latest_html(catalog), 1)
+    rendered = re.sub(r'    <nav aria-label="Browse by topic">.*?</nav>\n', '', rendered, flags=re.S)
+    links = ' · '.join(f'<a href="#{bucket}">{label}</a>' for bucket, label in BUCKETS)
+    topics = f'    <nav aria-label="Browse by topic">Browse by topic: {links}</nav>\n'
+    rendered = rendered.replace('    <section id="writing">', topics + '    <section id="writing">', 1)
+    path.write_text(rendered, encoding="utf-8")
     return path
 
 
