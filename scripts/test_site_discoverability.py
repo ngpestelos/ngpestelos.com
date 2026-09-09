@@ -6,11 +6,15 @@ from __future__ import annotations
 import json
 import re
 import unittest
+from tempfile import TemporaryDirectory
+
 from html import unescape
 from html.parser import HTMLParser
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pathlib import Path
+
+import writing_catalog
 
 SCRIPTS = Path(__file__).resolve().parent
 ROOT = SCRIPTS.parent
@@ -129,6 +133,44 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         meat = systems.find("/writing/meat-proxy-problem/")
         source = systems.find("/writing/build-source-of-truth-before-index/")
         self.assertTrue(0 <= employee < meat < source)
+
+    def test_latest_regenerates_from_global_publication_dates(self):
+        original = INDEX.read_text(encoding="utf-8")
+        items = load_catalog()
+        with TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "writing").mkdir()
+            index = root / "writing" / "index.html"
+            index.write_text(original, encoding="utf-8")
+            # A catalog update must displace a Latest entry on the next rebuild.
+            updated = [dict(item) for item in items]
+            updated[-1]["date"] = "2099-01-01"
+            for catalog in (items, updated):
+                writing_catalog.apply_index_inner(root, catalog)
+                rendered = index.read_text(encoding="utf-8")
+                latest = re.search(r'<section id="latest">(.*?)</section>', rendered, re.S)
+                self.assertIsNotNone(latest, "index rebuild must generate Latest")
+                rows = re.findall(r"<li[^>]*>(.*?)</li>", latest.group(1), re.S)
+                expected = sorted(catalog, key=lambda item: item["date"], reverse=True)[:3]
+                self.assertEqual(len(rows), 3)
+                for row, item in zip(rows, expected):
+                    self.assertIn(f'href="/writing/{item["slug"]}/"', row)
+                    self.assertIn(item["title"], unescape(row))
+                    self.assertIn(f'datetime="{item["date"]}"', row)
+                    self.assertIn(writing_catalog.display_date(item["date"]), row)
+                    self.assertIn(dict(writing_catalog.BUCKETS)[item["bucket"]], row)
+                self.assertRegex(rendered, r'<h1>Writing</h1>\s*<section id="latest">')
+                self.assertLess(rendered.index('</section>', latest.start()), rendered.index('class="next-step"'))
+                topics = re.search(r'<nav aria-label="Browse by topic"[^>]*>(.*?)</nav>\s*<section id="writing">', rendered, re.S)
+                self.assertIsNotNone(topics)
+                for bucket, label in writing_catalog.BUCKETS:
+                    self.assertIn(f'<a href="#{bucket}">{label}</a>', topics.group(1))
+                self.assertEqual(rendered.count('id="latest"'), 1)
+                self.assertEqual(rendered.count('<nav aria-label="Browse by topic"'), 1)
+                writing_catalog.apply_index_inner(root, catalog)
+                self.assertEqual(index.read_text(encoding="utf-8"), rendered)
+                if catalog is items:
+                    self.assertEqual(rendered, original, "checked-in index must match its generator")
 
     def test_homepage_pins_and_linters(self):
         html = HOME.read_text(encoding="utf-8")

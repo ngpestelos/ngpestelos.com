@@ -95,8 +95,20 @@ class WritingLayoutTests(unittest.TestCase):
             self.assertEqual(bucket["h2"], 1)
             self.assertTrue(bucket["ul_li_counts"])
             self.assertTrue(any(count > 0 for count in bucket["ul_li_counts"]))
+        latest = re.search(r'<section id="latest">.*?</section>', rendered, re.S)
+        self.assertIsNotNone(latest)
+        original_latest = re.search(
+            r'<section id="latest">.*?</section>', INDEX.read_text(encoding="utf-8"), re.S
+        ).group(0)
+        self.assertEqual(latest.group(0), original_latest)
+        self.assertIn('style="list-style: none; padding: 0;"', latest.group(0))
+        self.assertIn('display: block; color: var(--mute);', latest.group(0))
+        self.assertIn('style="margin-bottom: 2rem; line-height: 1.8;"', rendered)
+        latest_parser = WritingIndexParser()
+        latest_parser.feed(latest.group(0))
+        self.assertEqual(latest_parser.li_count, 3)
         self.assertEqual(
-            parser.li_count,
+            parser.li_count - latest_parser.li_count,
             sum(bucket["li_count"] for bucket in parser.buckets),
         )
         self.assertNotIn("pager", parser.classes)
