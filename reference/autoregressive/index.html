@@ -78,36 +78,6 @@
       margin-bottom: 1.6rem;
       line-height: 1.5;
     }
-    .companion-box {
-      background: var(--well);
-      border: 1px solid var(--line);
-      border-left: 4px solid var(--link);
-      border-radius: 4px;
-      padding: 1rem 1.3rem;
-      margin-bottom: 1.8rem;
-      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    }
-    .companion-box h2 {
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      border-bottom: none;
-      padding-bottom: 0;
-      color: var(--ink);
-    }
-    .companion-box ul {
-      list-style: none;
-      padding-left: 0;
-      margin-bottom: 0;
-      font-size: 0.92rem;
-    }
-    .companion-box li { margin-bottom: 0.4rem; }
-    .companion-box li:last-child { margin-bottom: 0; }
-    .companion-box a { color: var(--link); text-decoration: none; }
-    .companion-box a:hover { text-decoration: underline; }
     .toc {
       background: var(--well);
       border: 1px solid var(--line);
@@ -117,22 +87,6 @@
       font-family: "Segoe UI", Helvetica, Arial, sans-serif;
       font-size: 0.9rem;
     }
-    .toc h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-      color: var(--ink);
-    }
-    .toc-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem 0.6rem;
-      line-height: 1.4;
-    }
-    .toc-grid a { color: var(--link); text-decoration: none; }
-    .toc-grid a:hover { text-decoration: underline; }
     h2 {
       font-size: 1.45rem;
       font-weight: 700;
@@ -173,6 +127,10 @@
       padding: 0.15em 0.35em;
       border-radius: 3px;
     }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; }
+    .equation { overflow-x: auto; padding: 0.8rem; background: var(--well); border: 1px solid var(--line); margin: 1.2rem 0; }
+    .table-scroll { overflow-x: auto; }
+    .table-scroll table { min-width: 36rem; }
     footer {
       border-top: 1px solid var(--line);
       margin-top: 3rem;
@@ -233,116 +191,90 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Machine Learning · Sequence Modeling</p>
     <h1>Autoregressive Models</h1>
-    <p class="subtitle">A citable reference on autoregression in machine learning and natural language processing: mathematical formulation, causal masking, sequential inference bottlenecks, and KV caching.</p>
+    <p><strong>Autoregressive models</strong> predict the next value in a sequence using earlier values. In language models, those values are tokens: units of text such as words.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>In this illustrative example, a model given <code>The cat</code> might select <code>sat</code>. It then uses <code>The cat sat</code> to predict the next token.</p>
+    <p class="subtitle">Last updated 20260909 · <a href="/reference/autoregressive-20260909/">Previous version (archived 20260909)</a></p>
 
-    <div class="companion-box">
-      <h2>See Also &amp; Related References</h2>
-      <ul>
-        <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a> — Transformer architecture, tokenization, and gateway patterns.</li>
-        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a> — Multilayer architectures, backpropagation, and representation learning.</li>
-        <li>📖 <a href="/reference/context-engineering/"><strong>Reference: Context Engineering</strong></a> — Attention dynamics, memory tiers, and token budgeting.</li>
-      </ul>
-    </div>
+    <nav class="toc" aria-label="Contents">
+      <p><strong>Contents</strong></p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#causal-masking">Causal masking in Transformers</a></li>
+        <li><a href="#inference-bottleneck">Sequential generation</a></li>
+        <li><a href="#kv-caching">Key-value caching and computational work</a></li>
+        <li><a href="#vs-non-autoregressive">Comparison of prediction procedures</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
 
-    <div class="toc">
-      <h2>Jump to Section</h2>
-      <div class="toc-grid">
-        <a href="#definition">Definition &amp; Probability Chain</a> &middot;
-        <a href="#causal-masking">Causal Masking &amp; Transformers</a> &middot;
-        <a href="#inference-bottleneck">Inference Bottlenecks</a> &middot;
-        <a href="#kv-caching">KV Caching Mechanics</a> &middot;
-        <a href="#vs-non-autoregressive">Autoregressive vs. Non-Autoregressive</a> &middot;
-        <a href="#sources">Sources</a>
-      </div>
-    </div>
-
-    <!-- Section 1: Definition -->
-    <h2 id="definition">1. Definition &amp; Mathematical Formulation</h2>
-    <p>
-      An <strong>autoregressive (AR) model</strong> is a statistical or machine learning model that forecasts future values in a sequence as a function of its own preceding past values. In natural language processing, autoregressive language modeling decomposes the joint probability distribution of a sequence of tokens \(X = (x_1, x_2, \dots, x_T)\) using the probabilistic chain rule:
-    </p>
-    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+    <span id="definition"></span>
+    <h2 id="first-principles">1. First principles and definitions</h2>
+    <p>An autoregressive language model assigns a probability to each next token conditioned on the preceding tokens. For a sequence \(X = (x_1, x_2, \dots, x_T)\), the probability chain rule gives:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <div class="equation">
       $$P(X) = \prod_{t=1}^{T} P(x_t \mid x_1, x_2, \dots, x_{t-1})$$
-    </p>
-    <p>
-      At each step \(t\), the model conditions strictly on the prefix \(x_{\lt t}\) to emit a probability distribution over the vocabulary \(V\), samples or selects token \(x_t\), appends \(x_t\) to the sequence, and repeats the forward pass.
-    </p>
+    </div>
+    <p>\(T\) is the sequence length and \(x_t\) is its token at position \(t\). The first factor is \(P(x_1)\). A model learns estimates of these conditional probabilities, often using a limited context window.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Autoregression describes a prediction dependency. It does not require a particular neural architecture. The original Transformer uses an encoder and an autoregressive decoder; the original GPT uses a Transformer decoder for language modeling.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></p>
 
-    <!-- Section 2: Causal Masking -->
-    <h2 id="causal-masking">2. Causal Masking in Decoder Transformers</h2>
-    <p>
-      Modern autoregressive LLMs (such as GPT-4, Claude, and Llama) utilize the decoder-only Transformer architecture (Vaswani et al., 2017). During parallel training across full sequences, future tokens must be hidden to prevent the model from "cheating" by looking ahead.
-    </p>
-    <p>
-      This is enforced via a <strong>causal attention mask</strong> (lower-triangular matrix), setting attention weights to \(-\infty\) for all positions \(j > i\):
-    </p>
-    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V, \quad M_{ij} = \begin{cases} 0 & i \ge j \\ -\infty & i \lt j \end{cases}$$
-    </p>
+    <h2 id="causal-masking">2. Causal masking in Transformers</h2>
+    <p>During training, a Transformer decoder can process known sequence positions in parallel. A <strong>causal attention mask</strong> prevents each position from attending to later positions. Inputs and next-token targets are shifted by one position.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>The mask adds \(-\infty\) to future-position attention scores <em>before softmax</em>. Their resulting attention weights are zero:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <div class="equation">
+      $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}} + M\right)V$$
+      $$M_{ij} = \begin{cases} 0 & i \ge j \\ -\infty & i \lt j \end{cases}$$
+    </div>
+    <p>\(Q\), \(K\), and \(V\) are the query, key, and value matrices. \(d_k\) is the key dimension; \(i\) and \(j\) index query and key positions. Each query can attend to its own position and earlier positions.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 
-    <!-- Section 3: Inference Bottleneck -->
-    <h2 id="inference-bottleneck">3. The Sequential Inference Bottleneck</h2>
-    <p>
-      While training can process all \(T\) tokens in parallel using matrix multiplication and causal masks, <strong>inference is inherently sequential (\(O(N)\))</strong>:
-    </p>
+    <h2 id="inference-bottleneck">3. Sequential generation</h2>
+    <p>Ordinary autoregressive decoding selects or samples a token, appends it to the context, and repeats. Generating \(N\) output tokens requires \(N\) token-selection steps. This counts sequential steps, not total computational work.<span class="cite">[<a href="#ref4">4</a>]</span></p>
     <ul>
-      <li><strong>Prefill Phase (Prompt Evaluation):</strong> Parallel forward pass evaluating all prompt tokens simultaneously. Compute-bound (high arithmetic intensity). Measured by <em>Time to First Token (TTFT)</em>.</li>
-      <li><strong>Decode Phase (Generation):</strong> Sequential loop generating one token per forward pass. Memory-bandwidth bound (low arithmetic intensity, constantly reading weights from VRAM to compute a single token). Measured by <em>Time Per Output Token (TPOT)</em>.</li>
+      <li><strong>Prefill:</strong> the model processes the prompt and produces the distribution used to select the first output token.</li>
+      <li><strong>Decode:</strong> subsequent calls process the newly selected token and predict the next one. A cache reuses calculations for earlier tokens.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+    </ul>
+    <p><strong>Speculative sampling</strong> can accept several tokens per target-model call. A draft model proposes tokens that the target model verifies together. Chen et al.'s acceptance procedure preserves the target sampling distribution, subject to numerical precision.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="kv-caching">4. Key-value caching and computational work</h2>
+    <p>A <strong>key-value (KV) cache</strong> stores keys and values computed at each attention layer. During decoding, the model computes queries, keys, and values for the newest input token, adds its keys and values to the cache, and attends over the stored history.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>These bounds count dense self-attention arithmetic. They assume fixed model dimensions, layer count, and batch size, with a growing context and no sliding window. Let \(L\) be the number of positions attended to in one cached decode call.</p>
+    <ul>
+      <li><strong>Per cached decode call:</strong> one query attends to \(L\) keys and values, requiring \(O(L)\) attention work.</li>
+      <li><strong>Across generation:</strong> let \(P\) be the prompt length and \(N\) the number of output tokens. Prefill costs \(O(P^2)\) attention work and yields the first token distribution. The remaining \(N-1\) calls cost \(O(PN + N^2)\). For fixed \(P\), attention work grows quadratically with \(N\).</li>
+      <li><strong>Without a cache:</strong> an implementation that reruns dense attention over the full prefix in every call costs \(O(L^2)\) attention work per call. Summing over growing prefixes gives \(O(N^3)\) for fixed prompt length.</li>
+    </ul>
+    <p>These bounds are derived from dense attention's query-key pairs and the cached decoding procedure.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref4">4</a>]</span> They exclude other model operations and do not predict wall-clock latency. KV storage grows linearly with the retained context length when model dimensions and batch size are fixed.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="vs-non-autoregressive">5. Comparison of prediction procedures</h2>
+    <p>The examples perform different tasks; the table does not rank their speed.</p>
+    <div class="table-scroll" role="region" aria-label="Prediction procedure comparison" tabindex="0">
+      <table>
+        <thead><tr><th scope="col">Model or objective</th><th scope="col">Available context</th><th scope="col">Prediction procedure</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Autoregressive language model</strong></td><td>Earlier output tokens; an encoder-decoder model can also condition on an encoded input.</td><td>Predicts the next token from its prefix. Ordinary decoding repeats this process; speculative methods can verify several candidates together.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref5">5</a>]</span></td></tr>
+          <tr><td><strong>Masked language model (BERT)</strong></td><td>Visible tokens on both sides of masked positions.</td><td>Predicts masked tokens and learns representations for downstream tasks. One encoder pass is not a complete procedure for arbitrary-length text generation, and its work grows with input length.<span class="cite">[<a href="#ref6">6</a>]</span></td></tr>
+          <tr><td><strong>Denoising diffusion model (DDPM)</strong></td><td>The current noisy sample and diffusion timestep.</td><td>Generates a sample through repeated denoising steps. The sampling schedule determines the number of steps; each step has its own computational cost.<span class="cite">[<a href="#ref7">7</a>]</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="see-also">6. See also</h2>
+    <ul>
+      <li><a href="/reference/large-language-models/">Large Language Models</a></li>
+      <li><a href="/reference/deep-neural-networks/">Deep Neural Networks</a></li>
+      <li><a href="/reference/context-engineering/">Context Engineering</a></li>
     </ul>
 
-    <!-- Section 4: KV Caching -->
-    <h2 id="kv-caching">4. Key-Value (KV) Caching</h2>
-    <p>
-      Without optimization, generating token \(t\) would require re-computing the Key (\(K\)) and Value (\(V\)) vectors for all preceding \(t-1\) tokens, resulting in quadratic \(O(N^2)\) computational complexity during generation.
-    </p>
-    <p>
-      <strong>KV Caching</strong> stores previously computed \(K\) and \(V\) projection tensors in GPU memory. On each step, the model computes \(Q, K, V\) only for the newest token, concatenates the new \(K, V\) to the cache, and computes attention over the cached history in \(O(N)\) linear time.
-    </p>
-
-    <!-- Section 5: Comparison -->
-    <h2 id="vs-non-autoregressive">5. Autoregressive vs. Non-Autoregressive Models</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Architecture</th>
-          <th>Attention Direction</th>
-          <th>Generation Complexity</th>
-          <th>Primary Applications</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Autoregressive (Causal / Decoder)</strong></td>
-          <td>Left-to-Right (Unidirectional)</td>
-          <td>\(O(N)\) sequential turns</td>
-          <td>Text generation, code synthesis, conversational agents, mathematical reasoning (<a href="/reference/large-language-models/">LLMs</a>).</td>
-        </tr>
-        <tr>
-          <td><strong>Masked Language Models (Encoder)</strong></td>
-          <td>Bidirectional (Full Context)</td>
-          <td>\(O(1)\) single forward pass</td>
-          <td>Text classification, named-entity recognition, semantic search embeddings (e.g. BERT).</td>
-        </tr>
-        <tr>
-          <td><strong>Non-Autoregressive (Diffusion / Flow)</strong></td>
-          <td>Iterative Denoising / Parallel</td>
-          <td>Fixed \(K\) denoising steps</td>
-          <td>Image generation (Stable Diffusion), speech synthesis, continuous control.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Section 6: Sources -->
     <footer id="sources">
-      <h3>Sources &amp; References</h3>
-      <ul>
-        <li>Vaswani et al. (2017): <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">Attention Is All You Need</a> (NeurIPS)</li>
-        <li>Radford et al. (2018): <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf" target="_blank" rel="noopener">Improving Language Understanding by Generative Pre-Training</a> (GPT)</li>
-        <li>Bengio et al. (2003): <a href="https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf" target="_blank" rel="noopener">A Neural Probabilistic Language Model</a> (JMLR)</li>
-      </ul>
-      <p style="margin-top: 1rem;">
-        Related: <a href="/reference/large-language-models/">Large Language Models Reference</a> &middot; <a href="/reference/deep-neural-networks/">Deep Neural Networks Reference</a>
-      </p>
+      <h2 id="references">7. References</h2>
+      <ol>
+        <li id="ref1">Bengio et al. (2003). <a href="https://www.jmlr.org/papers/volume3/bengio03a/bengio03a.pdf">A Neural Probabilistic Language Model</a>. Journal of Machine Learning Research, 3, 1137–1155.</li>
+        <li id="ref2">Vaswani et al. (2017). <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>. Sections 3.1, 3.2.3, and Table 1.</li>
+        <li id="ref3">Radford et al. (2018). <a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">Improving Language Understanding by Generative Pre-Training</a>. Section 3.1.</li>
+        <li id="ref4">Hugging Face. <a href="https://huggingface.co/docs/transformers/main/cache_explanation">How caching works</a>. Transformers documentation. Accessed 20260909.</li>
+        <li id="ref5">Chen et al. (2023). <a href="https://arxiv.org/abs/2302.01318">Accelerating Large Language Model Decoding with Speculative Sampling</a>.</li>
+        <li id="ref6">Devlin et al. (2019). <a href="https://arxiv.org/abs/1810.04805">BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</a>. Section 3.1.</li>
+        <li id="ref7">Ho, Jain, and Abbeel (2020). <a href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Models</a>. Algorithm 2.</li>
+      </ol>
     </footer>
   </main>
   <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
