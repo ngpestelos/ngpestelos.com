@@ -74,7 +74,7 @@
   <entry>
     <id>https://ngpestelos.com/writing/us-and-philippine-payment-rails/</id>
     <title>US and Philippine Payment Rails</title>
-    <summary>The Fed names four public rails: currency, checks, ACH, and Fedwire. FedNow sits beside ACH. BSP names five designated systems. Cards sit on neither list. Pair the jobs, not the brand names.</summary>
+    <summary>Compare US and Philippine payment systems by the jobs they do. ACH and PESONet process batches; Fedwire and PhilPaSSplus settle transfers individually. FedNow and InstaPay give customers immediate funds, but settle between banks differently.</summary>
     <updated>2026-08-18T00:00:00+08:00</updated>
     <link href="https://ngpestelos.com/writing/us-and-philippine-payment-rails/"/>
   </entry>
