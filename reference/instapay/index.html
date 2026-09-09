@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InstaPay (Philippines) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="InstaPay in the Philippines: participant roles, instant customer credit, net settlement, transaction limits, QR access, and payment errors.">
+  <meta property="og:title" content="InstaPay (Philippines) · Reference">
+  <meta property="og:description" content="InstaPay in the Philippines: participant roles, instant customer credit, net settlement, transaction limits, QR access, and payment errors.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/instapay/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/instapay/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { line-height:1.65; }
+main { max-width:48rem; margin:auto; padding:1.4rem 1.4rem 4rem; }
+h1 { font-size:clamp(1.9rem,5vw,2.4rem); font-weight:400; line-height:1.2; border-bottom:1px solid var(--line); padding-bottom:.5rem; }
+h2 { font-weight:400; margin-top:2rem; font-size:1.45rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+p,li { margin-bottom:.7rem; }
+.back,.kicker,.updated,.toc,footer { font-family:"Segoe UI",Helvetica,Arial,sans-serif; }
+.back,.updated,footer { font-size:.85rem; color:var(--mute); }
+.kicker { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--mute); }
+.lede { margin:1.4rem 0; }
+.toc { background:var(--well); border:1px solid var(--line); border-radius:4px; padding:1rem 1.3rem; margin:1.7rem 0; font-size:.9rem; }
+.toc ol { margin-bottom:0; padding-left:1.5rem; }
+.toc li { margin-bottom:.25rem; }
+.cite { font-size:.75em; vertical-align:super; }
+.cite a { text-decoration:none; }
+#references ~ ol { font-size:.9rem; overflow-wrap:anywhere; }
+footer { border-top:1px solid var(--line); margin-top:2rem; }
+.back-to-top { position:fixed; bottom:1.5rem; right:1.5rem; width:2.6rem; height:2.6rem; border-radius:50%; background:var(--bg); color:var(--ink); border:1px solid var(--line); cursor:pointer; opacity:0; visibility:hidden; }
+.back-to-top.visible { opacity:1; visibility:visible; }
+@media print { .back,.back-to-top { display:none !important; } main { max-width:none; padding:0; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"InstaPay (Philippines)","description":"InstaPay in the Philippines: participant roles, instant customer credit, net settlement, transaction limits, QR access, and payment errors.","url":"https://ngpestelos.com/reference/instapay/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script>
+</head>
+<body class="reference">
+<main id="top">
+<p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Finance · Payments</p>
+<h1>InstaPay (Philippines)</h1>
+<p class="updated">Reference entry &middot; last updated September 9, 2026</p>
+<p class="lede"><strong>InstaPay</strong> is a Philippine electronic funds transfer service for domestic Philippine-peso payments between accounts at participating financial institutions. It operates 24 hours a day, seven days a week.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
+<li><a href="#first-principles">First principles: transfers and clearing</a></li>
+<li><a href="#participants">Participants and operator</a></li>
+<li><a href="#timing">Customer credit and interbank settlement</a></li>
+<li><a href="#limits">Limits, access, and fees</a></li>
+<li><a href="#qr">QR payment access</a></li>
+<li><a href="#errors">Errors and recovery</a></li>
+<li><a href="#related-systems">Related payment systems</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">1. First principles: transfers and clearing</h2>
+<p>A payment moves value from a payer to a payee. Clearing establishes the obligations between participating institutions; <a href="/writing/payments-glossary/#settlement">settlement</a> discharges those obligations. The National Retail Payment System (NRPS) provides the Philippine framework for interoperable retail payments.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<p>Within NRPS, an <em>automated clearing house</em> (ACH) is a multilateral agreement that governs clearing and settlement for a payment stream. It does not prescribe batch processing for every service. InstaPay and PESONet operate under that framework; the <a href="/reference/ach/">US ACH network</a> uses the same abbreviation in a different national system.<span class="cite">[<a href="#ref2">2</a>]</span><span class="cite">[<a href="#ref6">6</a>]</span></p>
+<h2 id="participants">2. Participants and operator</h2>
+<p>NRPS separates oversight, scheme governance, and technical operation. BSP oversees the framework. A payment system management body provides industry governance; ACH participants agree the rules for their payment stream. A clearing switch operator supplies the infrastructure that processes payment instructions. These roles distinguish the agreement from the service that carries its messages.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<p>BSP’s current designated-operators list names Payments Network of the Philippines, Inc. (PNPI) for InstaPay and PESONet. Its footnote records that the BancNet-PCHC merger took effect on June 1, 2026. Older documents may therefore name BancNet as InstaPay’s operator. BSP remains the listed operator of Peso RTGS (PhilPaSSplus).<span class="cite">[<a href="#ref3">3</a>]</span></p>
+<h2 id="timing">3. Customer credit and interbank settlement</h2>
+<p>InstaPay provides almost instant credit to the recipient, with finality. Participants prefund their net clearing obligations in demand deposit accounts at BSP. Settlement uses BSP’s peso settlement system; institutions without direct access can use a sponsoring member.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>PhilPaSSplus, adopted in 2021, is BSP’s real-time gross settlement system. It settles individual obligations transaction by transaction and also settles net clearing results from retail systems, including InstaPay. Its published operating hours are 9:00 a.m. to 5:45 p.m., Monday to Friday, Philippine time.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+<p>A retail system can submit a net clearing result to an RTGS system. That result combines obligations from multiple customer payments. The RTGS posting and the earlier credit to a recipient describe different events; the settlement of a net result does not make each underlying customer transfer a separate RTGS transaction.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+<h2 id="limits">4. Limits, access, and fees</h2>
+<p>The published InstaPay limit is ₱50,000 per transaction. Participating banks and non-bank electronic money issuers provide access through their channels. An institution may impose daily limits. Sending fees vary by provider; recipients receive the full transfer amount without a receiving fee.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<h2 id="qr">5. QR payment access</h2>
+<p>QR codes provide payment details through participating apps. BSP’s July 29, 2026 rebranding FAQ assigns the QR Ph brand to person-to-merchant payments and InstaPay QR to person-to-person payments. Both use the national QR Ph standard. The branding change leaves the technical standards, operating rules, and infrastructure unchanged.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+<h2 id="errors">6. Errors and recovery</h2>
+<p>Incorrect recipient details should be reported promptly to the sending institution. Completed transfers have finality, so contacting the bank does not guarantee recovery. A complaint or request to recover funds is separate from the original payment’s completion.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<h2 id="related-systems">7. Related payment systems</h2>
+<p>PESONet processes credit transfers in batches. BSP’s three-cycle arrangement adds settlement opportunities during the banking day; receiving institutions credit beneficiaries after receiving inward clearing advice. That batch schedule differs from InstaPay’s immediate customer credit.<span class="cite">[<a href="#ref6">6</a>]</span><span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>FedNow is a US instant payment service. It provides immediate access to funds for end users and processes individual interbank payments in near real time, around the clock.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+<h2 id="see-also">8. See also</h2>
+<ul>
+<li><a href="/reference/ach/">ACH (United States)</a></li>
+<li><a href="/reference/online-payments/">Online Payments</a></li>
+<li><a href="/writing/us-and-philippine-payment-rails/">US and Philippine Payment Rails</a></li>
+<li><a href="/writing/instapay-is-not-ach/">InstaPay Is Not ACH</a></li>
+<li><a href="/writing/payments-glossary/">Payments Glossary</a></li>
+</ul>
+<h2 id="references">9. References</h2>
+<p>Sources checked September 9, 2026.</p>
+<ol>
+<li id="ref1">Bangko Sentral ng Pilipinas. <a href="https://www.bsp.gov.ph/PaymentAndSettlement/FAQ_Instapay.pdf">InstaPay FAQ</a>.</li>
+<li id="ref2">Bangko Sentral ng Pilipinas. <a href="https://www.bsp.gov.ph/Regulations/Issuances/2017/c980.pdf">Circular No. 980: National Retail Payment System framework (2017)</a>.</li>
+<li id="ref3">Bangko Sentral ng Pilipinas. <a href="https://www.bsp.gov.ph/PaymentAndSettlement/List_of_Operators_of_Designated_Payment_Systems.pdf">List of operators of designated payment systems</a>.</li>
+<li id="ref4">Bangko Sentral ng Pilipinas. <a href="https://www.bsp.gov.ph/Pages/PAYMENTS%20AND%20SETTLEMENTS/PhilPaSS/PhilPaSS-Overview.aspx">PhilPaSS overview</a>.</li>
+<li id="ref5">Bangko Sentral ng Pilipinas. <a href="https://www.bsp.gov.ph/Media_And_Research/Primers%20Faqs/FAQs-QR-Ph-Rebranding.pdf">QR Ph rebranding FAQs (July 29, 2026)</a>.</li>
+<li id="ref6">Bangko Sentral ng Pilipinas. <a href="https://www.bsp.gov.ph/PaymentAndSettlement/FAQs_3MBS_of_the_PESONet.pdf">PESONet three multilateral batch settlement cycles: FAQs</a>.</li>
+<li id="ref7">Federal Reserve Board. <a href="https://www.federalreserve.gov/paymentsystems/fednow-additional-questions-and-answers.htm">FedNow Service: Additional questions and answers</a>.</li>
+</ol>
+<footer><p><a href="#top">Back to top</a></p></footer>
+</main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
