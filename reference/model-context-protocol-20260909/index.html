@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Model Context Protocol · Reference · Nestor G Pestelos Jr</title>
-  <meta name="description" content="Model Context Protocol version 2026-07-28: roles, features, transports, consent, and implementation security boundaries.">
-  <meta property="og:title" content="Model Context Protocol · Reference">
-  <meta property="og:description" content="Model Context Protocol version 2026-07-28: roles, features, transports, consent, and implementation security boundaries.">
+  <title>Model Context Protocol · Reference · Nestor G Pestelos Jr · Archived 20260909</title>
+  <meta name="description" content="The Model Context Protocol (MCP) is an open-source standard for connecting AI systems with external tools, contextual data sources, and execution environments.">
+  <meta property="og:title" content="Model Context Protocol · Reference · Archived 20260909">
+  <meta property="og:description" content="Architecture, core primitives, transport mechanisms, and security boundaries of the Model Context Protocol.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ngpestelos.com/reference/model-context-protocol/">
-  <link rel="canonical" href="https://ngpestelos.com/reference/model-context-protocol/">
+  <meta property="og:url" content="https://ngpestelos.com/reference/model-context-protocol-20260909/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/model-context-protocol-20260909/">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
   <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
   <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
@@ -25,7 +25,7 @@
     gtag('config', 'G-TLBY8P4GG9');
   </script>
   <style>
-
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     body {
@@ -101,7 +101,6 @@
     p { margin-bottom: 0.9rem; }
     ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
     li { margin-bottom: 0.35rem; }
-    .table-scroll { overflow-x: auto; }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -202,23 +201,21 @@
     }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"Model Context Protocol","description":"Model Context Protocol version 2026-07-28: roles, features, transports, consent, and implementation security boundaries.","url":"https://ngpestelos.com/reference/model-context-protocol/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Model Context Protocol (archived 20260909)","description":"The Model Context Protocol (MCP) is an open-source standard for connecting AI systems with external tools, contextual data sources, and execution environments.","url":"https://ngpestelos.com/reference/model-context-protocol-20260909/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
   <main id="top">
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
-<p class="kicker">Artificial Intelligence · Protocols &amp; Standards</p><h1>Model Context Protocol</h1>
-<p class="lede"><strong>Model Context Protocol</strong> (MCP) is an open protocol through which AI applications access tools, data, and prompt templates exposed by servers.<span class="cite">[<a href="#ref1">1</a>]</span></p>
-<p class="updated">Reference entry · last updated 20260909 · <a href="/reference/model-context-protocol-20260909/">Previous version</a></p>
-<p>This entry describes protocol version <code>2026-07-28</code>. Earlier versions differ in transport, initialization, and client features.<span class="cite">[<a href="#ref2">2</a>]</span></p><nav class="toc" aria-label="Contents"><p class="toc-title">Contents</p><ol><li><a href="#first-principles">First principles and definitions</a></li><li><a href="#architectural-roles">Host, client, and server</a></li><li><a href="#core-primitives">Features and version changes</a></li><li><a href="#transport-layers">Transports</a></li><li><a href="#lsp-analogy">The LSP comparison</a></li><li><a href="#security-boundaries">Consent and security boundaries</a></li><li><a href="#see-also">See also</a></li><li><a href="#references">References</a></li></ol></nav><h2 id="first-principles">First principles and definitions</h2>
-<p>A protocol defines the messages that programs exchange. MCP uses JSON-RPC 2.0 to describe requests, results, and errors. A common message format lets an application discover a server's tools and call them without a separate integration for each application. It does not grant access to the underlying system or enforce a security boundary.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref3">3</a>]</span></p>
-<h2 id="architectural-roles">Host, client, and server</h2>
-<ul><li>The <strong>host</strong> is the AI application. It coordinates the model, user interaction, and access policies.</li>
-<li>A <strong>client</strong> is the host's protocol component for communicating with a server.</li>
-<li>A <strong>server</strong> exposes tools, resources, or prompts. It accesses external systems through their own interfaces.</li></ul>
-<p>MCP covers the client–server connection; the server's database or service integration can use another protocol.<span class="cite">[<a href="#ref1">1</a>]</span></p>        <div class="diagram-box">
-      <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MCP host, clients, servers, and external systems">
+    <p class="kicker">Artificial Intelligence · Protocols &amp; Standards</p>
+    <h1>Model Context Protocol</h1>
+    <p class="updated"><strong>Archived version captured 20260909.</strong> Superseded claims are preserved from commit <code>c8662d2d2ab64c6c8ab828f9cc326eccf651b745</code>. <a href="/reference/model-context-protocol/">Read the current entry</a>.</p>
+    <p class="updated">Reference entry · last updated August 30, 2026</p>
+
+    <p class="lede">The <strong>Model Context Protocol</strong> (MCP) is an open-source standard for connecting artificial intelligence models to external data sources, tools, and execution environments.<span class="cite">[<a href="#ref1">1</a>]</span> Introduced by Anthropic in November 2024, the specification provides a uniform JSON-RPC 2.0 communication layer between client applications and isolated server processes, replacing bespoke API integrations with a standard interface.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+        <div class="diagram-box">
+      <svg viewBox="0 0 660 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Model Context Protocol Architecture">
         <!-- Host Box -->
         <rect x="10" y="15" width="205" height="180" rx="6" fill="#ffffff" stroke="#9a3412" stroke-width="1.5"/>
         <text x="112" y="35" font-family="-apple-system, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#9a3412">MCP Host</text>
@@ -239,10 +236,10 @@
         <text x="162" y="88" font-family="-apple-system, sans-serif" font-size="9" font-weight="bold" text-anchor="middle" fill="#202122">Client 1</text>
         <text x="162" y="102" font-family="-apple-system, sans-serif" font-size="8" text-anchor="middle" fill="#54595d">stdio driver</text>
 
-        <!-- Client 2 (HTTP) -->
+        <!-- Client 2 (SSE) -->
         <rect x="120" y="127" width="85" height="50" rx="4" fill="#ffffff" stroke="#a2a9b1" stroke-width="1"/>
         <text x="162" y="148" font-family="-apple-system, sans-serif" font-size="9" font-weight="bold" text-anchor="middle" fill="#202122">Client 2</text>
-        <text x="162" y="162" font-family="-apple-system, sans-serif" font-size="8" text-anchor="middle" fill="#54595d">HTTP client</text>
+        <text x="162" y="162" font-family="-apple-system, sans-serif" font-size="8" text-anchor="middle" fill="#54595d">SSE client</text>
 
         <!-- Host -> Server Connectors -->
         <path d="M 205 92 L 245 92" stroke="#54595d" stroke-width="1.5" stroke-dasharray="3,3"/>
@@ -258,7 +255,7 @@
         <rect x="245" y="122" width="175" height="60" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
         <text x="332" y="142" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#202122">MCP Server (Remote)</text>
         <text x="332" y="157" font-family="-apple-system, sans-serif" font-size="8.5" text-anchor="middle" fill="#54595d">GitHub · Slack · Web Search</text>
-        <text x="332" y="171" font-family="-apple-system, sans-serif" font-size="8" text-anchor="middle" fill="#9a3412">Streamable HTTP</text>
+        <text x="332" y="171" font-family="-apple-system, sans-serif" font-size="8" text-anchor="middle" fill="#9a3412">Transport: SSE / HTTP</text>
 
         <!-- Server -> Data Systems Connectors -->
         <path d="M 420 92 L 465 92" stroke="#54595d" stroke-width="1.5"/>
@@ -273,43 +270,120 @@
         <rect x="465" y="122" width="185" height="60" rx="6" fill="#f8f9fa" stroke="#a2a9b1" stroke-width="1"/>
         <text x="557" y="142" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#202122">Enterprise Services</text>
         <text x="557" y="157" font-family="-apple-system, sans-serif" font-size="8.5" text-anchor="middle" fill="#54595d">REST APIs · SaaS · Cloud DBs</text>
-        <text x="557" y="171" font-family="-apple-system, sans-serif" font-size="8" text-anchor="middle" fill="#166534">Service-specific API</text>
+        <text x="557" y="171" font-family="-apple-system, sans-serif" font-size="8" text-anchor="middle" fill="#166534">Authenticated JSON-RPC</text>
       </svg>
     </div>
 
-<h2 id="core-primitives">Features and version changes</h2>
-<p>The table summarizes features in version <code>2026-07-28</code>; it is not an exhaustive list of protocol methods. This version replaces the initialization handshake with per-request metadata and capability declarations. Requests for additional client input use multi-round-trip interactions.<span class="cite">[<a href="#ref2">2</a>]</span></p>
-<div class="table-scroll" role="region" aria-label="MCP features" tabindex="0"><table><thead><tr><th>Feature</th><th>Purpose</th><th>Version-specific behavior</th></tr></thead><tbody>
-<tr><td>Tools</td><td>Server operations available to the application.</td><td><code>tools/list</code> discovers tools; <code>tools/call</code> invokes one. The host controls access.<span class="cite">[<a href="#ref4">4</a>]</span></td></tr>
-<tr><td>Resources</td><td>Data identified by URI, such as a document or database schema.</td><td><code>resources/read</code> retrieves data. Resource subscriptions use the unified <code>subscriptions/listen</code> mechanism.</td></tr>
-<tr><td>Prompts</td><td>Server-provided templates with arguments.</td><td><code>prompts/list</code> discovers templates; <code>prompts/get</code> retrieves one.</td></tr>
-<tr><td>Elicitation</td><td>Additional information or interaction requested from the user.</td><td>Input requests are embedded in a result and fulfilled through a subsequent client request.</td></tr>
-<tr><td>Roots</td><td>Client-provided filesystem locations relevant to a task.</td><td>Deprecated, not removed. Roots requests use embedded input; the roots-change notification is removed. Roots are advisory.</td></tr>
-<tr><td>Sampling</td><td>Model generation requested through the client.</td><td>Deprecated, not removed. Sampling is requested as embedded input, not a separate server-initiated JSON-RPC request.</td></tr>
-</tbody></table></div>
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#architectural-roles">Architectural roles</a></li>
+        <li><a href="#core-primitives">Core protocol primitives</a></li>
+        <li><a href="#transport-layers">Transport layers and wire framing</a></li>
+        <li><a href="#lsp-analogy">The Language Server Protocol comparison</a></li>
+        <li><a href="#security-boundaries">Security and isolation boundaries</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
 
-<h2 id="transport-layers">Transports</h2>
-<p><strong>Standard input/output (stdio)</strong> connects a client to a local server process using newline-delimited JSON-RPC messages. The client launches the server; standard output carries protocol messages.<span class="cite">[<a href="#ref3">3</a>]</span></p>
-<p><strong>Streamable HTTP</strong> serves remote clients. In version <code>2026-07-28</code>, clients send requests by HTTP POST to a single endpoint. Responses can be JSON or request-scoped Server-Sent Events (SSE). There is no standalone GET stream or transport session.<span class="cite">[<a href="#ref5">5</a>]</span></p>
-<p>The older HTTP+SSE transport is historical. Earlier Streamable HTTP versions also had GET-stream and session behavior that this version removes.<span class="cite">[<a href="#ref2">2</a>]</span><span class="cite">[<a href="#ref5">5</a>]</span></p>
-<h2 id="lsp-analogy">The Language Server Protocol comparison</h2>
-<p>MCP follows an integration pattern similar to the Language Server Protocol (LSP), which connects editors with language tools.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref6">6</a>]</span></p>
-<p>As an illustrative count, connecting M applications to N services can require M × N custom adapters. A shared protocol can reduce the protocol-facing implementations to M + N. This counts interfaces, not engineering effort: authentication, feature support, and service-specific behavior still need implementation.</p>
-<h2 id="security-boundaries">Consent and security boundaries</h2>
-<p>The specification calls for explicit user consent before tool use. The tools section recommends human oversight and confirmation interfaces, but it mandates no particular interaction model. Consent and approval policy belong to the host; MCP does not impose a confirmation dialog for every side-effecting call.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref4">4</a>]</span></p>
-<p><strong>Roots are not a security boundary.</strong> They communicate intended filesystem locations. Filesystem permissions, sandboxing, and checks in the implementation must enforce containment. Running a server in a separate process does not itself provide a sandbox.<span class="cite">[<a href="#ref7">7</a>]</span></p>
-<p>Remote implementations must also validate origins and implement access controls appropriate to their deployment. A valid MCP message does not make its contents trusted.<span class="cite">[<a href="#ref5">5</a>]</span></p>
-<h2 id="see-also">See also</h2><ul>
-<li><a href="/reference/agent-harness/">Agent Harness</a></li><li><a href="/reference/agents/">Agents</a></li><li><a href="/reference/context-engineering/">Context Engineering</a></li><li><a href="/reference/fail-closed/">Fail-Closed</a></li><li><a href="/reference/llm-gateway/">LLM Gateway</a></li><li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li></ul><h2 id="references">References</h2>
-<ol>
-<li id="ref1">Model Context Protocol. <a href="https://modelcontextprotocol.io/specification/2026-07-28">Specification, version 2026-07-28</a>.</li>
-<li id="ref2">Model Context Protocol. <a href="https://modelcontextprotocol.io/specification/2026-07-28/changelog">Key changes, version 2026-07-28</a>.</li>
-<li id="ref3">Model Context Protocol. <a href="https://modelcontextprotocol.io/specification/2026-07-28/basic/transports">Transports</a>.</li>
-<li id="ref4">Model Context Protocol. <a href="https://modelcontextprotocol.io/specification/2026-07-28/server/tools">Tools</a>.</li>
-<li id="ref5">Model Context Protocol. <a href="https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http">Streamable HTTP</a>.</li>
-<li id="ref6">Microsoft. <a href="https://microsoft.github.io/language-server-protocol/">Language Server Protocol</a>.</li>
-<li id="ref7">Model Context Protocol. <a href="https://modelcontextprotocol.io/docs/2026-07-28/learn/client-concepts">Client concepts: roots and their limitations</a>.</li>
-</ol>
+    <h2 id="architectural-roles">Architectural roles</h2>
+    <p>The Model Context Protocol establishes three explicit architectural participants:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ul>
+      <li><strong>Host</strong>: The root application or agent runtime (such as Claude Desktop, an IDE extension, or an autonomous CLI harness) that initiates sessions, evaluates user intentions, enforces permission policies, and coordinates model execution.</li>
+      <li><strong>Client</strong>: An internal protocol adapter within the host that establishes and maintains a direct 1:1 connection with a specific server instance.</li>
+      <li><strong>Server</strong>: An independent program that exposes domain tools, contextual resources, and prompt templates to connected clients through JSON-RPC 2.0 messages.</li>
+    </ul>
+
+    <h2 id="core-primitives">Core protocol primitives</h2>
+    <p>The protocol defines five functional capabilities partitioned between client-controlled and server-controlled operations:<span class="cite">[<a href="#ref2">2</a>]</span><span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Primitive</th>
+          <th>Control Direction</th>
+          <th>Function</th>
+          <th>Lifecycle &amp; Schema</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Tools</strong></td>
+          <td>Model-controlled</td>
+          <td>Executable operations callable by the LLM (file editing, database queries, terminal commands).</td>
+          <td>Exposed via <code>tools/list</code> with JSON Schema parameter definitions; invoked through <code>tools/call</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>Resources</strong></td>
+          <td>Application-controlled</td>
+          <td>Read-only passive data attachments (files, documentation, database schemas, log streams).</td>
+          <td>Identified by uniform URIs (such as <code>file:///</code> or <code>postgres://</code>). Clients read via <code>resources/read</code> and track changes via <code>resources/subscribe</code>.</td>
+        </tr>
+        <tr>
+          <td><strong>Prompts</strong></td>
+          <td>User-controlled</td>
+          <td>Parameterized interaction templates and operational recipes authored by the server.</td>
+          <td>Retrieved via <code>prompts/list</code> and populated through <code>prompts/get</code> with user-supplied arguments.</td>
+        </tr>
+        <tr>
+          <td><strong>Sampling</strong></td>
+          <td>Server-initiated</td>
+          <td>Nested LLM completion requests sent from the server back to the host client during tool execution.</td>
+          <td>Invoked through <code>sampling/createMessage</code>, giving the server bounded inference access without separate API credentials.</td>
+        </tr>
+        <tr>
+          <td><strong>Roots</strong></td>
+          <td>Client-controlled</td>
+          <td>Filesystem boundaries and workspace path declarations provided by the host to constrain server operations.</td>
+          <td>Queried through <code>roots/list</code>; updated via <code>notifications/roots/list_changed</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="transport-layers">Transport layers and wire framing</h2>
+    <p>MCP supports two official transport mechanisms for bidirectional JSON-RPC 2.0 message exchange:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h3>1. Standard input / output (stdio)</h3>
+    <p>Used for local tools and command-line utilities. The host spawns the server as a child process and communicates directly over standard input and standard output streams. Messages are framed as newline-delimited JSON lines without HTTP overhead.</p>
+
+    <h3>2. Server-Sent Events with HTTP POST (SSE)</h3>
+    <p>Used for remote services and networked microservices. The client opens an HTTP GET stream using the Server-Sent Events protocol to receive real-time server messages, events, and notifications. The client sends outgoing JSON-RPC requests to an HTTP POST endpoint exposed by the server.</p>
+
+    <h2 id="lsp-analogy">The Language Server Protocol comparison</h2>
+    <p>The architectural pattern of MCP directly follows Microsoft's Language Server Protocol (LSP).<span class="cite">[<a href="#ref4">4</a>]</span> Prior to LSP, integrating $M$ code editors with $N$ programming language analyzers required $M 	imes N$ custom plugins. LSP established a shared protocol that reduced the engineering complexity to $M + N$.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>MCP applies the same reduction to foundation models: instead of authoring custom connectors for every model and tool pair, developers write one MCP server per data source that connects to any compliant host runtime.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="security-boundaries">Security and isolation boundaries</h2>
+    <p>Because MCP servers execute arbitrary code and read system data, the specification enforces strict security principles:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <ul>
+      <li><strong>Process isolation</strong>: Local servers run in distinct operating system processes with user-level privileges rather than running inside the model runtime.</li>
+      <li><strong>Explicit permission gates</strong>: Tool calls with side effects require host-level confirmation before execution.</li>
+      <li><strong>Root containment</strong>: Servers must respect root URI boundaries provided during initialization, preventing arbitrary filesystem traversal.</li>
+      <li><strong>No credential leakage</strong>: When servers request model inference through sampling, the host processes the call using its existing model configuration without exposing underlying provider API keys to the server.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/agent-harness/">Agent Harness</a></li>
+      <li><a href="/reference/agents/">Agents</a></li>
+      <li><a href="/reference/context-engineering/">Context Engineering</a></li>
+      <li><a href="/reference/fail-closed/">Fail-Closed</a></li>
+      <li><a href="/reference/llm-gateway/">LLM Gateway</a></li>
+      <li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#architectural-roles">↑</a> Anthropic. "Introducing the Model Context Protocol." Anthropic News &amp; Announcements, November 25, 2024. <a href="https://www.anthropic.com/news/model-context-protocol">https://www.anthropic.com/news/model-context-protocol</a></li>
+      <li id="ref2"><a class="backlink" href="#core-primitives">↑</a> Model Context Protocol Community. "Model Context Protocol Specification and Architecture." Model Context Protocol Documentation, 2024. <a href="https://modelcontextprotocol.io/">https://modelcontextprotocol.io/</a></li>
+      <li id="ref3"><a class="backlink" href="#transport-layers">↑</a> Model Context Protocol Specification Working Group. "MCP Schema and Transport Specification (JSON-RPC 2.0)." Open Specification, 2024. <a href="https://spec.modelcontextprotocol.io/">https://spec.modelcontextprotocol.io/</a></li>
+      <li id="ref4"><a class="backlink" href="#lsp-analogy">↑</a> Microsoft Corporation. "Language Server Protocol Overview and Specification." Microsoft Open Source, 2016. <a href="https://microsoft.github.io/language-server-protocol/">https://microsoft.github.io/language-server-protocol/</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
   </main>
 
   <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
