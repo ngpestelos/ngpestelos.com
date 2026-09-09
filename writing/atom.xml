@@ -4,10 +4,17 @@
   <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
   <link href="https://ngpestelos.com/writing/"/>
   <id>https://ngpestelos.com/writing/</id>
-  <updated>2026-09-08T04:16:09Z</updated>
+  <updated>2026-09-09T22:20:16Z</updated>
   <author>
     <name>Nestor G Pestelos Jr</name>
   </author>
+  <entry>
+    <id>https://ngpestelos.com/writing/the-programmer-was-only-ever-one-incarnation/</id>
+    <title>The Programmer Was Only Ever One Incarnation</title>
+    <summary>I want to keep discovering and solving problems with AI's help. Writing the syntax myself can become a smaller part of that work. The calling survives a change in how I practice it.</summary>
+    <updated>2026-09-10T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/the-programmer-was-only-ever-one-incarnation/"/>
+  </entry>
   <entry>
     <id>https://ngpestelos.com/writing/accepting-agent-written-code/</id>
     <title>What I Check Before Accepting Agent-Written Code</title>

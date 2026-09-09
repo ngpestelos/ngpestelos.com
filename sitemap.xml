@@ -811,6 +811,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/writing/the-programmer-was-only-ever-one-incarnation/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/writing/accepting-agent-written-code/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

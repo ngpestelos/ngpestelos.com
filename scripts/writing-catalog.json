@@ -1,5 +1,12 @@
 [
   {
+    "slug": "the-programmer-was-only-ever-one-incarnation",
+    "title": "The Programmer Was Only Ever One Incarnation",
+    "date": "2026-09-10",
+    "bucket": "essays",
+    "pin": null
+  },
+  {
     "slug": "accepting-agent-written-code",
     "title": "What I Check Before Accepting Agent-Written Code",
     "date": "2026-09-08",
