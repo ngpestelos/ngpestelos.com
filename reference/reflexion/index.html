@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reflexion (AI Agents) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Reflexion retains verbal reflections in episodic memory to inform later task attempts without updating model weights.">
+  <meta property="og:title" content="Reflexion (AI Agents) · Reference">
+  <meta property="og:description" content="Reflexion retains verbal reflections in episodic memory to inform later task attempts without updating model weights.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/reflexion/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/reflexion/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+      .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Reflexion (AI Agents)","description":"Reflexion retains verbal reflections in episodic memory to inform later task attempts without updating model weights.","url":"https://ngpestelos.com/reference/reflexion/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Systems Architecture · Artificial Intelligence</p>
+    <h1>Reflexion (AI Agents)</h1>
+    <p class="updated">Reference entry · last updated 20260910</p>
+
+<p class="lede"><strong>Reflexion</strong> is a framework in which a <a href="/reference/large-language-models/">language-model</a> agent reflects on feedback and stores verbal lessons in <a href="/reference/agents/#core-subsystems">episodic memory</a> to inform later attempts. This memory holds records of earlier attempts. Shinn and colleagues introduced it as verbal reinforcement learning.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<nav class="toc" aria-label="Contents"><p class="toc-title">Contents</p><ol><li><a href="#first-principles">First principles and definitions</a></li><li><a href="#mechanism">Mechanism</a></li><li><a href="#evidence">Evidence and limits</a></li><li><a href="#see-also">See also</a></li><li><a href="#references">References</a></li></ol></nav>
+
+<h2 id="first-principles">First principles and definitions</h2>
+<p>Reflexion changes the information supplied to an agent across attempts without updating model weights. Its feedback may be a score or free-form text, supplied by external checks or generated internally.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<h2 id="mechanism">Mechanism</h2>
+<p>An actor attempts a task. An evaluator assesses the result. A self-reflection component produces text retained in memory for a subsequent attempt. The actor can use <a href="/reference/react/">ReAct</a> within an attempt.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>Illustrative sequence: a code candidate fails a boundary-case test. A reflection records the missed case. On the next attempt, the actor receives that note alongside the task. A new test run determines whether the revision fixes the failure.</p>
+<p>This example uses a test as feedback; the framework does not require every task to have a deterministic verifier. The mechanism also does not imply that the agent rewrites its tools.</p>
+<h2 id="evidence">Evidence and limits</h2>
+<p>The paper evaluates decision-making, reasoning, and programming tasks. A mistaken reflection can misdirect later attempts; retained text is not verified knowledge.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>An <a href="/reference/agent-harness/">agent harness</a> still manages execution.<span class="cite">[<a href="#ref2">2</a>]</span> An <a href="/reference/agentic-loops/">agentic loop</a> using Reflexion needs its own stopping policy and task-appropriate <a href="/reference/llm-evaluations/">evaluation</a>.</p>
+<h2 id="see-also">See also</h2><ul><li><a href="/reference/agentic-loops/">Agentic Loops</a></li><li><a href="/reference/react/">ReAct (AI Agents)</a></li><li><a href="/reference/context-engineering/">Context Engineering</a></li><li><a href="/reference/llm-evaluations/">LLM Evaluations</a></li></ul>
+<h2 id="references">References</h2><ol><li id="ref1">Shinn, Noah, et al. <a href="https://arxiv.org/abs/2303.11366">“Reflexion: Language Agents with Verbal Reinforcement Learning.”</a> NeurIPS, 2023. <a href="https://arxiv.org/html/2303.11366v4">Full text</a>.</li><li id="ref2">Trivedy, Vivek. <a href="https://www.langchain.com/blog/the-anatomy-of-an-agent-harness">“The Anatomy of an Agent Harness.”</a> LangChain, 2026.</li></ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
