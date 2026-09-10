@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KV Cache &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="KV cache stores Key and Value activation tensors in transformer self-attention to avoid recomputing past tokens during autoregressive decode. Memory formulas, MHA/MQA/GQA/MLA architectures, PagedAttention, and eviction policies.">
+  <meta property="og:title" content="KV Cache &middot; Reference">
+  <meta property="og:description" content="First principles of the Key-Value (KV) cache in transformer inference, memory footprint scaling, attention architectures, PagedAttention, and eviction strategies.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/kv-cache/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/kv-cache/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"KV Cache","description":"KV cache stores intermediate Key and Value activation vectors across attention layers during autoregressive language model generation, preventing redundant recomputation of past tokens.","url":"https://ngpestelos.com/reference/kv-cache/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2.2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+    }
+    li { margin-bottom: 0.35rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.6rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    .diagram-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin: 1.4rem 0;
+      text-align: center;
+    }
+    .diagram-box svg {
+      max-width: 100%;
+      height: auto;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Systems Engineering &middot; Machine Learning</p>
+    <h1>KV Cache</h1>
+    <p class="updated">Reference entry &middot; last updated September 11, 2026</p>
+
+    <p class="lede"><strong>KV cache</strong> (Key-Value cache) is a memory buffer in autoregressive transformer inference that stores intermediate Key and Value activation vectors across attention layers for past tokens.<span class="cite">[<a href="#ref-1">1</a>]</span> By retaining these projections in accelerator high-bandwidth memory (HBM), the model evaluates attention for each newly emitted token without recomputing linear projections for preceding context.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="KV Cache Lifecycle: Prefill Matrix Write and Decode Vector Append">
+        <!-- Prefill Box -->
+        <rect x="20" y="20" width="300" height="180" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="170" y="44" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#202122">1. Prefill Phase (Parallel Write)</text>
+        <rect x="40" y="60" width="120" height="60" rx="3" fill="#ea580c" fill-opacity="0.15" stroke="#ea580c"/>
+        <text x="100" y="85" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ea580c" text-anchor="middle">Input Tokens</text>
+        <text x="100" y="105" font-family="system-ui, sans-serif" font-size="10" fill="#54595d" text-anchor="middle">\(t_1, t_2, \dots, t_L\)</text>
+        <line x1="160" y1="90" x2="190" y2="90" stroke="#202122" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <rect x="190" y="60" width="110" height="60" rx="3" fill="#0284c7" fill-opacity="0.15" stroke="#0284c7"/>
+        <text x="245" y="85" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#0284c7" text-anchor="middle">Full Projection</text>
+        <text x="245" y="105" font-family="system-ui, sans-serif" font-size="10" fill="#54595d" text-anchor="middle">\(K, V \in \mathbb{R}^{L \times d}\)</text>
+        <text x="170" y="150" font-family="system-ui, sans-serif" font-size="10" fill="#54595d" text-anchor="middle">Parallel GEMM (Compute-Bound)</text>
+        <text x="170" y="170" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#166534" text-anchor="middle">Writes all \(L\) slots to HBM</text>
+
+        <!-- Arrow between boxes -->
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 1 L 8 5 L 0 9 z" fill="#202122"/>
+          </marker>
+        </defs>
+        <line x1="320" y1="110" x2="350" y2="110" stroke="#202122" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <!-- Decode Box -->
+        <rect x="350" y="20" width="310" height="180" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
+        <text x="505" y="44" font-family="system-ui, sans-serif" font-size="12" font-weight="bold" text-anchor="middle" fill="#202122">2. Decode Step \(i\) (Vector Append)</text>
+        <rect x="370" y="60" width="80" height="60" rx="3" fill="#ea580c" fill-opacity="0.15" stroke="#ea580c"/>
+        <text x="410" y="85" font-family="system-ui, sans-serif" font-size="11" font-weight="bold" fill="#ea580c" text-anchor="middle">Token \(t_i\)</text>
+        <text x="410" y="105" font-family="system-ui, sans-serif" font-size="10" fill="#54595d" text-anchor="middle">Query \(q_i\)</text>
+        <line x1="450" y1="90" x2="475" y2="90" stroke="#202122" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <rect x="475" y="60" width="165" height="60" rx="3" fill="#166534" fill-opacity="0.15" stroke="#166534"/>
+        <text x="557" y="82" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#166534" text-anchor="middle">Read Past Cache [K&lt;i, V&lt;i]</text>
+        <text x="557" y="100" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#0284c7" text-anchor="middle">+ Append Single [k_i, v_i]</text>
+        <text x="505" y="150" font-family="system-ui, sans-serif" font-size="10" fill="#54595d" text-anchor="middle">GEMV Attention (Memory-Bandwidth Bound)</text>
+        <text x="505" y="170" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#9a3412" text-anchor="middle">Reads entire cache from HBM per token</text>
+      </svg>
+    </div>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">First Principles: Computational Trade-off</a></li>
+        <li><a href="#memory-formulation">Memory Footprint Formulation</a></li>
+        <li><a href="#attention-architectures">Architectural Variants: MHA, MQA, GQA, and MLA</a></li>
+        <li><a href="#paged-attention">Memory Management and PagedAttention</a></li>
+        <li><a href="#eviction-compression">Eviction and Compression Strategies</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Computational Trade-off</h2>
+    <p>In standard transformer self-attention, the scaled dot-product attention for query tokens \(Q \in \mathbb{R}^{N_q \times d}\), key tokens \(K \in \mathbb{R}^{N_k \times d}\), and value tokens \(V \in \mathbb{R}^{N_k \times d}\) is defined by Vaswani et al.:<span class="cite">[<a href="#ref-3">3</a>]</span></p>
+    \[\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V\]
+    <p>During the prefill phase, all \(L\) prompt tokens are available at once. The attention mechanism calculates keys and values for all tokens simultaneously via dense matrix-matrix multiplication (GEMM), operating with high arithmetic intensity on GPU tensor cores.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+    <p>During autoregressive decoding, the model generates output tokens sequentially. Emitting step \(i+1\) requires calculating attention between the current token query \(q_i\) and the representations of all preceding tokens \(t_1, \dots, t_i\). Two operational choices exist:</p>
+    <ul>
+      <li><strong>Na&iuml;ve Recomputation:</strong> Recompute key and value representations and attention matrices for all \(i\) preceding tokens at every step. Total computation for generating \(N\) tokens scales cubically as \(O(N^3)\) forward attention operations (and \(O(N^2)\) for projection work), imposing severe redundant compute overhead.</li>
+      <li><strong>KV Caching:</strong> Compute key and value vectors \(k_i = t_i W_K\) and \(v_i = t_i W_V\) only for the newly emitted token. Concatenate these vectors to cached tensors stored in high-bandwidth memory:
+      \[K_{\le i} = [K_{< i}; k_i], \quad V_{\le i} = [V_{< i}; v_i]\]
+      The model computes attention using vector-matrix multiplications (GEMV). Computation per token scales linearly with context length \(O(i)\), accumulating to \(O(N^2)\) attention FLOPs across \(N\) steps.</li>
+    </ul>
+    <p>This efficiency introduces a fundamental systems trade-off: the KV cache eliminates redundant mathematical operations by trading compute for memory storage and memory bandwidth.<span class="cite">[<a href="#ref-1">1</a>]</span> Because every decoding step loads the full accumulated KV cache from high-bandwidth memory (HBM) into on-chip cache (SRAM) for a single token query vector, autoregressive decoding shifts from being compute-bound to memory-bandwidth bound.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <h2 id="memory-formulation">2. Memory Footprint Formulation</h2>
+    <p>The total bytes required to store the KV cache for a transformer model depend on batch size, sequence length, network depth, and attention dimensions.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <p>For standard Multi-Head Attention (MHA), the total memory footprint \(M_{\text{KV}}\) in bytes is:</p>
+    \[M_{\text{KV}} = 2 \times B \times L \times n_{\text{layers}} \times h_{\text{kv}} \times d_{\text{head}} \times P\]
+    <p>where:</p>
+    <ul>
+      <li>\(2\) represents the two distinct stored matrices (Key and Value).</li>
+      <li>\(B\) is the serving batch size (number of concurrent sequences).</li>
+      <li>\(L\) is the sequence length (prompt tokens plus generated tokens).</li>
+      <li>\(n_{\text{layers}}\) is the total count of transformer decoder layers.</li>
+      <li>\(h_{\text{kv}}\) is the number of key-value attention heads per layer.</li>
+      <li>\(d_{\text{head}}\) is the dimension per head (often \(d_{\text{model}} / h_{\text{q}}\)).</li>
+      <li>\(P\) is the numerical precision in bytes per parameter (e.g., 2 bytes for FP16 and BF16; 1 byte for FP8; 0.5 bytes for INT4).</li>
+    </ul>
+
+    <p>For a 70-billion-parameter model with \(n_{\text{layers}} = 80\), \(h_{\text{kv}} = 64\), \(d_{\text{head}} = 128\), and 16-bit precision (\(P = 2\)):</p>
+    \[\text{Memory per token} = 2 \times 80 \times 64 \times 128 \times 2 = 2,621,440 \text{ bytes} \approx 2.5 \text{ MB per token}\]
+    <p>At a context length of 128,000 tokens for a single user (\(B = 1\)), the KV cache footprint requires:</p>
+    \[128,000 \times 2.5 \text{ MB} \approx 320 \text{ GB}\]
+    <p>This single-sequence footprint exceeds the physical 80 GB capacity of an NVIDIA H100 or A100 GPU before accounting for the model parameter weights themselves.<span class="cite">[<a href="#ref-1">1</a>]</span> Consequently, KV cache memory footprint is the primary bottleneck limiting maximum context length, batch size, and serving concurrency in production AI systems.</p>
+
+    <h2 id="attention-architectures">3. Architectural Variants: MHA, MQA, GQA, and MLA</h2>
+    <p>To reduce KV cache storage requirements and memory bandwidth pressure during decoding, neural network architectures modify attention head topologies:<span class="cite">[<a href="#ref-4">4</a>]</span></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Architecture</th>
+          <th>Head Topology</th>
+          <th>KV Cache Footprint (Relative to MHA)</th>
+          <th>Representative Models</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Multi-Head Attention (MHA)</strong></td>
+          <td>\(h_{\text{kv}} = h_{\text{q}}\) (One KV head per Query head)</td>
+          <td>\(1\times\) (Baseline, largest footprint)</td>
+          <td>Original Transformer, GPT-3, Llama 1 (65B)</td>
+        </tr>
+        <tr>
+          <td><strong>Multi-Query Attention (MQA)</strong></td>
+          <td>\(h_{\text{kv}} = 1\) (All Query heads share one KV head)</td>
+          <td>\(1 / h_{\text{q}}\) (Up to 98% reduction)</td>
+          <td>PaLM, Falcon, StarCoder</td>
+        </tr>
+        <tr>
+          <td><strong>Grouped-Query Attention (GQA)</strong></td>
+          <td>\(1 < h_{\text{kv}} < h_{\text{q}}\) (Query heads partitioned into groups)</td>
+          <td>\(h_{\text{kv}} / h_{\text{q}}\) (Typically 75% to 87.5% reduction)</td>
+          <td>Llama 2 (70B), Llama 3/3.1/3.3, Mistral, Qwen</td>
+        </tr>
+        <tr>
+          <td><strong>Multi-Head Latent Attention (MLA)</strong></td>
+          <td>Low-rank joint compression into latent vector \(c_t^{KV}\)</td>
+          <td>Compresses KV cache into small latent dimension \(d_c\)</td>
+          <td>DeepSeek-V2, DeepSeek-V3, DeepSeek-R1</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Introduced by Shazeer in 2019, Multi-Query Attention collapses all Key and Value heads into a single head per layer.<span class="cite">[<a href="#ref-5">5</a>]</span> While drastically slashing memory bandwidth demands, MQA can lead to capacity loss and training instability in large models.</p>
+
+    <p>Grouped-Query Attention, formulated by Ainslie et al. in 2023, strikes an empirical middle ground.<span class="cite">[<a href="#ref-4">4</a>]</span> By assigning query heads into \(g\) groups that each share a single KV head (e.g., 8 KV heads serving 64 query heads), GQA recovers nearly all representational expressiveness of MHA while delivering an \(8\times\) reduction in KV cache storage and transfer overhead.</p>
+
+    <p>Multi-Head Latent Attention, introduced in DeepSeek-V2, compresses keys and values into a shared low-rank latent vector prior to caching.<span class="cite">[<a href="#ref-6">6</a>]</span> During generation, only the compressed latent vector and decoupled positional encodings need to reside in the cache, reducing the effective per-token memory footprint to a fraction of standard GQA architectures.</p>
+
+    <h2 id="paged-attention">4. Memory Management and PagedAttention</h2>
+    <p>Conventional deep learning frameworks allocate memory for the KV cache as contiguous physical memory blocks sized to the maximum theoretical sequence length (\(L_{\text{max}}\)). This introduces severe memory fragmentation:<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <ul>
+      <li><strong>Internal Fragmentation:</strong> Memory reserved for future tokens remains unallocated while requests run shorter sequences.</li>
+      <li><strong>External Fragmentation:</strong> Dynamically changing sequence lengths create variable-sized gaps in memory allocation pools.</li>
+      <li><strong>Reservation Waste:</strong> Serving systems over-allocate slots in advance to guarantee generation does not crash due to out-of-memory errors.</li>
+    </ul>
+
+    <p>In 2023, Kwon et al. introduced <strong>PagedAttention</strong> in the vLLM serving system, adapting operating system virtual memory concepts to transformer inference.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <p>PagedAttention partitions the KV cache of each sequence into fixed-size physical blocks (e.g., 16 or 32 tokens per block). A centralized block table translates logical token positions to non-contiguous physical pages in GPU VRAM. When a new token is generated, the engine writes to the current block; when the block fills, the system allocates another page from a shared global pool. This design eliminates external fragmentation and reduces internal memory waste to under 4%, multiplying effective serving throughput and concurrency by factors of 2 to 4.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <p>PagedAttention also enables copy-on-write memory sharing across multiple sequences. Parallel sampling, beam search, and multi-turn agent conversations share physical memory blocks for identical token prefixes, laying the foundation for modern <a href="/reference/prompt-caching/">prompt caching</a> runtimes such as RadixAttention.<span class="cite">[<a href="#ref-7">7</a>]</span></p>
+
+    <h2 id="eviction-compression">5. Eviction and Compression Strategies</h2>
+    <p>When contexts expand to millions of tokens, physical GPU memory limits require dropping or compressing older activations:<span class="cite">[<a href="#ref-8">8</a>]</span></p>
+    <ul>
+      <li><strong>StreamingLLM (Attention Sinks):</strong> Xiao et al. observed that autoregressive transformers allocate an outsized proportion of attention weight to the initial 1 to 4 prompt tokens regardless of their semantic content.<span class="cite">[<a href="#ref-8">8</a>]</span> By preserving these initial "attention sink" tokens alongside a rolling window of recent local tokens, language models maintain perplexity stability across infinite token streams without retraining.</li>
+      <li><strong>H2O (Heavy Hitter Oracle):</strong> Zhang et al. demonstrated that attention matrices exhibit cumulative sparsity: a small subset of tokens (heavy hitters) account for the vast majority of attention scores.<span class="cite">[<a href="#ref-9">9</a>]</span> Evicting low-scoring tokens while preserving heavy hitters reduces cache size by up to 80% with minimal degradation in generation accuracy.</li>
+      <li><strong>Quantized KV Caches:</strong> Quantizing Key and Value tensors from FP16 (16-bit) to FP8 (8-bit) or INT4 (4-bit) reduces memory footprint by 50% to 75%. Modern inference engines apply per-channel or per-token scale factors to mitigate quantization error in outlier activations.</li>
+    </ul>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/time-to-first-token/">Time to First Token</a> &middot; Prefill latency and prompt processing metrics.</li>
+        <li><a href="/reference/time-per-output-token/">Time Per Output Token</a> &middot; Decode phase throughput and memory bandwidth constraints.</li>
+        <li><a href="/reference/prompt-caching/">Prompt Caching</a> &middot; Prefix KV cache reuse and RadixAttention mechanics.</li>
+        <li><a href="/reference/chunked-prefill/">Chunked Prefill</a> &middot; Interleaving prefill tasks into decode batches to eliminate scheduling bottlenecks.</li>
+        <li><a href="/reference/continuous-batching/">Continuous Batching</a> &middot; Iteration-level scheduling and dynamic memory allocation in LLM serving.</li>
+        <li><a href="/reference/speculative-decoding/">Speculative Decoding</a> &middot; Parallel draft validation accelerating decode iterations.</li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a> &middot; Systems architecture and hardware bottlenecks across serving lifecycles.</li>
+        <li><a href="/reference/context-window/">Context Windows</a> &middot; Attention complexity limits and memory scaling bounds.</li>
+        <li><a href="/reference/tokens/">Tokens and Tokenization</a> &middot; Subword units and attention sequence length determinants.</li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> W. Kwon, Z. Li, S. Zhuang, S. Kang, Y. Sheng, L. Zheng, C. H. Yu, J. Gonzalez, H. Zhang, and I. Stoica, "Efficient Memory Management for Large Language Model Serving with PagedAttention," in <em>Proceedings of the 29th ACM Symposium on Operating Systems Principles (SOSP)</em>, 2023, pp. 611&ndash;626. Free full text: <a href="https://arxiv.org/abs/2309.06180">https://arxiv.org/abs/2309.06180</a></li>
+        <li id="ref-2"><a class="backlink" href="#first-principles">&uarr;</a> R. Pope, S. Douglas, A. Chowdhery, J. Devlin, J. Bradbury, A. Heek, K. Xiao, S. Agrawal, and J. Dean, "Efficiently Scaling Transformer Inference," in <em>Proceedings of Machine Learning and Systems (MLSys)</em>, vol. 5, 2023. Free full text: <a href="https://arxiv.org/abs/2211.05102">https://arxiv.org/abs/2211.05102</a></li>
+        <li id="ref-3"><a class="backlink" href="#first-principles">&uarr;</a> A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser, and I. Polosukhin, "Attention Is All You Need," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, vol. 30, 2017, pp. 5998&ndash;6008. Free full text: <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+        <li id="ref-4"><a class="backlink" href="#attention-architectures">&uarr;</a> J. Ainslie, J. Lee-Thorp, M. de Jong, Y. Zemlyanskiy, F. Lebr&oacute;n, and S. Sanghai, "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints," in <em>Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP)</em>, 2023, pp. 4895&ndash;4901. Free full text: <a href="https://arxiv.org/abs/2305.13245">https://arxiv.org/abs/2305.13245</a></li>
+        <li id="ref-5"><a class="backlink" href="#attention-architectures">&uarr;</a> N. Shazeer, "Fast Transformer Decoding: One Write-Head is All You Need," <em>arXiv preprint arXiv:1911.02150</em>, 2019. Free full text: <a href="https://arxiv.org/abs/1911.02150">https://arxiv.org/abs/1911.02150</a></li>
+        <li id="ref-6"><a class="backlink" href="#attention-architectures">&uarr;</a> DeepSeek-AI, "DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model," <em>arXiv preprint arXiv:2405.04434</em>, 2024. Free full text: <a href="https://arxiv.org/abs/2405.04434">https://arxiv.org/abs/2405.04434</a></li>
+        <li id="ref-7"><a class="backlink" href="#paged-attention">&uarr;</a> L. Zheng, L. Yin, Z. Xie, C. Sun, H. Huang, C. H. Yu, S. Cao, C. Perez, K. Yang, H. Zhu, L. Stoica, and J. E. Gonzalez, "SGLang: Efficient Execution of Structured Language Model Programs," <em>arXiv preprint arXiv:2312.07104</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2312.07104">https://arxiv.org/abs/2312.07104</a></li>
+        <li id="ref-8"><a class="backlink" href="#eviction-compression">&uarr;</a> G. Xiao, Y. Tian, B. Chen, S. Han, and M. Lewis, "Efficient Streaming Language Models with Attention Sinks," in <em>International Conference on Learning Representations (ICLR)</em>, 2024. Free full text: <a href="https://arxiv.org/abs/2309.17453">https://arxiv.org/abs/2309.17453</a></li>
+        <li id="ref-9"><a class="backlink" href="#eviction-compression">&uarr;</a> Z. Zhang, Y. Sheng, T. Zhou, T. Chen, L. Zheng, R. Cai, Z. Song, Y. Tian, C. Re, C. Barrett, K. Wang, and B. Chen, "H2O: Heavy Hitter Oracle for Efficient Generative Inference of Large Language Models," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, vol. 36, 2023, pp. 34661&ndash;34680. Free full text: <a href="https://arxiv.org/abs/2306.14048">https://arxiv.org/abs/2306.14048</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

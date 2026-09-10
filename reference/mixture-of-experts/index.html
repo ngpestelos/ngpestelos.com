@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mixture of Experts (Machine Learning) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Mixture of Experts (MoE) is a machine learning architecture that divides network capacity across specialized subnetworks activated conditionally per token or sample. Mathematical formulation, routing algorithms, load balancing, and systems trade-offs.">
+  <meta property="og:title" content="Mixture of Experts (Machine Learning) &middot; Reference">
+  <meta property="og:description" content="Architectural formulation, gating functions, load balancing, fine-grained routing, and distributed serving of Mixture of Experts models.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/mixture-of-experts/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/mixture-of-experts/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Mixture of Experts","description":"Mixture of Experts (MoE) is a machine learning architecture that divides network capacity across specialized subnetworks activated conditionally per token or sample.","url":"https://ngpestelos.com/reference/mixture-of-experts/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.5rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.4rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+    }
+    th {
+      background: var(--well);
+      font-weight: 700;
+    }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Artificial Intelligence · Machine Learning Architecture</p>
+    <h1>Mixture of Experts (Machine Learning)</h1>
+    <p class="updated">Reference entry &middot; last updated September 11, 2026</p>
+
+    <p class="lede"><strong>Mixture of Experts</strong> (MoE) is a machine learning architecture that partitions network computation across multiple sub-networks, designated as experts, with a gating mechanism directing inputs to specific subsets of those experts <span class="cite">[<a href="#ref-1">1</a>]</span>. By executing conditional computation, MoE decouples total model parameter count from per-sample floating-point operations (FLOPs). In large-scale language models, replacing standard dense feed-forward network (FFN) layers with sparse MoE layers allows expanding model parameter capacity by orders of magnitude while preserving constant per-token inference FLOP budgets <span class="cite">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span>.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First Principles and Mathematical Formulation</a></li>
+        <li><a href="#routing-mechanisms">2. Routing Mechanisms and Load Balancing</a>
+          <ol>
+            <li><a href="#noisy-topk">Noisy Top-k Gating</a></li>
+            <li><a href="#expert-capacity">Expert Capacity and Token Dropping</a></li>
+            <li><a href="#auxiliary-loss">Auxiliary Load-Balancing Loss</a></li>
+          </ol>
+        </li>
+        <li><a href="#architectural-variants">3. Architectural Variations in Large Language Models</a>
+          <ol>
+            <li><a href="#switch-routing">Switch Routing (Top-1)</a></li>
+            <li><a href="#fine-grained-routing">Fine-Grained Segmentation and Shared Experts</a></li>
+          </ol>
+        </li>
+        <li><a href="#systems-and-hardware-tradeoffs">4. Systems, Hardware, and Serving Trade-Offs</a>
+          <ol>
+            <li><a href="#expert-parallelism">Expert Parallelism</a></li>
+            <li><a href="#memory-bandwidth-and-serving">Serving Dynamics and Memory Bandwidth</a></li>
+          </ol>
+        </li>
+        <li><a href="#empirical-properties">5. Empirical Properties and Failure Modes</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles and Mathematical Formulation</h2>
+    <p>Standard dense neural networks process all inputs through every parameter in every layer. For an input representation \(x \in \mathbb{R}^d\), a dense feed-forward layer with intermediate dimension \(d_{ff}\) executes \(2 \cdot d \cdot d_{ff}\) multiply-accumulate operations per token. Under dense scaling laws, increasing parameter capacity requires increasing matrix dimensions, expanding FLOPs quadratically or linearly with width and depth.</p>
+    <p>A Mixture of Experts architecture relaxes this coupling by introducing conditional computation. Let \(\{E_i\}_{i=1}^N\) denote a collection of \(N\) distinct expert networks, each mapping \(\mathbb{R}^d \to \mathbb{R}^d\). A parameterized gating network \(G\) computes a routing distribution over the experts from input \(x\):</p>
+    \[
+    y = \sum_{i=1}^N G(x)_i E_i(x)
+    \]
+    <p>Here \(G(x)_i\) represents the routing weight assigned to expert \(i\), satisfying \(G(x)_i \ge 0\) and \(\sum_{i=1}^N G(x)_i = 1\). In a sparse MoE, \(G(x)\) is constrained such that only a small number of coordinates \(k \ll N\) are non-zero. The active computation evaluates only the \(k\) selected experts, preserving computational cost proportional to \(k\) rather than total capacity \(N\) <span class="cite">[<a href="#ref-3">3</a>]</span>.</p>
+    <p>Early formulations by Jacobs et al. (1991) and Jordan & Jacobs (1994) applied modular gating networks to supervised classification and regression, training local linear models via maximum likelihood and Expectation-Maximization <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>. Modern deep architectures place sparse MoE modules within Transformer layers, substituting the point-wise feed-forward block while retaining dense multi-head self-attention.</p>
+
+    <h2 id="routing-mechanisms">2. Routing Mechanisms and Load Balancing</h2>
+
+    <h3 id="noisy-topk">Noisy Top-k Gating</h3>
+    <p>To enable end-to-end backpropagation through discrete routing choices, Shazeer et al. (2017) introduced Noisy Top-\(k\) Gating <span class="cite">[<a href="#ref-3">3</a>]</span>. For an input \(x\), a linear transformation with weight matrix \(W_g \in \mathbb{R}^{d \times N}\) produces unnormalized routing logits. Gaussian noise is added during training to promote exploratory routing across experts:</p>
+    \[
+    H(x)_i = (x \cdot W_g)_i + \epsilon \cdot \text{Softplus}((x \cdot W_{\text{noise}})_i), \quad \epsilon \sim \mathcal{N}(0, 1)
+    \]
+    <p>The top \(k\) values are retained, with all remaining values set to \(-\infty\):</p>
+    \[
+    \text{KeepTopK}(v, k)_i = \begin{cases} v_i & \text{if } v_i \text{ is in the top } k \text{ elements of } v \\ -\infty & \text{otherwise} \end{cases}
+    \]
+    <p>The routing gate coefficients are obtained by evaluating the Softmax function over the thresholded vector:</p>
+    \[
+    G(x) = \text{Softmax}(\text{KeepTopK}(H(x), k))
+    \]
+
+    <h3 id="expert-capacity">Expert Capacity and Token Dropping</h3>
+    <p>Hardware accelerators (GPUs and TPUs) require fixed tensor shapes for static execution graphs and balanced communication. If tokens route unevenly, an over-subscribed expert creates a bottleneck, delaying synchronization across parallel devices.</p>
+    <p>To bound computational load per accelerator, implementations define an <em>Expert Capacity</em> limit <span class="cite">[<a href="#ref-4">4</a>, <a href="#ref-5">5</a>]</span>. For a batch containing \(T\) tokens distributed across \(N\) experts, the maximum number of tokens processed by any single expert is governed by a capacity factor \(C\):</p>
+    \[
+    \text{Capacity} = \left\lceil C \cdot \frac{k \cdot T}{N} \right\rceil
+    \]
+    <p>When \(C = 1.0\), an expert receives strictly its fair share of tokens under uniform distribution. If more than \(\text{Capacity}\) tokens route to a specific expert, the excess tokens are dropped: their representations bypass the expert layer via residual connections without modification, or route to alternate experts <span class="cite">[<a href="#ref-4">4</a>]</span>. Setting \(C > 1.0\) provides a buffer against routing imbalance at the cost of zero-padded computation.</p>
+
+    <h3 id="auxiliary-loss">Auxiliary Load-Balancing Loss</h3>
+    <p>Without explicit incentives, gating networks suffer from routing collapse, where a small fraction of experts receives all tokens while the rest remain unutilized. To encourage uniform distribution across all \(N\) experts, training objectives incorporate an auxiliary load-balancing loss <span class="cite">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>, <a href="#ref-5">5</a>]</span>.</p>
+    <p>For a batch of tokens \(\mathcal{B}\), define \(f_i\) as the fraction of tokens routed to expert \(i\), and \(P_i\) as the average routing probability assigned to expert \(i\) prior to top-\(k\) masking:</p>
+    \[
+    f_i = \frac{1}{|\mathcal{B}|} \sum_{x \in \mathcal{B}} \mathbb{I}(\text{expert } i \text{ is selected for } x)
+    \]
+    \[
+    P_i = \frac{1}{|\mathcal{B}|} \sum_{x \in \mathcal{B}} \frac{\exp((x \cdot W_g)_i)}{\sum_{j=1}^N \exp((x \cdot W_g)_j)}
+    \]
+    <p>The auxiliary loss is proportional to the dot product of vectors \(f\) and \(P\):</p>
+    \[
+    \mathcal{L}_{\text{balance}} = \alpha \cdot N \sum_{i=1}^N f_i P_i
+    \]
+    <p>The scalar hyperparameter \(\alpha\) weights the loss relative to the primary language modeling objective. Because \(P_i\) is continuous and differentiable with respect to gate parameters \(W_g\), gradients from \(\mathcal{L}_{\text{balance}}\) penalize gates that concentrate probability mass onto already crowded experts.</p>
+
+    <h2 id="architectural-variants">3. Architectural Variations in Large Language Models</h2>
+
+    <h3 id="switch-routing">Switch Routing (Top-1)</h3>
+    <p>Fedus et al. (2022) proposed the Switch Transformer, which simplifies sparse routing by selecting exactly one expert per token (\(k = 1\)) <span class="cite">[<a href="#ref-4">4</a>]</span>. When top-\(k\) routing applies a post-selection Softmax over the chosen subset, setting \(k = 1\) would trivially normalize the surviving weight to \(G(x)_i = 1.0\), eliminating gradient signals from the task loss through the router. Instead, the Switch Transformer computes the Softmax distribution over all \(N\) candidate experts first, selects the top-1 index \(i = \operatorname{argmax}_j (x \cdot W_g)_j\), and gates the selected expert output with its pre-selection softmax probability \(p_i(x)\):</p>
+    \[
+    y = p_i(x) E_i(x), \quad \text{where } p(x) = \text{Softmax}(x \cdot W_g)
+    \]
+    <p>Retaining the pre-selection probability preserves continuous gradients from task loss back into the router weights \(W_g\). Switch routing halves communication volume relative to top-2 architectures, eliminates intra-token expert blending, and scales model size to over one trillion parameters while maintaining training throughput.</p>
+
+    <h3 id="fine-grained-routing">Fine-Grained Segmentation and Shared Experts</h3>
+    <p>Standard MoE implementations deploy moderate numbers of large experts (such as 8 or 16 experts with top-2 routing). Dai et al. (2024) introduced DeepSeekMoE, establishing that finer granularity improves knowledge specialization and parameter efficiency <span class="cite">[<a href="#ref-6">6</a>]</span>.</p>
+    <p>DeepSeekMoE decomposes each expert into \(m\) smaller experts, scaling expert count to \(m \cdot N\) while activating \(m \cdot k\) units per token. This configuration keeps parameter activation budgets identical while creating exponentially more combinatorial routing paths. In addition, the architecture isolates a subset of experts as dedicated shared experts that process every token unconditionally:</p>
+    \[
+    y = \sum_{s \in \mathcal{S}} E_s^{\text{shared}}(x) + \sum_{i \in \mathcal{R}} G(x)_i E_i^{\text{routed}}(x)
+    \]
+    <p>Here \(\mathcal{S}\) denotes the set of shared experts and \(\mathcal{R}\) denotes the routed subset. Isolating shared representations into non-routed parameters prevents redundant common-knowledge duplication across individual routed experts <span class="cite">[<a href="#ref-6">6</a>]</span>.</p>
+
+    <h2 id="systems-and-hardware-tradeoffs">4. Systems, Hardware, and Serving Trade-Offs</h2>
+
+    <h3 id="expert-parallelism">Expert Parallelism</h3>
+    <p>Because total parameter counts in MoE models exceed the memory capacity of single accelerators, models use Expert Parallelism (EP) <span class="cite">[<a href="#ref-5">5</a>]</span>. Different experts reside on distinct physical accelerators across an interconnect fabric. Under EP, tokens undergo an All-to-All collective communication operation: each accelerator computes routing assignments for its local tokens, dispatches tokens to the designated remote expert accelerators, executes expert feed-forward computations locally, and runs a reverse All-to-All to return output tokens to their origin devices.</p>
+    <p>The communication latency of All-to-All transfers is bounded by cross-node network bandwidth (such as InfiniBand or NVLink). When communication overhead exceeds local computation time, training and inference efficiency degrades.</p>
+
+    <h3 id="memory-bandwidth-and-serving">Serving Dynamics and Memory Bandwidth</h3>
+    <p>Inference throughput in autoregressive generation is dominated by memory bandwidth during the single-token decoding phase. In dense models, every parameter is loaded from High Bandwidth Memory (HBM) into accelerator compute cores for every generated token. In sparse MoE models, only the weights of active experts are fetched. This yields substantial latency speedups when batch sizes are small.</p>
+    <p>However, total memory capacity requirements depend on total loaded parameters rather than active parameters. Serving an MoE model requires sufficient accelerator memory or Host RAM offload to store all \(N\) experts simultaneously, establishing distinct regimes for operational cost:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Dense Architecture</th>
+          <th>Sparse Mixture of Experts</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FLOPs per Token</td>
+          <td>Proportional to total parameters</td>
+          <td>Proportional to active parameters only</td>
+        </tr>
+        <tr>
+          <td>VRAM Footprint</td>
+          <td>Matches active parameter size</td>
+          <td>Requires housing all \(N\) expert parameters</td>
+        </tr>
+        <tr>
+          <td>Communication Pattern</td>
+          <td>Tensor Parallel / Pipeline Parallel</td>
+          <td>All-to-All collective across expert ranks</td>
+        </tr>
+        <tr>
+          <td>Batching Sensitivity</td>
+          <td>Uniform token execution</td>
+          <td>Subject to expert load imbalance and token dropping</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="empirical-properties">5. Empirical Properties and Failure Modes</h2>
+    <p>Empirical analyses of MoE language models demonstrate systematic patterns and operational failure modes:</p>
+    <ul>
+      <li><strong>Syntactic vs. Semantic Specialization:</strong> Gating decisions often correlate with lower-level syntactic classes, punctuation, and token domains rather than high-level conceptual disciplines.</li>
+      <li><strong>Transfer Learning Instability:</strong> MoE models can experience fine-tuning instabilities or router overfitting when downstream task datasets are small or domain-skewed, as gating distributions diverge from pre-training equilibrium.</li>
+    </ul>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/deep-neural-networks/">Deep Neural Networks</a></li>
+        <li><a href="/reference/attention/">Attention (Neurological and Computational)</a></li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a></li>
+        <li><a href="/reference/test-time-compute/">Test-Time Compute</a></li>
+        <li><a href="/reference/continuous-batching/">Continuous Batching</a></li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> R. A. Jacobs, M. I. Jordan, S. J. Nowlan, and G. E. Hinton, "Adaptive Mixtures of Local Experts," <em>Neural Computation</em>, vol. 3, no. 1, pp. 79–87, 1991. DOI: <a href="https://doi.org/10.1162/neco.1991.3.1.79">10.1162/neco.1991.3.1.79</a></li>
+        <li id="ref-2"><a class="backlink" href="#first-principles">&uarr;</a> M. I. Jordan and R. A. Jacobs, "Hierarchical Mixtures of Experts and the EM Algorithm," <em>Neural Computation</em>, vol. 6, no. 2, pp. 181–214, 1994. DOI: <a href="https://doi.org/10.1162/neco.1994.6.2.181">10.1162/neco.1994.6.2.181</a></li>
+        <li id="ref-3"><a class="backlink" href="#noisy-topk">&uarr;</a> N. Shazeer, A. Mirhoseini, K. Maziarz, A. Davis, Q. Le, G. Hinton, and J. Dean, "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer," in <em>International Conference on Learning Representations (ICLR)</em>, 2017. Free full text: <a href="https://arxiv.org/abs/1701.06538">https://arxiv.org/abs/1701.06538</a></li>
+        <li id="ref-4"><a class="backlink" href="#switch-routing">&uarr;</a> W. Fedus, B. Zoph, and N. Shazeer, "Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity," <em>Journal of Machine Learning Research</em>, vol. 23, no. 120, pp. 1–39, 2022. Free full text: <a href="https://www.jmlr.org/papers/v23/21-0998.html">https://www.jmlr.org/papers/v23/21-0998.html</a></li>
+        <li id="ref-5"><a class="backlink" href="#expert-capacity">&uarr;</a> D. Lepikhin, H. Lee, Y. Xu, D. Chen, O. Firat, Y. Huang, M. Krikun, N. Shazeer, and Z. Chen, "GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding," in <em>International Conference on Learning Representations (ICLR)</em>, 2021. Free full text: <a href="https://arxiv.org/abs/2006.16668">https://arxiv.org/abs/2006.16668</a></li>
+        <li id="ref-6"><a class="backlink" href="#fine-grained-routing">&uarr;</a> D. Dai, C. Deng, C. Zhao, R. X. Xu, H. Gao, D. Chen, J. Li, W. Zeng, X. Yu, Y. Wu, et al., "DeepSeekMoE: Towards Ultimate Expert Specialization in Mixture-of-Experts Language Models," <em>arXiv preprint arXiv:2401.06066</em>, 2024. Free full text: <a href="https://arxiv.org/abs/2401.06066">https://arxiv.org/abs/2401.06066</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
