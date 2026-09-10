@@ -468,6 +468,8 @@ class ReferenceSeoTests(unittest.TestCase):
         self.assertIn("application/ld+json", entry_html)
         self.assertIn('"@type":"DefinedTerm"', entry_html)
         p_html = (REF / "perception" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/computer-vision/"', p_html)
+
     def test_payment_tier1_references_registered(self):
         html = (REF / "index.html").read_text(encoding="utf-8")
         locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
