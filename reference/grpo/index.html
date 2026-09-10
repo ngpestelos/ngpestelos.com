@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Group Relative Policy Optimization (GRPO) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Group Relative Policy Optimization (GRPO): the group-relative baseline, the objective, comparison with PPO and REINFORCE-style methods, and known biases and variants (Dr. GRPO, DAPO).">
+  <meta property="og:title" content="Group Relative Policy Optimization (GRPO) &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Group Relative Policy Optimization (GRPO): the group-relative baseline, the objective, comparison with PPO and REINFORCE-style methods, and known biases and variants (Dr. GRPO, DAPO).">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/grpo/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/grpo/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 30rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.6rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.78rem;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 0.1rem;
+    }
+    .cite a { color: var(--link); text-decoration: none; }
+    .cite a:hover { text-decoration: underline; }
+    .see-also li { margin-bottom: 0.4rem; }
+    .references ol {
+      font-size: 0.88rem;
+      padding-left: 1.4rem;
+    }
+    .references li {
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--well);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Group Relative Policy Optimization (GRPO)","description":"A citable ground-truth reference on Group Relative Policy Optimization (GRPO): the group-relative baseline, the objective, comparison with PPO and REINFORCE-style methods, and known biases and variants (Dr. GRPO, DAPO).","url":"https://ngpestelos.com/reference/grpo/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Artificial Intelligence &middot; Reinforcement Learning</p>
+    <h1>Group Relative Policy Optimization (GRPO)</h1>
+    <p class="updated">Reference entry &middot; last updated September 10, 2026</p>
+
+    <p class="lede"><strong>Group Relative Policy Optimization (GRPO)</strong> is a policy-gradient algorithm for language model post-training that removes the value network used by Proximal Policy Optimization. In place of a learned baseline, it samples a group of completions for each prompt, scores them, and measures each completion against the group's mean reward. It was introduced with DeepSeekMath in 2024 and became the standard optimizer for reasoning-model training after DeepSeek-R1.</p>
+
+    <nav class="toc" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#first-principles">First Principles: Baselines in Policy-Gradient Estimation</a></li>
+        <li><a href="#objective">The GRPO Objective</a>
+          <ol>
+            <li><a href="#group-advantage">Group Sampling and the Relative Advantage</a></li>
+            <li><a href="#surrogate">The Clipped Surrogate and the KL Term</a></li>
+            <li><a href="#process">Process-Supervision Variant</a></li>
+          </ol>
+        </li>
+        <li><a href="#comparison">Comparison with PPO and REINFORCE-Style Methods</a></li>
+        <li><a href="#adoption">Why GRPO Spread: Verifiable Rewards and Reasoning Models</a></li>
+        <li><a href="#variants">Known Biases and Variants</a></li>
+        <li><a href="#development">Development</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Baselines in Policy-Gradient Estimation</h2>
+    <p>Policy-gradient methods estimate the gradient of expected return by weighting the score function of each action by a measure of how good that action was:<span class="cite">[<a href="#ref-4">4</a>, <a href="#ref-5">5</a>]</span></p>
+    $$\nabla_\theta J(\theta) = \mathbb{E}\big[ \nabla_\theta \log \pi_\theta(a \mid s)\, \big( Q(s, a) - b(s) \big) \big]$$
+    <p>Any baseline \(b(s)\) that does not depend on the action leaves the gradient unbiased while changing its variance. A good baseline is close to the expected return from \(s\), so the bracket keeps only the part of the return attributable to the action choice. The estimator is otherwise dominated by the overall difficulty of the state.</p>
+    <p>Proximal Policy Optimization (PPO) supplies this baseline with a learned value function \(V_\phi(s)\), trained alongside the policy and combined with the observed rewards through generalized advantage estimation.<span class="cite">[<a href="#ref-2">2</a>, <a href="#ref-3">3</a>]</span> For a large language model the value network is a second model of comparable size, roughly doubling the memory and adding its own training instability.</p>
+    <p>GRPO removes that network.<span class="cite">[<a href="#ref-1">1</a>]</span> It exploits a structural feature of language model reinforcement learning: many completions can be sampled cheaply for the same prompt. The mean reward of a sampled group is itself an estimate of the expected return for that prompt, so it can serve as the baseline directly. No value function is fitted, and the baseline is exact for the group rather than a generalization from other prompts.</p>
+
+    <h2 id="objective">2. The GRPO Objective</h2>
+
+    <h3 id="group-advantage">2.1 Group Sampling and the Relative Advantage</h3>
+    <p>For each question \(q\), GRPO samples a group of \(G\) completions \(\{o_1, \dots, o_G\}\) from the current policy (DeepSeekMath used \(G = 64\)) and scores each with the reward function.<span class="cite">[<a href="#ref-1">1</a>]</span> For outcome supervision, where only the final result is scored, every token of completion \(o_i\) receives the same advantage, computed by standardizing the group's rewards \(\mathbf{r} = \{r_1, \dots, r_G\}\):</p>
+    $$\hat{A}_{i,t} = \frac{r_i - \operatorname{mean}(\mathbf{r})}{\operatorname{std}(\mathbf{r})}$$
+    <p>The mean term is the group-relative baseline. The division by the group standard deviation rescales the update so that questions of different reward spread contribute on a common scale. A group whose completions all receive the same reward has zero standard deviation and produces no gradient.</p>
+
+    <h3 id="surrogate">2.2 The Clipped Surrogate and the KL Term</h3>
+    <p>The policy is updated with a PPO-style clipped objective over per-token probability ratios, averaged over the tokens of each completion and then over the group:<span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span></p>
+    $$\mathcal{J}_{\text{GRPO}}(\theta) = \mathbb{E}\!\left[ \frac{1}{G} \sum_{i=1}^{G} \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \Big( \min\big( \rho_{i,t}\, \hat{A}_{i,t},\; \operatorname{clip}(\rho_{i,t},\, 1-\varepsilon,\, 1+\varepsilon)\, \hat{A}_{i,t} \big) - \beta\, \mathbb{D}_{\text{KL}}\big[ \pi_\theta \,\|\, \pi_{\text{ref}} \big] \Big) \right]$$
+    <p>with the token-level ratio</p>
+    $$\rho_{i,t} = \frac{\pi_\theta(o_{i,t} \mid q,\, o_{i,&lt;t})}{\pi_{\theta_{\text{old}}}(o_{i,t} \mid q,\, o_{i,&lt;t})}$$
+    <p>Two choices distinguish this from the PPO setup used in <a href="/reference/rlhf/">RLHF</a>. The clipping range \(\varepsilon\) bounds each update, as in PPO. The reference-policy penalty is added directly to the loss as a separate term rather than folded into the reward, which keeps the advantage estimate uncomplicated.<span class="cite">[<a href="#ref-1">1</a>]</span> GRPO estimates that penalty with an unbiased, always-positive estimator:<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    $$\mathbb{D}_{\text{KL}}\big[ \pi_\theta \,\|\, \pi_{\text{ref}} \big] = \frac{\pi_{\text{ref}}(o_{i,t} \mid q,\, o_{i,&lt;t})}{\pi_\theta(o_{i,t} \mid q,\, o_{i,&lt;t})} - \log \frac{\pi_{\text{ref}}(o_{i,t} \mid q,\, o_{i,&lt;t})}{\pi_\theta(o_{i,t} \mid q,\, o_{i,&lt;t})} - 1$$
+
+    <h3 id="process">2.3 Process-Supervision Variant</h3>
+    <p>When a reward is available for intermediate steps rather than only the final answer, GRPO assigns each token the normalized sum of the step rewards that follow it within the same completion, so that advantages vary along the sequence.<span class="cite">[<a href="#ref-1">1</a>]</span> This keeps the group-relative baseline while allowing credit to be placed on specific reasoning steps.</p>
+
+    <h2 id="comparison">3. Comparison with PPO and REINFORCE-Style Methods</h2>
+    <p>GRPO sits between PPO and the older REINFORCE family. All three optimize the same policy-gradient objective and differ in how they estimate the baseline.</p>
+    <table>
+      <thead>
+        <tr><th>Method</th><th>Baseline</th><th>Extra network</th><th>Samples per prompt</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>REINFORCE<span class="cite">[<a href="#ref-4">4</a>]</span></td><td>None, or a running average</td><td>None</td><td>1 or more</td></tr>
+        <tr><td>PPO<span class="cite">[<a href="#ref-2">2</a>]</span></td><td>Learned value function \(V_\phi(s)\)</td><td>Value model, comparable in size to the policy</td><td>1 or more</td></tr>
+        <tr><td>RLOO<span class="cite">[<a href="#ref-8">8</a>]</span></td><td>Mean reward of the other samples in the group (leave-one-out)</td><td>None</td><td>Several</td></tr>
+        <tr><td>GRPO<span class="cite">[<a href="#ref-1">1</a>]</span></td><td>Group mean, then divided by group standard deviation</td><td>None</td><td>A group (for example 64)</td></tr>
+      </tbody>
+    </table>
+    <p>RLOO is the closest relative. Ahmadian et al. argued that for language model alignment the full PPO machinery is unnecessary and that a leave-one-out baseline over a small group recovers most of the benefit at lower cost.<span class="cite">[<a href="#ref-8">8</a>]</span> GRPO differs mainly in using the plain group mean rather than a leave-one-out mean, and in the standard-deviation rescaling, which is the part later work questions.</p>
+
+    <h2 id="adoption">4. Why GRPO Spread: Verifiable Rewards and Reasoning Models</h2>
+    <p>GRPO was designed for mathematical reasoning, where the reward comes from a deterministic checker rather than a reward model. See <a href="/reference/rlvr/">reinforcement learning with verifiable rewards</a>. That setting suits the algorithm: sampling a large group is inexpensive, the reward scale is stable across prompts, and there is no learned reward model whose errors a value network would have to track.</p>
+    <p>DeepSeek-R1 used GRPO to train a frontier reasoning model largely through reinforcement learning, including an RL-only variant trained from the base model with no supervised reasoning traces.<span class="cite">[<a href="#ref-7">7</a>]</span> After that result, GRPO and its descendants became the common choice for open reasoning-model training, and most later work frames its contribution as a modification of GRPO.</p>
+
+    <h2 id="variants">5. Known Biases and Variants</h2>
+    <p>Two normalizations in the GRPO objective have been identified as sources of bias, and later systems adjust them.</p>
+    <ul>
+      <li><strong>Dr. GRPO</strong> (Liu et al., 2025). The per-completion \(1/|o_i|\) averaging gives long completions a smaller per-token gradient, which the authors show pushes the policy to make incorrect responses longer during training. Their variant removes the length and standard-deviation normalizers, reporting similar reasoning accuracy with shorter outputs.<span class="cite">[<a href="#ref-9">9</a>]</span></li>
+      <li><strong>DAPO</strong> (Yu et al., 2025). An open large-scale system built on four changes to GRPO: <em>Clip-Higher</em>, which decouples the lower and upper clipping bounds to limit entropy collapse; <em>Dynamic Sampling</em>, which discards prompts whose completions are all correct or all incorrect so every batch item carries a gradient; a <em>token-level policy-gradient loss</em> in place of the per-completion average; and <em>overlong reward shaping</em>, a graded penalty for responses near the length limit.<span class="cite">[<a href="#ref-10">10</a>]</span></li>
+    </ul>
+    <p>Both analyses also target the same degenerate case: a prompt whose completions all score identically produces no gradient and wastes its samples, which is what DAPO's dynamic sampling removes.</p>
+
+    <h2 id="development">6. Development</h2>
+    <ul>
+      <li><strong>1992.</strong> Williams formalizes REINFORCE, the score-function policy gradient with an optional baseline.<span class="cite">[<a href="#ref-4">4</a>]</span></li>
+      <li><strong>2015 to 2017.</strong> Generalized advantage estimation<span class="cite">[<a href="#ref-3">3</a>]</span> and then PPO<span class="cite">[<a href="#ref-2">2</a>]</span> make actor-critic policy gradients stable enough for routine use.</li>
+      <li><strong>2022.</strong> PPO with a learned value model and a KL-shaped reward becomes the standard RLHF optimizer.<span class="cite">[<a href="#ref-6">6</a>]</span></li>
+      <li><strong>2024.</strong> DeepSeekMath introduces GRPO, replacing the value model with a group-relative baseline.<span class="cite">[<a href="#ref-1">1</a>]</span> Ahmadian et al. make a parallel case for REINFORCE-style baselines such as RLOO.<span class="cite">[<a href="#ref-8">8</a>]</span></li>
+      <li><strong>2025.</strong> DeepSeek-R1 scales GRPO to a frontier reasoning model;<span class="cite">[<a href="#ref-7">7</a>]</span> Dr. GRPO and DAPO correct its normalization biases.<span class="cite">[<a href="#ref-9">9</a>, <a href="#ref-10">10</a>]</span></li>
+    </ul>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/reinforcement-learning/">Reinforcement Learning</a></li>
+        <li><a href="/reference/rlvr/">Reinforcement Learning with Verifiable Rewards</a></li>
+        <li><a href="/reference/rlhf/">Reinforcement Learning from Human Feedback</a></li>
+        <li><a href="/reference/reward-hacking/">Reward Hacking</a></li>
+        <li><a href="/reference/reasoning/">Reasoning in Language Models</a></li>
+        <li><a href="/reference/fine-tuning/">Fine-Tuning</a></li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] Z. Shao, P. Wang, Q. Zhu, et al., "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models," <em>arXiv:2402.03300</em>, 2024. <a href="https://arxiv.org/abs/2402.03300">https://arxiv.org/abs/2402.03300</a></li>
+        <li id="ref-2">[2] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, "Proximal Policy Optimization Algorithms," <em>arXiv:1707.06347</em>, 2017. <a href="https://arxiv.org/abs/1707.06347">https://arxiv.org/abs/1707.06347</a></li>
+        <li id="ref-3">[3] J. Schulman, P. Moritz, S. Levine, M. Jordan, and P. Abbeel, "High-Dimensional Continuous Control Using Generalized Advantage Estimation," in <em>ICLR</em>, 2016. <a href="https://arxiv.org/abs/1506.02438">https://arxiv.org/abs/1506.02438</a></li>
+        <li id="ref-4">[4] R. J. Williams, "Simple statistical gradient-following algorithms for connectionist reinforcement learning," <em>Machine Learning</em>, vol. 8, no. 3&ndash;4, pp. 229&ndash;256, 1992. DOI: <a href="https://doi.org/10.1007/BF00992696">10.1007/BF00992696</a></li>
+        <li id="ref-5">[5] R. S. Sutton and A. G. Barto, <em>Reinforcement Learning: An Introduction</em>, 2nd ed. Cambridge, MA: MIT Press, 2018. <a href="http://incompleteideas.net/book/the-book-2nd.html">http://incompleteideas.net/book/the-book-2nd.html</a></li>
+        <li id="ref-6">[6] L. Ouyang, J. Wu, X. Jiang, et al., "Training language models to follow instructions with human feedback," in <em>NeurIPS</em>, 2022. <a href="https://arxiv.org/abs/2203.02155">https://arxiv.org/abs/2203.02155</a></li>
+        <li id="ref-7">[7] DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning," <em>arXiv:2501.12948</em>, 2025. <a href="https://arxiv.org/abs/2501.12948">https://arxiv.org/abs/2501.12948</a></li>
+        <li id="ref-8">[8] A. Ahmadian et al., "Back to Basics: Revisiting REINFORCE Style Optimization for Learning from Human Feedback in LLMs," <em>arXiv:2402.14740</em>, 2024. <a href="https://arxiv.org/abs/2402.14740">https://arxiv.org/abs/2402.14740</a></li>
+        <li id="ref-9">[9] Z. Liu, C. Chen, W. Li, et al., "Understanding R1-Zero-Like Training: A Critical Perspective," <em>arXiv:2503.20783</em>, 2025. <a href="https://arxiv.org/abs/2503.20783">https://arxiv.org/abs/2503.20783</a></li>
+        <li id="ref-10">[10] Q. Yu et al., "DAPO: An Open-Source LLM Reinforcement Learning System at Scale," <em>arXiv:2503.14476</em>, 2025. <a href="https://arxiv.org/abs/2503.14476">https://arxiv.org/abs/2503.14476</a></li>
+      </ol>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
