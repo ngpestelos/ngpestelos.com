@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reinforcement Learning with Verifiable Rewards (RLVR) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on reinforcement learning with verifiable rewards (RLVR): rule-based reward, the training loop, GRPO, verifiable domains, reasoning-model results, and limitations.">
+  <meta property="og:title" content="Reinforcement Learning with Verifiable Rewards (RLVR) &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on reinforcement learning with verifiable rewards (RLVR): rule-based reward, the training loop, GRPO, verifiable domains, reasoning-model results, and limitations.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/rlvr/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/rlvr/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.3rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; font-size: 1.05rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 30rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.8rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.6rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.7rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.78rem;
+      vertical-align: super;
+      line-height: 0;
+      margin-left: 0.1rem;
+    }
+    .cite a { color: var(--link); text-decoration: none; }
+    .cite a:hover { text-decoration: underline; }
+    .see-also li { margin-bottom: 0.4rem; }
+    .references ol {
+      font-size: 0.88rem;
+      padding-left: 1.4rem;
+    }
+    .references li {
+      margin-bottom: 0.6rem;
+      line-height: 1.45;
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--well);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    @media print {
+      .back, .back-to-top { display: none; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Reinforcement Learning with Verifiable Rewards (RLVR)","description":"A citable ground-truth reference on reinforcement learning with verifiable rewards (RLVR): rule-based reward, the training loop, GRPO, verifiable domains, reasoning-model results, and limitations.","url":"https://ngpestelos.com/reference/rlvr/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main>
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Artificial Intelligence &middot; Model Post-Training</p>
+    <h1>Reinforcement Learning with Verifiable Rewards (RLVR)</h1>
+    <p class="updated">Reference entry &middot; last updated September 10, 2026</p>
+
+    <p class="lede"><strong>Reinforcement learning with verifiable rewards (RLVR)</strong> is a post-training method that optimizes a language model policy against a reward computed by a deterministic checker rather than a learned reward model. The reward is usually binary: a completion scores 1 when an automatic verifier confirms it is correct, such as an exact-match answer key for mathematics, a unit-test suite for code, or a proof checker for formal logic, and 0 otherwise. It is the training signal behind the 2025 generation of reasoning models, and is also written "reinforcement learning from verifiable rewards."</p>
+
+    <nav class="toc" aria-label="Table of Contents">
+      <div class="toc-title">Contents</div>
+      <ol>
+        <li><a href="#first-principles">First Principles: Verification as the Reward</a></li>
+        <li><a href="#training-loop">The Training Loop</a>
+          <ol>
+            <li><a href="#prompt-set">Prompt Set with Known Answers</a></li>
+            <li><a href="#reward-function">The Verifier and the Reward</a></li>
+            <li><a href="#policy-update">Policy Update with GRPO</a></li>
+          </ol>
+        </li>
+        <li><a href="#vs-rlhf">Relationship to RLHF and Process Supervision</a></li>
+        <li><a href="#domains">Verifiable Domains and Their Checkers</a></li>
+        <li><a href="#results">Empirical Results</a></li>
+        <li><a href="#limitations">Limitations and Open Questions</a></li>
+        <li><a href="#development">Development</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Verification as the Reward</h2>
+    <p>RLVR applies to the subset of tasks where correctness is decidable by a program and the correct answer is already known for each training prompt. On that subset the reward function needs no modeling. For a prompt \(x\) with reference answer \(a_x\), the reward for a sampled completion \(y\) is the output of a verifier \(V\):<span class="cite">[<a href="#ref-4">4</a>, <a href="#ref-5">5</a>]</span></p>
+    $$r(x, y) = \mathbb{1}\big[\, V(y, a_x) = \text{correct} \,\big] \in \{0, 1\}$$
+    <p>The policy is then optimized with the same KL-regularized reinforcement learning objective used in <a href="/reference/rlhf/">RLHF</a>, with the learned reward model replaced by this rule:</p>
+    $$\max_\theta \; \mathbb{E}_{x \sim \mathcal{D},\, y \sim \pi_\theta(\cdot \mid x)} \big[ r(x, y) \big] - \beta \, D_{\text{KL}}\big(\pi_\theta(y \mid x) \,\|\, \pi_{\text{ref}}(y \mid x)\big)$$
+    <p>Removing the learned reward model removes the failure surface it introduces. There is no <a href="/reference/reward-hacking/">reward-model overoptimization</a> in the usual sense, because on the covered prompts the reward is ground truth rather than a fitted approximation of it. Preference data collection, rater disagreement, and the Bradley-Terry modeling assumption all drop out.</p>
+    <p>Two constraints define the method's reach. Coverage: a prompt is only usable if a verifier and a reference answer exist for it, which excludes open-ended writing, judgment, and most dialogue. Specification: the verifier defines "correct," so any gap between the verifier and true correctness is a gap the policy can learn to exploit. Goodhart's law returns at the level of the checker rather than a reward model.</p>
+
+    <h2 id="training-loop">2. The Training Loop</h2>
+    <p>The pipeline that produced DeepSeekMath and the DeepSeek-R1 reasoning models runs a single reinforcement learning stage after supervised fine-tuning, or in the R1-Zero case directly on the base model.<span class="cite">[<a href="#ref-4">4</a>, <a href="#ref-6">6</a>]</span></p>
+
+    <h3 id="prompt-set">2.1 Prompt Set with Known Answers</h3>
+    <p>Training data is a set of prompts paired with reference answers, not demonstrations of the full solution. Common sources are math datasets with final-answer keys such as GSM8K and MATH,<span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span> competitive-programming problems with test suites, and formal-theorem statements with machine-checkable proofs. The model must produce the reasoning itself; only the endpoint is graded.</p>
+
+    <h3 id="reward-function">2.2 The Verifier and the Reward</h3>
+    <p>For each prompt the policy samples one or more completions, and each completion is scored by the verifier. Verifiers are domain-specific: symbolic equivalence checking against the answer key for mathematics, execution against unit tests for code, a proof assistant for formal logic. Implementations frequently split the reward into an accuracy term and a format term, for example rewarding a required answer delimiter or a reasoning block, so that the total is</p>
+    $$R(x, y) = r_{\text{answer}}(x, y) + \lambda \, r_{\text{format}}(y)$$
+    <p>The format term is itself a small rule-based specification and a common target for reward hacking.</p>
+
+    <h3 id="policy-update">2.3 Policy Update with GRPO</h3>
+    <p>The policy gradient step most associated with RLVR is Group Relative Policy Optimization (GRPO), introduced with DeepSeekMath as a variant of PPO that removes the value network.<span class="cite">[<a href="#ref-4">4</a>, <a href="#ref-7">7</a>]</span> For each prompt \(q\), GRPO samples a group of \(G\) completions \(\{o_1, \dots, o_G\}\), scores each with the verifier to get rewards \(\{r_1, \dots, r_G\}\), and standardizes within the group to form the advantage:</p>
+    $$\hat{A}_i = \frac{r_i - \operatorname{mean}(\{r_1, \dots, r_G\})}{\operatorname{std}(\{r_1, \dots, r_G\})}$$
+    <p>The group mean replaces the learned baseline, so completions are rewarded for beating their siblings on the same prompt. The update uses a PPO-style clipped ratio; see <a href="/reference/reinforcement-learning/">reinforcement learning</a> for that objective in full. PPO with a value model is also used for RLVR; GRPO's appeal is lower memory during long-context reasoning rollouts.</p>
+
+    <h2 id="vs-rlhf">3. Relationship to RLHF and Process Supervision</h2>
+    <p>RLVR and <a href="/reference/rlhf/">RLHF</a> share the reinforcement learning objective and differ in where the reward comes from. RLHF fits a reward model to human preference comparisons and optimizes against it;<span class="cite">[<a href="#ref-8">8</a>]</span> RLVR replaces that model with a rule.</p>
+    <table>
+      <thead>
+        <tr><th></th><th>RLHF</th><th>RLVR</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Reward source</td><td>Reward model fitted to human comparisons</td><td>Deterministic verifier against a known answer</td></tr>
+        <tr><td>Training data</td><td>Pairwise preference labels</td><td>Prompts with reference answers</td></tr>
+        <tr><td>Main failure surface</td><td>Reward-model overoptimization, rater bias, sycophancy</td><td>Verifier gaming, coverage gaps, false negatives</td></tr>
+        <tr><td>Domain reach</td><td>Any task a human can judge</td><td>Only machine-checkable tasks</td></tr>
+        <tr><td>Typical use</td><td>Helpfulness, tone, safety</td><td>Mathematics, code, formal reasoning</td></tr>
+      </tbody>
+    </table>
+    <p>The two are complementary rather than exclusive. A production post-training recipe such as Tulu 3 runs supervised fine-tuning, then preference optimization, then RLVR as a later stage aimed at the verifiable skills.<span class="cite">[<a href="#ref-5">5</a>]</span></p>
+    <p>Along a second axis, RLVR as usually practiced is <em>outcome</em> supervision: it grades the final answer and says nothing about the steps. <em>Process</em> supervision instead scores each reasoning step, which Lightman et al. found trains a more reliable reward model on the MATH benchmark than outcome supervision does.<span class="cite">[<a href="#ref-3">3</a>]</span> Process rewards require step-level labels or a trained process reward model and lose the "no learned reward model" property that makes outcome RLVR simple.</p>
+
+    <h2 id="domains">4. Verifiable Domains and Their Checkers</h2>
+    <ul>
+      <li><strong>Mathematics.</strong> Final-answer comparison with symbolic normalization to accept equivalent forms. The dominant testbed; also the domain where false negatives from imperfect equivalence checking are most reported.</li>
+      <li><strong>Code.</strong> Compilation plus a unit-test suite, with the pass rate or a pass/fail bit as reward. The verifier is only as complete as the tests.</li>
+      <li><strong>Formal proofs.</strong> A proof assistant such as Lean accepts or rejects a candidate proof. The strongest form of verification, with the narrowest data supply.</li>
+      <li><strong>Constrained instruction following.</strong> Instructions with checkable constraints, such as a word count, a required keyword, or valid JSON, admit a rule-based check.<span class="cite">[<a href="#ref-5">5</a>]</span></li>
+    </ul>
+    <p>The common thread is a cheap, deterministic, low-false-positive check. Where a check is expensive, stochastic, or easily satisfied by a wrong answer, RLVR degrades toward the reward-hacking behavior it is meant to avoid.</p>
+
+    <h2 id="results">5. Empirical Results</h2>
+    <p>DeepSeekMath applied GRPO with rule-based math rewards and raised a 7B model's MATH accuracy well above its supervised baseline, establishing the recipe.<span class="cite">[<a href="#ref-4">4</a>]</span> Tulu 3 reported that adding RLVR as a final stage improved targeted skills such as mathematics and precise instruction following without a general regression.<span class="cite">[<a href="#ref-5">5</a>]</span> DeepSeek-R1 scaled the approach: an RL-only variant, R1-Zero, was trained from the base model with verifiable rewards and no supervised reasoning traces, and developed long chains of thought, self-checking, and backtracking on its own, though with readability and language-mixing problems that a supervised cold-start stage then addressed.<span class="cite">[<a href="#ref-6">6</a>]</span></p>
+
+    <h2 id="limitations">6. Limitations and Open Questions</h2>
+    <ul>
+      <li><strong>Domain ceiling.</strong> RLVR trains only what a verifier can score. It adds no signal for style, helpfulness, or safety, so it supplements preference tuning rather than replacing it.</li>
+      <li><strong>Capability extension versus sampling.</strong> Yue et al. found that across large sampling budgets, base models reach a higher pass@k than their RLVR-tuned versions, and argue RLVR mostly reweights toward solutions the base model could already produce rather than adding new reasoning ability.<span class="cite">[<a href="#ref-9">9</a>]</span></li>
+      <li><strong>Reward-signal attribution.</strong> Shao et al. showed that random or spurious rewards produce large math gains for Qwen models by eliciting pretrained behavior, while the same signals barely help Llama3 or OLMo2, which complicates claims that a specific reward drove a specific gain.<span class="cite">[<a href="#ref-10">10</a>]</span></li>
+      <li><strong>Verifier gaming.</strong> The policy can learn to satisfy the checker without solving the task, for example matching an answer format while reasoning incorrectly, or exploiting weak unit tests. See <a href="/reference/reward-hacking/">reward hacking</a>.</li>
+      <li><strong>Verifier coverage.</strong> Equivalence checkers reject valid alternative answers (false negatives) and weak checkers accept wrong ones (false positives). Both inject label noise the policy optimizes against.</li>
+    </ul>
+
+    <h2 id="development">7. Development</h2>
+    <ul>
+      <li><strong>2021.</strong> Cobbe et al. introduce GSM8K and train a separate verifier to rank sampled math solutions;<span class="cite">[<a href="#ref-1">1</a>]</span> Hendrycks et al. release the MATH dataset.<span class="cite">[<a href="#ref-2">2</a>]</span></li>
+      <li><strong>2023.</strong> Lightman et al. compare process and outcome supervision on MATH and release step-level labels.<span class="cite">[<a href="#ref-3">3</a>]</span></li>
+      <li><strong>2024.</strong> DeepSeekMath introduces GRPO with rule-based math rewards;<span class="cite">[<a href="#ref-4">4</a>]</span> Tulu 3 names the method "Reinforcement Learning with Verifiable Rewards" and ships it as a post-training stage.<span class="cite">[<a href="#ref-5">5</a>]</span></li>
+      <li><strong>2025.</strong> DeepSeek-R1 and R1-Zero demonstrate reasoning trained largely or entirely by verifiable rewards;<span class="cite">[<a href="#ref-6">6</a>]</span> Yue et al. and Shao et al. publish limiting analyses.<span class="cite">[<a href="#ref-9">9</a>, <a href="#ref-10">10</a>]</span></li>
+    </ul>
+
+    <section class="see-also" id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/rlhf/">Reinforcement Learning from Human Feedback</a></li>
+        <li><a href="/reference/reinforcement-learning/">Reinforcement Learning</a></li>
+        <li><a href="/reference/reasoning/">Reasoning in Language Models</a></li>
+        <li><a href="/reference/reward-hacking/">Reward Hacking</a></li>
+        <li><a href="/reference/fine-tuning/">Fine-Tuning</a></li>
+        <li><a href="/reference/test-time-compute/">Test-Time Compute</a></li>
+      </ul>
+    </section>
+
+    <section class="references" id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1">[1] K. Cobbe, V. Kosaraju, M. Bavarian, et al., "Training Verifiers to Solve Math Word Problems," <em>arXiv:2110.14168</em>, 2021. <a href="https://arxiv.org/abs/2110.14168">https://arxiv.org/abs/2110.14168</a></li>
+        <li id="ref-2">[2] D. Hendrycks, C. Burns, S. Kadavath, et al., "Measuring Mathematical Problem Solving With the MATH Dataset," in <em>NeurIPS Datasets and Benchmarks</em>, 2021. <a href="https://arxiv.org/abs/2103.03874">https://arxiv.org/abs/2103.03874</a></li>
+        <li id="ref-3">[3] H. Lightman, V. Kosaraju, Y. Burda, et al., "Let's Verify Step by Step," in <em>ICLR</em>, 2024. <a href="https://arxiv.org/abs/2305.20050">https://arxiv.org/abs/2305.20050</a></li>
+        <li id="ref-4">[4] Z. Shao, P. Wang, Q. Zhu, et al., "DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models," <em>arXiv:2402.03300</em>, 2024. <a href="https://arxiv.org/abs/2402.03300">https://arxiv.org/abs/2402.03300</a></li>
+        <li id="ref-5">[5] N. Lambert, J. Morrison, V. Pyatkin, et al., "Tulu 3: Pushing Frontiers in Open Language Model Post-Training," <em>arXiv:2411.15124</em>, 2024. <a href="https://arxiv.org/abs/2411.15124">https://arxiv.org/abs/2411.15124</a></li>
+        <li id="ref-6">[6] DeepSeek-AI, "DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning," <em>arXiv:2501.12948</em>, 2025. <a href="https://arxiv.org/abs/2501.12948">https://arxiv.org/abs/2501.12948</a></li>
+        <li id="ref-7">[7] J. Schulman, F. Wolski, P. Dhariwal, A. Radford, and O. Klimov, "Proximal Policy Optimization Algorithms," <em>arXiv:1707.06347</em>, 2017. <a href="https://arxiv.org/abs/1707.06347">https://arxiv.org/abs/1707.06347</a></li>
+        <li id="ref-8">[8] L. Ouyang, J. Wu, X. Jiang, et al., "Training language models to follow instructions with human feedback," in <em>NeurIPS</em>, 2022. <a href="https://arxiv.org/abs/2203.02155">https://arxiv.org/abs/2203.02155</a></li>
+        <li id="ref-9">[9] Y. Yue, Z. Chen, R. Lu, A. Zhao, et al., "Does Reinforcement Learning Really Incentivize Reasoning Capacity in LLMs Beyond the Base Model?," <em>arXiv:2504.13837</em>, 2025. <a href="https://arxiv.org/abs/2504.13837">https://arxiv.org/abs/2504.13837</a></li>
+        <li id="ref-10">[10] R. Shao, et al., "Spurious Rewards: Rethinking Training Signals in RLVR," <em>arXiv:2506.10947</em>, 2025. <a href="https://arxiv.org/abs/2506.10947">https://arxiv.org/abs/2506.10947</a></li>
+      </ol>
+    </section>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
