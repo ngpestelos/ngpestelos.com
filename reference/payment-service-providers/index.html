@@ -67,13 +67,13 @@ footer { border-top:1px solid var(--line); margin-top:2rem; }
 <h2 id="first-principles">1. First principles: distinct service roles</h2>
 <p>An acquirer is a financial institution that processes and settles card payments for merchants. It can process transactions itself or work with a processor. A PSP may also act as an acquirer in regions where it provides that service.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 <h2 id="integration">2. Integration and coverage</h2>
-<p>A <strong>gateway</strong> transmits payment data from the merchant to the acquiring side. A <strong>processor</strong> handles technical communication with banks and card networks.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+<p>A <a href="/reference/payment-gateway/">gateway</a> transmits payment data from the merchant to the acquiring side. A <strong>processor</strong> handles technical communication with banks and card networks.<span class="cite">[<a href="#ref4">4</a>]</span></p>
 <h2 id="payout">3. Settlement and payout</h2>
 <p>The provider receiving funds and the merchant receiving a payout are separate events. Adyen documents different payout models and frequencies; a successful payment does not imply a universal payout deadline.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 <h2 id="data">4. Payment data responsibilities</h2>
-<p>The checkout integration also determines which systems handle card data. <a href="/reference/pci-dss/">PCI DSS</a> scope and self-assessment eligibility depend on that environment.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+<p>The checkout integration also determines which systems handle card data. <a href="/reference/pci-dss/">PCI DSS</a> scope, <a href="/reference/payment-tokenization/">payment tokenization</a>, and self-assessment eligibility depend on that environment.<span class="cite">[<a href="#ref3">3</a>]</span></p>
 <h2 id="see-also">5. See also</h2>
-<ul><li><a href="/reference/online-payments/">Online Payments</a></li><li><a href="/reference/card-authorization-capture/">Card Authorization and Capture</a></li><li><a href="/reference/settlement/">Settlement</a></li><li><a href="/reference/pci-dss/">PCI DSS (Payment Card Data Security)</a></li></ul>
+<ul><li><a href="/reference/online-payments/">Online Payments</a></li><li><a href="/reference/payment-gateway/">Payment Gateway</a></li><li><a href="/reference/payment-tokenization/">Payment Tokenization</a></li><li><a href="/reference/interchange/">Interchange (Card Payments)</a></li><li><a href="/reference/card-authorization-capture/">Card Authorization and Capture</a></li><li><a href="/reference/settlement/">Settlement</a></li><li><a href="/reference/pci-dss/">PCI DSS (Payment Card Data Security)</a></li></ul>
 <h2 id="references">6. References</h2>
 <ol>
 <li id="ref1"><a href="https://help.adyen.com/knowledge/payment-methods/explore-payment-methods/what-is-an-acquirer">Adyen. What is an acquirer?</a></li>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Tokenization · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Surrogate payment credentials, PSP vault tokens versus EMVCo network tokens, mobile wallets, and PCI DSS scope reduction.">
+  <meta property="og:title" content="Payment Tokenization · Reference">
+  <meta property="og:description" content="Surrogate payment credentials, PSP vault tokens versus EMVCo network tokens, mobile wallets, and PCI DSS scope reduction.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/payment-tokenization/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/payment-tokenization/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { line-height:1.65; }
+main { max-width:48rem; margin:auto; padding:1.4rem 1.4rem 4rem; }
+h1 { font-size:clamp(1.9rem,5vw,2.4rem); font-weight:400; line-height:1.2; border-bottom:1px solid var(--line); padding-bottom:.5rem; }
+h2 { font-weight:400; margin-top:2rem; font-size:1.45rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+p,li { margin-bottom:.7rem; }
+.back,.kicker,.updated,.toc,footer { font-family:"Segoe UI",Helvetica,Arial,sans-serif; }
+.back,.updated,footer { font-size:.85rem; color:var(--mute); }
+.kicker { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--mute); }
+.lede { margin:1.4rem 0; }
+.toc { background:var(--well); border:1px solid var(--line); border-radius:4px; padding:1rem 1.3rem; margin:1.7rem 0; font-size:.9rem; }
+.toc ol { margin-bottom:0; padding-left:1.5rem; }
+.toc li { margin-bottom:.25rem; }
+.cite { font-size:.75em; vertical-align:super; }
+.cite a { text-decoration:none; }
+#references ~ ol { font-size:.9rem; overflow-wrap:anywhere; }
+footer { border-top:1px solid var(--line); margin-top:2rem; }
+.back-to-top { position:fixed; bottom:1.5rem; right:1.5rem; width:2.6rem; height:2.6rem; border-radius:50%; background:var(--bg); color:var(--ink); border:1px solid var(--line); cursor:pointer; opacity:0; visibility:hidden; }
+.back-to-top.visible { opacity:1; visibility:visible; }
+@media print { .back,.back-to-top { display:none !important; } main { max-width:none; padding:0; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"Payment Tokenization","description":"Surrogate payment credentials, PSP vault tokens versus EMVCo network tokens, mobile wallets, and PCI DSS scope reduction.","url":"https://ngpestelos.com/reference/payment-tokenization/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script>
+</head>
+<body class="reference">
+<main id="top">
+<p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Finance · Payments</p>
+<h1>Payment Tokenization</h1>
+<p class="updated">Reference entry &middot; last updated 20260911</p>
+<p class="lede"><strong>Payment tokenization</strong> replaces sensitive Primary Account Numbers (PANs) with non-sensitive surrogate values (tokens). A token cannot be used outside its authorized merchant, device, or network context.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
+<li><a href="#first-principles">First principles: surrogate credentials</a></li>
+<li><a href="#token-types">PSP vault tokens versus EMVCo network tokens</a></li>
+<li><a href="#digital-wallets">Device tokens and mobile wallets</a></li>
+<li><a href="#pci-scope">PCI DSS compliance and security impact</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">1. First principles: surrogate credentials</h2>
+<p>Storing raw card numbers introduces permanent data-breach risk. Tokenization decouples payment initiation from primary account data. A tokenization engine stores the original PAN in an isolated, encrypted cardholder data vault and returns a mathematically unrelated token identifier to the merchant.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>Subsequent recurring charges or one-click checkouts refer to the token. If an attacker breaches the merchant’s database, intercepted tokens cannot be transacted across unauthorized channels or third-party gateways.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<h2 id="token-types">2. PSP vault tokens versus EMVCo network tokens</h2>
+<p>Payment systems utilize two distinct architectures for tokenization:</p>
+<ul>
+<li><strong>PSP / Gateway vault tokens:</strong> Generated internally by an acquirer or <a href="/reference/payment-service-providers/">PSP</a> (such as a Stripe customer ID or Adyen recurring token). The token is proprietary to that specific provider. Merchants cannot route a PSP vault token to a different acquirer without migrating raw card data through secure vault-to-vault transfer.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+<li><strong>EMVCo network tokens:</strong> Issued directly by the card networks (such as Visa Token Service or Mastercard Digital Enablement Service) under the global EMVCo payment tokenisation specification.<span class="cite">[<a href="#ref3">3</a>]</span> Network tokens replace the PAN across the entire payment chain:
+  <ul>
+    <li>They are portable across multiple acquirers and gateways through registered token requestors.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    <li>Networks automatically update token mappings when underlying physical cards expire, are lost, or are re-issued by the bank, eliminating involuntary recurring churn.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+    <li>Authorizations paired with dynamic cryptograms often receive higher authorization approval rates and lower interchange fees.<span class="cite">[<a href="#ref2">2</a>]</span><span class="cite">[<a href="#ref4">4</a>]</span></li>
+  </ul>
+</li>
+</ul>
+<h2 id="digital-wallets">3. Device tokens and mobile wallets</h2>
+<p>Digital wallets like Apple Pay and Google Pay implement device-bound network tokens. During device enrollment, the network generates a Device Account Number (DAN) stored in the phone’s hardware Secure Element.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+<p>During payment, the device signs transaction metadata using its embedded private key, producing a one-time dynamic cryptogram. Even if captured in transit, the transaction payload cannot be replayed for another purchase.<span class="cite">[<a href="#ref3">3</a>]</span><span class="cite">[<a href="#ref4">4</a>]</span></p>
+<h2 id="pci-scope">4. PCI DSS compliance and security impact</h2>
+<p>Using tokenization reduces the systems in scope for <a href="/reference/pci-dss/">PCI DSS</a> assessment. When merchants delegate card entry to hosted iframes and store only tokens, their servers never store, process, or transmit sensitive PAN data.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>This qualification enables simpler self-assessment paths (such as SAQ A) provided embedded script controls and remaining environment security requirements are satisfied.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+<h2 id="see-also">5. See also</h2>
+<ul>
+<li><a href="/reference/pci-dss/">PCI DSS (Payment Card Data Security)</a></li>
+<li><a href="/reference/online-payments/">Online Payments</a></li>
+<li><a href="/reference/card-authorization-capture/">Card Authorization and Capture</a></li>
+<li><a href="/reference/emv-3ds/">EMV 3-D Secure (Online Card Authentication)</a></li>
+<li><a href="/reference/payment-service-providers/">Payment Service Providers (Merchant Payments)</a></li>
+<li><a href="/reference/interchange/">Interchange (Card Payments)</a></li>
+</ul>
+<h2 id="references">6. References</h2>
+<ol>
+<li id="ref1"><a href="https://docs.pcisecuritystandards.org/Guidance%20Documents/Information%20Supplements/PCI_DSS_Tokenization_Guidelines.pdf">PCI SSC. Information Supplement: Tokenization Product Security Guidelines.</a></li>
+<li id="ref2"><a href="https://docs.adyen.com/online-payments/tokenization/network-tokenization/">Adyen. Network tokenization architecture and benefits.</a></li>
+<li id="ref3"><a href="https://www.emvco.com/emv-technologies/payment-tokenisation/">EMVCo. Payment Tokenisation Technical Framework.</a></li>
+<li id="ref4"><a href="https://docs.stripe.com/payments/network-tokens">Stripe. Network tokens guide.</a></li>
+<li id="ref5"><a href="https://www.pcisecuritystandards.org/faqs/1588/">PCI SSC. FAQ 1588: SAQ A eligibility criteria for scripts.</a></li>
+</ol>
+<footer><p><a href="#top">Back to top</a></p></footer>
+</main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
