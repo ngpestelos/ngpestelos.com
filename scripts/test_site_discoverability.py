@@ -459,6 +459,19 @@ class ReferenceSeoTests(unittest.TestCase):
         self.assertIn('href="/reference/vector/"', vs_html)
 
 
+    def test_tensor_reference_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn('href="/reference/tensor/"', html, "Missing from reference/index.html: tensor")
+        self.assertIn("https://ngpestelos.com/reference/tensor/", locs, "Missing from sitemap.xml: tensor")
+        entry_html = (REF / "tensor" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("application/ld+json", entry_html)
+        self.assertIn('"@type":"DefinedTerm"', entry_html)
+        self.assertIn('<h2 id="first-principles">', entry_html)
+        v_html = (REF / "vector" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/tensor/"', v_html)
+
+
     def test_computer_vision_reference_registered(self):
         html = (REF / "index.html").read_text(encoding="utf-8")
         locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
