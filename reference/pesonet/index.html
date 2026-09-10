@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PESONet (Philippine Batch Payments) · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="PESONet credit transfers, batch processing, and the distinction between submission, settlement, and beneficiary credit.">
+  <meta property="og:title" content="PESONet (Philippine Batch Payments) · Reference">
+  <meta property="og:description" content="PESONet credit transfers, batch processing, and the distinction between submission, settlement, and beneficiary credit.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/pesonet/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/pesonet/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { line-height:1.65; }
+main { max-width:48rem; margin:auto; padding:1.4rem 1.4rem 4rem; }
+h1 { font-size:clamp(1.9rem,5vw,2.4rem); font-weight:400; line-height:1.2; border-bottom:1px solid var(--line); padding-bottom:.5rem; }
+h2 { font-weight:400; margin-top:2rem; font-size:1.45rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+p,li { margin-bottom:.7rem; }
+.back,.kicker,.updated,.toc,footer { font-family:"Segoe UI",Helvetica,Arial,sans-serif; }
+.back,.updated,footer { font-size:.85rem; color:var(--mute); }
+.kicker { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--mute); }
+.lede { margin:1.4rem 0; }
+.toc { background:var(--well); border:1px solid var(--line); border-radius:4px; padding:1rem 1.3rem; margin:1.7rem 0; font-size:.9rem; }
+.toc ol { margin-bottom:0; padding-left:1.5rem; }
+.toc li { margin-bottom:.25rem; }
+.cite { font-size:.75em; vertical-align:super; }
+.cite a { text-decoration:none; }
+#references ~ ol { font-size:.9rem; overflow-wrap:anywhere; }
+footer { border-top:1px solid var(--line); margin-top:2rem; }
+.back-to-top { position:fixed; bottom:1.5rem; right:1.5rem; width:2.6rem; height:2.6rem; border-radius:50%; background:var(--bg); color:var(--ink); border:1px solid var(--line); cursor:pointer; opacity:0; visibility:hidden; }
+.back-to-top.visible { opacity:1; visibility:visible; }
+@media print { .back,.back-to-top { display:none !important; } main { max-width:none; padding:0; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"PESONet (Philippine Batch Payments)","description":"PESONet credit transfers, batch processing, and the distinction between submission, settlement, and beneficiary credit.","url":"https://ngpestelos.com/reference/pesonet/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script>
+</head>
+<body class="reference">
+<main id="top">
+<p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Finance · Payments</p>
+<h1>PESONet (Philippine Batch Payments)</h1>
+<p class="updated">Reference entry &middot; last updated 20260910</p>
+<p class="lede"><strong>PESONet</strong> is a Philippine electronic funds transfer service that processes <a href="/reference/credit/">credit transfers</a> in batches. It operates within the <a href="/reference/nrps/">NRPS</a> framework.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
+<li><a href="#first-principles">First principles: batch transfers</a></li>
+<li><a href="#cycles">Settlement cycles</a></li>
+<li><a href="#comparison">Relationship to InstaPay</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">1. First principles: batch transfers</h2>
+<p>A batch groups payment instructions for processing at scheduled intervals. The sender instructs its institution to pay the beneficiary. Submission, <a href="/reference/clearing/">clearing</a>, <a href="/reference/settlement/">settlement</a>, and credit to the beneficiary are separate stages.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<h2 id="cycles">2. Settlement cycles</h2>
+<p>BSP’s FAQ dated 20240827 describes three multilateral batch settlement cycles during a banking day. Receiving institutions credit beneficiaries after receiving inward clearing advice. Several cycles provide additional opportunities to complete transfers within that day.<span class="cite">[<a href="#ref1">1</a>]</span></p><p>A provider’s submission cutoff determines which cycle can process a payment. A batch schedule does not promise immediate credit for every instruction submitted.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<h2 id="comparison">3. Relationship to InstaPay</h2>
+<p><a href="/reference/instapay/">InstaPay</a> provides almost instant customer credit and operates around the clock. PESONet’s batch arrangement follows a different processing schedule.<span class="cite">[<a href="#ref2">2</a>]</span></p><p>The moment the sender presses “send” alone does not identify the beneficiary’s credit time.</p>
+<h2 id="see-also">4. See also</h2>
+<ul>
+<li><a href="/reference/instapay/">InstaPay (Philippines)</a></li>
+<li><a href="/reference/nrps/">National Retail Payment System (NRPS)</a></li>
+<li><a href="/reference/credit/">Credit (Payments and Account Entries)</a></li>
+<li><a href="/reference/clearing/">Clearing (Payments)</a></li>
+<li><a href="/reference/settlement/">Settlement (Payments)</a></li>
+</ul>
+<h2 id="references">5. References</h2>
+<ol>
+<li id="ref1"><a href="https://www.bsp.gov.ph/PaymentAndSettlement/FAQs_3MBS_of_the_PESONet.pdf">BSP. PESONet three multilateral batch settlement cycles: FAQs (20240827).</a></li>
+<li id="ref2"><a href="https://www.bsp.gov.ph/PaymentAndSettlement/FAQ_Instapay.pdf">BSP. InstaPay FAQ.</a></li>
+</ol>
+<footer><p><a href="#top">Back to top</a></p></footer>
+</main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
