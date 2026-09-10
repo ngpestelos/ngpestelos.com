@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top-k Selection and Sampling &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on Top-k: mathematical order statistics, selection algorithms (Quickselect, min-heaps), language model token sampling, sparse Mixture-of-Experts routing, and vector retrieval ranking.">
+  <meta property="og:title" content="Top-k Selection and Sampling &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on Top-k: mathematical order statistics, selection algorithms (Quickselect, min-heaps), language model token sampling, sparse Mixture-of-Experts routing, and vector retrieval ranking.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/top-k/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/top-k/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Top-k Selection and Sampling","description":"A citable ground-truth reference on Top-k: mathematical order statistics, selection algorithms (Quickselect, min-heaps), language model token sampling, sparse Mixture-of-Experts routing, and vector retrieval ranking.","url":"https://ngpestelos.com/reference/top-k/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.4rem 0;
+      font-size: 0.9rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      background: var(--well);
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+      border: 1px solid #e1e4e8;
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      margin: 1.2rem 0;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+    .cite {
+      font-size: 0.8em;
+      vertical-align: super;
+      line-height: 0;
+    }
+    .cite a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    .formula-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.85rem 1.2rem;
+      margin: 1.2rem 0;
+      overflow-x: auto;
+      text-align: center;
+    }
+    .see-also {
+      margin-top: 2rem;
+      padding: 1rem 1.4rem;
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+    .see-also h2 {
+      margin-top: 0;
+      border-bottom: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding-bottom: 0;
+    }
+    .see-also ul { list-style: square; margin-bottom: 0; }
+    #references {
+      margin-top: 2.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.88rem;
+    }
+    #references ol { padding-left: 1.4rem; }
+    #references li { margin-bottom: 0.5rem; color: var(--mute); }
+    #references a { color: var(--link); word-break: break-all; }
+    #references .backlink { margin-right: 0.3rem; }
+    @media print {
+      .back { display: none; }
+      .back-to-top { display: none !important; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <header>
+      <p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+      <p class="kicker">Algorithms &middot; Machine Learning</p>
+      <h1>Top-k Selection and Sampling</h1>
+      <p class="updated">Reference entry &middot; last updated September 11, 2026</p>
+    </header>
+
+    <p class="lede"><strong>Top-k</strong> is an algorithmic selection operation that identifies the \(k\) largest (or smallest) elements from an ordered or score-ranked set of \(n\) elements, as well as a stochastic decoding heuristic that truncates a probability distribution to its \(k\) highest-probability outcomes prior to renormalization and sampling.<span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span> Originating in classical order statistics and selection algorithms, top-k selection operates across computer science in priority queue scheduling, database query processing, information retrieval ranking, sparse conditional routing in Mixture-of-Experts architectures, and autoregressive language model generation.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First Principles: The Selection Problem and Order Statistics</a>
+          <ol>
+            <li><a href="#formal-definition">1.1 Formal Definition</a></li>
+            <li><a href="#complexity-bounds">1.2 Information-Theoretic Lower Bounds</a></li>
+          </ol>
+        </li>
+        <li><a href="#selection-algorithms">2. Classical Selection Algorithms and Data Structures</a>
+          <ol>
+            <li><a href="#quickselect">2.1 Quickselect and Median-of-Medians</a></li>
+            <li><a href="#heap-selection">2.2 Bounded Min-Heaps and Priority Queues</a></li>
+            <li><a href="#radix-bucket">2.3 Radix Selection and Bucket Partitions</a></li>
+          </ol>
+        </li>
+        <li><a href="#token-generation">3. Top-k Sampling in Autoregressive Language Models</a>
+          <ol>
+            <li><a href="#sampling-formulation">3.1 Mathematical Formulation and Renormalization</a></li>
+            <li><a href="#tail-truncation">3.2 Mitigating Degeneration and Unreliable Tails</a></li>
+            <li><a href="#contrast-top-p">3.3 Comparison with Top-p (Nucleus) and Temperature</a></li>
+          </ol>
+        </li>
+        <li><a href="#machine-learning-routing">4. Top-k Routing in Sparse Architectures and Retrieval</a>
+          <ol>
+            <li><a href="#moe-gating">4.1 Mixture-of-Experts (MoE) Gating</a></li>
+            <li><a href="#vector-retrieval">4.2 Vector Search and Nearest Neighbor Ranking</a></li>
+          </ol>
+        </li>
+        <li><a href="#hardware-systems">5. Accelerator Implementation and Systems Considerations</a>
+          <ol>
+            <li><a href="#gpu-kernels">5.1 Parallel Bitonic Sort and Radix Select on GPUs</a></li>
+            <li><a href="#differentiable-relaxations">5.2 Continuous and Differentiable Relaxations (Soft Top-k)</a></li>
+          </ol>
+        </li>
+        <li><a href="#see-also">See Also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <!-- Section 1 -->
+    <h2 id="first-principles">1. First Principles: The Selection Problem and Order Statistics</h2>
+    <p>The top-k operation originates in the fundamental selection problem of theoretical computer science: given a collection of \(n\) elements from a totally ordered universe and an integer \(k \le n\), identify the subset of elements that occupy the first \(k\) positions under that total order.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <h3 id="formal-definition">1.1 Formal Definition</h3>
+    <p>Let \(S = \{x_1, x_2, \dots, x_n\}\) be a multiset of \(n\) items equipped with a strict weak ordering or total preorder \(\le\). The sorted order statistics of \(S\) are denoted:</p>
+    <div class="formula-box">
+      $$x_{(1)} \le x_{(2)} \le \dots \le x_{(n)}$$
+    </div>
+    <p>The <strong>top-k selection problem</strong> requires computing the subset \(T_k \subseteq S\) of cardinality \(|T_k| = k\) such that:</p>
+    <div class="formula-box">
+      $$\forall u \in T_k, \; \forall v \in (S \setminus T_k), \quad u \ge v$$
+    </div>
+    <p>When ordered output is required, the problem becomes <em>sorted top-k</em>, producing the sequence \((x_{(n)}, x_{(n-1)}, \dots, x_{(n-k+1)})\). When relative order among the chosen items is unneeded, the problem is <em>unsorted top-k</em>.</p>
+
+    <h3 id="complexity-bounds">1.2 Information-Theoretic Lower Bounds</h3>
+    <p>In the comparison-based model of computation, sorting all \(n\) items requires \(\Omega(n \log n)\) comparisons. However, selecting the single \(k\)-th order statistic (e.g. median selection where \(k = \lfloor n/2 \rfloor\)) requires only \(\Theta(n)\) comparisons.<span class="cite">[<a href="#ref-3">3</a>]</span></p>
+    <p>For arbitrary \(k\), the comparison lower bound for unsorted top-k selection is:</p>
+    <div class="formula-box">
+      $$C(n, k) = n + \min(k, n-k) \cdot \log\left(\frac{n}{\min(k, n-k)}\right) - O(k)$$
+    </div>
+    <p>For sorted top-k selection, the information-theoretic lower bound is \(\Omega(n + k \log k)\). Sorting the entire input array is inefficient when \(k \ll n\).</p>
+
+    <!-- Section 2 -->
+    <h2 id="selection-algorithms">2. Classical Selection Algorithms and Data Structures</h2>
+    <p>Standard selection algorithms partition or filter datasets without computing complete orderings.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <h3 id="quickselect">2.1 Quickselect and Median-of-Medians</h3>
+    <p><strong>Quickselect (Hoare's Selection Algorithm):</strong> Adapts the Quicksort partitioning scheme. A pivot element is selected, and the array is partitioned into elements greater than the pivot and elements less than or equal to the pivot. Unlike Quicksort, which recurses into both partitions, Quickselect recurses only into the partition containing the target rank.<span class="cite">[<a href="#ref-4">4</a>]</span></p>
+    <ul>
+      <li><strong>Expected Time:</strong> \(O(n)\) with random pivot selection.</li>
+      <li><strong>Worst-Case Time:</strong> \(O(n^2)\) under adversarial pivot selection.</li>
+    </ul>
+    <p><strong>Median-of-Medians (BFPRT Algorithm):</strong> Blum, Floyd, Pratt, Rivest, and Tarjan (1973) established a deterministic pivot selection strategy that divides elements into blocks of 5, finds their medians, and recursively chooses the median of those medians.<span class="cite">[<a href="#ref-3">3</a>]</span> This guarantees a balanced partition and achieves a worst-case time complexity of \(O(n)\).</p>
+
+    <h3 id="heap-selection">2.2 Bounded Min-Heaps and Priority Queues</h3>
+    <p>When processing streaming data or unindexed collections where \(k \ll n\), maintaining an online bounded min-heap provides optimal memory efficiency:</p>
+    <ul>
+      <li>Initialize a min-heap of capacity \(k\).</li>
+      <li>Insert the first \(k\) elements into the heap in \(O(k)\) time.</li>
+      <li>For each subsequent element \(x_{k+1}, \dots, x_n\), compare \(x\) with the heap root (the minimum among current top candidates). If \(x > \text{root}\), extract the root and insert \(x\) in \(O(\log k)\) time.</li>
+      <li><strong>Total Time Complexity:</strong> \(O(n \log k)\).</li>
+      <li><strong>Space Complexity:</strong> \(O(k)\) auxiliary memory.</li>
+    </ul>
+
+    <h3 id="radix-bucket">2.3 Radix Selection and Bucket Partitions</h3>
+    <p>For integer or fixed-point floating-point representations, non-comparison selection operates in linear time. Radix select inspects bits from most-significant to least-significant, counting elements falling into high-bit buckets. Once a bucket boundary encloses the \(k\)-th rank, search continues recursively within that bucket, eliminating comparisons entirely.</p>
+
+    <!-- Section 3 -->
+    <h2 id="token-generation">3. Top-k Sampling in Autoregressive Language Models</h2>
+    <p>In natural language processing and neural sequence generation, the final decoder layer emits an unnormalized vector of logits \(z \in \mathbb{R}^{|V|}\) over a vocabulary \(V\) (often \(|V| \ge 32{,}000\) to \(128{,}000\)). Softmax transforms these logits into a categorical probability distribution.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <h3 id="sampling-formulation">3.1 Mathematical Formulation and Renormalization</h3>
+    <p>Pure greedy decoding (\(k = 1\)) repeatedly selects the single token with the highest probability \(\operatorname{argmax}_i P(w_i)\). While optimal for deterministic tasks like code generation or arithmetic, greedy decoding often leads to repetitive loops and vacuous phrases in open-ended generation.</p>
+    <p><strong>Top-k sampling</strong> (introduced by Fan, Lewis, and Dauphin in 2018) restricts sampling to the \(k\) tokens with the highest probabilities.<span class="cite">[<a href="#ref-2">2</a>]</span> Let \(V^{(k)} \subset V\) be the subset of \(k\) tokens that maximize \(P(w)\). The truncated distribution \(P'(w)\) is formed by setting the probability of all other tokens to zero and renormalizing across \(V^{(k)}\):</p>
+    <div class="formula-box">
+      $$P'(w_i) = \begin{cases} \dfrac{P(w_i)}{\sum_{w_j \in V^{(k)}} P(w_j)} & \text{if } w_i \in V^{(k)} \\[1em] 0 & \text{otherwise} \end{cases}$$
+    </div>
+    <p>A random sample is then drawn from \(P'(w)\).</p>
+
+    <h3 id="tail-truncation">3.2 Mitigating Degeneration and Unreliable Tails</h3>
+    <p>Neural language models often assign non-zero probability mass to contextually implausible, ungrammatical, or nonsensical tokens in the long tail of the vocabulary distribution. Because vocabulary sizes are large, the cumulative probability mass in this tail can be substantial. Top-k sampling truncates this tail entirely, preventing the generator from sampling low-probability artifacts while preserving stochastic diversity among plausible candidates.</p>
+
+    <h3 id="contrast-top-p">3.3 Comparison with Top-p (Nucleus) and Temperature</h3>
+    <p>While top-k sampling enforces a static candidate count \(k\), related decoding parameters adapt dynamically:<span class="cite">[<a href="#ref-5">5</a>]</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Mechanism</th>
+          <th>Behavior on Peaked Logits</th>
+          <th>Behavior on Flat Logits</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Top-k</strong></td>
+          <td>Selects fixed count \(k\) highest tokens</td>
+          <td>May include low-probability tokens if \(k\) is larger than the true confidence set</td>
+          <td>Truncates plausible alternatives beyond position \(k\)</td>
+        </tr>
+        <tr>
+          <td><strong>Top-p (Nucleus)</strong></td>
+          <td>Selects smallest subset with cumulative probability \(\ge p\)</td>
+          <td>Shrinks to 1 or 2 tokens when confidence is high</td>
+          <td>Expands to hundreds of tokens when distribution is diffuse</td>
+        </tr>
+        <tr>
+          <td><strong>Temperature (\(T\))</strong></td>
+          <td>Divides logits by \(T\) before Softmax: \(\frac{z_i}{T}\)</td>
+          <td>Flattens or sharpens relative probabilities without altering vocabulary support</td>
+          <td>Does not hard-truncate low-probability tail tokens</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Modern serving systems commonly compose these methods in pipeline sequence: apply temperature scaling, filter via top-k, filter via top-p, and finally execute categorical sampling.</p>
+
+    <!-- Section 4 -->
+    <h2 id="machine-learning-routing">4. Top-k Routing in Sparse Architectures and Retrieval</h2>
+    <p>Beyond token decoding, top-k selection serves as a structural gating mechanism in modern deep learning architectures and retrieval engines.<span class="cite">[<a href="#ref-6">6</a>, <a href="#ref-7">7</a>]</span></p>
+
+    <h3 id="moe-gating">4.1 Mixture-of-Experts (MoE) Gating</h3>
+    <p>Sparse Mixture-of-Experts architectures (such as Shazeer et al., 2017, Switch Transformer, Mixtral, and DeepSeek-V2/V3) replace dense feed-forward network (FFN) layers with \(E\) parallel expert networks. For each input token representation \(x\), a router network computes gating scores \(H(x) = x \cdot W_g\).<span class="cite">[<a href="#ref-6">6</a>]</span></p>
+    <p>To bound compute per token, a <strong>Top-k gating function</strong> activates only the \(k\) highest-scoring experts (commonly \(k = 1\) or \(k = 2\) out of \(E = 8\) to \(256\)):</p>
+    <div class="formula-box">
+      $$\text{Gate}(x) = \operatorname{Softmax}(\operatorname{KeepTopK}(H(x), k))$$
+    </div>
+    <p>where \(\operatorname{KeepTopK}(v, k)_i = v_i\) if \(v_i\) is among the top \(k\) values of \(v\), and \(-\infty\) otherwise. The token is dispatched exclusively to the selected \(k\) experts, scaling total parameter capacity without increasing active FLOPs per token.</p>
+
+    <h3 id="vector-retrieval">4.2 Vector Search and Nearest Neighbor Ranking</h3>
+    <p>In Retrieval-Augmented Generation (RAG) and dense vector search, retrieval engines match a query embedding vector \(q \in \mathbb{R}^d\) against millions of stored document vectors \(\{d_1, \dots, d_N\}\). The retrieval pipeline computes similarity scores (such as cosine similarity or inner product) and extracts the <strong>top-k nearest neighbors</strong>.<span class="cite">[<a href="#ref-7">7</a>]</span> Approximate Nearest Neighbor (ANN) index structures like Hierarchical Navigable Small World (HNSW) graphs use beam searches bounded by dynamic priority queues to return top-k matches in logarithmic \(O(\log N)\) time.</p>
+
+    <!-- Section 5 -->
+    <h2 id="hardware-systems">5. Accelerator Implementation and Systems Considerations</h2>
+    <p>Selection on massively parallel GPU and TPU architectures encounters distinct hardware bottlenecks compared to sequential CPU algorithms.<span class="cite">[<a href="#ref-8">8</a>]</span></p>
+
+    <h3 id="gpu-kernels">5.1 Parallel Bitonic Sort and Radix Select on GPUs</h3>
+    <p>Standard Quickselect is inherently branch-heavy and poorly suited to Single Instruction, Multiple Threads (SIMT) architectures. Modern GPU frameworks (such as CUDA CUB and FlashAttention) execute top-k selection using:</p>
+    <ul>
+      <li><strong>Bitonic Top-K Networks:</strong> Fixed-depth sorting networks implemented in GPU warp registers. Because comparison-exchange patterns are deterministic, execution proceeds with zero branch divergence.</li>
+      <li><strong>Fused Radix Select:</strong> Examines bit representations across thread blocks, binning elements into shared memory histograms. FlashInfer and vLLM utilize fused top-k kernels during the sampling phase to avoid materializing full sorted arrays in high-bandwidth memory (HBM).</li>
+    </ul>
+
+    <h3 id="differentiable-relaxations">5.2 Continuous and Differentiable Relaxations (Soft Top-k)</h3>
+    <p>The standard top-k operator is non-differentiable because its output consists of discrete indices and step-function indicators, resulting in zero gradients almost everywhere. In end-to-end differentiable learning (such as learning-to-rank or differentiable memory addressing), practitioners employ smooth continuous relaxations:</p>
+    <ul>
+      <li><strong>Optimal Transport Relaxations:</strong> Formulating top-k selection as an optimal transport problem with entropic regularization (Cuturi et al.).</li>
+      <li><strong>Perturbed Maximum / Gumbel Top-k:</strong> Injecting Gumbel noise into scores to yield stochastic differentiable top-k approximations.</li>
+    </ul>
+
+    <!-- See Also -->
+    <div class="see-also" id="see-also">
+      <h2>See Also</h2>
+      <ul>
+        <li><a href="/reference/softmax/">Softmax Function</a> &middot; Normalized exponential probabilities, temperature scaling, and logit formulations.</li>
+        <li><a href="/reference/tokens/">Tokens and Tokenization</a> &middot; Vocabulary construction, token representations, and next-token prediction.</li>
+        <li><a href="/reference/retrieval-augmented-generation/">Retrieval-Augmented Generation</a> &middot; Dense vector retrieval pipelines and shortlist re-ranking.</li>
+        <li><a href="/reference/vector-search/">Vector Search</a> &middot; Approximate Nearest Neighbor indexing and high-dimensional similarity search.</li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a> &middot; Prefill and decode serving dynamics in transformer language models.</li>
+      </ul>
+    </div>
+
+    <!-- References -->
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> T. H. Cormen, C. E. Leiserson, R. L. Rivest, and C. Stein, <em>Introduction to Algorithms</em>, 3rd ed. Cambridge, MA: MIT Press, 2009.</li>
+        <li id="ref-2"><a class="backlink" href="#token-generation">&uarr;</a> A. Fan, M. Lewis, and Y. Dauphin, "Hierarchical Neural Story Generation," in <em>Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (ACL)</em>, 2018, pp. 889&ndash;898. Free full text: <a href="https://arxiv.org/abs/1805.04833">https://arxiv.org/abs/1805.04833</a></li>
+        <li id="ref-3"><a class="backlink" href="#first-principles">&uarr;</a> M. Blum, R. W. Floyd, V. Pratt, R. L. Rivest, and R. E. Tarjan, "Time bounds for selection," <em>Journal of Computer and System Sciences</em>, vol. 7, no. 4, pp. 448&ndash;461, 1973. DOI: <a href="https://doi.org/10.1016/S0022-0000(73)80033-9">10.1016/S0022-0000(73)80033-9</a></li>
+        <li id="ref-4"><a class="backlink" href="#selection-algorithms">&uarr;</a> C. A. R. Hoare, "Algorithm 65: Find," <em>Communications of the ACM</em>, vol. 4, no. 7, pp. 321&ndash;322, 1961. DOI: <a href="https://doi.org/10.1145/366622.366644">10.1145/366622.366644</a></li>
+        <li id="ref-5"><a class="backlink" href="#token-generation">&uarr;</a> A. Holtzman, J. Buys, L. Du, M. Forbes, and Y. Choi, "The Curious Case of Neural Text Degeneration," in <em>International Conference on Learning Representations (ICLR)</em>, 2020. Free full text: <a href="https://arxiv.org/abs/1909.05858">https://arxiv.org/abs/1909.05858</a></li>
+        <li id="ref-6"><a class="backlink" href="#machine-learning-routing">&uarr;</a> N. Shazeer et al., "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer," in <em>International Conference on Learning Representations (ICLR)</em>, 2017. Free full text: <a href="https://arxiv.org/abs/1701.06538">https://arxiv.org/abs/1701.06538</a></li>
+        <li id="ref-7"><a class="backlink" href="#machine-learning-routing">&uarr;</a> P. Lewis et al., "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, vol. 33, 2020, pp. 9459&ndash;9474. Free full text: <a href="https://arxiv.org/abs/2005.11401">https://arxiv.org/abs/2005.11401</a></li>
+        <li id="ref-8"><a class="backlink" href="#hardware-systems">&uarr;</a> J. L. Hennessy and D. A. Patterson, <em>Computer Architecture: A Quantitative Approach</em>, 6th ed. Cambridge, MA: Morgan Kaufmann, 2017.</li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.classList.add("visible");
+      } else {
+        btt.classList.remove("visible");
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
