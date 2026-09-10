@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agentic Loops · Reference · Nestor G Pestelos Jr</title>
-  <meta name="description" content="An agentic loop is an autonomous execution cycle that drives an AI agent toward a target goal through continuous observation, action, and verification.">
+  <meta name="description" content="Feedback-driven action selection, architecture patterns, verification, and stopping conditions for AI agents.">
   <meta property="og:title" content="Agentic Loops · Reference">
-  <meta property="og:description" content="Architecture, 4 leverage layers, autonomy tiers, exit gates, and failure modes for AI agent loops.">
+  <meta property="og:description" content="Feedback-driven action selection, architecture patterns, verification, and stopping conditions for AI agents.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://ngpestelos.com/reference/agentic-loops/">
   <link rel="canonical" href="https://ngpestelos.com/reference/agentic-loops/">
@@ -23,29 +23,6 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-TLBY8P4GG9');
-  </script>
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'base',
-      themeVariables: {
-        primaryColor: '#fffaf3',
-        primaryTextColor: '#1c1915',
-        primaryBorderColor: '#d8d2c6',
-        lineColor: '#5c564e',
-        secondaryColor: '#f4efe6',
-        tertiaryColor: '#fffaf3',
-        mainBkg: '#fffaf3',
-        nodeBorder: '#d8d2c6',
-        clusterBkg: '#fdfbf7',
-        clusterBorder: '#9a3412',
-        titleColor: '#9a3412',
-        edgeLabelBackground: '#f4efe6',
-        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        fontSize: '13px'
-      }
-    });
   </script>
   <style>
     
@@ -147,25 +124,8 @@
       margin: 1.4rem 0;
       text-align: center;
     }
-    .diagram-box svg {
-      max-width: 100%;
-      height: auto;
-    }
-    .agent-diagram .diagram-scroll { overflow-x: auto; }
-    .agent-diagram pre.mermaid {
-      margin: 0;
-      background: transparent;
-      border: none;
-      padding: 0;
-      font-family: inherit;
-    }
-    .agent-diagram .mermaid svg { min-width: 600px; }
-    .agent-diagram figcaption {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      color: var(--mute);
-      text-align: left;
-    }
+    .diagram-box figcaption { margin-top: 1rem; color: var(--mute); font-size: 0.85rem; }
+    .loop-flow { font-family: "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.8; }
     footer.meta {
       margin-top: 3rem;
       padding-top: 1.2rem;
@@ -218,7 +178,7 @@
     }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"Agentic Loops","description":"An agentic loop is an autonomous execution cycle that drives an AI agent toward a target goal through continuous observation, action, and verification.","url":"https://ngpestelos.com/reference/agentic-loops/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Agentic Loops","description":"Feedback-driven action selection, architecture patterns, verification, and stopping conditions for AI agents.","url":"https://ngpestelos.com/reference/agentic-loops/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
@@ -226,155 +186,43 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Systems Architecture · Artificial Intelligence</p>
     <h1>Agentic Loops</h1>
-    <p class="updated">Reference entry · last updated 20260909</p>
+    <p class="updated">Reference entry · last updated 20260910</p>
 
-    <p class="lede">An <strong>agentic loop</strong> is an autonomous execution cycle that drives an artificial intelligence agent toward a specified objective through iterative observation, reasoning, tool execution, and verification.<span class="cite">[<a href="#ref1">1</a>]</span> Positioned as the fourth and outermost layer of modern AI systems, the loop orchestrates prompts, context pipelines, and runtime harnesses into a self-directed feedback cycle.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<p class="lede">An <strong>agentic loop</strong> is a repeated execution cycle in which an <a href="/reference/agents/">AI agent</a> uses observations from its environment to choose subsequent actions toward a task.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p class="updated"><a href="/reference/agentic-loops-20260910/">Previous version, captured 20260910</a></p>
+<nav class="toc" aria-label="Contents"><p class="toc-title">Contents</p><ol><li><a href="#first-principles">First principles and definitions</a></li><li><a href="#worked-example">Worked example</a></li><li><a href="#architecture-patterns">Architecture patterns</a></li><li><a href="#design-considerations">Design considerations</a></li><li><a href="#failure-modes">Failure modes and stopping</a></li><li><a href="#see-also">See also</a></li><li><a href="#references">References</a></li></ol></nav>
 
-    <div class="diagram-box">
-      <svg viewBox="0 0 660 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agentic Loop Feedback Cycle">
-        <!-- Goal -->
-        <rect x="10" y="55" width="95" height="50" rx="6" fill="#ffffff" stroke="#a2a9b1" stroke-width="1.5"/>
-        <text x="57" y="78" font-family="-apple-system, sans-serif" font-size="11" text-anchor="middle" fill="#202122">Goal / Task</text>
-        <text x="57" y="93" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#54595d">Target Spec</text>
-
-        <path d="M 105 80 L 145 80" stroke="#54595d" stroke-width="1.5"/>
-
-        <!-- The Loop Circle -->
-        <rect x="145" y="15" width="370" height="130" rx="8" fill="#f8f9fa" stroke="#9a3412" stroke-width="1.5"/>
-        <text x="330" y="38" font-family="-apple-system, sans-serif" font-size="13" font-weight="bold" text-anchor="middle" fill="#9a3412">Autonomous Execution Loop</text>
-
-        <!-- Node 1: Observe -->
-        <rect x="160" y="55" width="75" height="35" rx="4" fill="#ffffff" stroke="#a2a9b1" stroke-width="1"/>
-        <text x="197" y="77" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#202122">1. Observe</text>
-
-        <path d="M 235 72 L 255 72" stroke="#54595d" stroke-width="1.5"/>
-
-        <!-- Node 2: Reason -->
-        <rect x="255" y="55" width="75" height="35" rx="4" fill="#ffffff" stroke="#9a3412" stroke-width="1.2"/>
-        <text x="292" y="77" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#9a3412">2. Reason</text>
-
-        <path d="M 330 72 L 350 72" stroke="#54595d" stroke-width="1.5"/>
-
-        <!-- Node 3: Act -->
-        <rect x="350" y="55" width="75" height="35" rx="4" fill="#ffffff" stroke="#a2a9b1" stroke-width="1"/>
-        <text x="387" y="77" font-family="-apple-system, sans-serif" font-size="10" text-anchor="middle" fill="#202122">3. Act</text>
-
-        <path d="M 425 72 L 445 72" stroke="#54595d" stroke-width="1.5"/>
-
-        <!-- Node 4: Verify -->
-        <rect x="445" y="55" width="60" height="35" rx="4" fill="#ffffff" stroke="#166534" stroke-width="1.2"/>
-        <text x="475" y="77" font-family="-apple-system, sans-serif" font-size="10" font-weight="bold" text-anchor="middle" fill="#166534">4. Verify</text>
-
-        <!-- Feedback arrow -->
-        <path d="M 475 90 L 475 115 L 197 115 L 197 90" fill="none" stroke="#166534" stroke-width="1.5" stroke-dasharray="3,3"/>
-        <text x="330" y="110" font-family="-apple-system, sans-serif" font-size="8" fill="#166534" text-anchor="middle">Feedback &amp; Error Trace (Next Move)</text>
-
-        <path d="M 515 80 L 555 80" stroke="#166534" stroke-width="1.5"/>
-
-        <!-- Done -->
-        <rect x="555" y="55" width="95" height="50" rx="6" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
-        <text x="602" y="78" font-family="-apple-system, sans-serif" font-size="11" font-weight="bold" text-anchor="middle" fill="#166534">Exit Gate</text>
-        <text x="602" y="93" font-family="-apple-system, sans-serif" font-size="9" text-anchor="middle" fill="#166534">Tests Passed ✅</text>
-      </svg>
-    </div>
-
-    <figure class="diagram-box agent-diagram">
-      <div class="diagram-scroll" tabindex="0" role="region" aria-label="Agent architecture diagram; scroll horizontally on small screens">
-        <pre class="mermaid">
-flowchart LR
-    accTitle: Agent architecture and feedback loop
-    accDescr: The user sends a query to the agent and receives an answer. The agent sends actions to the environment and receives feedback. The agent contains reasoning through a large language model, with memory, tools, and planning as parallel supporting components.
-    U[User]
-    subgraph A[Agent]
-        direction TB
-        R["Reasoning&lt;br/&gt;Large Language Model"]
-        R --- M[Memory]
-        R --- T[Tools]
-        R --- P[Planning]
-    end
-    E[Environment]
-    U -->|Query| A
-    A -->|Answer| U
-    A -->|Action| E
-    E -->|Feedback| A
-        </pre>
-      </div>
-      <figcaption>Adapted from Maarten Grootendorst and Jay Alammar, <a href="https://learning.oreilly.com/library/view/an-illustrated-guide/9798341662681/ch01.html#ch01_large_language_models_1783538923685647"><cite>An Illustrated Guide to AI Agents</cite>, Chapter 1, “Introduction”</a> (O’Reilly Media, 2026).</figcaption>
-    </figure>
-
-    <nav class="toc" aria-label="Contents">
-      <p class="toc-title">Contents</p>
-      <ol>
-        <li><a href="#four-layers">The four nested leverage layers</a></li>
-        <li><a href="#loop-definition">The true loop criterion</a></li>
-        <li><a href="#four-conditions">The four-condition automation gate</a></li>
-        <li><a href="#autonomy-tiers">Taxonomy of agentic loop tiers</a></li>
-        <li><a href="#failure-modes">Failure modes and safety bounds</a></li>
-        <li><a href="#see-also">See also</a></li>
-        <li><a href="#references">References</a></li>
-      </ol>
-    </nav>
-
-    <h2 id="four-layers">The four nested leverage layers</h2>
-    <p>Modern agent engineering structures capabilities into four concentric layers:<span class="cite">[<a href="#ref2">2</a>]</span></p>
-    <ol>
-      <li><strong>Prompt engineering</strong>: Static text instructions formulated for model inference.</li>
-      <li><strong>Context engineering</strong>: Dynamic pipelines that select, compress, and isolate relevant tokens per turn.<span class="cite">[<a href="#ref3">3</a>]</span></li>
-      <li><strong>Harness engineering</strong>: Runtime software infrastructure managing tools, state persistence, error classification, and guardrails.<span class="cite">[<a href="#ref4">4</a>]</span></li>
-      <li><strong>Loop engineering</strong>: The autonomous control cycle driving the underlying three layers toward a goal without human intervention on every step.<span class="cite">[<a href="#ref1">1</a>]</span></li>
-    </ol>
-
-    <h2 id="loop-definition">The true loop criterion</h2>
-    <p>A repetitive script or naive retry loop is not an agentic loop. A system earns the designation of a loop only when output from turn \(N\) actively alters the prompt, strategy, or search parameters of turn \(N+1\).<span class="cite">[<a href="#ref1">1</a>]</span> If failures do not narrow the problem space or inject corrective evidence into working memory, the system executes blind iteration rather than intelligent convergence.</p>
-
-    <h2 id="four-conditions">The four-condition automation gate</h2>
-    <p>Building an autonomous loop introduces token costs and execution risks. System designers evaluate four prerequisites before automating a loop:<span class="cite">[<a href="#ref2">2</a>]</span></p>
-    <ul>
-      <li><strong>Frequent repetition</strong>: The task occurs at high enough volume (daily, weekly, or continuously) to justify development.</li>
-      <li><strong>Deterministic verification</strong>: A non-probabilistic check (such as unit test suites, compilers, or linters) must evaluate pass/fail state. Without programmatic verification, loops hallucinate in circles.</li>
-      <li><strong>Exploration token budget</strong>: A defined budget allocated for trial-and-error discovery.</li>
-      <li><strong>Actionable tooling</strong>: Direct access to filesystem, terminal, or API mutations to execute real changes.</li>
-    </ul>
-
-    <h2 id="autonomy-tiers">Taxonomy of agentic loop tiers</h2>
-    <p>Agentic loops operate across four distinct architectural levels:<span class="cite">[<a href="#ref5">5</a>]</span></p>
-    <ul>
-      <li><strong>Level 1: Interactive ReAct</strong>: Single-turn Thought-Action-Observation loops requiring explicit human sign-off on mutations.</li>
-      <li><strong>Level 2: Bounded goal loop</strong>: Autonomous task execution (such as test-driven refactoring) that iterates until predefined exit criteria are met.</li>
-      <li><strong>Level 3: Bilevel / dual-agent loop</strong>: An inner worker agent executes actions while an outer supervisor agent audits strategy and protocol compliance.</li>
-      <li><strong>Level 4: Self-optimizing loop</strong>: Continuous recursive improvement loops (such as hill climbing on test traces) that rewrite the agent's own prompts and tools over time.<span class="cite">[<a href="#ref6">6</a>]</span></li>
-    </ul>
-
-    <h2 id="failure-modes">Failure modes and safety bounds</h2>
-    <p>Autonomous loops require defensive engineering to avoid common systemic failures:<span class="cite">[<a href="#ref3">3</a>]</span></p>
-    <ul>
-      <li><strong>Runaway token loops</strong>: Failing to specify max-turn thresholds or hard budget caps causes infinite loops on unresolvable tasks.</li>
-      <li><strong>Local maxima stalling</strong>: When an agent repeatedly attempts the same invalid syntax fix, the harness must inject forced entropy (such as temperature adjustments or plan re-anchoring) to break the cycle.</li>
-      <li><strong>Epistemic drift</strong>: Multi-turn loops can drift from initial ground truth unless periodic re-anchoring to original requirements is enforced.</li>
-    </ul>
-
-    <h2 id="see-also">See also</h2>
-    <ul>
-      <li><a href="/reference/agent-harness/">Agent Harness</a></li>
-      <li><a href="/reference/agents/">Agents</a></li>
-      <li><a href="/reference/model-context-protocol/">Model Context Protocol</a></li>
-      <li><a href="/reference/fail-closed/">Fail-closed</a></li>
-      <li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li>
-      <li><a href="/reference/ooda-loop/">OODA Loop</a></li>
-      <li><a href="/reference/acceleration-whiplash/">Acceleration whiplash</a></li>
-      <li><a href="/eli5/agentic-loops/">Agentic Loops (ELI5 explainer)</a></li>
-    </ul>
-
-    <h2 id="references">References</h2>
-    <ol>
-      <li id="ref1"><a class="backlink" href="#loop-definition">↑</a> Osmani, Addy. "Loop Harness Factory: The Three-Layer Agentic Engineering Stack." Technical Notes, 2026.</li>
-      <li id="ref2"><a class="backlink" href="#four-layers">↑</a> Weng, Lilian. "LLM Powered Autonomous Agents." <em>lilianweng.github.io</em>, 2023.</li>
-      <li id="ref3"><a class="backlink" href="#four-layers">↑</a> Mitra, Sampriti. <em>System Design for the LLM Era: Patterns and Principles for Production-Grade AI Architecture</em>. Packt Publishing, 2026. Ch. 2: "Core Architectural Patterns for LLM System Design."</li>
-      <li id="ref4"><a class="backlink" href="#four-layers">↑</a> Trivedy, Vivek. "The Anatomy of an Agent Harness." LangChain Engineering Blog, March 2026.</li>
-      <li id="ref5"><a class="backlink" href="#autonomy-tiers">↑</a> Anthropic. "Building Effective Agents: Workflow and Autonomous Patterns." Research Report, 2024.</li>
-      <li id="ref6"><a class="backlink" href="#autonomy-tiers">↑</a> Shinn, N., et al. "Reflexion: Language Agents with Verbal Reinforcement Learning." <em>NeurIPS</em>, 2023.</li>
-    </ol>
-
+<h2 id="first-principles">First principles and definitions</h2>
+<p>In Anthropic’s distinction, workflows follow predefined code paths; agents dynamically direct their tool use. A workflow can contain a retry loop without delegating action selection to a model.<span class="cite">[<a href="#ref1">1</a>]</span> Feedback can change the next action, but does not guarantee progress or a correct result.</p>
+<p>The <a href="/reference/agent-harness/">agent harness</a> executes tool calls and manages the surrounding runtime. Trivedy includes orchestration logic within the harness.<span class="cite">[<a href="#ref2">2</a>]</span> <a href="/reference/prompt-engineering/">Prompt engineering</a> shapes instructions; <a href="/reference/context-engineering/">context engineering</a> determines the information available during execution.</p>
+<figure class="diagram-box">
+<div class="loop-flow" role="img" aria-label="Observe, choose an action, execute an allowed tool, inspect the result, then repeat or stop. Stop outcomes include completion, exhausted budget or time, cancellation, unrecoverable failure, or human escalation.">
+<p>Task and current observations</p><p>↓</p><p>Model chooses an action</p><p>↓</p><p>Harness executes an allowed tool</p><p>↓</p><p>Inspect result and stopping conditions</p><p>↺ Continue with new observations</p><p>or ↓ Stop</p><p>Completion · Budget or time exhausted · Cancellation<br>Unrecoverable failure · Human escalation</p>
+</div><figcaption>Illustrative control flow. The host can interrupt execution independently of the model.</figcaption></figure>
+<h2 id="worked-example">Worked example</h2>
+<p>This illustrative research task uses read-only tools: find the publication year of a named paper and return its source.</p>
+<ol><li>The agent searches the title and receives several candidate records.</li><li>It opens the matching publisher record to check the title and year.</li><li>If the record describes a different edition, that observation changes its next search.</li><li>It returns the verified year and citation, or reports the unresolved question when its search limit is reached.</li></ol>
+<p>The changed query demonstrates feedback-driven action selection. The example does not require a filesystem write or another external mutation.</p>
+<h2 id="architecture-patterns">Architecture patterns</h2>
+<p>These patterns describe different responsibilities, not ranked autonomy levels.</p>
+<ul><li><a href="/reference/react/">ReAct</a> interleaves reasoning and actions within a task. Human approval is a separate deployment policy.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+<li><a href="/reference/reflexion/">Reflexion</a> adds verbal reflection retained in <a href="/reference/agents/#core-subsystems">episodic memory</a> for later attempts. Its mechanism does not rewrite tools or update model weights.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+<li>An <a href="/reference/agents/#multi-agent">orchestrator</a> can assign subtasks to workers and combine their results. An evaluator-optimizer workflow instead revises an output using evaluator feedback. Anthropic describes both patterns separately.<span class="cite">[<a href="#ref1">1</a>]</span></li></ul>
+<p>Weng describes planning, memory, and tool use as components of an LLM-powered agent.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+<h2 id="design-considerations">Design considerations</h2>
+<p>Anthropic recommends starting with the simplest effective system and weighing added cost and latency against performance.<span class="cite">[<a href="#ref1">1</a>]</span> Task frequency affects that tradeoff; it is not a definition of an agentic loop.</p>
+<ul><li><strong>Feedback:</strong> Tests, tool results, human judgments, or model evaluations can guide another attempt. <a href="/reference/llm-evaluations/">Evaluation</a> must match the task; a passing check covers only what it measures.</li>
+<li><strong>Tools:</strong> Available operations can be read-only. Mutation permissions should match the task and be enforced by the host.</li>
+<li><strong>Bounds:</strong> Set limits on turns, time, and expenditure, with a defined outcome when a limit is reached.</li></ul>
+<p>The following stopping and recovery rules are illustrative engineering policies, not requirements of ReAct or Reflexion.</p>
+<h2 id="failure-modes">Failure modes and stopping</h2>
+<ul><li>Repeated failure: inspect the error, revise the plan or inputs, and cap retries. Escalate or stop when the failure remains unresolved.</li>
+<li>Lost task context: retain the goal and relevant evidence within the available <a href="/reference/context-window/">context window</a>. Record unresolved assumptions explicitly.</li>
+<li>Ambiguous tool outcomes: check whether a mutation took effect before retrying it, to avoid duplicate side effects.<span class="cite">[<a href="#ref6">6</a>]</span></li>
+<li>Untrusted instructions: treat retrieved content as evidence. <a href="/reference/prompt-injection/">Prompt injection</a> defenses and permission checks belong in the surrounding system; a prompt alone is not containment.</li></ul>
+<p>A <a href="/reference/fail-closed/">fail-closed</a> policy can stop restricted actions when authorization cannot be established. Cancellation, hard limits, and tool permissions should remain enforceable even when the model proposes continuing.</p>
+<h2 id="see-also">See also</h2><ul><li><a href="/reference/react/">ReAct (AI Agents)</a></li><li><a href="/reference/reflexion/">Reflexion (AI Agents)</a></li><li><a href="/reference/agent-harness/">Agent Harness</a></li><li><a href="/reference/agents/">Agents</a></li><li><a href="/reference/plan-approve-execute/">Plan-Approve-Execute</a></li><li><a href="/reference/ooda-loop/">OODA Loop</a></li></ul>
+<h2 id="references">References</h2><ol><li id="ref1">Anthropic. <a href="https://www.anthropic.com/engineering/building-effective-agents">“Building effective agents.”</a> 2024.</li><li id="ref2">Trivedy, Vivek. <a href="https://www.langchain.com/blog/the-anatomy-of-an-agent-harness">“The Anatomy of an Agent Harness.”</a> LangChain, 2026.</li><li id="ref3">Yao, Shunyu, et al. <a href="https://arxiv.org/abs/2210.03629">“ReAct: Synergizing Reasoning and Acting in Language Models.”</a> ICLR, 2023. <a href="https://react-lm.github.io/">Author project page</a>.</li><li id="ref4">Shinn, Noah, et al. <a href="https://arxiv.org/abs/2303.11366">“Reflexion: Language Agents with Verbal Reinforcement Learning.”</a> NeurIPS, 2023. <a href="https://arxiv.org/html/2303.11366v4">Full text</a>.</li><li id="ref5">Weng, Lilian. <a href="https://lilianweng.github.io/posts/2023-06-23-agent/">“LLM Powered Autonomous Agents.”</a> 2023.</li><li id="ref6">Amazon Web Services. <a href="https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/">“Making retries safe with idempotent APIs.”</a> Amazon Builders’ Library.</li></ol>
     <footer class="meta">
       <p><a href="#top">Back to top</a></p>
     </footer>
