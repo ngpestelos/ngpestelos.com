@@ -279,7 +279,11 @@
     <h2 id="architectural-variants">3. Architectural Variations in Large Language Models</h2>
 
     <h3 id="switch-routing">Switch Routing (Top-1)</h3>
-    <p>Fedus et al. (2022) proposed the Switch Transformer, which simplifies sparse routing by selecting exactly one expert per token (\(k = 1\)) <span class="cite">[<a href="#ref-4">4</a>]</span>. Switch routing halves the communication overhead of top-2 architectures, eliminates intra-token expert mixing, and scales model size to over one trillion parameters while preserving training throughput.</p>
+    <p>Fedus et al. (2022) proposed the Switch Transformer, which simplifies sparse routing by selecting exactly one expert per token (\(k = 1\)) <span class="cite">[<a href="#ref-4">4</a>]</span>. When top-\(k\) routing applies a post-selection Softmax over the chosen subset, setting \(k = 1\) would trivially normalize the surviving weight to \(G(x)_i = 1.0\), eliminating gradient signals from the task loss through the router. Instead, the Switch Transformer computes the Softmax distribution over all \(N\) candidate experts first, selects the top-1 index \(i = \operatorname{argmax}_j (x \cdot W_g)_j\), and gates the selected expert output with its pre-selection softmax probability \(p_i(x)\):</p>
+    \[
+    y = p_i(x) E_i(x), \quad \text{where } p(x) = \text{Softmax}(x \cdot W_g)
+    \]
+    <p>Retaining the pre-selection probability preserves continuous gradients from task loss back into the router weights \(W_g\). Switch routing halves communication volume relative to top-2 architectures, eliminates intra-token expert blending, and scales model size to over one trillion parameters while maintaining training throughput.</p>
 
     <h3 id="fine-grained-routing">Fine-Grained Segmentation and Shared Experts</h3>
     <p>Standard MoE implementations deploy moderate numbers of large experts (such as 8 or 16 experts with top-2 routing). Dai et al. (2024) introduced DeepSeekMoE, establishing that finer granularity improves knowledge specialization and parameter efficiency <span class="cite">[<a href="#ref-6">6</a>]</span>.</p>
@@ -336,7 +340,7 @@
     <ul>
       <li><strong>Syntactic vs. Semantic Specialization:</strong> Gating decisions often correlate with lower-level syntactic classes, punctuation, and token domains rather than high-level conceptual disciplines.</li>
       <li><strong>Transfer Learning Instability:</strong> MoE models can experience fine-tuning instabilities or router overfitting when downstream task datasets are small or domain-skewed, as gating distributions diverge from pre-training equilibrium.</li>
-      <li><strong>Quantization Degradation:</strong> Quantizing MoE weights to 4-bit or 8-bit precision requires careful per-expert calibration, as activation distributions across specialized experts exhibit higher outlier variance than dense layers.</li>
+      <li><strong>Post-Training Quantization Sensitivity:</strong> Low-bit quantization (such as 4-bit weight formats) frequently encounters elevated degradation in sparse MoE networks due to uneven parameter utilization across experts, requiring dynamic activation tracking or sensitive router weight preservation.</li>
     </ul>
 
     <div id="see-also">
@@ -358,7 +362,7 @@
         <li id="ref-3"><a class="backlink" href="#noisy-topk">&uarr;</a> N. Shazeer, A. Mirhoseini, K. Maziarz, A. Davis, Q. Le, G. Hinton, and J. Dean, "Outrageously Large Neural Networks: The Sparsely-Gated Mixture-of-Experts Layer," in <em>International Conference on Learning Representations (ICLR)</em>, 2017. Free full text: <a href="https://arxiv.org/abs/1701.06538">https://arxiv.org/abs/1701.06538</a></li>
         <li id="ref-4"><a class="backlink" href="#switch-routing">&uarr;</a> W. Fedus, B. Zoph, and N. Shazeer, "Switch Transformers: Scaling to Trillion Parameter Models with Simple and Efficient Sparsity," <em>Journal of Machine Learning Research</em>, vol. 23, no. 120, pp. 1–39, 2022. Free full text: <a href="https://www.jmlr.org/papers/v23/21-0998.html">https://www.jmlr.org/papers/v23/21-0998.html</a></li>
         <li id="ref-5"><a class="backlink" href="#expert-capacity">&uarr;</a> D. Lepikhin, H. Lee, Y. Xu, D. Chen, O. Firat, Y. Huang, M. Krikun, N. Shazeer, and Z. Chen, "GShard: Scaling Giant Models with Conditional Computation and Automatic Sharding," in <em>International Conference on Learning Representations (ICLR)</em>, 2021. Free full text: <a href="https://arxiv.org/abs/2006.16668">https://arxiv.org/abs/2006.16668</a></li>
-        <li id="ref-6"><a class="backlink" href="#fine-grained-routing">&uarr;</a> D. Dai, C. Zeng, W. Zhou, L. Ding, Z. Zhang, Q. Wang, X. Liang, B. Wang, X. Yu, Y. Wu, and Z. Guan, "DeepSeekMoE: Towards Ultimate Expert Specialization in Mixture-of-Experts Language Models," <em>arXiv preprint arXiv:2401.06066</em>, 2024. Free full text: <a href="https://arxiv.org/abs/2401.06066">https://arxiv.org/abs/2401.06066</a></li>
+        <li id="ref-6"><a class="backlink" href="#fine-grained-routing">&uarr;</a> D. Dai, C. Deng, C. Zhao, R. X. Xu, H. Gao, D. Chen, J. Li, W. Zeng, X. Yu, Y. Wu, et al., "DeepSeekMoE: Towards Ultimate Expert Specialization in Mixture-of-Experts Language Models," <em>arXiv preprint arXiv:2401.06066</em>, 2024. Free full text: <a href="https://arxiv.org/abs/2401.06066">https://arxiv.org/abs/2401.06066</a></li>
       </ol>
     </div>
   </main>
