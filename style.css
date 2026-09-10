@@ -514,6 +514,12 @@ body.reference:not(:has(#reference)) {
   padding: 0;
 }
 
+body.reference main#top > ul,
+body.reference main#top > ol {
+  padding-inline-start: 1.5rem;
+  list-style-position: outside;
+}
+
 body:has(main.article) main,
 body:has(#writing) main {
   max-width: 40rem;
