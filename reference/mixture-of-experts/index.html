@@ -340,7 +340,6 @@
     <ul>
       <li><strong>Syntactic vs. Semantic Specialization:</strong> Gating decisions often correlate with lower-level syntactic classes, punctuation, and token domains rather than high-level conceptual disciplines.</li>
       <li><strong>Transfer Learning Instability:</strong> MoE models can experience fine-tuning instabilities or router overfitting when downstream task datasets are small or domain-skewed, as gating distributions diverge from pre-training equilibrium.</li>
-      <li><strong>Post-Training Quantization Sensitivity:</strong> Low-bit quantization (such as 4-bit weight formats) frequently encounters elevated degradation in sparse MoE networks due to uneven parameter utilization across experts, requiring dynamic activation tracking or sensitive router weight preservation.</li>
     </ul>
 
     <div id="see-also">
