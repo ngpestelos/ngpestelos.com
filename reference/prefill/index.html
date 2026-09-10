@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prefill (LLM Inference) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Prefill is the LLM inference phase that evaluates the full prompt in parallel, writes the KV cache, and produces the first output token. Compute-bound GEMM, TTFT, chunking, and disaggregation.">
+  <meta property="og:title" content="Prefill (LLM Inference) &middot; Reference">
+  <meta property="og:description" content="Definition of prefill in transformer serving: parallel prompt evaluation, KV cache write, TTFT, and interference with decode.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/prefill/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/prefill/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Prefill","description":"Prefill is the first phase of transformer language-model inference, processing all prompt tokens in one parallel forward pass and writing key and value tensors into the KV cache.","url":"https://ngpestelos.com/reference/prefill/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2.2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.35rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.6rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th { background: var(--well); font-weight: 700; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+    <p class="kicker">Machine Learning &middot; LLM Serving</p>
+    <h1>Prefill (LLM Inference)</h1>
+    <p class="updated">Reference entry &middot; last updated September 11, 2026</p>
+    <p class="lede"><strong>Prefill</strong> is the first phase of transformer language-model inference: the model processes every token of the prompt in one parallel forward pass and writes the resulting key and value tensors into the <a href="/reference/kv-cache/">KV cache</a>.<span class="cite">[<a href="#ref-1">1</a>]</span> The first generated token is produced at the end of this pass. Wall-clock time from request arrival to that token is <a href="/reference/time-to-first-token/">time to first token (TTFT)</a>.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">First principles</a></li>
+        <li><a href="#metrics">Metrics and bottlenecks</a></li>
+        <li><a href="#scheduling">Scheduling with decode</a></li>
+        <li><a href="#disambiguation">Other uses of prefill</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+    <h2 id="first-principles">1. First Principles: Parallel Prompt Evaluation</h2>
+    <p>A decoder-only transformer maps a sequence of tokens to next-token distributions. Training and prefill can evaluate many positions at once because the prompt is known. Pope et al. call this step <em>prefill</em>: a single forward pass over all \(B \times L_{\mathrm{input}}\) prompt tokens, as distinct from the sequential loop that later emits output tokens.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>That pass is a stack of dense matrix multiplies (GEMM) over the full prompt length. Arithmetic intensity (FLOPs per byte loaded from HBM) is high when \(L_{\mathrm{input}}\) is large, so the phase is typically <em>compute-bound</em> on GPU tensor cores rather than memory-bandwidth-bound.<span class="cite">[<a href="#ref-1">1</a>][<a href="#ref-2">2</a>]</span> DistServe notes that for a 13B model, prefilling a 512-token sequence already saturates an NVIDIA A100; extra tokens in the same step add superlinear work while still moving similar weight I/O.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+    <p>Outputs that later decode needs are stored as KV activations per layer and per prompt token. Recomputing them every generation step would repeat the prompt matmuls. Caching them is what makes decode a smaller GEMV plus attention over stored keys and values. See <a href="/reference/decode/">Decode (LLM Inference)</a>.</p>
+    <h2 id="metrics">2. Metrics and Bottlenecks</h2>
+    <p>TTFT is the duration of prefill plus queueing, not including later tokens.<span class="cite">[<a href="#ref-2">2</a>]</span> It grows with prompt length, model size, and contention from other jobs on the same GPU. Pope et al. report prefill and generate separately because the two phases have different partitioning optima: large-token batches in prefill can use weight-gathered layouts and high model FLOPS utilization, while generation keeps a small token count per step.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>Those layout numbers (for example 76% MFU on PaLM 540B prefill in their TPU v4 study) are hardware- and model-specific. They are not a universal prefill efficiency.</p>
+    <h2 id="scheduling">3. Scheduling with Decode</h2>
+    <p>Online servers often colocate prefill and decode on the same accelerators and mix them with continuous batching. A long prefill in that mix delays in-flight decode steps (prefill-decode interference).<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+    <p>Two common responses:</p>
+    <ul>
+      <li><a href="/reference/chunked-prefill/">Chunked prefill</a> splits a long prompt into token chunks and piggybacks decode tokens in the same iteration, trading some extra KV loads for smoother inter-token latency.<span class="cite">[<a href="#ref-3">3</a>]</span></li>
+      <li><em>Disaggregation</em> runs prefill and decode on different GPUs and ships KV state between them, so each phase can use its own batch size and parallelism. DistServe reports higher per-GPU goodput under joint TTFT and TPOT SLOs in that design; the gain is an evaluation result, not a law of prefill.<span class="cite">[<a href="#ref-2">2</a>]</span></li>
+    </ul>
+    <h2 id="disambiguation">4. Other Uses of Prefill</h2>
+    <p>In web forms, prefill means inserting saved field values. This entry is only the LLM serving phase. It is not <a href="/reference/pre-training/">pre-training</a>.</p>
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/decode/">Decode (LLM Inference)</a></li>
+        <li><a href="/reference/kv-cache/">KV Cache</a></li>
+        <li><a href="/reference/time-to-first-token/">Time to First Token</a></li>
+        <li><a href="/reference/chunked-prefill/">Chunked Prefill</a></li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a></li>
+      </ul>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> R. Pope, S. Douglas, A. Chowdhery, J. Devlin, J. Bradbury, A. Levskaya, J. Heek, K. Xiao, S. Agrawal, and J. Dean, &ldquo;Efficiently Scaling Transformer Inference,&rdquo; in <em>Proceedings of Machine Learning and Systems</em>, vol. 5, 2023. Free full text: <a href="https://arxiv.org/abs/2211.05102">https://arxiv.org/abs/2211.05102</a></li>
+        <li id="ref-2"><a class="backlink" href="#first-principles">&uarr;</a> Y. Zhong, S. Liu, J. Chen, J. Hu, Y. Zhu, X. Liu, X. Jin, and H. Zhang, &ldquo;DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving,&rdquo; in <em>18th USENIX Symposium on Operating Systems Design and Implementation (OSDI 24)</em>, 2024, pp. 193&ndash;210. Free full text: <a href="https://arxiv.org/abs/2401.09670">https://arxiv.org/abs/2401.09670</a></li>
+        <li id="ref-3"><a class="backlink" href="#scheduling">&uarr;</a> A. Agrawal, A. Panwar, J. Mohan, N. Kwatra, B. S. Gulavani, and R. Ramjee, &ldquo;SARATHI: Efficient LLM Inference by Piggybacking Decodes with Chunked Prefills,&rdquo; <em>arXiv preprint arXiv:2308.16369</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2308.16369">https://arxiv.org/abs/2308.16369</a></li>
+      </ol>
+    </div>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

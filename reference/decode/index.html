@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decode (LLM Inference) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Decode is the LLM inference phase that generates output tokens one at a time after prefill. Memory-bandwidth-bound GEMV, TPOT, KV cache growth, and batching.">
+  <meta property="og:title" content="Decode (LLM Inference) &middot; Reference">
+  <meta property="og:description" content="Definition of decode in transformer serving: sequential generation, bandwidth bound, TPOT, and KV cache append.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/decode/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/decode/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Decode","description":"Decode is the second phase of transformer language-model inference, emitting output tokens one at a time after prefill while appending to the KV cache.","url":"https://ngpestelos.com/reference/decode/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2.2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.35rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.6rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th { background: var(--well); font-weight: 700; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+    <p class="kicker">Machine Learning &middot; LLM Serving</p>
+    <h1>Decode (LLM Inference)</h1>
+    <p class="updated">Reference entry &middot; last updated September 11, 2026</p>
+    <p class="lede"><strong>Decode</strong> (also called generation) is the second phase of transformer language-model inference: after <a href="/reference/prefill/">prefill</a>, the model emits output tokens one at a time. Each step conditions on all tokens so far and appends a new key/value pair to the <a href="/reference/kv-cache/">KV cache</a>.<span class="cite">[<a href="#ref-1">1</a>]</span> Mean time per later token is <a href="/reference/time-per-output-token/">time per output token (TPOT)</a>, also called inter-token latency.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">First principles</a></li>
+        <li><a href="#metrics">Metrics and bottlenecks</a></li>
+        <li><a href="#scheduling">Batching and disaggregation</a></li>
+        <li><a href="#disambiguation">Other uses of decode</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+    <h2 id="first-principles">1. First Principles: Sequential Next-Token Steps</h2>
+    <p>Autoregressive generation cannot evaluate future output positions in parallel: token \(t+1\) depends on the sample chosen at \(t\). Pope et al. call the loop <em>decode</em> or generation: \(L_{\mathrm{gen}}\) sequential forward passes, one new token per sequence in the batch per step.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>Each step still loads the model weights from HBM. With batch size 1 the matmul is essentially a matrix-vector product (GEMV). Arithmetic intensity is low, so decode is typically <em>memory-bandwidth-bound</em>: tokens per second cannot exceed roughly memory bandwidth divided by bytes of weights (and KV) that must be read each step.<span class="cite">[<a href="#ref-1">1</a>][<a href="#ref-2">2</a>]</span> DistServe states the same split: prefill processes many tokens in one step and tends to be compute-bound; each decode step processes one new token with similar I/O and is bandwidth-bound.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+    <p>Attention at step \(t\) reads cached keys and values for positions \(1 \ldots t-1\) instead of recomputing the prompt. Cache size therefore grows with generated length (and with the prompt, which was written in prefill). Architectures that shrink per-token KV (MQA, GQA, MLA, sliding-window attention) cut that growth; they do not remove the need to load weights every step.</p>
+    <h2 id="metrics">2. Metrics and Bottlenecks</h2>
+    <p>End-to-end latency is TTFT plus TPOT times the number of generated tokens after the first.<span class="cite">[<a href="#ref-2">2</a>]</span> Interactive chat cares about TPOT until it is faster than reading speed; summarization cares about TPOT for the whole document.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+    <p>Raising batch size amortizes weight loads across more tokens per step and can push decode toward compute-bound. It also multiplies KV memory. PagedAttention stores KV in non-contiguous blocks to cut reservation waste so larger batches fit.<span class="cite">[<a href="#ref-4">4</a>]</span></p>
+    <p>Pope et al. report 29 ms per generated token on PaLM 540B (int8 weights, 64 TPU v4 chips, long 2048-token context) as a point on their Pareto curve. That is a measured configuration, not a decode constant.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <h2 id="scheduling">3. Batching and Disaggregation</h2>
+    <p>Iteration-level (continuous) batching admits new sequences at token granularity so finished requests leave the batch without waiting for the longest output. Mixing a full prefill into that batch still lengthens every decode step in the mix. Chunked prefill and prefill/decode disaggregation are the usual mitigations; see <a href="/reference/prefill/">Prefill</a> and <a href="/reference/chunked-prefill/">Chunked Prefill</a>.<span class="cite">[<a href="#ref-2">2</a>][<a href="#ref-3">3</a>]</span></p>
+    <h2 id="disambiguation">4. Other Uses of Decode</h2>
+    <p>In coding, decode often means turning a bitstream or ciphertext back into data. This entry is only the LLM generation phase. It is not the decoder stack of an encoder-decoder transformer by itself, though that stack also runs token-by-token at inference.</p>
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/prefill/">Prefill (LLM Inference)</a></li>
+        <li><a href="/reference/kv-cache/">KV Cache</a></li>
+        <li><a href="/reference/time-per-output-token/">Time Per Output Token</a></li>
+        <li><a href="/reference/autoregressive/">Autoregressive Models</a></li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a></li>
+      </ul>
+    </div>
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> R. Pope, S. Douglas, A. Chowdhery, J. Devlin, J. Bradbury, A. Levskaya, J. Heek, K. Xiao, S. Agrawal, and J. Dean, &ldquo;Efficiently Scaling Transformer Inference,&rdquo; in <em>Proceedings of Machine Learning and Systems</em>, vol. 5, 2023. Free full text: <a href="https://arxiv.org/abs/2211.05102">https://arxiv.org/abs/2211.05102</a></li>
+        <li id="ref-2"><a class="backlink" href="#first-principles">&uarr;</a> Y. Zhong, S. Liu, J. Chen, J. Hu, Y. Zhu, X. Liu, X. Jin, and H. Zhang, &ldquo;DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving,&rdquo; in <em>18th USENIX Symposium on Operating Systems Design and Implementation (OSDI 24)</em>, 2024, pp. 193&ndash;210. Free full text: <a href="https://arxiv.org/abs/2401.09670">https://arxiv.org/abs/2401.09670</a></li>
+        <li id="ref-3"><a class="backlink" href="#scheduling">&uarr;</a> A. Agrawal, A. Panwar, J. Mohan, N. Kwatra, B. S. Gulavani, and R. Ramjee, &ldquo;SARATHI: Efficient LLM Inference by Piggybacking Decodes with Chunked Prefills,&rdquo; <em>arXiv preprint arXiv:2308.16369</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2308.16369">https://arxiv.org/abs/2308.16369</a></li>
+        <li id="ref-4"><a class="backlink" href="#metrics">&uarr;</a> W. Kwon, Z. Li, S. Zhuang, Y. Sheng, L. Zheng, C. H. Yu, J. E. Gonzalez, H. Zhang, and I. Stoica, &ldquo;Efficient Memory Management for Large Language Model Serving with PagedAttention,&rdquo; in <em>Proceedings of the 29th Symposium on Operating Systems Principles (SOSP &rsquo;23)</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2309.06180">https://arxiv.org/abs/2309.06180</a></li>
+      </ol>
+    </div>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
