@@ -470,6 +470,21 @@ class ReferenceSeoTests(unittest.TestCase):
         p_html = (REF / "perception" / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="/reference/computer-vision/"', p_html)
 
+    def test_payment_tier1_references_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        tier1_slugs = ("interchange", "payment-tokenization", "payment-gateway")
+        for slug in tier1_slugs:
+            self.assertIn(f'href="/reference/{slug}/"', html, f"Missing from reference/index.html: {slug}")
+            self.assertIn(f"https://ngpestelos.com/reference/{slug}/", locs, f"Missing from sitemap.xml: {slug}")
+            entry_html = (REF / slug / "index.html").read_text(encoding="utf-8")
+            self.assertIn("application/ld+json", entry_html)
+            self.assertIn('"@type":"DefinedTerm"', entry_html)
+
+        online_payments_html = (REF / "online-payments" / "index.html").read_text(encoding="utf-8")
+        for slug in tier1_slugs:
+            self.assertIn(f'href="/reference/{slug}/"', online_payments_html)
+
 
 if __name__ == "__main__":
     unittest.main()

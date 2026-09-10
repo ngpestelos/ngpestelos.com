@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Gateway · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Technical front-end payment software: gateway architecture, difference from processors and acquirers, integration patterns, and routing.">
+  <meta property="og:title" content="Payment Gateway · Reference">
+  <meta property="og:description" content="Technical front-end payment software: gateway architecture, difference from processors and acquirers, integration patterns, and routing.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/payment-gateway/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/payment-gateway/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { line-height:1.65; }
+main { max-width:48rem; margin:auto; padding:1.4rem 1.4rem 4rem; }
+h1 { font-size:clamp(1.9rem,5vw,2.4rem); font-weight:400; line-height:1.2; border-bottom:1px solid var(--line); padding-bottom:.5rem; }
+h2 { font-weight:400; margin-top:2rem; font-size:1.45rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+p,li { margin-bottom:.7rem; }
+.back,.kicker,.updated,.toc,footer { font-family:"Segoe UI",Helvetica,Arial,sans-serif; }
+.back,.updated,footer { font-size:.85rem; color:var(--mute); }
+.kicker { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--mute); }
+.lede { margin:1.4rem 0; }
+.toc { background:var(--well); border:1px solid var(--line); border-radius:4px; padding:1rem 1.3rem; margin:1.7rem 0; font-size:.9rem; }
+.toc ol { margin-bottom:0; padding-left:1.5rem; }
+.toc li { margin-bottom:.25rem; }
+.cite { font-size:.75em; vertical-align:super; }
+.cite a { text-decoration:none; }
+#references ~ ol { font-size:.9rem; overflow-wrap:anywhere; }
+footer { border-top:1px solid var(--line); margin-top:2rem; }
+.back-to-top { position:fixed; bottom:1.5rem; right:1.5rem; width:2.6rem; height:2.6rem; border-radius:50%; background:var(--bg); color:var(--ink); border:1px solid var(--line); cursor:pointer; opacity:0; visibility:hidden; }
+.back-to-top.visible { opacity:1; visibility:visible; }
+@media print { .back,.back-to-top { display:none !important; } main { max-width:none; padding:0; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"Payment Gateway","description":"Technical front-end payment software: gateway architecture, difference from processors and acquirers, integration patterns, and routing.","url":"https://ngpestelos.com/reference/payment-gateway/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script>
+</head>
+<body class="reference">
+<main id="top">
+<p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Finance · Payments</p>
+<h1>Payment Gateway</h1>
+<p class="updated">Reference entry &middot; last updated 20260911</p>
+<p class="lede">A <strong>payment gateway</strong> is a software service that captures, encrypts, and transmits payment instructions between a merchant’s checkout interface and payment processing networks.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
+<li><a href="#first-principles">First principles: data transport and isolation</a></li>
+<li><a href="#roles">Gateway versus processor versus acquirer</a></li>
+<li><a href="#integration-patterns">Integration patterns and PCI implications</a></li>
+<li><a href="#smart-routing">Multi-acquirer routing and resiliency</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">1. First principles: data transport and isolation</h2>
+<p>In online commerce, the merchant’s web server cannot safely connect directly to banking settlement networks. A payment gateway acts as the secure entry point. It accepts checkout payloads, applies format validation and cryptographic protection, and marshals requests into downstream protocols (such as ISO 8583 or proprietary banking APIs).<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+<h2 id="roles">2. Gateway versus processor versus acquirer</h2>
+<p>Modern payment companies frequently bundle these components into full-stack <a href="/reference/payment-service-providers/">PSPs</a>, but they perform distinct operational functions:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<ul>
+<li><strong>Gateway:</strong> The front-end application layer. It handles merchant API requests, checkout SDKs, hosted fields, basic fraud checks, and payload encryption.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+<li><strong>Payment processor:</strong> The technical infrastructure operator that communicates directly with card networks (Visa, Mastercard) and electronic clearing houses.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+<li><strong>Merchant acquirer:</strong> The licensed bank or financial institution that holds the merchant account, sponsors network access, assumes financial risk, and settles actual monetary funds into the merchant’s bank account.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref3">3</a>]</span></li>
+</ul>
+<h2 id="integration-patterns">3. Integration patterns and PCI implications</h2>
+<p>Gateways offer multiple integration patterns that determine merchant engineering effort and <a href="/reference/pci-dss/">PCI DSS</a> compliance burdens:<span class="cite">[<a href="#ref4">4</a>]</span></p>
+<ul>
+<li><strong>Hosted checkout / redirect:</strong> The merchant redirects the customer to a payment page hosted completely on gateway infrastructure. The merchant server never sees card details, which may qualify for SAQ A subject to all eligibility criteria and the compliance-accepting entity's requirements.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+<li><strong>Hosted fields / iframes:</strong> Individual card number and CVV form inputs are loaded inside secure iframes hosted by the gateway, while the surrounding checkout UI resides on the merchant’s site. The client browser communicates card data directly to the gateway, receiving a surrogate token in return.<span class="cite">[<a href="#ref2">2</a>]</span><span class="cite">[<a href="#ref4">4</a>]</span></li>
+<li><strong>Direct API (Server-to-Server):</strong> The merchant server collects card data directly and submits it via API calls to the gateway. This architecture exposes merchant servers to raw Primary Account Numbers (PANs), triggering full PCI DSS assessment (SAQ D).<span class="cite">[<a href="#ref4">4</a>]</span></li>
+</ul>
+<h2 id="smart-routing">4. Multi-acquirer routing and resiliency</h2>
+<p>Independent payment gateways provide payment orchestration across multiple acquiring banks. Gateways can dynamically route transactions based on cost, card brand, currency, issuing region, or target approval rates.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>When an acquiring bank experiences an outage or transient technical decline, resilient gateways can retry the transaction across alternative processing paths using stored network tokens.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<h2 id="see-also">5. See also</h2>
+<ul>
+<li><a href="/reference/payment-service-providers/">Payment Service Providers (Merchant Payments)</a></li>
+<li><a href="/reference/activemerchant/">ActiveMerchant (Ruby Payments Library)</a></li>
+<li><a href="/reference/card-authorization-capture/">Card Authorization and Capture</a></li>
+<li><a href="/reference/payment-tokenization/">Payment Tokenization</a></li>
+<li><a href="/reference/pci-dss/">PCI DSS (Payment Card Data Security)</a></li>
+<li><a href="/reference/online-payments/">Online Payments</a></li>
+<li><a href="/reference/interchange/">Interchange (Card Payments)</a></li>
+</ul>
+<h2 id="references">6. References</h2>
+<ol>
+<li id="ref1"><a href="https://www.adyen.com/knowledge-hub/payment-service-provider">Adyen. Payment service providers: gateway and processor roles.</a></li>
+<li id="ref2"><a href="https://docs.stripe.com/payments">Stripe. Online payments architecture and APIs.</a></li>
+<li id="ref3"><a href="https://help.adyen.com/knowledge/payment-methods/explore-payment-methods/what-is-an-acquirer">Adyen. What is an acquirer?</a></li>
+<li id="ref4"><a href="https://www.pcisecuritystandards.org/faqs/1588/">PCI SSC. FAQ 1588: SAQ A eligibility criteria for scripts.</a></li>
+</ol>
+<footer><p><a href="#top">Back to top</a></p></footer>
+</main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
