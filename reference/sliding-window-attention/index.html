@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sliding-Window Attention (Transformers) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Sliding-window attention (SWA) restricts each token to a fixed local neighborhood so self-attention cost grows linearly with sequence length instead of quadratically.">
+  <meta property="og:title" content="Sliding-Window Attention (Transformers) &middot; Reference">
+  <meta property="og:description" content="Definition, complexity, stacked receptive field, Longformer local-plus-global pattern, and Mistral rolling KV cache for sliding-window attention in transformers.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/sliding-window-attention/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/sliding-window-attention/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Sliding-Window Attention","description":"Sliding-window attention restricts each token to a fixed-size local neighborhood of keys and values so self-attention time and memory scale linearly with sequence length.","url":"https://ngpestelos.com/reference/sliding-window-attention/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2.2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.35rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.6rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th { background: var(--well); font-weight: 700; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Machine Learning &middot; Transformers</p>
+    <h1>Sliding-Window Attention (Transformers)</h1>
+    <p class="updated">Reference entry &middot; last updated September 11, 2026</p>
+
+    <p class="lede"><strong>Sliding-window attention</strong> (SWA) is a sparse self-attention pattern in which each position attends only to a fixed-size neighborhood of nearby tokens, rather than to the full sequence.<span class="cite">[<a href="#ref-1">1</a>]</span> With window width \(w\), time and memory scale as \(O(n w)\) in sequence length \(n\), instead of the \(O(n^2)\) cost of dense transformer attention.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">First principles</a></li>
+        <li><a href="#patterns">Window, dilation, and global tokens</a></li>
+        <li><a href="#inference">Inference and KV cache</a></li>
+        <li><a href="#hybrids">Hybrids with global sparse retrieval</a></li>
+        <li><a href="#disambiguation">Other uses of SWA</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Local Receptive Fields</h2>
+    <p>In the original transformer, scaled dot-product attention at every position mixes queries with keys and values from all positions (with a causal mask in autoregressive models).<span class="cite">[<a href="#ref-2">2</a>]</span> The \(QK^\top\) product is \(n \times n\). That quadratic term bounds context length on a given accelerator.</p>
+    <p>A sliding window replaces the full row of the attention matrix with a band of width \(w\). Longformer states the local rule as: given window size \(w\), each token attends to \(\frac{1}{2}w\) tokens on each side, with complexity \(O(n \times w)\).<span class="cite">[<a href="#ref-1">1</a>]</span> Causal SWA (as in Mistral 7B) restricts the neighborhood to the previous \(W\) tokens of the prior layer.<span class="cite">[<a href="#ref-3">3</a>]</span></p>
+    <p>A single window cannot see the whole document. Stacked layers expand the receptive field. Longformer: with \(\ell\) layers and fixed \(w\), the top layer&rsquo;s field is \(\ell \times w\).<span class="cite">[<a href="#ref-1">1</a>]</span> Mistral: hidden state \(h_i\) at layer \(k\) attends positions \([i-W, i]\) of the previous layer, so input-layer tokens up to distance \(W \times k\) can influence the last layer. For \(W = 4096\) they give a theoretical span of about 131K tokens.<span class="cite">[<a href="#ref-3">3</a>]</span></p>
+    <p>That stacked-field argument is architectural, not a guarantee that every long-range dependency is used. Information has to survive the intervening layers. Models that need a privileged global token still add a separate global pattern (below).</p>
+
+    <h2 id="patterns">2. Window, Dilation, and Global Tokens</h2>
+    <p>Longformer treats SWA as a drop-in replacement for dense self-attention and combines three patterns:<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <ul>
+      <li><strong>Sliding window.</strong> Local band around each token (Fig. 2b in the paper).</li>
+      <li><strong>Dilated sliding window.</strong> Gaps of dilation \(d\) inside the window, analogous to dilated convolutions, expanding the field to \(\ell \times d \times w\) without raising \(w\).</li>
+      <li><strong>Global + window.</strong> A small set of positions (for example <code>[CLS]</code>, or all question tokens in QA) attend to the full sequence, and every token attends to those positions. Count of global tokens is independent of \(n\), so the mix remains linear in \(n\).</li>
+    </ul>
+    <p>Sparse Transformer used related local and strided block patterns for long sequences, mainly on autoregressive language modeling.<span class="cite">[<a href="#ref-4">4</a>]</span> Longformer cites that line and adds task-chosen global tokens plus continued pretraining from RoBERTa for document NLP.<span class="cite">[<a href="#ref-1">1</a>]</span> Mistral 7B cites both Sparse Transformer and Longformer for SWA, and pairs SWA with grouped-query attention.<span class="cite">[<a href="#ref-3">3</a>]</span></p>
+    <p>Longformer also uses separate \(Q,K,V\) projections for the window scores and the global scores. Their WikiHop ablations treat those extra projections as necessary for the reported transfer-learning numbers, not as optional polish.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <h2 id="inference">3. Inference and KV Cache</h2>
+    <p>Dense decode stores a key/value vector per layer per past token, so cache memory grows with context. SWA bounds the live neighborhood. Mistral implements a <em>rolling buffer cache</em> of size \(W\): keys and values at timestep \(i\) overwrite slot \(i \bmod W\). After \(i &gt; W\), cache size stops growing. They report an 8&times; cache reduction on 32k-token sequences at \(W = 4096\) in that setup, without a measured quality drop in the paper&rsquo;s statement of the method.<span class="cite">[<a href="#ref-3">3</a>]</span></p>
+    <p>Prefill of a long prompt can be chunked at window size. Each chunk attends to itself (causal) and to the rolling cache, and does not attend tokens already outside the window.<span class="cite">[<a href="#ref-3">3</a>]</span></p>
+    <p>This cache bound is local KV only. A model that also keeps a global branch (indexer keys, compressed global KV) still pays that global storage. See <a href="/reference/kv-cache/">KV Cache</a>.</p>
+
+    <h2 id="hybrids">4. Hybrids with Global Sparse Retrieval</h2>
+    <p>Serving systems that keep million-token agent prefixes often pair SWA with a second, compressed global path so local mixing stays cheap while some tokens remain addressable outside the window. DeepSeek-V4 and V4.1-Flash describe every layer as using SWA plus a global branch (main KV and indexer K). They state that for a fixed window, SWA KV storage does not grow with sequence length, so global KV dominates HBM at long length.<span class="cite">[<a href="#ref-5">5</a>]</span></p>
+    <p>V4.1-Flash further describes <em>SWA Bounded Replay</em>: approximate reconstruction of per-layer SWA state by replaying about \(n_{\mathrm{win}}\) recent tokens rather than \(L \times n_{\mathrm{win}}\), so SWA KV need not be persisted to SSD. The report claims negligible quality drop; that measurement is not reproduced here.<span class="cite">[<a href="#ref-5">5</a>]</span></p>
+    <p>Those ratios (runtime KV about 1/4 of V4-Flash, persistent KV about 1/8) are developer-reported for that checkpoint. They are not properties of SWA in general.</p>
+
+    <h2 id="disambiguation">5. Other Uses of SWA</h2>
+    <p>Outside transformers, SWA is a common acronym for sliding-window average, software architecture, and other terms. This entry is only the attention pattern. It is not neurological attention (<a href="/reference/attention/">Attention</a>) and not a full substitute for dense attention on short sequences where \(n\) already fits in HBM.</p>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/kv-cache/">KV Cache</a></li>
+        <li><a href="/reference/transformer-architecture/">Transformer Architecture</a></li>
+        <li><a href="/reference/context-window/">Context Windows</a></li>
+        <li><a href="/reference/attention/">Attention (Neurological and Computational)</a></li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a></li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> I. Beltagy, M. E. Peters, and A. Cohan, &ldquo;Longformer: The Long-Document Transformer,&rdquo; <em>arXiv preprint arXiv:2004.05150</em>, 2020. Free full text: <a href="https://arxiv.org/abs/2004.05150">https://arxiv.org/abs/2004.05150</a></li>
+        <li id="ref-2"><a class="backlink" href="#first-principles">&uarr;</a> A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser, and I. Polosukhin, &ldquo;Attention Is All You Need,&rdquo; in <em>Advances in Neural Information Processing Systems</em>, vol. 30, 2017. Free full text: <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+        <li id="ref-3"><a class="backlink" href="#first-principles">&uarr;</a> A. Q. Jiang et al., &ldquo;Mistral 7B,&rdquo; <em>arXiv preprint arXiv:2310.06825</em>, 2023. Free full text: <a href="https://arxiv.org/abs/2310.06825">https://arxiv.org/abs/2310.06825</a></li>
+        <li id="ref-4"><a class="backlink" href="#patterns">&uarr;</a> R. Child, S. Gray, A. Radford, and I. Sutskever, &ldquo;Generating Long Sequences with Sparse Transformers,&rdquo; <em>arXiv preprint arXiv:1904.10509</em>, 2019. Free full text: <a href="https://arxiv.org/abs/1904.10509">https://arxiv.org/abs/1904.10509</a></li>
+        <li id="ref-5"><a class="backlink" href="#hybrids">&uarr;</a> DeepSeek-AI, &ldquo;DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression,&rdquo; technical report, Hugging Face <code>deepseek-ai/DeepSeek-V4.1-Flash</code>, 2026. Free full text: <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash/blob/main/DeepSeek_V41_Tech_Report.pdf">DeepSeek_V41_Tech_Report.pdf</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
