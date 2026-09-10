@@ -485,6 +485,18 @@ class ReferenceSeoTests(unittest.TestCase):
         for slug in tier1_slugs:
             self.assertIn(f'href="/reference/{slug}/"', online_payments_html)
 
+    def test_top_k_reference_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn('href="/reference/top-k/"', html, "Missing from reference/index.html: top-k")
+        self.assertIn("https://ngpestelos.com/reference/top-k/", locs, "Missing from sitemap.xml: top-k")
+        entry_html = (REF / "top-k" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("application/ld+json", entry_html)
+        self.assertIn('"@type":"DefinedTerm"', entry_html)
+        self.assertIn('<h2 id="first-principles">', entry_html)
+        sm_html = (REF / "softmax" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/top-k/"', sm_html)
+
 
 if __name__ == "__main__":
     unittest.main()
