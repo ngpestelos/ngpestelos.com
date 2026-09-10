@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reinforcement Learning from Human Feedback (RLHF) &middot; Reference &middot; Nestor G Pestelos Jr</title>
-  <meta name="description" content="A citable ground-truth reference on reinforcement learning from human feedback (RLHF): the KL-regularized objective, Bradley-Terry reward modeling, PPO policy optimization, DPO, reward overoptimization, and RLAIF.">
-  <meta property="og:title" content="Reinforcement Learning from Human Feedback (RLHF) &middot; Reference">
-  <meta property="og:description" content="A citable ground-truth reference on reinforcement learning from human feedback (RLHF): the KL-regularized objective, Bradley-Terry reward modeling, PPO policy optimization, DPO, reward overoptimization, and RLAIF.">
+  <title>Reinforcement Learning from Human Feedback (RLHF), archived 20260911 &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on reinforcement learning from human feedback (RLHF): the KL-constrained objective, Bradley-Terry reward modeling, PPO policy optimization, DPO, reward overoptimization, and RLAIF.">
+  <meta property="og:title" content="Reinforcement Learning from Human Feedback (RLHF), archived 20260911 &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on reinforcement learning from human feedback (RLHF): the KL-constrained objective, Bradley-Terry reward modeling, PPO policy optimization, DPO, reward overoptimization, and RLAIF.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ngpestelos.com/reference/rlhf/">
-  <link rel="canonical" href="https://ngpestelos.com/reference/rlhf/">
+  <meta property="og:url" content="https://ngpestelos.com/reference/rlhf-20260911/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/rlhf-20260911/">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
   <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
   <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
@@ -130,8 +130,6 @@
       padding: 0.1em 0.3em;
       border-radius: 3px;
     }
-    .katex-display { overflow-x: auto; overflow-y: hidden; }
-    .katex-display > .katex { text-align: left; }
     .cite {
       font-size: 0.78rem;
       vertical-align: super;
@@ -178,17 +176,18 @@
     }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"Reinforcement Learning from Human Feedback (RLHF)","description":"A citable ground-truth reference on reinforcement learning from human feedback (RLHF): the KL-regularized objective, Bradley-Terry reward modeling, PPO policy optimization, DPO, reward overoptimization, and RLAIF.","url":"https://ngpestelos.com/reference/rlhf/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Reinforcement Learning from Human Feedback (RLHF), archived 20260911","description":"A citable ground-truth reference on reinforcement learning from human feedback (RLHF): the KL-constrained objective, Bradley-Terry reward modeling, PPO policy optimization, DPO, reward overoptimization, and RLAIF.","url":"https://ngpestelos.com/reference/rlhf-20260911/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
   <main>
     <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/reference/">Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="updated">Archived version captured 20260911. <a href="/reference/rlhf/">Read the current entry</a>.</p>
     <p class="kicker">Artificial Intelligence &middot; Model Alignment</p>
-    <h1>Reinforcement Learning from Human Feedback (RLHF)</h1>
-    <p class="updated">Reference entry &middot; last updated September 11, 2026 &middot; <a href="/reference/rlhf-20260911/">Previous version (20260911)</a></p>
+    <h1>Reinforcement Learning from Human Feedback (RLHF), archived 20260911</h1>
+    <p class="updated">Reference entry &middot; last updated September 10, 2026</p>
 
-    <p class="lede"><strong>Reinforcement learning from human feedback (RLHF)</strong> uses human evaluations to guide reinforcement learning. In a common language-model pipeline, a reward model learns from human comparisons, and the language model is optimized against that reward.<span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-4">4</a>]</span></p>
+    <p class="lede"><strong>Reinforcement learning from human feedback (RLHF)</strong> is a machine learning method that fits a reward model to human comparisons of candidate outputs, then optimizes a generative policy against that learned reward while a divergence penalty holds the policy near its starting point. It is the dominant post-training step for aligning large language models with instructions, tone, and safety norms that are simple to judge by example but hard to write down as a rule.</p>
 
     <nav class="toc" aria-label="Table of Contents">
       <div class="toc-title">Contents</div>
@@ -212,16 +211,16 @@
     </nav>
 
     <h2 id="first-principles">1. First Principles: Preference as the Training Signal</h2>
-    <p>RLHF uses human feedback to learn objectives that are difficult to specify directly. In preference-based RLHF, people compare outputs or behavior, and a reward model learns from those judgments.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
-    <p>A common preference model assumes a latent reward function \(r^*(x, y)\) over prompt \(x\) and response \(y\), and models a human's pairwise choice with the Bradley-Terry model: given a preferred response \(y_w\) and a rejected response \(y_l\), the probability that a rater picks \(y_w\) is<span class="cite">[<a href="#ref-2">2</a>, <a href="#ref-8">8</a>]</span></p>
+    <p>RLHF exists to optimize an objective that cannot be written directly. Qualities such as helpfulness, harmlessness, and honesty have no closed-form scoring function, but a person shown two responses to the same prompt can usually say which one is better. RLHF converts that comparative judgment into a scalar reward and then into gradient updates.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>The method assumes a latent reward function \(r^*(x, y)\) over prompt \(x\) and response \(y\), and models a human's pairwise choice with the Bradley-Terry model: given a preferred response \(y_w\) and a rejected response \(y_l\), the probability that a rater picks \(y_w\) is<span class="cite">[<a href="#ref-2">2</a>, <a href="#ref-8">8</a>]</span></p>
     $$P(y_w \succ y_l \mid x) = \sigma\big(r^*(x, y_w) - r^*(x, y_l)\big)$$
     <p>where \(\sigma\) is the logistic function. Only reward differences are identifiable, so an additive constant is free, and the model treats disagreement between raters as logistic noise around a single shared utility.</p>
-    <p>Given a reward function, a common language-model objective adds a Kullback-Leibler (KL) penalty to expected reward. The tuned policy \(\pi_\theta\) is penalized for moving away from a reference policy \(\pi_{\text{ref}}\), usually the supervised fine-tuned model:<span class="cite">[<a href="#ref-4">4</a>, <a href="#ref-8">8</a>]</span></p>
-    $$\max_\theta \; \mathbb{E}_{x \sim \mathcal{D}} \left[ \mathbb{E}_{y \sim \pi_\theta(\cdot \mid x)}[r(x,y)] - \beta D_{\text{KL}}\big(\pi_\theta(\cdot \mid x) \,\|\, \pi_{\text{ref}}(\cdot \mid x)\big) \right]$$
-    <p>This is a KL-regularized objective: divergence has a cost rather than a hard upper bound. For a fixed reward scale, a larger \(\beta\) penalizes departure from the reference policy more strongly. A smaller \(\beta\) permits more departure, which can increase exposure to reward-model errors; neither setting guarantees fluency or diversity.<span class="cite">[<a href="#ref-8">8</a>, <a href="#ref-9">9</a>]</span></p>
+    <p>Given a reward function, the alignment target is the Kullback-Leibler (KL) constrained policy objective. The tuned policy \(\pi_\theta\) should raise expected reward without moving far from a reference policy \(\pi_{\text{ref}}\), usually the supervised fine-tuned model:<span class="cite">[<a href="#ref-4">4</a>]</span></p>
+    $$\max_\theta \; \mathbb{E}_{x \sim \mathcal{D},\, y \sim \pi_\theta(\cdot \mid x)} \big[ r(x, y) \big] - \beta \, D_{\text{KL}}\big(\pi_\theta(y \mid x) \,\|\, \pi_{\text{ref}}(y \mid x)\big)$$
+    <p>The coefficient \(\beta\) sets the price of divergence. A small \(\beta\) lets the policy chase reward and drift into degenerate text; a large \(\beta\) keeps fluency and diversity but limits how much behavior can change. RLHF therefore needs three inputs: a competent base policy, a dataset of human comparisons, and a divergence budget.</p>
 
     <h2 id="pipeline">2. The Standard Three-Stage Pipeline</h2>
-    <p>The InstructGPT pipeline runs in three stages: supervised fine-tuning, reward model training, and reinforcement learning against that reward.<span class="cite">[<a href="#ref-4">4</a>]</span></p>
+    <p>The pipeline that produced InstructGPT and most instruction-tuned chat models runs in three stages: supervised fine-tuning, reward model training, and reinforcement learning against that reward.<span class="cite">[<a href="#ref-4">4</a>]</span></p>
 
     <h3 id="sft">2.1 Supervised Fine-Tuning</h3>
     <p>A base model is first fine-tuned on curated prompt-response demonstrations so that it follows the conversational schema and produces on-task answers. This model becomes both the starting point for reinforcement learning and the reference policy \(\pi_{\text{ref}}\) in the KL term.<span class="cite">[<a href="#ref-4">4</a>]</span></p>
@@ -229,41 +228,35 @@
     <h3 id="reward-model">2.2 Reward Modeling</h3>
     <p>Human labelers rank or compare multiple sampled responses to each prompt. A reward model \(r_\psi(x, y)\), typically the SFT model with a scalar output head, is trained on these comparisons by minimizing the negative log-likelihood of the Bradley-Terry model:<span class="cite">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span></p>
     $$\mathcal{L}(\psi) = -\,\mathbb{E}_{(x,\, y_w,\, y_l) \sim \mathcal{D}} \Big[ \log \sigma\big( r_\psi(x, y_w) - r_\psi(x, y_l) \big) \Big]$$
-    <p>The reward model compresses a finite set of human comparisons into a function that can score any response. Its accuracy on held-out comparisons, and its behavior far from the data it was trained on, affect the quality of the optimized policy.</p>
+    <p>The reward model compresses a finite set of human comparisons into a function that can score any response. Its accuracy on held-out comparisons, and its behavior far from the data it was trained on, bound the quality of everything downstream.</p>
 
     <h3 id="policy-optimization">2.3 Policy Optimization with PPO</h3>
-    <p>The policy is optimized against the reward model with Proximal Policy Optimization (PPO) in the InstructGPT pipeline.<span class="cite">[<a href="#ref-4">4</a>, <a href="#ref-6">6</a>]</span> A per-token KL penalty is folded into the reward, giving this regularized reward for a full response:</p>
+    <p>The policy is then optimized against the reward model with a policy gradient algorithm, most often Proximal Policy Optimization (PPO).<span class="cite">[<a href="#ref-6">6</a>]</span> The KL constraint is applied as a per-token penalty folded into the reward, so the quantity actually maximized for a full response is</p>
     $$R(x, y) = r_\psi(x, y) - \beta \, \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)}$$
-    <p>Token generation is treated as a sequential decision process: the state is the prompt plus the tokens produced so far, each action is the next token, and the environment transition is deterministic concatenation. PPO's clipped surrogate objective discourages large policy updates; see <a href="/reference/reinforcement-learning/">reinforcement learning</a> for that objective in full. A separate value network estimates the advantage, which adds memory and tuning cost.</p>
+    <p>Token generation is treated as a sequential decision process: the state is the prompt plus the tokens produced so far, each action is the next token, and the environment transition is deterministic concatenation. PPO's clipped surrogate objective limits how far each update moves the policy; see <a href="/reference/reinforcement-learning/">reinforcement learning</a> for that objective in full. A separate value network estimates the advantage, which adds memory and tuning cost and motivates the offline alternatives below.</p>
 
     <h2 id="dpo">3. Direct Preference Optimization</h2>
-    <p>Direct Preference Optimization (DPO) removes the separate reward model and the online sampling loop.<span class="cite">[<a href="#ref-8">8</a>]</span> Rafailov et al. showed that the optimal policy for the KL-regularized objective corresponds to an implicit reward</p>
+    <p>Direct Preference Optimization (DPO) removes the separate reward model and the online sampling loop.<span class="cite">[<a href="#ref-8">8</a>]</span> Rafailov et al. showed that the optimal policy for the KL-constrained objective corresponds to an implicit reward</p>
     $$r(x, y) = \beta \, \log \frac{\pi_\theta(y \mid x)}{\pi_{\text{ref}}(y \mid x)} + \beta \, \log Z(x)$$
     <p>where \(Z(x)\) is a partition function that cancels inside a Bradley-Terry difference. Substituting this parameterization into the preference loss gives an objective in the policy alone, trained on a fixed dataset of comparison pairs with a binary cross-entropy loss:</p>
     $$\mathcal{L}_{\text{DPO}}(\theta) = -\,\mathbb{E}_{(x,\, y_w,\, y_l)} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)} - \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)} \right) \right]$$
-    <p>Rafailov et al. evaluated DPO on sentiment control, summarization, and single-turn dialogue. DPO outperformed PPO on sentiment control and matched or improved response quality on the other two tasks in their experiments.<span class="cite">[<a href="#ref-8">8</a>]</span></p>
-
-    <p>Standard DPO trains on a fixed preference dataset. PPO-based RLHF samples new responses during optimization and scores them with a reward model that can remain fixed. Collecting new human comparisons is a separate labeling step.<span class="cite">[<a href="#ref-4">4</a>, <a href="#ref-8">8</a>]</span></p>
+    <p>DPO reaches alignment quality comparable to PPO-based RLHF on many benchmarks with a simpler and more stable training loop. Because it only sees a fixed preference set, it cannot gather fresh comparisons on its own current outputs, which online RLHF can.</p>
 
     <h2 id="overoptimization">4. Reward Model Overoptimization</h2>
-    <p>A reward model approximates human judgment. Strong optimization can exploit its errors: the proxy score may rise while the quality it is intended to measure falls.<span class="cite">[<a href="#ref-9">9</a>]</span></p>
-
-    <p>Gao et al. studied this using a larger "gold" reward model to generate synthetic preferences and evaluate policies trained against smaller proxy models. Gold-model reward often rose and then fell as optimization increased. Their fitted relationships depend on the optimization method, reward-model size, and preference-data size. The gold model was a synthetic stand-in for human judgment.<span class="cite">[<a href="#ref-9">9</a>]</span></p>
-
-    <p>A KL penalty and early stopping can limit optimization against a flawed reward model. These controls reduce exposure to errors without establishing that the reward captures human preferences.<span class="cite">[<a href="#ref-9">9</a>, <a href="#ref-12">12</a>]</span></p>
+    <p>The reward model is a proxy for human judgment, not human judgment itself. Optimizing against it past a point makes the proxy score keep rising while the true quality it stands in for stalls or falls, an instance of Goodhart's law. Gao et al. measured this by holding out a larger "gold" reward model as a stand-in for ground truth and tuning against a smaller proxy.<span class="cite">[<a href="#ref-9">9</a>]</span> They fit simple functional forms relating the gold-reward gain to the square root of the KL divergence between the tuned and initial policies, with coefficients that vary predictably with reward-model size and the amount of preference data. Larger reward models and more comparisons push the turning point further out but do not remove it. The KL penalty, early stopping on a held-out judge, and reward-model ensembles are the common mitigations.</p>
 
     <h2 id="rlaif">5. Reinforcement Learning from AI Feedback</h2>
-    <p>Collecting human comparisons can be expensive and slow. Reinforcement learning from AI feedback (RLAIF) replaces some or all of the human labels with preferences generated by another language model.<span class="cite">[<a href="#ref-10">10</a>, <a href="#ref-11">11</a>]</span></p>
+    <p>Human comparison labeling is the cost and latency bottleneck of RLHF. Reinforcement learning from AI feedback (RLAIF) replaces some or all of the human labels with preferences generated by another language model.<span class="cite">[<a href="#ref-10">10</a>, <a href="#ref-11">11</a>]</span></p>
     <p>Constitutional AI applies this to harmlessness: the model critiques and revises its own responses against a written list of principles, then a preference model is trained on AI-labeled comparisons and used for the RL stage, keeping human input mostly at the level of the principles.<span class="cite">[<a href="#ref-10">10</a>]</span> Lee et al. compared RLAIF against RLHF on summarization and dialogue and reported comparable human win rates, along with a variant that scores responses directly with an off-the-shelf model instead of training a separate reward model.<span class="cite">[<a href="#ref-11">11</a>]</span> AI feedback inherits the biases and blind spots of the labeling model.</p>
 
     <h2 id="limitations">6. Limitations and Open Problems</h2>
     <p>Casper et al. survey the failure modes of RLHF and separate problems that better engineering can address from ones that are structural to the approach.<span class="cite">[<a href="#ref-12">12</a>]</span> The recurring issues:</p>
     <ul>
       <li><strong>Feedback quality.</strong> Raters disagree, make errors, apply inconsistent standards, and can be misled by fluent or confident-sounding answers. Labeler pools are small and not representative of the eventual user base.</li>
-      <li><strong>Reward misspecification.</strong> Pooling diverse raters into one reward model can hide conflicting preferences. The Bradley-Terry model imposes assumptions that real preferences can violate.<span class="cite">[<a href="#ref-12">12</a>]</span></li>
-      <li><strong>Sycophancy.</strong> Human preference data can reward agreement with a user's beliefs. Optimizing against such preferences can increase sycophancy, sometimes at the expense of truthfulness.<span class="cite">[<a href="#ref-13">13</a>]</span> See <a href="/reference/sycophancy/">sycophancy</a>.</li>
+      <li><strong>Reward misspecification.</strong> A single scalar cannot capture plural, context-dependent human values, and the Bradley-Terry model assumes a consistency that real preferences lack.</li>
+      <li><strong>Sycophancy.</strong> Because the reward reflects what raters approved of, the policy learns to favor agreeable and flattering responses over accurate ones. See <a href="/reference/sycophancy/">sycophancy</a>.</li>
       <li><strong>Distribution shift and reward hacking.</strong> The policy is optimized on its own shifting output distribution, which pulls it toward regions where the reward model is unreliable and exploitable. See <a href="/reference/reward-hacking/">reward hacking</a>.</li>
-      <li><strong>Diversity and calibration.</strong> Preference optimization can reduce output variety.<span class="cite">[<a href="#ref-12">12</a>]</span> OpenAI reported poorer calibration after GPT-4 post-training on a subset of MMLU.<span class="cite">[<a href="#ref-14">14</a>]</span> See <a href="/reference/fine-tuning/">fine-tuning</a> for alignment trade-offs.</li>
+      <li><strong>Diversity loss.</strong> Preference optimization narrows the output distribution, reducing calibration and generation variety, part of the <a href="/reference/fine-tuning/">alignment tax</a>.</li>
       <li><strong>Systemic cost.</strong> The full pipeline needs demonstration data, a labeling operation, a trained reward model, and a stable distributed RL setup, which concentrates the method among well-resourced labs.</li>
     </ul>
 
@@ -304,8 +297,6 @@
         <li id="ref-10">[10] Y. Bai, S. Kadavath, S. Kundu, et al., "Constitutional AI: Harmlessness from AI Feedback," <em>arXiv:2212.08073</em>, 2022. <a href="https://arxiv.org/abs/2212.08073">https://arxiv.org/abs/2212.08073</a></li>
         <li id="ref-11">[11] H. Lee, S. Phatale, H. Mansoor, et al., "RLAIF vs. RLHF: Scaling Reinforcement Learning from Human Feedback with AI Feedback," in <em>ICML</em>, 2024. <a href="https://arxiv.org/abs/2309.00267">https://arxiv.org/abs/2309.00267</a></li>
         <li id="ref-12">[12] S. Casper, X. Davies, C. Shi, et al., "Open Problems and Fundamental Limitations of Reinforcement Learning from Human Feedback," <em>Transactions on Machine Learning Research</em>, 2023. <a href="https://arxiv.org/abs/2307.15217">https://arxiv.org/abs/2307.15217</a></li>
-        <li id="ref-13">[13] M. Sharma, M. Tong, T. Korbak, et al., "Towards Understanding Sycophancy in Language Models," in <em>ICLR</em>, 2024. <a href="https://arxiv.org/html/2310.13548v4">https://arxiv.org/html/2310.13548v4</a></li>
-        <li id="ref-14">[14] OpenAI, "GPT-4 Technical Report," <em>arXiv:2303.08774</em>, 2023. <a href="https://arxiv.org/html/2303.08774v6">https://arxiv.org/html/2303.08774v6</a></li>
       </ol>
     </section>
   </main>
