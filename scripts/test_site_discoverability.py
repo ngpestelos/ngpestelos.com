@@ -510,6 +510,16 @@ class ReferenceSeoTests(unittest.TestCase):
         sm_html = (REF / "softmax" / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="/reference/top-k/"', sm_html)
 
+    def test_jude_1_2_reference_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn('href="/reference/jude-1-2/"', html, "Missing from reference/index.html: jude-1-2")
+        self.assertIn("https://ngpestelos.com/reference/jude-1-2/", locs, "Missing from sitemap.xml: jude-1-2")
+        entry_html = (REF / "jude-1-2" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("application/ld+json", entry_html)
+        self.assertIn('"@type":"DefinedTerm"', entry_html)
+        self.assertIn('id="first-principles"', entry_html)
+
 
 if __name__ == "__main__":
     unittest.main()

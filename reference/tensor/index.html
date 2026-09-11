@@ -321,7 +321,7 @@
     <p>The integer \(r\) denotes the contravariant order, \(s\) denotes the covariant order, and the sum \(r + s\) defines the total rank (or valence) of the tensor.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
 
     <h3 id="tensor-product">1.2 The Universal Property of the Tensor Product</h3>
-    <p>The algebraic definition of the tensor product resolves a structural challenge: multilinear maps do not form a vector space through ordinary Cartesian products. The tensor product \(V \otimes W\) constructs a linear space that linearizes all bilinear maps from \(V \times W\).<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>Multilinear maps with fixed domain spaces and codomain form a vector space under pointwise addition and scalar multiplication. A bilinear map is generally not jointly linear on the Cartesian product \(V \times W\). The tensor product \(V \otimes W\) lets each such map factor through a unique linear map.<span class="cite">[<a href="#ref-9">9</a>]</span></p>
     <p>Formally, the tensor product of vector spaces \(V\) and \(W\) is a vector space \(V \otimes W\) accompanied by a bilinear map \(\tau: V \times W \to V \otimes W\), denoted \(\tau(v, w) = v \otimes w\), satisfying the <em>universal property</em>: for every vector space \(U\) and every bilinear map \(B: V \times W \to U\), there exists a unique linear map \(\tilde{B}: V \otimes W \to U\) such that \(B = \tilde{B} \circ \tau\).</p>
     <div class="formula-box">
       $$\dim(V \otimes W) = \dim(V) \times \dim(W)$$
@@ -381,11 +381,12 @@
     <p>In pure mathematics, an arbitrary 3D array of numbers is not necessarily a tensor unless it satisfies coordinate transformation laws under a change of basis. In computing frameworks, any multidimensional table of numerical values is termed a tensor regardless of variance or coordinate behavior.</p>
 
     <h3 id="memory-layout">3.2 Strides, Offsets, and Contiguous Memory Layouts</h3>
-    <p>Physical computer hardware exposes linear, flat byte memory. Storing a multidimensional tensor in flat memory requires an indexing scheme. A tensor maps an \(N\)-dimensional coordinate \((i_0, i_1, \dots, i_{N-1})\) to a linear memory offset via a <strong>stride tuple</strong> \((s_0, s_1, \dots, s_{N-1})\):</p>
+    <p>Let \((s_0, s_1, \dots, s_{N-1})\) be a <strong>stride tuple measured in elements</strong>, and let <code>itemsize</code> be the number of bytes per element. With zero-based indices and <code>byte_offset</code> measured from the storage start to the first logical element, the byte offset of an element is:</p>
     <div class="formula-box">
-      $$\text{offset} = \text{byte\_offset} + \sum_{k=0}^{N-1} i_k \cdot s_k$$
+      $$\text{offset} = \text{byte\_offset} + \text{itemsize} \cdot \sum_{k=0}^{N-1} i_k \cdot s_k$$
     </div>
-    <p>The two primary ordering conventions for dense arrays are:</p>
+    <p>For a C-contiguous <code>int32</code> array shaped <code>(2, 3, 4)</code>, the element strides are <code>(12, 4, 1)</code>. Index <code>(1, 1, 1)</code> lies <code>4 × (12 + 4 + 1) = 68</code> bytes from its first element. NumPy reports strides in bytes: <code>(48, 16, 4)</code> for this array.<span class="cite">[<a href="#ref-10">10</a>]</span></p>
+    <p>The two primary ordering conventions for dense arrays, using element strides, are:</p>
     <ul>
       <li><strong>Row-Major (C-contiguous):</strong> The last dimension varies fastest in memory. For a shape \((d_0, d_1, d_2)\), the strides are \(s_2 = 1\), \(s_1 = d_2\), and \(s_0 = d_1 \cdot d_2\). This is the default in PyTorch, NumPy, and C.</li>
       <li><strong>Column-Major (Fortran-contiguous):</strong> The first dimension varies fastest in memory. Strides are \(s_0 = 1\), \(s_1 = d_0\), and \(s_2 = d_0 \cdot d_1\). Used in MATLAB, Fortran, and standard BLAS kernels.</li>
@@ -415,7 +416,7 @@
     <div class="formula-box">
       $$\mathcal{X} \approx \sum_{r=1}^R a_r \otimes b_r \otimes c_r$$
     </div>
-    <p>where \(a_r \in \mathbb{R}^I\), \(b_r \in \mathbb{R}^J\), \(c_r \in \mathbb{R}^K\), and \(R\) is the tensor rank. Unlike matrix rank, determining the exact CP rank of a general 3D tensor is an NP-hard problem, and the best rank-\(R\) approximation may not always exist due to non-closed solution spaces.</p>
+    <p>where \(a_r \in \mathbb{R}^I\), \(b_r \in \mathbb{R}^J\), \(c_r \in \mathbb{R}^K\), and \(R\) is the chosen number of components in the approximation. The <strong>CP rank</strong> of \(\mathcal{X}\) is the minimum number of rank-1 terms needed for exact equality. Rank-1 means an outer product of vectors. CP rank differs from the number of axes, called order or rank in Section 3.1. Unlike matrix rank, determining the exact CP rank of a general 3D tensor is an NP-hard problem, and the best rank-\(R\) approximation may not always exist due to non-closed solution spaces.</p>
 
     <h3 id="tucker-decomposition">4.3 Tucker Decomposition and Tensor Trains</h3>
     <p><strong>Tucker Decomposition:</strong> A higher-order form of Principal Component Analysis (PCA). It decomposes a tensor into a small dense core tensor \(\mathcal{G} \in \mathbb{R}^{P \times Q \times R}\) multiplied by orthogonal factor matrices along each mode:</p>
@@ -474,7 +475,9 @@
         <li id="ref-5"><a class="backlink" href="#decompositions">&uarr;</a> T. G. Kolda and B. W. Bader, "Tensor Decompositions and Applications," <em>SIAM Review</em>, vol. 51, no. 3, pp. 455&ndash;500, 2009. DOI: <a href="https://doi.org/10.1137/07070111X">10.1137/07070111X</a></li>
         <li id="ref-6"><a class="backlink" href="#decompositions">&uarr;</a> I. V. Oseledets, "Tensor-Train Decomposition," <em>SIAM Journal on Scientific Computing</em>, vol. 33, no. 5, pp. 2295&ndash;2317, 2011. DOI: <a href="https://doi.org/10.1137/090752286">10.1137/090752286</a></li>
         <li id="ref-7"><a class="backlink" href="#deep-learning-systems">&uarr;</a> N. P. Jouppi et al., "In-Datacenter Performance Analysis of a Tensor Processing Unit," in <em>Proceedings of the 44th Annual International Symposium on Computer Architecture (ISCA)</em>, 2017, pp. 1&ndash;12. DOI: <a href="https://doi.org/10.1145/3079856.3080246">10.1145/3079856.3080246</a></li>
-        <li id="ref-8"><a class="backlink" href="#deep-learning-systems">&uarr;</a> M. Shoeybi et al., "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism," <em>arXiv preprint arXiv:1904.09751</em>, 2019. Free full text: <a href="https://arxiv.org/abs/1904.09751">https://arxiv.org/abs/1904.09751</a></li>
+        <li id="ref-8"><a class="backlink" href="#deep-learning-systems">&uarr;</a> M. Shoeybi et al., "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism," <em>arXiv preprint arXiv:1909.08053</em>, 2019. Free full text: <a href="https://arxiv.org/abs/1909.08053">https://arxiv.org/abs/1909.08053</a></li>
+        <li id="ref-9"><a class="backlink" href="#tensor-product">&uarr;</a> Harvard University, Math 55a tensor-product course notes. <a href="https://people.math.harvard.edu/~elkies/M55a.05/tensor.pdf">Course notes</a></li>
+        <li id="ref-10"><a class="backlink" href="#memory-layout">&uarr;</a> NumPy Developers, <em>numpy.ndarray.strides</em>, NumPy Manual. <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.strides.html">Stride units and indexing examples</a></li>
       </ol>
     </div>
   </main>
