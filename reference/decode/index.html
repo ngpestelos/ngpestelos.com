@@ -194,7 +194,7 @@
     <h2 id="first-principles">1. First Principles: Sequential Next-Token Steps</h2>
     <p>Autoregressive generation cannot evaluate future output positions in parallel: token \(t+1\) depends on the sample chosen at \(t\). Pope et al. call the loop <em>decode</em> or generation: \(L_{\mathrm{gen}}\) sequential forward passes, one new token per sequence in the batch per step.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
     <p>Each step still loads the model weights from HBM. With batch size 1 the matmul is essentially a matrix-vector product (GEMV). Arithmetic intensity is low, so decode is typically <em>memory-bandwidth-bound</em>: tokens per second cannot exceed roughly memory bandwidth divided by bytes of weights (and KV) that must be read each step.<span class="cite">[<a href="#ref-1">1</a>][<a href="#ref-2">2</a>]</span> DistServe states the same split: prefill processes many tokens in one step and tends to be compute-bound; each decode step processes one new token with similar I/O and is bandwidth-bound.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
-    <p>Attention at step \(t\) reads cached keys and values for positions \(1 \ldots t-1\) instead of recomputing the prompt. Cache size therefore grows with generated length (and with the prompt, which was written in prefill). Architectures that shrink per-token KV (MQA, GQA, MLA, sliding-window attention) cut that growth; they do not remove the need to load weights every step.</p>
+    <p>Attention at step \(t\) reads cached keys and values for positions \(1 \ldots t-1\) instead of recomputing the prompt. Cache size therefore grows with generated length (and with the prompt, which was written in prefill). Two knobs cut that growth. MQA, GQA, and MLA shrink the KV stored per retained token. Sliding-window attention with a rolling buffer keeps only the last \(W\) positions, so cache size stops growing at the window; the per-token KV width does not shrink. See <a href="/reference/kv-cache/">KV Cache</a> and <a href="/reference/sliding-window-attention/">Sliding-Window Attention</a>. Neither knob removes the need to load weights every step.</p>
     <h2 id="metrics">2. Metrics and Bottlenecks</h2>
     <p>End-to-end latency is TTFT plus TPOT times the number of generated tokens after the first.<span class="cite">[<a href="#ref-2">2</a>]</span> Interactive chat cares about TPOT until it is faster than reading speed; summarization cares about TPOT for the whole document.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
     <p>Raising batch size amortizes weight loads across more tokens per step and can push decode toward compute-bound. It also multiplies KV memory. PagedAttention stores KV in non-contiguous blocks to cut reservation waste so larger batches fit.<span class="cite">[<a href="#ref-4">4</a>]</span></p>
@@ -208,6 +208,7 @@
       <ul>
         <li><a href="/reference/prefill/">Prefill (LLM Inference)</a></li>
         <li><a href="/reference/kv-cache/">KV Cache</a></li>
+        <li><a href="/reference/sliding-window-attention/">Sliding-Window Attention</a></li>
         <li><a href="/reference/time-per-output-token/">Time Per Output Token</a></li>
         <li><a href="/reference/autoregressive/">Autoregressive Models</a></li>
         <li><a href="/reference/llm-inference/">LLM Inference</a></li>
