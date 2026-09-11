@@ -170,6 +170,36 @@
     <p>
       In causal or <a href="/reference/autoregressive/">autoregressive</a> decoders, an attention mask with \(-\infty\) entries is added to upper-triangular logits before the softmax step. This ensures position \(i\) cannot attend to future tokens \(j > i\).
     </p>
+    <p>
+      A concrete instance grounds the formula above. Consider the fragment &quot;The dog chased the llama because it,&quot; where the model computes attention scores at the final token, &quot;it,&quot; to decide what it refers to. Grootendorst and Alammar work through this resolution with the relevance scores scaled dot-product attention assigns to each of the seven tokens, including &quot;it&quot; itself: The 30%, dog 40%, chased 5%, the 10%, llama 3%, because 5%, it 7%<span class="cite">[<a href="#ref7">7</a>]</span>. These values are a softmax output over the seven tokens, so they sum to 100 percent. &quot;Dog&quot; receives the highest score, so the value vector for &quot;dog&quot; dominates the weighted sum that becomes the output at that position, and the model resolves &quot;it&quot; to &quot;dog&quot; rather than &quot;llama.&quot;
+    </p>
+    <figure style="text-align: center; margin: 1.4rem 0; background: var(--well); padding: 1rem 1.2rem 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
+      <svg viewBox="0 0 620 228" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bar chart of relevance scores at the final token it in the fragment The dog chased the llama because it: The 30 percent, dog 40 percent, chased 5 percent, the 10 percent, llama 3 percent, because 5 percent, it 7 percent. Dog has the highest score of the seven." style="max-width: 100%; height: auto; font-family: &quot;Segoe UI&quot;, Helvetica, Arial, sans-serif;">
+        <line x1="120" y1="10" x2="120" y2="222" stroke="var(--line)" stroke-width="1"/>
+        <text x="112" y="33" text-anchor="end" font-size="13" fill="var(--ink)">The</text>
+        <rect x="120" y="18" width="270" height="20" rx="2" fill="var(--mute)"/>
+        <text x="398" y="33" font-size="12" fill="var(--ink)">30%</text>
+        <text x="112" y="63" text-anchor="end" font-size="13" font-weight="700" fill="var(--ink)">dog</text>
+        <rect x="120" y="48" width="360" height="20" rx="2" fill="var(--ink)"/>
+        <text x="488" y="63" font-size="12" font-weight="700" fill="var(--ink)">40% (highest)</text>
+        <text x="112" y="93" text-anchor="end" font-size="13" fill="var(--ink)">chased</text>
+        <rect x="120" y="78" width="45" height="20" rx="2" fill="var(--mute)"/>
+        <text x="173" y="93" font-size="12" fill="var(--ink)">5%</text>
+        <text x="112" y="123" text-anchor="end" font-size="13" fill="var(--ink)">the</text>
+        <rect x="120" y="108" width="90" height="20" rx="2" fill="var(--mute)"/>
+        <text x="218" y="123" font-size="12" fill="var(--ink)">10%</text>
+        <text x="112" y="153" text-anchor="end" font-size="13" fill="var(--ink)">llama</text>
+        <rect x="120" y="138" width="27" height="20" rx="2" fill="var(--mute)"/>
+        <text x="155" y="153" font-size="12" fill="var(--ink)">3%</text>
+        <text x="112" y="183" text-anchor="end" font-size="13" fill="var(--ink)">because</text>
+        <rect x="120" y="168" width="45" height="20" rx="2" fill="var(--mute)"/>
+        <text x="173" y="183" font-size="12" fill="var(--ink)">5%</text>
+        <text x="112" y="213" text-anchor="end" font-size="13" fill="var(--ink)">it</text>
+        <rect x="120" y="198" width="63" height="20" rx="2" fill="var(--mute)"/>
+        <text x="191" y="213" font-size="12" fill="var(--ink)">7%</text>
+      </svg>
+      <figcaption style="font-family: &quot;Segoe UI&quot;, Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-top: 0.6rem; padding-bottom: 0.2rem;">Relevance scores at the final token &quot;it&quot; in &quot;The dog chased the llama because it,&quot; normalized by softmax over the seven tokens. &quot;Dog&quot; receives the highest score. After Grootendorst and Alammar, Figures 2-30 and 2-31<span class="cite">[<a href="#ref7">7</a>]</span>.</figcaption>
+    </figure>
 
     <!-- Section 4: Multi-Head Attention -->
     <h2 id="multi-head-attention">4. Multi-Head Attention</h2>
