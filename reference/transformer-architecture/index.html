@@ -218,7 +218,7 @@
       The language modeling head produces a probability distribution over the vocabulary at each step. Decoding is the rule that turns that distribution into the next token. With logit vector \(z\) from the head, vocabulary size \(V\), and temperature \(\tau\):
     </p>
     <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      $$p(x_t = i \mid x_{<t}) = \frac{\exp(z_i / \tau)}{\sum_{j=1}^{V} \exp(z_j / \tau)}$$
+      $$p(x_t = i \mid x_{\lt t}) = \frac{\exp(z_i / \tau)}{\sum_{j=1}^{V} \exp(z_j / \tau)}$$
     </p>
     <ul>
       <li><strong>Greedy decoding:</strong> take the arg max of the logits at every step. It is deterministic and cheap, and tends toward repetition and generic phrasing.</li>
