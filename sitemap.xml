@@ -636,6 +636,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/matrix/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/atomic-note/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
