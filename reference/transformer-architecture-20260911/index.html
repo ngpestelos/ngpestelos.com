@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transformer Architecture (Decoder-Only LLMs) · Reference · Nestor G Pestelos Jr</title>
-  <meta name="description" content="A citable ground-truth reference on the decoder-only Transformer: the tokenizer, the stack of Transformer blocks, and the language modeling head; scaled dot-product and multi-head attention; positional encoding; and decoding strategies.">
-  <meta property="og:title" content="Transformer Architecture (Decoder-Only LLMs) · Reference">
-  <meta property="og:description" content="A citable ground-truth reference on the decoder-only Transformer: the tokenizer, the stack of Transformer blocks, and the language modeling head; scaled dot-product and multi-head attention; positional encoding; and decoding strategies.">
+  <title>Transformer Architecture, archived 20260911 · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on the Transformer architecture: self-attention mechanics, query-key-value projections, multi-head attention, and layer normalization.">
+  <meta property="og:title" content="Transformer Architecture, archived 20260911 · Reference">
+  <meta property="og:description" content="A citable ground-truth reference on the Transformer architecture: self-attention mechanics, query-key-value projections, multi-head attention, and layer normalization.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ngpestelos.com/reference/transformer-architecture/">
-  <link rel="canonical" href="https://ngpestelos.com/reference/transformer-architecture/">
+  <meta property="og:url" content="https://ngpestelos.com/reference/transformer-architecture-20260911/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/transformer-architecture-20260911/">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
   <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
   <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
@@ -51,7 +51,7 @@
     .subtitle { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 1rem; color: var(--mute); margin-bottom: 1.6rem; line-height: 1.5; }
     .companion-box { background: var(--well); border: 1px solid var(--line); border-left: 4px solid var(--link); border-radius: 4px; padding: 1rem 1.3rem; margin-bottom: 1.8rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; }
     .companion-box h2 { font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0; margin-bottom: 0.5rem; border-bottom: none; padding-bottom: 0; color: var(--ink); }
-    .companion-box ul { list-style: square; padding-left: 1.2rem; margin-bottom: 0; font-size: 0.92rem; }
+    .companion-box ul { list-style: none; padding-left: 0; margin-bottom: 0; font-size: 0.92rem; }
     .companion-box li { margin-bottom: 0.4rem; }
     .companion-box li:last-child { margin-bottom: 0; }
     .companion-box a { color: var(--link); text-decoration: none; }
@@ -79,82 +79,54 @@
     @media print { .back-to-top { display: none !important; } }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"Transformer Architecture","description":"A citable ground-truth reference on the decoder-only Transformer: the tokenizer, the stack of Transformer blocks, and the language modeling head; scaled dot-product and multi-head attention; positional encoding; and decoding strategies.","url":"https://ngpestelos.com/reference/transformer-architecture/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Transformer Architecture, archived 20260911","description":"A citable ground-truth reference on the Transformer architecture: self-attention mechanics, query-key-value projections, multi-head attention, and layer normalization.","url":"https://ngpestelos.com/reference/transformer-architecture-20260911/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
   <main>
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="updated">Archived version captured 20260911. <a href="/reference/transformer-architecture/">Read the current entry</a>.</p>
     <p class="kicker">Machine Learning · Neural Network Architecture</p>
-    <h1>Transformer Architecture</h1>
-    <p class="subtitle">A citable reference on the decoder-only Transformer used by large language models: its three components, the attention and feed-forward internals of a block, positional encoding, and the rules that pick each next token.</p>
-    <p class="updated">Reference entry &middot; last updated September 11, 2026 &middot; <a href="/reference/transformer-architecture-20260911/">Previous version (20260911)</a></p>
+    <h1>Transformer Architecture, archived 20260911</h1>
+    <p class="subtitle">A citable reference on the Transformer architecture: self-attention formulations, multi-head projection layers, residual normalization, and sequence representations.</p>
 
     <div class="companion-box">
-      <h2>See Also</h2>
+      <h2>See Also &amp; Related References</h2>
       <ul>
-        <li><a href="/reference/large-language-models/">Large Language Models</a></li>
-        <li><a href="/reference/tokens/">Tokens</a></li>
-        <li><a href="/reference/embeddings/">Embeddings</a></li>
-        <li><a href="/reference/softmax/">Softmax Function</a></li>
-        <li><a href="/reference/autoregressive/">Autoregressive Models</a></li>
-        <li><a href="/reference/top-k/">Top-k Selection and Sampling</a></li>
-        <li><a href="/reference/context-window/">Context Window</a></li>
-        <li><a href="/reference/kv-cache/">KV Cache</a></li>
-        <li><a href="/reference/llm-inference/">LLM Inference</a></li>
-        <li><a href="/reference/deep-neural-networks/">Deep Neural Networks</a></li>
+        <li>📖 <a href="/reference/large-language-models/"><strong>Reference: Large Language Models (LLMs)</strong></a></li>
+        <li>📖 <a href="/reference/autoregressive/"><strong>Reference: Autoregressive Models</strong></a></li>
+        <li>📖 <a href="/reference/deep-neural-networks/"><strong>Reference: Deep Neural Networks</strong></a></li>
+        <li>📖 <a href="/reference/softmax/"><strong>Reference: Softmax Function</strong></a></li>
+        <li>📖 <a href="/reference/tokens/"><strong>Reference: Tokens</strong></a></li>
+        <li>📖 <a href="/reference/embeddings/"><strong>Reference: Embeddings</strong></a></li>
+        <li>📖 <a href="/reference/llm-inference/"><strong>Reference: LLM Inference</strong></a></li>
       </ul>
     </div>
 
     <div class="toc">
       <h2>Jump to Section</h2>
       <div class="toc-grid">
-        <a href="#first-principles">First Principles</a> &middot;
-        <a href="#decoder-stack">The Decoder as Three Components</a> &middot;
+        <a href="#definition">Definition &amp; Motivation</a> &middot;
         <a href="#scaled-dot-product">Scaled Dot-Product Attention</a> &middot;
-        <a href="#multi-head-attention">Multi-Head Attention</a> &middot;
+        <a href="#multi-head-attention">Multi-Head Projections</a> &middot;
         <a href="#feed-forward-layers">Feed-Forward &amp; Normalization</a> &middot;
         <a href="#positional-encoding">Positional Representation</a> &middot;
-        <a href="#decoding">Decoding Strategies</a> &middot;
         <a href="#variants">Architectural Configurations</a> &middot;
         <a href="#sources">Sources</a>
       </div>
     </div>
 
-    <!-- Section 1: First Principles -->
-    <h2 id="first-principles">1. First Principles: Sequence Modeling Without Recurrence</h2>
+    <!-- Section 1: Definition -->
+    <h2 id="definition">1. Definition &amp; Motivation</h2>
     <p>
       The <strong>Transformer architecture</strong> is a deep neural network design introduced by Vaswani et al. (2017) that models sequence dependencies entirely through self-attention operations and feed-forward projections, omitting recurrent loops and convolutional filters <span class="cite">[<a href="#ref1">1</a>]</span>.
     </p>
     <p>
       Prior sequence models, such as Recurrent Neural Networks (RNNs) and Long Short-Term Memory networks (LSTMs), processed tokens sequentially. That serial bottleneck prevented full hardware parallelization across training sequences. Information had to pass through sequential hidden states \(h_t\), leading to vanishing gradients across long contexts. The Transformer processes all sequence positions concurrently in training, reducing the path length for distant token interactions to \(O(1)\) operations.
     </p>
-    <p>
-      Since around 2020, most large language models use one branch of this design: the <strong>decoder-only</strong> Transformer. The sections below describe that configuration.
-    </p>
 
-    <!-- Section 2: The Decoder as Three Components -->
-    <h2 id="decoder-stack">2. The Decoder as Three Components</h2>
-    <p>
-      A decoder-only Transformer has three parts in sequence: a tokenizer, a stack of Transformer blocks, and a language modeling head <span class="cite">[<a href="#ref7">7</a>]</span>.
-    </p>
-    <ul>
-      <li>
-        <strong>Tokenizer.</strong> Converts input text into a sequence of integer token IDs drawn from a fixed vocabulary, often near 50,000 entries. Most systems use a subword scheme such as byte-pair encoding, which grows the vocabulary by repeatedly merging the most frequent adjacent symbol pair <span class="cite">[<a href="#ref4">4</a>]</span>. The vocabulary is fixed before training and holds special control tokens, for example a start-of-sequence marker. A fixed vocabulary size gives every token one row in the embedding table, so the embedding lookup is a constant-time index operation. The output side is not a lookup: the language modeling head multiplies the hidden vector by a matrix of the same width to produce one logit per vocabulary entry, a cost that scales with vocabulary size and hidden width rather than an index operation (below).
-      </li>
-      <li>
-        <strong>Stack of Transformer blocks.</strong> An embedding lookup maps each token ID to a dense vector of width \(d_{\text{model}}\). The vectors pass through \(N\) identical blocks. Each block applies masked multi-head self-attention and a position-wise feed-forward network, each wrapped in a residual connection and normalization (Sections 3 to 5). A block emits one vector per input position. The number of positions a forward pass can hold is the <a href="/reference/context-window/">context window</a>.
-      </li>
-      <li>
-        <strong>Language modeling head.</strong> A final linear layer projects the top block's output vector at each position to \(V\) logits, one per vocabulary entry. Many models tie this projection to the input embedding matrix, which drops a large parameter block and tends to lower perplexity <span class="cite">[<a href="#ref5">5</a>]</span>. A <a href="/reference/softmax/">softmax</a> over the \(V\) logits gives the next-token probability distribution (Section 7).
-      </li>
-    </ul>
-    <p>
-      Generation is <a href="/reference/autoregressive/">autoregressive</a>: the model predicts one token, appends it to the input, and runs the forward pass again. The <a href="/reference/kv-cache/">KV cache</a> stores the key and value projections from earlier positions so each step recomputes attention only for the new token.
-    </p>
-
-    <!-- Section 3: Scaled Dot-Product Attention -->
-    <h2 id="scaled-dot-product">3. Scaled Dot-Product Attention</h2>
+    <!-- Section 2: Scaled Dot-Product Attention -->
+    <h2 id="scaled-dot-product">2. Scaled Dot-Product Attention</h2>
     <p>
       The primary primitive of the Transformer is <strong>scaled dot-product attention</strong>. Given input representations packed into Query matrix \(Q\), Key matrix \(K\), and Value matrix \(V\), attention computes weighted averages of values based on query-key inner products:
     </p>
@@ -168,8 +140,8 @@
       In causal or <a href="/reference/autoregressive/">autoregressive</a> decoders, an attention mask with \(-\infty\) entries is added to upper-triangular logits before the softmax step. This ensures position \(i\) cannot attend to future tokens \(j > i\).
     </p>
 
-    <!-- Section 4: Multi-Head Attention -->
-    <h2 id="multi-head-attention">4. Multi-Head Attention</h2>
+    <!-- Section 3: Multi-Head Attention -->
+    <h2 id="multi-head-attention">3. Multi-Head Attention</h2>
     <p>
       Rather than computing a single attention distribution with dimension \(d_{\text{model}}\), multi-head attention projects queries, keys, and values \(h\) times using learned parameter matrices:
     </p>
@@ -183,8 +155,8 @@
       Projections map inputs into lower-dimensional subspaces (\(d_k = d_v = d_{\text{model}} / h\)). Multiple heads allow the model to attend simultaneously to information from different representation subspaces at different positions, capturing syntax, co-reference, and factual relations concurrently.
     </p>
 
-    <!-- Section 5: Feed-Forward & Normalization -->
-    <h2 id="feed-forward-layers">5. Feed-Forward Networks &amp; Normalization</h2>
+    <!-- Section 4: Feed-Forward & Normalization -->
+    <h2 id="feed-forward-layers">4. Feed-Forward Networks &amp; Normalization</h2>
     <p>
       Each attention block is paired with a position-wise feed-forward network (FFN). The FFN consists of two linear transformations separated by a non-linear activation (historically ReLU, modernized to GELU or SwiGLU):
     </p>
@@ -201,8 +173,8 @@
       Modern implementations often adopt <strong>Pre-LayerNorm</strong> (normalizing inputs before sub-layers) or Root Mean Square Normalization (RMSNorm) for superior numerical stability during large-scale pre-training.
     </p>
 
-    <!-- Section 6: Positional Encoding -->
-    <h2 id="positional-encoding">6. Positional Representation</h2>
+    <!-- Section 5: Positional Encoding -->
+    <h2 id="positional-encoding">5. Positional Representation</h2>
     <p>
       Because attention operates as a permutation-equivariant set operation, the architecture possesses no built-in spatial order. Positional information must be explicitly injected into input token embeddings.
     </p>
@@ -212,22 +184,8 @@
       <li><strong>Rotary Position Embedding (RoPE):</strong> Multiplicative rotation of query and key representations in complex space, encoding relative distance through inner products (Su et al., 2024) <span class="cite">[<a href="#ref2">2</a>]</span>. RoPE dominates contemporary frontier decoders.</li>
     </ul>
 
-    <!-- Section 7: Decoding Strategies -->
-    <h2 id="decoding">7. Decoding Strategies</h2>
-    <p>
-      The language modeling head produces a probability distribution over the vocabulary at each step. Decoding is the rule that turns that distribution into the next token. With logit vector \(z\) from the head, vocabulary size \(V\), and temperature \(\tau\):
-    </p>
-    <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
-      $$p(x_t = i \mid x_{\lt t}) = \frac{\exp(z_i / \tau)}{\sum_{j=1}^{V} \exp(z_j / \tau)}$$
-    </p>
-    <ul>
-      <li><strong>Greedy decoding:</strong> take the arg max of the logits at every step. It is deterministic and cheap, and tends toward repetition and generic phrasing.</li>
-      <li><strong>Temperature sampling:</strong> divide the logits by \(\tau\) before the softmax, then sample. Values below 1 sharpen the distribution toward its mode; values above 1 flatten it; \(\tau \to 0\) recovers greedy decoding.</li>
-      <li><strong>Truncated sampling:</strong> restrict sampling to a shortlist of high-probability tokens. Top-k keeps the \(k\) most probable tokens; nucleus, or top-p, sampling keeps the smallest set whose cumulative probability reaches \(p\) <span class="cite">[<a href="#ref6">6</a>]</span>. Both cut the low-probability tail that produces incoherent text.</li>
-    </ul>
-
-    <!-- Section 8: Variants -->
-    <h2 id="variants">8. Architectural Configurations</h2>
+    <!-- Section 6: Variants -->
+    <h2 id="variants">6. Architectural Configurations</h2>
     <table>
       <thead>
         <tr>
@@ -259,17 +217,13 @@
       </tbody>
     </table>
 
-    <!-- Sources -->
+    <!-- Section 7: Sources -->
     <footer id="sources">
       <h3>Sources &amp; References</h3>
       <ol>
         <li id="ref1">Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., &amp; Polosukhin, I. (2017). "Attention Is All You Need." <em>Advances in Neural Information Processing Systems</em>, 30. <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">arXiv:1706.03762</a>.</li>
         <li id="ref2">Su, J., Ahmed, M., Lu, Y., Pan, S., Bo, W., &amp; Liu, Y. (2024). "RoFormer: Enhanced Transformer with Rotary Position Embedding." <em>Neurocomputing</em>, 568, 127063. <a href="https://arxiv.org/abs/2104.09864" target="_blank" rel="noopener">arXiv:2104.09864</a>.</li>
         <li id="ref3">Radford, A., Narasimhan, K., Salimans, T., &amp; Sutskever, I. (2018). "Improving Language Understanding by Generative Pre-Training." OpenAI Technical Report.</li>
-        <li id="ref4">Sennrich, R., Haddow, B., &amp; Birch, A. (2016). "Neural Machine Translation of Rare Words with Subword Units." <em>Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics</em>, 1715&ndash;1725. <a href="https://arxiv.org/abs/1508.07909" target="_blank" rel="noopener">arXiv:1508.07909</a>.</li>
-        <li id="ref5">Press, O., &amp; Wolf, L. (2017). "Using the Output Embedding to Improve Language Models." <em>Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics</em>, 157&ndash;163. <a href="https://arxiv.org/abs/1608.05859" target="_blank" rel="noopener">arXiv:1608.05859</a>.</li>
-        <li id="ref6">Holtzman, A., Buys, J., Du, L., Forbes, M., &amp; Choi, Y. (2020). "The Curious Case of Neural Text Degeneration." <em>International Conference on Learning Representations</em>. <a href="https://arxiv.org/abs/1904.09751" target="_blank" rel="noopener">arXiv:1904.09751</a>.</li>
-        <li id="ref7">Grootendorst, M., &amp; Alammar, J. (2026). <em>An Illustrated Guide to AI Agents</em>. O'Reilly Media. ISBN 9798341662698.</li>
       </ol>
       <p style="margin-top: 1rem;">
         Related: <a href="/reference/large-language-models/">Large Language Models</a> &middot; <a href="/reference/autoregressive/">Autoregressive Models</a> &middot; <a href="/reference/llm-inference/">LLM Inference</a>
