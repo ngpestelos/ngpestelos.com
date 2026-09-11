@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tensor (Mathematics and Computing) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A citable ground-truth reference on tensors: formal multilinear maps, tensor products of vector spaces, transformation laws, multidimensional arrays, memory layouts, and deep learning systems.">
+  <meta property="og:title" content="Tensor (Mathematics and Computing) &middot; Reference">
+  <meta property="og:description" content="A citable ground-truth reference on tensors: formal multilinear maps, tensor products of vector spaces, transformation laws, multidimensional arrays, memory layouts, and deep learning systems.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/tensor/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/tensor/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Tensor (Mathematics and Computing)","description":"A citable ground-truth reference on tensors: formal multilinear maps, tensor products of vector spaces, transformation laws, multidimensional arrays, memory layouts, and deep learning systems.","url":"https://ngpestelos.com/reference/tensor/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.8rem; }
+    li { margin-bottom: 0.3rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.4rem 0;
+      font-size: 0.9rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      background: var(--well);
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+      border: 1px solid #e1e4e8;
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.85rem 1rem;
+      margin: 1.2rem 0;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+    .cite {
+      font-size: 0.8em;
+      vertical-align: super;
+      line-height: 0;
+    }
+    .cite a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    .formula-box {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.85rem 1.2rem;
+      margin: 1.2rem 0;
+      overflow-x: auto;
+      text-align: center;
+    }
+    .see-also {
+      margin-top: 2rem;
+      padding: 1rem 1.4rem;
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+    }
+    .see-also h2 {
+      margin-top: 0;
+      border-bottom: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding-bottom: 0;
+    }
+    .see-also ul { list-style: square; margin-bottom: 0; }
+    #references {
+      margin-top: 2.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-size: 0.88rem;
+    }
+    #references ol { padding-left: 1.4rem; }
+    #references li { margin-bottom: 0.5rem; color: var(--mute); }
+    #references a { color: var(--link); word-break: break-all; }
+    #references .backlink { margin-right: 0.3rem; }
+    @media print {
+      .back { display: none; }
+      .back-to-top { display: none !important; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <header>
+      <p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+      <p class="kicker">Mathematics &middot; Computer Science</p>
+      <h1>Tensor (Mathematics and Computing)</h1>
+      <p class="updated">Reference entry &middot; last updated September 11, 2026</p>
+    </header>
+
+    <p class="lede">A <strong>tensor</strong> is an algebraic object that maps geometric and physical vectors to scalars in a multilinear fashion, or, in computational systems, a multidimensional array of numerical values indexed across an arbitrary number of discrete dimensions.<span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span> While differential geometry and theoretical physics treat tensors as multilinear maps governed by strict coordinate-transformation laws, modern computing platforms like PyTorch, TensorFlow, and dedicated accelerator silicon treat tensors as contiguous or strided memory buffers equipped with dimension metadata. Tensors serve as the fundamental data substrate for neural network representations, deep learning parameter storage, and distributed accelerator workloads.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First Principles: Multilinear Algebra and Tensor Products</a>
+          <ol>
+            <li><a href="#multilinear-maps">1.1 Dual Spaces and Multilinear Maps</a></li>
+            <li><a href="#tensor-product">1.2 The Universal Property of the Tensor Product</a></li>
+            <li><a href="#type-variance">1.3 Tensor Type, Covariance, and Contravariance</a></li>
+          </ol>
+        </li>
+        <li><a href="#transformation-laws">2. Coordinate Systems and Transformation Laws</a>
+          <ol>
+            <li><a href="#change-of-basis">2.1 Change of Basis and Index Notation</a></li>
+            <li><a href="#einstein-summation">2.2 Einstein Summation Convention</a></li>
+            <li><a href="#geometric-invariance">2.3 Geometric Invariance</a></li>
+          </ol>
+        </li>
+        <li><a href="#computational-tensors">3. Computational Tensors and Multidimensional Arrays</a>
+          <ol>
+            <li><a href="#terminology-gap">3.1 The Terminology Gap: Geometric Tensor vs. Data Array</a></li>
+            <li><a href="#memory-layout">3.2 Strides, Offsets, and Contiguous Memory Layouts</a></li>
+            <li><a href="#views-copies">3.3 Zero-Copy Views vs. Memory Allocations</a></li>
+          </ol>
+        </li>
+        <li><a href="#decompositions">4. Tensor Operations and Decompositions</a>
+          <ol>
+            <li><a href="#contractions">4.1 Tensor Contractions and Outer Products</a></li>
+            <li><a href="#cp-decomposition">4.2 Canonical Polyadic (CP) Decomposition</a></li>
+            <li><a href="#tucker-decomposition">4.3 Tucker Decomposition and Tensor Trains</a></li>
+          </ol>
+        </li>
+        <li><a href="#deep-learning-systems">5. Tensors in Deep Learning Systems and Hardware</a>
+          <ol>
+            <li><a href="#computational-graphs">5.1 Automatic Differentiation and Execution Graphs</a></li>
+            <li><a href="#hardware-acceleration">5.2 Systolic Arrays and Tensor Cores</a></li>
+            <li><a href="#distributed-parallelism">5.3 Tensor Parallelism and Model Sharding</a></li>
+          </ol>
+        </li>
+        <li><a href="#see-also">See Also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <!-- Section 1 -->
+    <h2 id="first-principles">1. First Principles: Multilinear Algebra and Tensor Products</h2>
+    <p>Modern tensor theory rests on the foundations of multilinear algebra. Rather than beginning with coordinate tables or index grids, modern mathematics defines a tensor by its coordinate-free algebraic behavior when acting on vector spaces and their linear duals.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <h3 id="multilinear-maps">1.1 Dual Spaces and Multilinear Maps</h3>
+    <p>Let \(V\) be a finite-dimensional vector space over a field \(\mathbb{F}\) (typically \(\mathbb{R}\) or \(\mathbb{C}\)). The dual space \(V^*\) consists of all linear functionals \(f: V \to \mathbb{F}\). Given vector spaces \(V_1, V_2, \dots, V_k\), a function</p>
+    <div class="formula-box">
+      $$\phi: V_1 \times V_2 \times \dots \times V_k \to \mathbb{F}$$
+    </div>
+    <p>is <em>multilinear</em> if it is linear in each argument independently when holding all other arguments fixed. That is, for any index \(i \in \{1, \dots, k\}\), scalars \(\alpha, \beta \in \mathbb{F}\), and vectors \(u, v \in V_i\):</p>
+    <div class="formula-box">
+      $$\phi(v_1, \dots, \alpha u + \beta v, \dots, v_k) = \alpha \phi(v_1, \dots, u, \dots, v_k) + \beta \phi(v_1, \dots, v, \dots, v_k)$$
+    </div>
+    <p>A tensor of type \((r, s)\) on \(V\) is formally defined as a multilinear map that takes \(r\) dual vectors and \(s\) vectors as inputs to produce a scalar:</p>
+    <div class="formula-box">
+      $$T: \underbrace{V^* \times \dots \times V^*}_{r \text{ copies}} \times \underbrace{V \times \dots \times V}_{s \text{ copies}} \to \mathbb{F}$$
+    </div>
+    <p>The integer \(r\) denotes the contravariant order, \(s\) denotes the covariant order, and the sum \(r + s\) defines the total rank (or valence) of the tensor.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <h3 id="tensor-product">1.2 The Universal Property of the Tensor Product</h3>
+    <p>Multilinear maps with fixed domain spaces and codomain form a vector space under pointwise addition and scalar multiplication. A bilinear map is generally not jointly linear on the Cartesian product \(V \times W\). The tensor product \(V \otimes W\) lets each such map factor through a unique linear map.<span class="cite">[<a href="#ref-9">9</a>]</span></p>
+    <p>Formally, the tensor product of vector spaces \(V\) and \(W\) is a vector space \(V \otimes W\) accompanied by a bilinear map \(\tau: V \times W \to V \otimes W\), denoted \(\tau(v, w) = v \otimes w\), satisfying the <em>universal property</em>: for every vector space \(U\) and every bilinear map \(B: V \times W \to U\), there exists a unique linear map \(\tilde{B}: V \otimes W \to U\) such that \(B = \tilde{B} \circ \tau\).</p>
+    <div class="formula-box">
+      $$\dim(V \otimes W) = \dim(V) \times \dim(W)$$
+    </div>
+    <p>If \(\{e_i\}\) forms a basis for \(V\) of dimension \(m\), and \(\{f_j\}\) forms a basis for \(W\) of dimension \(n\), then the set of simple tensors \(\{e_i \otimes f_j\}\) forms a basis for \(V \otimes W\) of dimension \(m \cdot n\). Any arbitrary tensor \(T \in V \otimes W\) decomposes into a linear combination of these basis elements:</p>
+    <div class="formula-box">
+      $$T = \sum_{i=1}^m \sum_{j=1}^n T^{ij} (e_i \otimes f_j)$$
+    </div>
+
+    <h3 id="type-variance">1.3 Tensor Type, Covariance, and Contravariance</h3>
+    <p>Tensors are classified according to how their arguments relate to vectors and linear functionals:</p>
+    <ul>
+      <li><strong>Type (0, 0):</strong> Scalars in the base field \(\mathbb{F}\). Invariant under coordinate system transformations.</li>
+      <li><strong>Type (1, 0):</strong> Contravariant vectors (\(v \in V\)). Linear maps on the dual space \(V^* \to \mathbb{F}\).</li>
+      <li><strong>Type (0, 1):</strong> Covariant vectors or covectors (\(\omega \in V^*\)). Linear functionals on \(V \to \mathbb{F}\).</li>
+      <li><strong>Type (1, 1):</strong> Linear operators \(A: V \to V\), isomorphic to \(V \otimes V^*\). Matrices mapping vectors to vectors.</li>
+      <li><strong>Type (0, 2):</strong> Bilinear forms on \(V \times V \to \mathbb{F}\), such as the metric tensor \(g_{\mu\nu}\) in differential geometry and general relativity.</li>
+      <li><strong>Type (1, 3):</strong> The Riemann curvature tensor \(R^\rho_{\ \sigma\mu\nu}\), measuring the non-commutativity of covariant derivatives along smooth manifolds.</li>
+    </ul>
+
+    <!-- Section 2 -->
+    <h2 id="transformation-laws">2. Coordinate Systems and Transformation Laws</h2>
+    <p>When coordinates are introduced on an underlying manifold or vector space, the components of a tensor transform in a specific manner under a smooth change of coordinates.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <h3 id="change-of-basis">2.1 Change of Basis and Index Notation</h3>
+    <p>Consider a coordinate change from \(\{x^\mu\}\) to \(\{\tilde{x}^\alpha\}\). The Jacobian matrix of partial derivatives governs the local transformation:</p>
+    <div class="formula-box">
+      $$J^\alpha_{\ \mu} = \frac{\partial \tilde{x}^\alpha}{\partial x^\mu}, \quad (J^{-1})^\mu_{\ \alpha} = \frac{\partial x^\mu}{\partial \tilde{x}^\alpha}$$
+    </div>
+    <p>A tensor of type \((r, s)\) with components \(T^{\mu_1 \dots \mu_r}_{\ \nu_1 \dots \nu_s}\) transforms to the new coordinate basis according to the general multilinear transformation law:</p>
+    <div class="formula-box">
+      $$\tilde{T}^{\alpha_1 \dots \alpha_r}_{\ \beta_1 \dots \beta_s} = \left( \prod_{i=1}^r \frac{\partial \tilde{x}^{\alpha_i}}{\partial x^{\mu_i}} \right) \left( \prod_{j=1}^s \frac{\partial x^{\nu_j}}{\partial \tilde{x}^{\beta_j}} \right) T^{\mu_1 \dots \mu_r}_{\ \nu_1 \dots \nu_s}$$
+    </div>
+    <p>Contravariant indices (superscripts) transform via the forward Jacobian matrix \(\frac{\partial \tilde{x}^\alpha}{\partial x^\mu}\), opposing the transformation of basis vectors. Covariant indices (subscripts) transform via the inverse Jacobian matrix \(\frac{\partial x^\nu}{\partial \tilde{x}^\beta}\), in the same manner as basis vectors.</p>
+
+    <h3 id="einstein-summation">2.2 Einstein Summation Convention</h3>
+    <p>Introduced by Albert Einstein in 1916, index summation notation omits explicit summation signs when an index appears once as an upper index and once as a lower index within a single term:</p>
+    <div class="formula-box">
+      $$A^\mu B_\mu \equiv \sum_{\mu=1}^n A^\mu B_\mu$$
+    </div>
+    <p>Indices that appear matched are dummy indices, representing summation. Unmatched indices are free indices, indicating the tensorial rank and dimension of the resulting expression. Contracting a contravariant index with a covariant index reduces the total tensor order by 2 (reducing an \((r, s)\) tensor to an \((r-1, s-1)\) tensor).</p>
+
+    <h3 id="geometric-invariance">2.3 Geometric Invariance</h3>
+    <p>While numerical component representations change based on the choice of basis, the underlying tensor object remains coordinate-independent. In differential geometry, tensor fields assign a multilinear map to each tangent space \(T_p M\) and cotangent space \(T_p^* M\) of a smooth manifold \(M\). If all components of a tensor vanish in one coordinate frame, the transformation laws dictate that they vanish in every coordinate frame, making tensor equations the natural language for physical laws (general covariance).<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <!-- Section 3 -->
+    <h2 id="computational-tensors">3. Computational Tensors and Multidimensional Arrays</h2>
+    <p>In computer science, software engineering, and machine learning, the word <em>tensor</em> carries a pragmatic, operational definition distinct from its mathematical namesake.<span class="cite">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>]</span></p>
+
+    <h3 id="terminology-gap">3.1 The Terminology Gap: Geometric Tensor vs. Data Array</h3>
+    <p>A computational tensor is an \(N\)-dimensional numerical array characterized by:</p>
+    <ul>
+      <li><strong>Data Type (dtype):</strong> The element primitive (e.g., <code>FP32</code>, <code>BF16</code>, <code>FP8</code>, <code>INT8</code>).</li>
+      <li><strong>Shape (dimensions):</strong> A tuple of non-negative integers \((d_0, d_1, \dots, d_{N-1})\) indicating axis lengths.</li>
+      <li><strong>Order / Rank:</strong> The number of axes \(N\) (e.g., scalar = 0D, vector = 1D, matrix = 2D, volume/batch = 3D+).</li>
+    </ul>
+    <p>In pure mathematics, an arbitrary 3D array of numbers is not necessarily a tensor unless it satisfies coordinate transformation laws under a change of basis. In computing frameworks, any multidimensional table of numerical values is termed a tensor regardless of variance or coordinate behavior.</p>
+
+    <h3 id="memory-layout">3.2 Strides, Offsets, and Contiguous Memory Layouts</h3>
+    <p>Let \((s_0, s_1, \dots, s_{N-1})\) be a <strong>stride tuple measured in elements</strong>, and let <code>itemsize</code> be the number of bytes per element. With zero-based indices and <code>byte_offset</code> measured from the storage start to the first logical element, the byte offset of an element is:</p>
+    <div class="formula-box">
+      $$\text{offset} = \text{byte\_offset} + \text{itemsize} \cdot \sum_{k=0}^{N-1} i_k \cdot s_k$$
+    </div>
+    <p>For a C-contiguous <code>int32</code> array shaped <code>(2, 3, 4)</code>, the element strides are <code>(12, 4, 1)</code>. Index <code>(1, 1, 1)</code> lies <code>4 × (12 + 4 + 1) = 68</code> bytes from its first element. NumPy reports strides in bytes: <code>(48, 16, 4)</code> for this array.<span class="cite">[<a href="#ref-10">10</a>]</span></p>
+    <p>The two primary ordering conventions for dense arrays, using element strides, are:</p>
+    <ul>
+      <li><strong>Row-Major (C-contiguous):</strong> The last dimension varies fastest in memory. For a shape \((d_0, d_1, d_2)\), the strides are \(s_2 = 1\), \(s_1 = d_2\), and \(s_0 = d_1 \cdot d_2\). This is the default in PyTorch, NumPy, and C.</li>
+      <li><strong>Column-Major (Fortran-contiguous):</strong> The first dimension varies fastest in memory. Strides are \(s_0 = 1\), \(s_1 = d_0\), and \(s_2 = d_0 \cdot d_1\). Used in MATLAB, Fortran, and standard BLAS kernels.</li>
+    </ul>
+
+    <h3 id="views-copies">3.3 Zero-Copy Views vs. Memory Allocations</h3>
+    <p>Modern machine learning frameworks decouple logical shape metadata from underlying memory storage:<span class="cite">[<a href="#ref-4">4</a>]</span></p>
+    <ul>
+      <li><strong>Storage Buffer:</strong> A flat, 1D array of raw allocated bytes on CPU RAM, GPU High-Bandwidth Memory (HBM), or TPU SRAM.</li>
+      <li><strong>Tensor View:</strong> Metadata containing a pointer to the storage, an offset, a shape tuple, and a stride tuple.</li>
+    </ul>
+    <p>Operations such as slicing, transposing (permuting dimensions), expanding (broadcasting), and squeezing manipulate only shape and stride tuples. These operations execute in \(O(1)\) constant time without copying underlying bytes. A tensor becomes non-contiguous when its strides deviate from standard row-major progression (for instance, after a transpose). Calling operations that expect contiguous bytes requires an explicit copy step (such as PyTorch's <code>.contiguous()</code>) to reorder memory sequentially.</p>
+
+    <!-- Section 4 -->
+    <h2 id="decompositions">4. Tensor Operations and Decompositions</h2>
+    <p>High-order data collections quickly become intractable due to exponential growth in parameters. Tensor decompositions generalize matrix factorizations (such as SVD and Eigendecomposition) to higher dimensions.<span class="cite">[<a href="#ref-5">5</a>]</span></p>
+
+    <h3 id="contractions">4.1 Tensor Contractions and Outer Products</h3>
+    <p>Fundamental operations define transformations on multidimensional arrays:</p>
+    <ul>
+      <li><strong>Outer Product (\(\otimes\)):</strong> Given \(\mathcal{A} \in \mathbb{R}^{I_1 \times \dots \times I_P}\) and \(\mathcal{B} \in \mathbb{R}^{J_1 \times \dots \times J_Q}\), their outer product produces a tensor of rank \(P+Q\) with entries \((\mathcal{A} \otimes \mathcal{B})_{i_1 \dots i_P j_1 \dots j_Q} = \mathcal{A}_{i_1 \dots i_P} \mathcal{B}_{j_1 \dots j_Q}\).</li>
+      <li><strong>Tensor Contraction:</strong> Summing over matching indices across dimensions. General Matrix Multiply (GEMM) is a single contraction between two 2D tensors over an inner dimension. Multi-head self-attention computes batched contractions across sequence, head, and hidden dimensions.</li>
+    </ul>
+
+    <h3 id="cp-decomposition">4.2 Canonical Polyadic (CP) Decomposition</h3>
+    <p>The Canonical Polyadic (CP) decomposition (also known as CANDECOMP/PARAFAC) factorizes a tensor \(\mathcal{X} \in \mathbb{R}^{I \times J \times K}\) into a sum of component rank-1 tensors:<span class="cite">[<a href="#ref-5">5</a>]</span></p>
+    <div class="formula-box">
+      $$\mathcal{X} \approx \sum_{r=1}^R a_r \otimes b_r \otimes c_r$$
+    </div>
+    <p>where \(a_r \in \mathbb{R}^I\), \(b_r \in \mathbb{R}^J\), \(c_r \in \mathbb{R}^K\), and \(R\) is the chosen number of components in the approximation. The <strong>CP rank</strong> of \(\mathcal{X}\) is the minimum number of rank-1 terms needed for exact equality. Rank-1 means an outer product of vectors. CP rank differs from the number of axes, called order or rank in Section 3.1. Unlike matrix rank, determining the exact CP rank of a general 3D tensor is an NP-hard problem, and the best rank-\(R\) approximation may not always exist due to non-closed solution spaces.</p>
+
+    <h3 id="tucker-decomposition">4.3 Tucker Decomposition and Tensor Trains</h3>
+    <p><strong>Tucker Decomposition:</strong> A higher-order form of Principal Component Analysis (PCA). It decomposes a tensor into a small dense core tensor \(\mathcal{G} \in \mathbb{R}^{P \times Q \times R}\) multiplied by orthogonal factor matrices along each mode:</p>
+    <div class="formula-box">
+      $$\mathcal{X} \approx \mathcal{G} \times_1 A \times_2 B \times_3 C$$
+    </div>
+    <p><strong>Tensor Train (TT) Decomposition:</strong> Mitigates the curse of dimensionality for very high orders by factorizing an \(N\)-way tensor into a linear chain of interconnected 3D core tensors. TT decomposition compresses parameter counts from exponential \(O(d^N)\) to polynomial \(O(N \cdot d \cdot r^2)\), enabling simulation of quantum many-body states and low-rank compression of neural network weights.<span class="cite">[<a href="#ref-6">6</a>]</span></p>
+
+    <!-- Section 5 -->
+    <h2 id="deep-learning-systems">5. Tensors in Deep Learning Systems and Hardware</h2>
+    <p>In modern artificial intelligence, neural networks are constructed as computational graphs where nodes represent mathematical transformations and edges represent flowing data tensors.<span class="cite">[<a href="#ref-3">3</a>]</span></p>
+
+    <h3 id="computational-graphs">5.1 Automatic Differentiation and Execution Graphs</h3>
+    <p>Deep learning frameworks compute gradients across thousands of tensor variables using reverse-mode automatic differentiation (backpropagation). During the forward pass, frameworks record operations in a Directed Acyclic Graph (DAG). Each tensor node tracks:</p>
+    <ul>
+      <li>The underlying forward data buffer.</li>
+      <li>The backward gradient tensor of identical shape (\(\nabla_W \mathcal{L}\)).</li>
+      <li>A reference to the generating function (e.g., <code>AddBackward</code>, <code>MmBackward</code>).</li>
+    </ul>
+    <p>During the backward pass, vector-Jacobian products (VJPs) traverse the graph in reverse topological order, accumulating partial derivatives directly into parameter gradient buffers.</p>
+
+    <h3 id="hardware-acceleration">5.2 Systolic Arrays and Tensor Cores</h3>
+    <p>General-purpose CPUs execute sequential scalar or small vector SIMD instructions. Because deep learning workloads are dominated by large matrix multiplications and convolutions, modern AI accelerators incorporate specialized 2D arithmetic matrix hardware:<span class="cite">[<a href="#ref-7">7</a>]</span></p>
+    <ul>
+      <li><strong>Systolic Arrays (Google TPU):</strong> A 2D grid of Arithmetic Logic Units (ALUs). Data streams continuously across rows and columns without returning intermediate results to register files, computing matrix multiplications with high energy efficiency.</li>
+      <li><strong>Tensor Cores (NVIDIA Volta, Hopper, Blackwell):</strong> Specialized hardware execution units that perform a fused multiply-add on small matrix tiles (e.g., \(4 \times 4\) or \(16 \times 16\)) in a single clock cycle, operating on low-precision formats (FP16, BF16, FP8, FP4) and accumulating in FP32.</li>
+    </ul>
+
+    <h3 id="distributed-parallelism">5.3 Tensor Parallelism and Model Sharding</h3>
+    <p>When large language model parameter tensors exceed the memory capacity of a single GPU (e.g., 70B+ parameters), distributed frameworks split individual weight tensors across multiple accelerators using <strong>Tensor Parallelism</strong> (Megatron-LM):<span class="cite">[<a href="#ref-8">8</a>]</span></p>
+    <ul>
+      <li><strong>Column Parallel Linear Layers:</strong> The weight matrix \(W\) is partitioned along columns: \(W = [W_1 \mid W_2]\). Accelerators compute local projections \(Y_i = X W_i\) in parallel.</li>
+      <li><strong>Row Parallel Linear Layers:</strong> The weight matrix \(W\) is partitioned along rows. Each GPU multiplies its partitioned activation slice by the row slice and performs an <code>All-Reduce (Sum)</code> communication collective across NVLink interconnects to produce the final output tensor.</li>
+    </ul>
+
+    <!-- See Also -->
+    <div class="see-also" id="see-also">
+      <h2>See Also</h2>
+      <ul>
+        <li><a href="/reference/vector/">Vector (Mathematics and Computing)</a> &middot; Vector space axioms, inner product spaces, and hardware SIMD execution.</li>
+        <li><a href="/reference/transformer-architecture/">Transformer Architecture</a> &middot; Multi-head attention projections, residual streams, and tensor transformations.</li>
+        <li><a href="/reference/kv-cache/">KV Cache</a> &middot; Key and value activation tensor storage during autoregressive decoding.</li>
+        <li><a href="/reference/parallelism/">Parallelism</a> &middot; Data, pipeline, and tensor parallelism across distributed compute clusters.</li>
+        <li><a href="/reference/llm-inference/">LLM Inference</a> &middot; Memory bandwidth limits, arithmetic intensity, and GPU execution phases.</li>
+      </ul>
+    </div>
+
+    <!-- References -->
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> S. Axler, <em>Linear Algebra Done Right</em>, 3rd ed. Cham: Springer, 2015. DOI: <a href="https://doi.org/10.1007/978-3-319-11080-6">10.1007/978-3-319-11080-6</a></li>
+        <li id="ref-2"><a class="backlink" href="#transformation-laws">&uarr;</a> J. M. Lee, <em>Introduction to Smooth Manifolds</em>, 2nd ed. New York: Springer, 2013. DOI: <a href="https://doi.org/10.1007/978-1-4419-9982-5">10.1007/978-1-4419-9982-5</a></li>
+        <li id="ref-3"><a class="backlink" href="#computational-tensors">&uarr;</a> M. Abadi et al., "TensorFlow: A System for Large-Scale Machine Learning," in <em>12th USENIX Symposium on Operating Systems Design and Implementation (OSDI 16)</em>, 2016, pp. 265&ndash;283. URL: <a href="https://www.usenix.org/conference/osdi16/technical-sessions/presentation/abadi">https://www.usenix.org/conference/osdi16/technical-sessions/presentation/abadi</a></li>
+        <li id="ref-4"><a class="backlink" href="#computational-tensors">&uarr;</a> A. Paszke et al., "PyTorch: An Imperative Style, High-Performance Deep Learning Library," in <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, vol. 32, 2019, pp. 8026&ndash;8037. Free full text: <a href="https://arxiv.org/abs/1912.01703">https://arxiv.org/abs/1912.01703</a></li>
+        <li id="ref-5"><a class="backlink" href="#decompositions">&uarr;</a> T. G. Kolda and B. W. Bader, "Tensor Decompositions and Applications," <em>SIAM Review</em>, vol. 51, no. 3, pp. 455&ndash;500, 2009. DOI: <a href="https://doi.org/10.1137/07070111X">10.1137/07070111X</a></li>
+        <li id="ref-6"><a class="backlink" href="#decompositions">&uarr;</a> I. V. Oseledets, "Tensor-Train Decomposition," <em>SIAM Journal on Scientific Computing</em>, vol. 33, no. 5, pp. 2295&ndash;2317, 2011. DOI: <a href="https://doi.org/10.1137/090752286">10.1137/090752286</a></li>
+        <li id="ref-7"><a class="backlink" href="#deep-learning-systems">&uarr;</a> N. P. Jouppi et al., "In-Datacenter Performance Analysis of a Tensor Processing Unit," in <em>Proceedings of the 44th Annual International Symposium on Computer Architecture (ISCA)</em>, 2017, pp. 1&ndash;12. DOI: <a href="https://doi.org/10.1145/3079856.3080246">10.1145/3079856.3080246</a></li>
+        <li id="ref-8"><a class="backlink" href="#deep-learning-systems">&uarr;</a> M. Shoeybi et al., "Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism," <em>arXiv preprint arXiv:1909.08053</em>, 2019. Free full text: <a href="https://arxiv.org/abs/1909.08053">https://arxiv.org/abs/1909.08053</a></li>
+        <li id="ref-9"><a class="backlink" href="#tensor-product">&uarr;</a> Harvard University, Math 55a tensor-product course notes. <a href="https://people.math.harvard.edu/~elkies/M55a.05/tensor.pdf">Course notes</a></li>
+        <li id="ref-10"><a class="backlink" href="#memory-layout">&uarr;</a> NumPy Developers, <em>numpy.ndarray.strides</em>, NumPy Manual. <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.strides.html">Stride units and indexing examples</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.classList.add("visible");
+      } else {
+        btt.classList.remove("visible");
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
