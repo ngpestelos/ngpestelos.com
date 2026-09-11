@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matrix (Linear Algebra) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A matrix is a rectangular array of entries over a field and the coordinate representation of a linear map. Size, addition, products, invertibility, eigenvalues, and uses in neural networks.">
+  <meta property="og:title" content="Matrix (Linear Algebra) &middot; Reference">
+  <meta property="og:description" content="Rectangular arrays over a field, linear maps, products, invertibility, eigenvalues, and matrix use in neural networks.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/matrix/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/matrix/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Matrix (Linear Algebra)","description":"A matrix is a rectangular array of entries over a field and the coordinate representation of a linear map between finite-dimensional vector spaces.","url":"https://ngpestelos.com/reference/matrix/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics · Linear Algebra</p>
+    <h1>Matrix (Linear Algebra)</h1>
+    <p class="updated">Reference entry &middot; last updated September 11, 2026</p>
+
+    <p class="lede"><strong>Matrix</strong> denotes a rectangular array of entries from a field \(F\), and the coordinate representation of a linear map between finite-dimensional vector spaces once bases are fixed <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First principles and definitions</a></li>
+        <li><a href="#square-matrices">2. Square matrices, rank, and invertibility</a></li>
+        <li><a href="#decompositions">3. Eigenvalues and decompositions</a></li>
+        <li><a href="#computing">4. Computing and storage</a></li>
+        <li><a href="#applied-examples">5. Applied examples</a></li>
+        <li><a href="#disambiguation">6. Disambiguation</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First principles and definitions</h2>
+    <p>An \(m \times n\) matrix over a field \(F\) is an array with \(m\) rows and \(n\) columns whose entries lie in \(F\). The entry in row \(i\) and column \(j\) is written \(a_{ij}\). The matrix is square when \(m = n\) and rectangular when \(m \neq n\) <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>The same array represents a linear map \(T \colon V \to W\) after bases of \(V\) and \(W\) are chosen. Axler defines the matrix \(M(T)\) so that the \(k\)th column of \(M(T)\) is \(T\) applied to the \(k\)th standard basis vector. Example 3.32 in that text is a map \(T \colon F^2 \to F^3\) <span class="cite">[<a href="#ref-2">2</a>]</span>.</p>
+    <p>Addition is defined only for matrices of the same size. The product \(AB\) is defined if and only if the number of columns of \(A\) equals the number of rows of \(B\). That product represents composition of the corresponding linear maps. In general \(AB \neq BA\) <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+
+    <h2 id="square-matrices">2. Square matrices, rank, and invertibility</h2>
+    <p>The \(n \times n\) identity matrix \(I\) satisfies \(AI = A\) and \(IA = A\) whenever the products are defined. A square matrix \(A\) is invertible if and only if \(\det(A) \neq 0\). The determinant is a function of square matrices <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>The rank of a matrix is the dimension of its column space, which equals the dimension of its row space. A square matrix is invertible if and only if it has full rank (rank \(n\)) <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+
+    <h2 id="decompositions">3. Eigenvalues and decompositions</h2>
+    <p>The eigenvalues of a square matrix \(A\) are the roots of the characteristic polynomial \(\det(\lambda I - A)\) <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>The singular value decomposition (SVD) is the general factorization that applies to rectangular matrices as well as square ones. Axler develops SVD in §7E. This page does not restate those formulas <span class="cite">[<a href="#ref-2">2</a>]</span>.</p>
+
+    <h2 id="computing">4. Computing and storage</h2>
+    <p>The product \(AB\) is the algebraic operation that represents composition of linear maps <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>A dense \(m \times n\) matrix is stored as a one-dimensional array in row-major order or column-major order. The dense matrix-matrix product is the kernel libraries call GEMM. The dense matrix-vector product is GEMV.</p>
+    <p class="unattributed">Row-major versus column-major layout, and the names GEMM and GEMV, are computing conventions. They are not theorems in the sources cited on this page.</p>
+
+    <h2 id="applied-examples">5. Applied examples</h2>
+    <ul>
+      <li>An embedding table \(W_E\) stores one vector per vocabulary index. Selecting an index returns one row (or column) of that matrix. See <a href="/reference/embeddings/">Embeddings</a>.</li>
+      <li>A fully connected layer computes \(Wx + b\): a matrix times a vector, plus a bias. See <a href="/reference/neural-networks/">Neural Networks</a> and <a href="/reference/deep-neural-networks/">Deep Neural Networks</a>.</li>
+      <li>In the Transformer, queries, keys, and values are obtained from learned projection matrices applied to the input <span class="cite">[<a href="#ref-3">3</a>]</span>. See <a href="/reference/attention/">Attention</a> and <a href="/reference/transformer-architecture/">Transformer Architecture</a>.</li>
+    </ul>
+
+    <h2 id="disambiguation">6. Disambiguation</h2>
+    <p>This entry is the linear-algebra object. It is not the film series and not a decision grid. A confusion matrix is a contingency table of predicted versus actual class labels.</p>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/vector/">Vector (Mathematics and Computing)</a></li>
+        <li><a href="/reference/embeddings/">Embeddings</a></li>
+        <li><a href="/reference/neural-networks/">Neural Networks</a></li>
+        <li><a href="/reference/deep-neural-networks/">Deep Neural Networks</a></li>
+        <li><a href="/reference/attention/">Attention (Neurological and Computational)</a></li>
+        <li><a href="/reference/transformer-architecture/">Transformer Architecture</a></li>
+        <li><a href="/reference/softmax/">Softmax Function</a></li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> Wikipedia, "Matrix (mathematics)." <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)">https://en.wikipedia.org/wiki/Matrix_(mathematics)</a></li>
+        <li id="ref-2"><a class="backlink" href="#first-principles">&uarr;</a> Sheldon Axler, <em>Linear Algebra Done Right</em>, 4th ed., 16 August 2026. Free full text: <a href="https://linear.axler.net/LADR4e.pdf">https://linear.axler.net/LADR4e.pdf</a>. Hub: <a href="https://linear.axler.net/">https://linear.axler.net/</a>. §3C (matrices of linear maps); §7E (singular value decomposition).</li>
+        <li id="ref-3"><a class="backlink" href="#applied-examples">&uarr;</a> Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, and Illia Polosukhin, "Attention Is All You Need," <em>Advances in Neural Information Processing Systems</em>, 2017. Free full text: <a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
