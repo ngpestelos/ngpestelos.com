@@ -159,7 +159,7 @@
     <!-- Section 3: Scaled Dot-Product Attention -->
     <h2 id="scaled-dot-product">3. Scaled Dot-Product Attention</h2>
     <p>
-      The primary primitive of the Transformer is <strong>scaled dot-product attention</strong>. Given input representations packed into Query matrix \(Q\), Key matrix \(K\), and Value matrix \(V\), attention computes weighted averages of values based on query-key inner products:
+      The primary primitive of the Transformer is <strong>scaled dot-product attention</strong> (see <a href="/reference/self-attention/">Self-Attention</a>). Given input representations packed into Query matrix \(Q\), Key matrix \(K\), and Value matrix \(V\), attention computes weighted averages of values based on query-key inner products:
     </p>
     <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
       $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
@@ -204,7 +204,7 @@
     <!-- Section 4: Multi-Head Attention -->
     <h2 id="multi-head-attention">4. Multi-Head Attention</h2>
     <p>
-      Rather than computing a single attention distribution with dimension \(d_{\text{model}}\), multi-head attention projects queries, keys, and values \(h\) times using learned parameter matrices:
+      Rather than computing a single attention distribution with dimension \(d_{\text{model}}\), <a href="/reference/self-attention/">multi-head self-attention</a> projects queries, keys, and values \(h\) times using learned parameter matrices:
     </p>
     <p style="text-align: center; margin: 1.2rem 0; background: var(--well); padding: 0.8rem; border-radius: 4px; border: 1px solid var(--line);">
       $$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O$$
