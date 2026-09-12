@@ -520,6 +520,21 @@ class ReferenceSeoTests(unittest.TestCase):
         self.assertIn('"@type":"DefinedTerm"', entry_html)
         self.assertIn('id="first-principles"', entry_html)
 
+    def test_reference_numbered_toc_suppresses_list_style(self):
+        for path in sorted(REF.glob("*/index.html")):
+            html = path.read_text(encoding="utf-8")
+            m = re.search(r"<nav class=[\"\']toc[\"\'][^>]*>(.*?)</nav>", html, re.S)
+            if not m:
+                continue
+            toc_html = m.group(1)
+            if re.search(r"<li>\s*<a[^>]*>\s*\d+\.", toc_html):
+                with self.subTest(slug=path.parent.name):
+                    self.assertRegex(
+                        html,
+                        r"\.toc\s+ol\s*\{[^}]*list-style:\s*none",
+                        f"Numbered TOC in {path.parent.name} missing 'list-style: none' styling",
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()
