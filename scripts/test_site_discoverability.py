@@ -520,6 +520,20 @@ class ReferenceSeoTests(unittest.TestCase):
         self.assertIn('"@type":"DefinedTerm"', entry_html)
         self.assertIn('id="first-principles"', entry_html)
 
+    def test_self_attention_reference_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn('href="/reference/self-attention/"', html, "Missing from reference/index.html: self-attention")
+        self.assertIn("https://ngpestelos.com/reference/self-attention/", locs, "Missing from sitemap.xml: self-attention")
+        entry_html = (REF / "self-attention" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("application/ld+json", entry_html)
+        self.assertIn('"@type":"DefinedTerm"', entry_html)
+        self.assertIn('<h2 id="first-principles">', entry_html)
+        att_html = (REF / "attention" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/self-attention/"', att_html)
+        trans_html = (REF / "transformer-architecture" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/self-attention/"', trans_html)
+
     def test_reference_numbered_toc_suppresses_list_style(self):
         for path in sorted(REF.glob("*/index.html")):
             html = path.read_text(encoding="utf-8")
