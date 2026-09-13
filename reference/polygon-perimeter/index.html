@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polygon Perimeter (Geometry) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="The perimeter of a polygon is the total length of its outer boundary, computed as the scalar sum of all its edge lengths. Formulas, regular polygons, and decompositions.">
+  <meta property="og:title" content="Polygon Perimeter (Geometry) &middot; Reference">
+  <meta property="og:description" content="Formulas for regular and irregular polygons, coordinate geometry boundary lengths, and composite shape perimeters.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/polygon-perimeter/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/polygon-perimeter/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Polygon Perimeter (Geometry)","description":"The perimeter of a polygon is the total length of its outer boundary, computed as the scalar sum of all its edge lengths.","url":"https://ngpestelos.com/reference/polygon-perimeter/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .unattributed { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); font-style: italic; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--ink); border-bottom: none; padding-bottom: 0; }
+    .toc ol { list-style: none; padding-left: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    @media print { .back { display: none !important; } }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics · Euclidean Geometry</p>
+    <h1>Polygon Perimeter (Geometry)</h1>
+    <p class="updated">Reference entry &middot; last updated September 13, 2026</p>
+
+    <p class="lede"><strong>Polygon perimeter</strong> denotes the total linear distance around the boundary of a closed two-dimensional polygon, defined as the sum of all its consecutive side lengths <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First principles and general definition</a></li>
+        <li><a href="#regular-polygons">2. Regular polygons and equilateral figures</a></li>
+        <li><a href="#quadrilaterals">3. Standard quadrilaterals</a></li>
+        <li><a href="#composite-shapes">4. Perimeter of composite shapes</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First principles and general definition</h2>
+    <p>A polygon in the Euclidean plane is bounded by a finite sequence of straight line segments called edges or sides. For an \(n\)-sided polygon with side lengths \(s_1, s_2, \dots, s_n\), the perimeter \(P\) is the scalar sum of all edge lengths <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <p>$$P = \sum_{i=1}^{n} s_i = s_1 + s_2 + \dots + s_n$$</p>
+    <p>Given the coordinates of vertices \((x_1, y_1), (x_2, y_2), \dots, (x_n, y_n)\) in cyclic order, the perimeter evaluates as:</p>
+    <p>$$P = \sum_{i=1}^{n} \sqrt{(x_{i+1} - x_i)^2 + (y_{i+1} - y_i)^2}, \quad \text{where } (x_{n+1}, y_{n+1}) = (x_1, y_1)$$</p>
+
+    <h2 id="regular-polygons">2. Regular polygons and equilateral figures</h2>
+    <p>A polygon is regular when all \(n\) sides are equal in length and all interior angles are congruent. Let \(s\) denote the common side length <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <p>$$P = n \cdot s$$</p>
+    <p>If a regular \(n\)-gon has circumradius \(R\) (distance from center to each vertex) or inradius / apothem \(r\) (distance from center to edge midpoint):</p>
+    <p>$$s = 2R \sin\left(\frac{\pi}{n}\right) = 2r \tan\left(\frac{\pi}{n}\right)$$</p>
+    <p>$$P = 2nR \sin\left(\frac{\pi}{n}\right) = 2nr \tan\left(\frac{\pi}{n}\right)$$</p>
+    <p class="unattributed">As \(n \to \infty\) with fixed circumradius \(R\), \(P \to 2\pi R\), recovering the circumference of a circle.</p>
+
+    <h2 id="quadrilaterals">3. Standard quadrilaterals</h2>
+    <p>For four-sided polygons (\(n = 4\)), geometric constraints simplify perimeter computation <span class="cite">[<a href="#ref-2">2</a>]</span>:</p>
+    <ul>
+      <li><strong>Square</strong>: Four congruent sides of length \(s\):
+        <p>$$P = 4s$$</p>
+      </li>
+      <li><strong>Rectangle / Parallelogram</strong>: Adjacent sides of length \(l\) and \(w\):
+        <p>$$P = 2(l + w) = 2l + 2w$$</p>
+      </li>
+      <li><strong>Rhombus</strong>: Four congruent sides of length \(s\):
+        <p>$$P = 4s$$</p>
+      </li>
+      <li><strong>Trapezoid</strong>: Two parallel bases \(b_1, b_2\) and two non-parallel legs \(c, d\):
+        <p>$$P = b_1 + b_2 + c + d$$</p>
+      </li>
+    </ul>
+
+    <h2 id="composite-shapes">4. Perimeter of composite shapes</h2>
+    <p>A composite shape is formed by joining two or more standard geometric figures along shared boundary segments. The perimeter of a composite shape accounts strictly for the <em>exterior boundary</em> <span class="cite">[<a href="#ref-2">2</a>]</span>.</p>
+    <p>When two shapes \(A\) and \(B\) share an internal interface of length \(L_{\text{shared}}\), the resulting composite perimeter satisfies:</p>
+    <p>$$P_{\text{composite}} = P_A + P_B - 2 \cdot L_{\text{shared}}$$</p>
+    <p>Internal dividing segments must not be added to the perimeter calculation because they do not form part of the outer perimeter boundary.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul id="see-also-list">
+      <li><a href="/reference/triangle-perimeter/">Triangle Perimeter (Geometry)</a></li>
+      <li><a href="/reference/triangle-inequality-theorem/">Triangle Inequality Theorem</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref-1"><span class="backlink">^</span>Euclid, <em>Elements</em>, Book I, Definitions 19–23 (Polygons and Regular Figures).</li>
+      <li id="ref-2"><span class="backlink">^</span>H.S.M. Coxeter, <em>Introduction to Geometry</em>, 2nd ed., John Wiley &amp; Sons, 1969.</li>
+    </ol>
+  </main>
+</body>
+</html>

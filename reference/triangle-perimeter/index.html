@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triangle Perimeter (Geometry) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="The perimeter of a triangle is the total length of its one-dimensional closed boundary, defined as the sum of its three side lengths. Formulas, special cases, and bounds.">
+  <meta property="og:title" content="Triangle Perimeter (Geometry) &middot; Reference">
+  <meta property="og:description" content="Formulas, special cases, Pythagorean derivations, semi-perimeter, and geometric bounds for the perimeter of a triangle.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/triangle-perimeter/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/triangle-perimeter/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Triangle Perimeter (Geometry)","description":"The perimeter of a triangle is the total length of its one-dimensional closed boundary, defined as the sum of its three side lengths.","url":"https://ngpestelos.com/reference/triangle-perimeter/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .unattributed { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); font-style: italic; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--ink); border-bottom: none; padding-bottom: 0; }
+    .toc ol { list-style: none; padding-left: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    @media print { .back { display: none !important; } }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics · Euclidean Geometry</p>
+    <h1>Triangle Perimeter (Geometry)</h1>
+    <p class="updated">Reference entry &middot; last updated September 13, 2026</p>
+
+    <p class="lede"><strong>Triangle perimeter</strong> denotes the total linear length of the three line segments that bound a triangle in the Euclidean plane <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First principles and basic formula</a></li>
+        <li><a href="#special-cases">2. Special triangles</a></li>
+        <li><a href="#semi-perimeter">3. Semi-perimeter and geometric applications</a></li>
+        <li><a href="#constraints">4. Inequality constraints and existence bounds</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First principles and basic formula</h2>
+    <p>In Euclidean geometry, a triangle is a polygon with three vertices and three edges. Let the lengths of the three sides be \(a\), \(b\), and \(c\). The perimeter \(P\) is the scalar sum of these lengths <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <p>$$P = a + b + c$$</p>
+    <p>Perimeter is a one-dimensional measure. Its physical unit matches the unit of edge length (such as meters, centimeters, or units in a Cartesian coordinate system) <span class="cite">[<a href="#ref-2">2</a>]</span>.</p>
+    <p>On a Cartesian coordinate plane with vertices \(A(x_1, y_1)\), \(B(x_2, y_2)\), and \(C(x_3, y_3)\), side lengths derive from the Euclidean distance formula:</p>
+    <p>$$P = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} + \sqrt{(x_3 - x_2)^2 + (y_3 - y_2)^2} + \sqrt{(x_1 - x_3)^2 + (y_1 - y_3)^2}$$</p>
+
+    <h2 id="special-cases">2. Special triangles</h2>
+    <p>Symmetries reduce the number of independent measurements needed to determine \(P\) <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <ul>
+      <li><strong>Equilateral triangle</strong>: All three sides have equal length \(a\).
+        <p>$$P = 3a$$</p>
+      </li>
+      <li><strong>Isosceles triangle</strong>: Two legs have equal length \(a\) and the base has length \(b\).
+        <p>$$P = 2a + b$$</p>
+      </li>
+      <li><strong>Right triangle</strong>: Legs \(a\) and \(b\) form a right angle, with hypotenuse \(c = \sqrt{a^2 + b^2}\) by the Pythagorean theorem <span class="cite">[<a href="#ref-1">1</a>]</span>.
+        <p>$$P = a + b + \sqrt{a^2 + b^2}$$</p>
+      </li>
+      <li><strong>Isosceles right triangle (45-45-90)</strong>: Legs have length \(a\), yielding hypotenuse \(a\sqrt{2}\).
+        <p>$$P = 2a + a\sqrt{2} = a(2 + \sqrt{2})$$</p>
+      </li>
+    </ul>
+
+    <h2 id="semi-perimeter">3. Semi-perimeter and geometric applications</h2>
+    <p>The semi-perimeter \(s\) is defined as half of the total perimeter <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <p>$$s = \frac{P}{2} = \frac{a + b + c}{2}$$</p>
+    <p>The semi-perimeter appears in fundamental geometric identities:</p>
+    <ul>
+      <li><strong>Heron's formula</strong>: Computes the area \(K\) of a triangle from its side lengths without requiring an explicit height:
+        <p>$$K = \sqrt{s(s - a)(s - b)(s - c)}$$</p>
+      </li>
+      <li><strong>Inradius</strong>: The radius \(r\) of the incircle tangent to all three sides satisfies \(K = r \cdot s\), so:
+        <p>$$r = \frac{K}{s} = \frac{2K}{P}$$</p>
+      </li>
+    </ul>
+
+    <h2 id="constraints">4. Inequality constraints and existence bounds</h2>
+    <p>A set of three positive real numbers \(\{a, b, c\}\) forms a non-degenerate triangle if and only if each side is strictly shorter than the sum of the remaining two sides. This is the triangle inequality theorem <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <p>$$a + b > c, \quad a + c > b, \quad b + c > a$$</p>
+    <p>Consequently, no single edge may exceed or equal the semi-perimeter:</p>
+    <p>$$\max(a, b, c) < s = \frac{P}{2}$$</p>
+    <p class="unattributed">Degenerate triangles where \(a + b = c\) collapse into a line segment of length \(c\), yielding perimeter \(P = 2c\) with zero interior area.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul id="see-also-list">
+      <li><a href="/reference/triangle-inequality-theorem/">Triangle Inequality Theorem</a></li>
+      <li><a href="/reference/polygon-perimeter/">Polygon Perimeter</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref-1"><span class="backlink">^</span>Euclid, <em>Elements</em>, Book I, Proposition 20 (Triangle Inequality) and Proposition 47 (Pythagorean Theorem).</li>
+      <li id="ref-2"><span class="backlink">^</span>H.S.M. Coxeter, <em>Introduction to Geometry</em>, 2nd ed., John Wiley &amp; Sons, 1969.</li>
+    </ol>
+  </main>
+</body>
+</html>
