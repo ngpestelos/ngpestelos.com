@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triangle Inequality Theorem &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="The triangle inequality theorem states that the sum of the lengths of any two sides of a triangle must be strictly greater than the length of the remaining side.">
+  <meta property="og:title" content="Triangle Inequality Theorem &middot; Reference">
+  <meta property="og:description" content="Geometric statement, metric space generalization, existence criteria, and degenerate limits of the triangle inequality theorem.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/triangle-inequality-theorem/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/triangle-inequality-theorem/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Triangle Inequality Theorem","description":"The triangle inequality theorem states that the sum of the lengths of any two sides of a triangle must be strictly greater than the length of the remaining side.","url":"https://ngpestelos.com/reference/triangle-inequality-theorem/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .unattributed { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); font-style: italic; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--ink); border-bottom: none; padding-bottom: 0; }
+    .toc ol { list-style: none; padding-left: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    @media print { .back { display: none !important; } }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics · Euclidean Geometry</p>
+    <h1>Triangle Inequality Theorem</h1>
+    <p class="updated">Reference entry &middot; last updated September 13, 2026</p>
+
+    <p class="lede"><strong>Triangle inequality theorem</strong> states that for any non-degenerate triangle, the sum of the lengths of any two sides must be strictly greater than the length of the third side <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First principles and mathematical formulation</a></li>
+        <li><a href="#test-criterion">2. Existence test for side lengths</a></li>
+        <li><a href="#range-bounds">3. Finding the range of an unknown side</a></li>
+        <li><a href="#metric-spaces">4. Generalization to vectors and metric spaces</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First principles and mathematical formulation</h2>
+    <p>In Euclidean plane geometry, a straight line path represents the shortest distance between two points. If \(A\), \(B\), and \(C\) are three distinct non-collinear vertices, traveling directly from \(A\) to \(B\) is strictly shorter than traveling from \(A\) to \(C\) and then from \(C\) to \(B\) <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>Let the side lengths opposite vertices \(A\), \(B\), and \(C\) be \(a\), \(b\), and \(c\). A valid non-degenerate triangle exists if and only if all three inequalities hold simultaneously:</p>
+    <p>$$a + b > c$$</p>
+    <p>$$a + c > b$$</p>
+    <p>$$b + c > a$$</p>
+    <p>If three points are collinear with \(C\) lying on segment \(AB\), the relation yields \(AC + CB = AB\). This forms a degenerate triangle of zero area <span class="cite">[<a href="#ref-2">2</a>]</span>.</p>
+
+    <h2 id="test-criterion">2. Existence test for side lengths</h2>
+    <p>To verify whether three given lengths \(\{a, b, c\}\) form a triangle, sorting the lengths simplifies the check. Let the sides be ordered such that:</p>
+    <p>$$a \le b \le c$$</p>
+    <p>Because \(c \ge b \ge a\), the conditions \(a + c > b\) and \(b + c > a\) are automatically satisfied for positive numbers. Therefore, verification requires only checking that the sum of the two shorter sides exceeds the longest side:</p>
+    <p>$$a + b > c$$</p>
+    <p>For example, side lengths \(3, 4, 8\) cannot form a triangle because \(3 + 4 = 7 \not> 8\). Side lengths \(5, 6, 9\) form a triangle because \(5 + 6 = 11 > 9\).</p>
+
+    <h2 id="range-bounds">3. Finding the range of an unknown side</h2>
+    <p>When two side lengths \(a\) and \(b\) are known, the third side \(x\) is bounded from both below and above by combining the three inequalities:</p>
+    <p>$$|a - b| < x < a + b$$</p>
+    <p>The lower bound \(|a - b|\) derives from rearranging \(a + x > b\) and \(b + x > a\). The upper bound \(a + b\) derives directly from \(a + b > x\). The third side must lie strictly within this open interval.</p>
+
+    <h2 id="metric-spaces">4. Generalization to vectors and metric spaces</h2>
+    <p>The geometric theorem extends as an axiom across analysis and linear algebra <span class="cite">[<a href="#ref-3">3</a>]</span>:</p>
+    <ul>
+      <li><strong>Normed vector spaces</strong>: For any vectors \(\mathbf{u}, \mathbf{v} \in V\):
+        <p>$$\|\mathbf{u} + \mathbf{v}\| \le \|\mathbf{u}\| + \|\mathbf{v}\|$$</p>
+      </li>
+      <li><strong>Metric spaces</strong>: A metric space \((M, d)\) requires distance function \(d\) to satisfy the triangle inequality for all points \(x, y, z \in M\):
+        <p>$$d(x, z) \le d(x, y) + d(y, z)$$</p>
+      </li>
+      <li><strong>Reverse triangle inequality</strong>: For real numbers and normed spaces:
+        <p>$$|\|\mathbf{u}\| - \|\mathbf{v}\|| \le \|\mathbf{u} - \mathbf{v}\|$$</p>
+      </li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul id="see-also-list">
+      <li><a href="/reference/triangle-perimeter/">Triangle Perimeter (Geometry)</a></li>
+      <li><a href="/reference/vector/">Vector (Linear Algebra)</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref-1"><span class="backlink">^</span>Euclid, <em>Elements</em>, Book I, Proposition 20.</li>
+      <li id="ref-2"><span class="backlink">^</span>H.S.M. Coxeter, <em>Introduction to Geometry</em>, 2nd ed., John Wiley &amp; Sons, 1969.</li>
+      <li id="ref-3"><span class="backlink">^</span>Walter Rudin, <em>Principles of Mathematical Analysis</em>, 3rd ed., McGraw-Hill, 1976.</li>
+    </ol>
+  </main>
+</body>
+</html>
