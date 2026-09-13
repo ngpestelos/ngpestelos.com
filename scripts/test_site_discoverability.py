@@ -549,6 +549,18 @@ class ReferenceSeoTests(unittest.TestCase):
                         f"Numbered TOC in {path.parent.name} missing 'list-style: none' styling",
                     )
 
+    def test_geometry_references_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        geom_slugs = ("triangle-perimeter", "triangle-inequality-theorem", "polygon-perimeter")
+        for slug in geom_slugs:
+            self.assertIn(f'href="/reference/{slug}/"', html, f"Missing from reference/index.html: {slug}")
+            self.assertIn(f"https://ngpestelos.com/reference/{slug}/", locs, f"Missing from sitemap.xml: {slug}")
+            entry_html = (REF / slug / "index.html").read_text(encoding="utf-8")
+            self.assertIn("application/ld+json", entry_html)
+            self.assertIn('"@type":"DefinedTerm"', entry_html)
+            self.assertIn('id="first-principles"', entry_html)
+
 
 if __name__ == "__main__":
     unittest.main()
