@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP32 &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="ESP32 is Espressif's 2.4 GHz Wi-Fi and Bluetooth SoC. The chip, the module, and the development board are different layers.">
+  <meta property="og:title" content="ESP32 · Reference">
+  <meta property="og:description" content="ESP32 is Espressif's 2.4 GHz Wi-Fi and Bluetooth SoC. The chip, the module, and the development board are different layers.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/esp32/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/esp32/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc-title {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+    .toc ol {
+      padding-left: 1.3rem;
+      margin-bottom: 0;
+    }
+    .toc li { margin: 0.25rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      color: var(--ink);
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 1.4rem;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+    p { margin-bottom: 1rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0 1.8rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.88rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 600; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.88em;
+      background: #f1f3f5;
+      padding: 0.15em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #references {
+      font-size: 0.92rem;
+    }
+    #references ol {
+      padding-left: 1.5rem;
+    }
+    #references li {
+      margin-bottom: 0.5rem;
+    }
+    footer.meta {
+      border-top: 1px solid var(--line);
+      margin-top: 3rem;
+      padding-top: 1.4rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"ESP32","description":"ESP32 is Espressif's 2.4 GHz Wi-Fi and Bluetooth SoC. The chip, the module, and the development board are different layers.","url":"https://ngpestelos.com/reference/esp32/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script>
+</head>
+<body class="reference">
+<main id="top">
+<p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Electronics &middot; Embedded Systems</p>
+<h1>ESP32</h1>
+<p class="updated">Reference entry &middot; last updated 20260914</p>
+
+<p class="lede"><strong>ESP32</strong> is a 2.4 GHz Wi-Fi and Bluetooth system-on-chip (SoC) from Espressif Systems. The silicon is not a complete product: a module adds flash and an antenna, and a development board adds USB, a 3.3 V regulator, and pin headers.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref3">3</a>]</span></p>
+<nav class="toc" aria-label="Contents"><div class="toc-title">Contents</div><ol><li><a href="#first-principles">First principles and definitions</a></li><li><a href="#layers">Chip, module, and board</a></li><li><a href="#original">Original ESP32 specifications</a></li><li><a href="#family">Later ESP32-named SoCs</a></li><li><a href="#software">Programming stacks</a></li><li><a href="#constraints">Voltage, pins, and power</a></li><li><a href="#see-also">See also</a></li><li><a href="#references">References</a></li></ol></nav>
+
+<h2 id="first-principles">1. First principles and definitions</h2>
+<p>A microcontroller is a computer on one die: CPU, RAM, ROM, timers, and I/O. A radio SoC adds a wireless PHY and MAC on the same die. ESP32 is the second kind. It integrates 802.11 b/g/n Wi-Fi, Bluetooth BR/EDR, Bluetooth LE, an Xtensa CPU, SRAM, and peripherals, plus RF blocks (antenna switch, balun, power amplifier, LNA, filters).<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref4">4</a>]</span></p>
+<p>Firmware lives in flash and runs on the chip. Espressif's official path is to compile an application with ESP-IDF and flash it over a serial adapter. That is not a general-purpose operating system with a userland and a disk.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<p>Digital I/O is 3.3 V class. The datasheet's typical supply is 3.3 V, with 3.6 V as the recommended maximum on the 3.3 V domains. A USB 5 V rail on a development board feeds a regulator. It is not a GPIO voltage.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref3">3</a>]</span> See <a href="/reference/volts/">volts</a> and <a href="/reference/ohms-law/">Ohm's law</a>.</p>
+
+<h2 id="layers">2. Chip, module, and board</h2>
+<p>Three packaged products share the name:</p>
+<ul>
+  <li><strong>SoC.</strong> The ESP32 silicon (for example ESP32-D0WD-V3). It needs external flash (unless the variant has in-package flash), a crystal, power, and an antenna network.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+  <li><strong>Module.</strong> A certified RF module such as ESP32-WROOM-32E (flash, PCB or IPEX antenna) or ESP32-WROVER (flash plus PSRAM). The module is the usual unit a board designer places.<span class="cite">[<a href="#ref12">12</a>]</span></li>
+  <li><strong>Development board.</strong> Espressif's ESP32-DevKitC V4 mounts a module, a USB-to-UART bridge, EN and Boot buttons, a 3.3 V regulator, and dual pin headers for a breadboard.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+</ul>
+<p>ESP-IDF's ESP32 getting-started page links official boards including ESP32-DevKitC, ESP32-DevKitM-1, ESP32-Ethernet-Kit, ESP32-PICO-KIT-1, ESP32-PICO-DevKitM-2, and ESP32-LCDKit. Third-party boards reuse the same SoC and module parts with different USB chips and antenna layouts.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+<h2 id="original">3. Original ESP32 specifications</h2>
+<p>Espressif released ESP32 in 2016, after the Wi-Fi-only ESP8266 (2014).<span class="cite">[<a href="#ref5">5</a>]</span><span class="cite">[<a href="#ref6">6</a>]</span> The series datasheet (v5.3) describes a 40 nm combo chip with these headline numbers:</p>
+<table>
+  <thead>
+    <tr><th>Item</th><th>Value (ESP32 series)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>CPU</td><td>Xtensa 32-bit LX6, one or two cores, up to 240 MHz</td></tr>
+    <tr><td>On-chip memory</td><td>448 KB ROM, 520 KB SRAM, 16 KB RTC SRAM</td></tr>
+    <tr><td>Wi-Fi</td><td>802.11 b/g/n, 2.4 GHz, up to 150 Mbps (802.11n)</td></tr>
+    <tr><td>Bluetooth</td><td>v4.2 BR/EDR and Bluetooth LE</td></tr>
+    <tr><td>GPIO</td><td>34 programmable pins (some input-only; some reserved for in-package flash/PSRAM)</td></tr>
+    <tr><td>Analog</td><td>12-bit SAR ADC (up to 18 channels), two 8-bit DACs, 10 touch sensors</td></tr>
+    <tr><td>Digital I/O examples</td><td>SPI, I2C, I2S, UART, SDIO, LED PWM, motor PWM, RMT, TWAI (CAN 2.0), Ethernet MAC</td></tr>
+    <tr><td>Supply (typical)</td><td>3.3 V (recommended max 3.6 V on the 3.3 V domains)</td></tr>
+    <tr><td>Operating temperature</td><td>-40 °C to 125 °C; -40 °C to 85 °C for some in-package flash/PSRAM parts</td></tr>
+  </tbody>
+</table>
+<p>Sources: Espressif ESP32 Series Datasheet v5.3.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>The chip can run standalone or as a slave radio for a host MCU over SPI, SDIO, I2C, or UART.<span class="cite">[<a href="#ref4">4</a>]</span> Several early package variants are marked NRND or EOL; ESP32-D0WD-V3 remains in the current datasheet set.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+<h2 id="family">4. Later ESP32-named SoCs</h2>
+<p>Espressif reused the ESP32 name for later SoCs that are not drop-in replacements. CPU ISA, Bluetooth generation, and extra radios change by series. ESP-IDF names the families ESP32, ESP32-S, ESP32-C, ESP32-H, and ESP32-P.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<table>
+  <thead>
+    <tr><th>Series</th><th>CPU (vendor description)</th><th>Radio notes</th><th>Launch year (Espressif)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>ESP32</td><td>Xtensa LX6, dual or single, 240 MHz typical</td><td>2.4 GHz Wi-Fi + Bluetooth 4.2 BR/EDR and LE</td><td>2016</td></tr>
+    <tr><td>ESP32-S2</td><td>Xtensa LX7, single core, 240 MHz</td><td>2.4 GHz Wi-Fi; no Bluetooth in the ESP-IDF comparison</td><td>2020</td></tr>
+    <tr><td>ESP32-C3</td><td>RISC-V, single core, 160 MHz</td><td>2.4 GHz Wi-Fi + Bluetooth 5 LE</td><td>2020</td></tr>
+    <tr><td>ESP32-S3</td><td>Xtensa LX7, dual core, 240 MHz</td><td>2.4 GHz Wi-Fi + Bluetooth 5 LE; 512 KB SRAM</td><td>2020</td></tr>
+    <tr><td>ESP32-C6</td><td>RISC-V HP core up to 160 MHz plus an LP core</td><td>2.4 GHz Wi-Fi 6, Bluetooth 5 LE, IEEE 802.15.4 (Thread/Zigbee)</td><td>2022 product page</td></tr>
+  </tbody>
+</table>
+<p>ESP32, ESP32-S2, and ESP32-C3 rows follow Espressif's ESP-IDF v4.3 chip-series comparison. ESP32-S3 follows Espressif's 31 December 2020 announcement. ESP32-C6 follows Espressif's product page.<span class="cite">[<a href="#ref5">5</a>]</span><span class="cite">[<a href="#ref6">6</a>]</span><span class="cite">[<a href="#ref7">7</a>]</span><span class="cite">[<a href="#ref8">8</a>]</span></p>
+<p>A board labeled "ESP32" may be any of these. Firmware, pin maps, and radio APIs must match the variant.</p>
+
+<h2 id="software">5. Programming stacks</h2>
+<ul>
+  <li><strong>ESP-IDF.</strong> Espressif's official IoT Development Framework. C/C++ toolchain, FreeRTOS-based runtime, Wi-Fi and Bluetooth stacks, and <code>idf.py</code> to build and flash.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+  <li><strong>Arduino-ESP32.</strong> Arduino APIs on top of ESP-IDF. Espressif's Arduino core 3.3.11 documents itself as based on ESP-IDF 5.5.<span class="cite">[<a href="#ref9">9</a>]</span></li>
+  <li><strong>MicroPython.</strong> A Python interpreter ported to ESP32, ESP32-C3, ESP32-C6, ESP32-S2, and ESP32-S3, with a serial REPL.<span class="cite">[<a href="#ref10">10</a>]</span></li>
+  <li><strong>ESPHome.</strong> YAML firmware for Home Assistant. The <code>esp32</code> platform takes a <code>variant</code> that must match the silicon, including <code>esp32</code>, <code>esp32s2</code>, <code>esp32s3</code>, <code>esp32c3</code>, and <code>esp32c6</code>.<span class="cite">[<a href="#ref11">11</a>]</span></li>
+</ul>
+<p>All four flash firmware onto the chip. They differ in language and in how much of ESP-IDF they expose.</p>
+
+<h2 id="constraints">6. Voltage, pins, and power</h2>
+<p>Recommended digital supply is 3.3 V typical. Absolute maximum on those pins is 3.6 V. Some in-package flash/PSRAM parts need at least 3.0 V; parts without in-package memory may go down to 2.3 V.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<p>Not every GPIO is general-purpose. Espressif marks some pins input-only (no output, no on-chip pull resistors), some as strapping pins that set boot mode, and some as reserved for in-package flash or PSRAM. On DevKitC, GPIO0 is the Boot button; pulling it low at reset enters download mode.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref3">3</a>]</span><span class="cite">[<a href="#ref11">11</a>]</span></p>
+<p>Radio current is large compared with sleep current. At 3.3 V and 25 °C, Espressif measures typical 240 mA transmit for 802.11b at +19.5 dBm, 95-100 mA Wi-Fi receive, and 10 µA in Deep-sleep (RTC memory can stay powered).<span class="cite">[<a href="#ref1">1</a>]</span> Average <a href="/reference/watts/">power</a> depends on duty cycle, not on the peak TX number alone.</p>
+<p>The on-chip radio is 2.4 GHz. ESP32 modules ship with a PCB antenna or an IPEX connector for an external antenna.<span class="cite">[<a href="#ref12">12</a>]</span></p>
+
+<h2 id="see-also">7. See also</h2>
+<ul>
+  <li><a href="/reference/volts/">Volts (Voltage)</a></li>
+  <li><a href="/reference/ohms-law/">Ohm's Law</a></li>
+  <li><a href="/reference/watts/">Watts (Power)</a></li>
+</ul>
+
+<h2 id="references">8. References</h2>
+<ol>
+  <li id="ref1"><a href="https://documentation.espressif.com/esp32_datasheet_en.pdf">Espressif, ESP32 Series Datasheet, Version 5.3 (PDF)</a></li>
+  <li id="ref2"><a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32/get-started/index.html">Espressif, ESP-IDF Programming Guide, ESP32 Get Started (v6.1)</a></li>
+  <li id="ref3"><a href="https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32/esp32-devkitc/user_guide.html">Espressif, ESP32-DevKitC V4 User Guide</a></li>
+  <li id="ref4"><a href="https://www.espressif.com/en/products/socs/esp32">Espressif, ESP32 Wi-Fi &amp; Bluetooth SoC product page</a></li>
+  <li id="ref5"><a href="https://docs.espressif.com/projects/esp-idf/en/v4.3/esp32/hw-reference/chip-series-comparison.html">Espressif, ESP-IDF v4.3 Chip Series Comparison</a></li>
+  <li id="ref6"><a href="https://www.espressif.com/en/news/ESP32_C3">Espressif, Introducing ESP32-C3 (27 November 2020)</a></li>
+  <li id="ref7"><a href="https://www.espressif.com/en/news/ESP32_S3">Espressif, Announcing ESP32-S3 for AIoT Applications (31 December 2020)</a></li>
+  <li id="ref8"><a href="https://www.espressif.com/en/products/socs/esp32-c6">Espressif, ESP32-C6 Wi-Fi 6 &amp; BLE 5 &amp; Thread/Zigbee SoC</a></li>
+  <li id="ref9"><a href="https://docs.espressif.com/projects/arduino-esp32/en/latest/index.html">Espressif, Arduino ESP32 Core documentation (core 3.3.11 / ESP-IDF 5.5)</a></li>
+  <li id="ref10"><a href="https://docs.micropython.org/en/latest/esp32/quickref.html">MicroPython, Quick reference for the ESP32</a></li>
+  <li id="ref11"><a href="https://esphome.io/components/esp32/">ESPHome, ESP32 Platform</a></li>
+  <li id="ref12"><a href="https://www.espressif.com/en/products/modules/esp32">Espressif, ESP32 Series of Modules</a></li>
+</ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

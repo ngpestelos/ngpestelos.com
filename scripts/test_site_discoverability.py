@@ -520,6 +520,19 @@ class ReferenceSeoTests(unittest.TestCase):
         self.assertIn('"@type":"DefinedTerm"', entry_html)
         self.assertIn('id="first-principles"', entry_html)
 
+    def test_esp32_reference_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn('href="/reference/esp32/"', html, "Missing from reference/index.html: esp32")
+        self.assertIn("https://ngpestelos.com/reference/esp32/", locs, "Missing from sitemap.xml: esp32")
+        entry_html = (REF / "esp32" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("application/ld+json", entry_html)
+        self.assertIn('"@type":"DefinedTerm"', entry_html)
+        self.assertIn('<h2 id="first-principles">', entry_html)
+        for sibling in ("ohms-law", "volts", "watts"):
+            sibling_html = (REF / sibling / "index.html").read_text(encoding="utf-8")
+            self.assertIn('href="/reference/esp32/"', sibling_html, f"Missing ESP32 link in {sibling}")
+
     def test_self_attention_reference_registered(self):
         html = (REF / "index.html").read_text(encoding="utf-8")
         locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
