@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Harness · Reference · Nestor G Pestelos Jr</title>
+  <title>Agent Harness (archived 20260915) · Reference · Nestor G Pestelos Jr</title>
   <meta name="description" content="An agent harness is the complete software infrastructure and runtime environment that wraps, controls, observes, and assists a foundation model in autonomous execution.">
-  <meta property="og:title" content="Agent Harness · Reference">
-  <meta property="og:description" content="Agent harness components, a computer architecture analogy, benchmark evidence, and skills versus runtime responsibilities.">
+  <meta property="og:title" content="Agent Harness (archived 20260915) · Reference">
+  <meta property="og:description" content="Architecture, 12 core components, Von Neumann mapping, and verification loops for AI agent harnesses.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ngpestelos.com/reference/agent-harness/">
-  <link rel="canonical" href="https://ngpestelos.com/reference/agent-harness/">
+  <meta property="og:url" content="https://ngpestelos.com/reference/agent-harness-20260915/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/agent-harness-20260915/">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
   <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
   <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
@@ -180,7 +180,7 @@
     }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"Agent Harness","description":"An agent harness is the complete software infrastructure and runtime environment that wraps, controls, observes, and assists a foundation model in autonomous execution.","url":"https://ngpestelos.com/reference/agent-harness/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Agent Harness","description":"An agent harness is the complete software infrastructure and runtime environment that wraps, controls, observes, and assists a foundation model in autonomous execution.","url":"https://ngpestelos.com/reference/agent-harness-20260915/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
@@ -188,11 +188,10 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Artificial Intelligence · Systems Architecture</p>
     <h1>Agent Harness</h1>
-    <p class="updated">Reference entry · last updated 20260915</p>
+    <p class="updated">Archived version captured 20260915. Contains superseded claims and citations. <a href="/reference/agent-harness/">Read the current entry</a>.</p>
+    <p class="updated">Reference entry · last updated August 25, 2026</p>
 
-    <p class="updated"><a href="/reference/agent-harness-20260915/">Previous version, captured 20260915</a></p>
-
-    <p class="lede">An <strong>agent harness</strong> is the software and runtime environment surrounding a foundation model that manages its execution. It supplies tools, context, state, feedback, and permission controls.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p class="lede">An <strong>agent harness</strong> is the software scaffolding and runtime environment that surrounds a foundation model to enable autonomous goal execution.<span class="cite">[<a href="#ref1">1</a>]</span> While the core model performs stateless next-token prediction, the harness manages execution loops, memory persistence, context window budgeting, tool execution, security guardrails, and verification feedback.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 
     <div class="diagram-box">
       <svg viewBox="0 0 660 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent Harness Architecture">
@@ -235,51 +234,50 @@
     <nav class="toc" aria-label="Contents">
       <p class="toc-title">Contents</p>
       <ol>
-        <li><a href="#first-principles">First principles: a computer architecture analogy</a></li>
-        <li><a href="#harness-over-model">Harness changes and measured performance</a></li>
-        <li><a href="#twelve-components">Twelve architectural components</a></li>
-        <li><a href="#fat-skills-thin-harness">Skills and runtime responsibilities</a></li>
+        <li><a href="#von-neumann">The Von Neumann computer architecture analogy</a></li>
+        <li><a href="#harness-over-model">The harness as the primary performance lever</a></li>
+        <li><a href="#twelve-components">The 12 core architectural components</a></li>
+        <li><a href="#fat-skills-thin-harness">Fat skills and thin harness design</a></li>
         <li><a href="#see-also">See also</a></li>
         <li><a href="#references">References</a></li>
       </ol>
     </nav>
 
-    <span id="von-neumann"></span>
-    <h2 id="first-principles">First principles: a computer architecture analogy</h2>
-    <p>Beren Millidge compares scaffolded language models to a computer. The mapping is an analogy: language-model outputs lack the reliability of CPU instructions.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <h2 id="von-neumann">The Von Neumann computer architecture analogy</h2>
+    <p>Computer scientists map the agent harness to classical operating system architecture:<span class="cite">[<a href="#ref3">3</a>]</span></p>
     <ul>
-      <li><strong>LLM ≈ CPU</strong>: Transforms input tokens into output tokens.</li>
-      <li><strong>Context window ≈ RAM</strong>: Holds the prompt and information available for a model call.</li>
-      <li><strong>External memory ≈ Disk storage</strong>: Stores information beyond the current context.</li>
-      <li><strong>Tools ≈ Device drivers</strong>: Connect the model to external systems.</li>
-      <li><strong>Scaffolding protocols ≈ Programs</strong>: Chain model calls into a larger task.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+      <li><strong>Raw LLM = CPU</strong>: A fast, stateless reasoning engine capable of transformation but possessing no intrinsic state between calls.</li>
+      <li><strong>Context window = RAM</strong>: Fast, high-bandwidth memory with strict capacity constraints that suffers from performance degradation (context rot) when saturated.</li>
+      <li><strong>Filesystem / database = Disk storage</strong>: Long-term persistent storage (repositories, notes, vector databases).</li>
+      <li><strong>Tools / <a href="/reference/model-context-protocol/">MCP</a> servers = Device drivers</strong>: Standardized interfaces connecting compute to external peripherals and web services.</li>
+      <li><strong>The harness = Operating system</strong>: The runtime coordinator that allocates memory, schedules execution cycles, manages I/O, and enforces security boundaries.<span class="cite">[<a href="#ref3">3</a>]</span></li>
     </ul>
 
-    <h2 id="harness-over-model">Harness changes and measured performance</h2>
-    <p>In a 20260217 report, LangChain's Vivek Trivedy described improving deepagents-cli from 52.8% to 66.5% on Terminal Bench 2.0 while keeping GPT-5.2-Codex fixed. The team changed the harness, including prompts, tools, and middleware, and adjusted reasoning budgets.<span class="cite">[<a href="#ref4">4</a>]</span></p>
-    <p>This result shows an improvement for that agent and benchmark. It does not establish that harness changes generally outperform model upgrades, or isolate verification as the cause of the gain.</p>
+    <h2 id="harness-over-model">The harness as the primary performance lever</h2>
+    <p>Production benchmarks show that infrastructure wrapping a model often drives greater performance gains than upgrading the underlying model weights.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>In the TerminalBench 2.0 benchmark, LangChain modified only their execution harness around an identical model and jumped from outside the top 30 to Rank 5, raising task pass rates from 52.8% to 66.5%.<span class="cite">[<a href="#ref4">4</a>]</span> Across multi-step coding benchmarks, identical models achieve between 42% and 78% completion rates purely as a function of harness quality.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 
-    <h2 id="twelve-components">Twelve architectural components</h2>
-    <p>These twelve items group harness responsibilities from the cited designs for illustration. A system may combine them or omit features it does not need.</p>
+    <h2 id="twelve-components">The 12 core architectural components</h2>
+    <p>A production agent harness integrates twelve discrete subsystems:<span class="cite">[<a href="#ref2">2</a>]</span></p>
     <ol>
-      <li><strong>Orchestration loop</strong>: Calls the model, executes tools, and returns their results for the next step.<span class="cite">[<a href="#ref1">1</a>]</span></li>
-      <li><strong>Tool interface</strong>: Defines available actions and their inputs. Anthropic recommends clear tools with little overlap.<span class="cite">[<a href="#ref2">2</a>]</span></li>
-      <li><strong>Memory layer</strong>: Stores notes outside the context window and retrieves them when needed.<span class="cite">[<a href="#ref2">2</a>]</span></li>
-      <li><strong>Context management</strong>: Summarizes older conversation and clears redundant tool results. Compaction can lose details that later matter.<span class="cite">[<a href="#ref2">2</a>]</span></li>
-      <li><strong>Prompt assembly</strong>: Selects system instructions, tool descriptions, external data, and message history for each call.<span class="cite">[<a href="#ref2">2</a>]</span></li>
-      <li><strong>Input/output handling</strong>: Passes requests to the model and routes tool calls to execution infrastructure.<span class="cite">[<a href="#ref1">1</a>]</span></li>
-      <li><strong>State persistence</strong>: Uses progress files and Git history to help later sessions resume work.<span class="cite">[<a href="#ref5">5</a>]</span></li>
-      <li><strong>Error handling</strong>: Provides recovery paths after failures, such as restoring a working Git state.<span class="cite">[<a href="#ref5">5</a>]</span></li>
-      <li><strong>Guardrails</strong>: Uses hooks and sandbox restrictions to enforce action boundaries.<span class="cite">[<a href="#ref1">1</a>]</span></li>
-      <li><strong>Verification loops</strong>: Runs tests and returns failures to the agent. In Anthropic's web-app experiments, browser testing exposed defects that code inspection missed.<span class="cite">[<a href="#ref5">5</a>]</span></li>
-      <li><strong>Subagent management</strong>: Delegates focused tasks to separate contexts and collects their results.<span class="cite">[<a href="#ref2">2</a>]</span></li>
-      <li><strong>Execution flow</strong>: Controls when work continues or stops, including checks before completion.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+      <li><strong>Orchestration loop</strong>: The Thought-Action-Observation cycle (such as ReAct or Gather-Act-Verify) driving autonomous step progression.</li>
+      <li><strong>Tool interface</strong>: Schema injection and execution handlers. Pruning tool counts to task-relevant subsets consistently increases reliability.</li>
+      <li><strong>Memory layer</strong>: Multi-timescale memory tracking short-term conversation logs and long-term project knowledge.</li>
+      <li><strong>Context management</strong>: Observation masking and active compaction to prevent 30%+ retrieval degradation in mid-window positions.</li>
+      <li><strong>Prompt assembly</strong>: Priority-ordered composition of system rules, tool definitions, memory, and user instructions.</li>
+      <li><strong>Structured I/O</strong>: Native tool calling and schema validation enforcing parseable outputs.</li>
+      <li><strong>State persistence</strong>: Checkpoint mechanisms (such as Git commits or progress ledgers) enabling session recovery after errors.</li>
+      <li><strong>Error handling</strong>: Four-tier classification for transient network retries, model-recoverable tool errors, human escalation, and fatal halts.</li>
+      <li><strong>Guardrails</strong>: Deterministic permission boundaries separate from model reasoning that gate destructive actions.</li>
+      <li><strong>Verification loops</strong>: Linters, compilers, and test suites providing feedback. Adding computational verification increases quality 2x to 3x.<span class="cite">[<a href="#ref5">5</a>]</span></li>
+      <li><strong>Subagent management</strong>: Worktree isolation, background panes, and task delegation routines.</li>
+      <li><strong>Execution flow</strong>: The 7-step pipeline from prompt compilation to context update.</li>
     </ol>
 
-    <h2 id="fat-skills-thin-harness">Skills and runtime responsibilities</h2>
-    <p>Agent Skills package task instructions in <code>SKILL.md</code> files and can include scripts and reference material. Compatible agents load them when relevant.<span class="cite">[<a href="#ref6">6</a>]</span></p>
-    <p>Runtime code enforces permissions, invokes tools, and runs checks at defined lifecycle points. A written instruction to avoid an action is not an enforcement boundary.<span class="cite">[<a href="#ref1">1</a>]</span></p>
-    <p>Skills make procedures easier to reuse, but format compatibility does not ensure identical behavior. Millidge notes that model-specific prompts and failsafes limit portability; LangChain likewise recommends tuning harnesses for the model and task.<span class="cite">[<a href="#ref3">3</a>, <a href="#ref4">4</a>]</span> Portability therefore needs testing in the destination environment.</p>
+    <h2 id="fat-skills-thin-harness">Fat skills and thin harness design</h2>
+    <p>Personal and enterprise agent architectures diverge on where operational logic resides:<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p><strong>Fat harness, thin skills (brittle)</strong>: Embedding domain knowledge and workflow logic inside hardcoded Python or framework code. Upgrading models or changing harnesses breaks execution.</p>
+    <p><strong>Fat skills, thin harness (compounding)</strong>: Encoding workflows into version-controlled, human-readable runbooks (Markdown skills) while keeping the harness to a minimal routing loop. The harness remains model-agnostic, and procedural knowledge compounds across agent generations.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 
     <h2 id="see-also">See also</h2>
     <ul>
@@ -293,12 +291,11 @@
 
     <h2 id="references">References</h2>
     <ol>
-      <li id="ref1"><a class="backlink" href="#fat-skills-thin-harness">↑</a> Osmani, Addy. <a href="https://addyosmani.com/blog/agent-harness-engineering/">“Agent Harness Engineering.”</a> 20260419.</li>
-      <li id="ref2"><a class="backlink" href="#twelve-components">↑</a> Anthropic Applied AI team. <a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">“Effective context engineering for AI agents.”</a> 20250929.</li>
-      <li id="ref3"><a class="backlink" href="#first-principles">↑</a> Millidge, Beren. <a href="https://www.beren.io/2023-04-11-Scaffolded-LLMs-natural-language-computers/">“Scaffolded LLMs as natural language computers.”</a> 20230411.</li>
-      <li id="ref4"><a class="backlink" href="#harness-over-model">↑</a> Trivedy, Vivek. <a href="https://www.langchain.com/blog/improving-deep-agents-with-harness-engineering">“Improving Deep Agents with harness engineering.”</a> LangChain, 20260217.</li>
-      <li id="ref5"><a class="backlink" href="#twelve-components">↑</a> Young, Justin. <a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">“Effective harnesses for long-running agents.”</a> Anthropic, 20251126.</li>
-      <li id="ref6"><a class="backlink" href="#fat-skills-thin-harness">↑</a> Agent Skills. <a href="https://agentskills.io/home">“Agent Skills Overview.”</a> Accessed 20260915.</li>
+      <li id="ref1"><a class="backlink" href="#fat-skills-thin-harness">↑</a> Osmani, Addy. "Agent Harness Engineering." Google Chrome Engineering Notes, May 2026. <a href="https://x.com/addyosmani/status/2053231239721885918">https://x.com/addyosmani/status/2053231239721885918</a></li>
+      <li id="ref2"><a class="backlink" href="#twelve-components">↑</a> Pachaar, Akshay. "Anatomy of an AI Agent Harness." <em>Towards AI Research</em>, April 2026.</li>
+      <li id="ref3"><a class="backlink" href="#von-neumann">↑</a> Millidge, Beren. "Reinventing the Von Neumann Architecture for Large Language Models." Research Notes, 2023.</li>
+      <li id="ref4"><a class="backlink" href="#harness-over-model">↑</a> LangChain. "TerminalBench 2.0 Benchmark Infrastructure Overhaul Report," 2024.</li>
+      <li id="ref5"><a class="backlink" href="#twelve-components">↑</a> Cherny, Boris. "Engineering Verification Loops in Claude Code." Anthropic Technical Notes, 2025.</li>
     </ol>
 
     <footer class="meta">
