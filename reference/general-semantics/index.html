@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Semantics · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="General Semantics is Alfred Korzybski's system for how language and abstraction shape perception, and why people mistake a description of the world for the world itself.">
+  <meta property="og:title" content="General Semantics · Reference">
+  <meta property="og:description" content="Korzybski's system for how language and abstraction shape perception. Identification, consciousness of abstracting, extensional devices, and the Dianetics association.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/general-semantics/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/general-semantics/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+      .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"General Semantics","description":"General Semantics is Alfred Korzybski's system for how language and abstraction shape perception, and why people mistake a description of the world for the world itself.","url":"https://ngpestelos.com/reference/general-semantics/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Philosophy · Language and Cognition</p>
+    <h1>General Semantics</h1>
+    <p class="updated">Reference entry · last updated September 18, 2026</p>
+
+    <p class="lede"><strong>General Semantics</strong> is a school of thought, founded by Alfred Korzybski, about how language and abstraction shape perception and behavior. Its central claim is that people mistake their descriptions of the world for the world itself. Korzybski set out the system in <em>Science and Sanity: An Introduction to Non-Aristotelian Systems and General Semantics</em> (1933).<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#identification">Identification and the silent level</a></li>
+        <li><a href="#extensional-devices">Extensional devices</a></li>
+        <li><a href="#influence">Influence and decline</a></li>
+        <li><a href="#dianetics">The Dianetics association</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p>The foundational claim is that the world is not identical to any abstract description of it. Korzybski compressed this into the slogan “the map is not the territory,” and a related claim, “the word is not the thing.” Language necessarily abstracts from the empirical world, so every description leaves something out, a point he called non-allness.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>From that claim he built a model of cognition with ordered levels: an event, a perception of it, and a verbal description of the perception. Each level is an abstraction of the one below. The failure he cared about is treating a higher level as if it were the level beneath it.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Korzybski also proposed <em>time-binding</em> as the human differentiator: the capacity to pass abstractions and knowledge from one generation to the next, and to build on what earlier generations produced. He treated this accumulation, rather than raw individual cognition, as the source of human dominance.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="identification">Identification and the silent level</h2>
+    <p><em>Identification</em> is the failure to differentiate those levels. Korzybski wrote that most people identify the verbal level with the silent, non-verbal levels and react as if the words were the thing. His illustration is pavlovian: an imagined lemon or the word “lemon” can trigger salivation, an appropriate response only to the physical fruit.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The remedy he named <em>consciousness of abstracting</em>: a trained awareness of the level one is operating on. The immediate effect is a delay between stimulus and response, which he described as engaging the cortex before reacting. Language is central to the system because so much identification enters through words and labels.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="extensional-devices">Extensional devices</h2>
+    <p>Korzybski prescribed practical techniques, called extensional devices, to make differentiation habitual. The best known is <em>indexing</em>: distinguishing student<sub>1</sub> from student<sub>2</sub>, or this term’s student from last term’s. Related to indexing is dating, which tags a claim to the time it was made. The training aids included the structural differential, a physical model of the abstraction levels.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="influence">Influence and decline</h2>
+    <p>Starting around 1940, the English professor S. I. Hayakawa assembled General Semantics into material for mainstream communications teaching, and his <em>Language in Action</em> (1941) carried the ideas to a wide audience. The Institute of General Semantics, founded in 1938, continues today. The meta-science affected literary criticism, linguistics, psychology, and cybernetics, and it entered mid-century science fiction through A. E. van Vogt’s Null-A novels and through Robert A. Heinlein.<span class="cite">[<a href="#ref1">1</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>The movement waned after the 1950s while several of its ideas persisted elsewhere, including media literacy and cognitive therapies. Critics attacked it on its own terms. The philosopher Max Black described it as “some hypothetical neurology fortified with dogmatic metaphysics,” and Martin Gardner wrote that the work “moves into the realm of cultism and pseudo-science.”<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Its reputation never recovered. A retrospective account in 2014 put the state of his standing plainly: “Today, Korzybski is either forgotten or regarded as a crank.”<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="dianetics">The Dianetics association</h2>
+    <p>L. Ron Hubbard encountered General Semantics partly through the science fiction writer Robert A. Heinlein. Hubbard’s Dianetics (1950) borrowed the identification mechanism directly: the “reactive mind” was said to think in identities while the “analytical mind” thinks in similarities and differences, and Hubbard attributed that distinction to Korzybski. The “misunderstood word” theory in Dianetics also derives from Korzybski’s work on definition.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Hubbard acknowledged the debt early and dropped it later. In one lecture he said that “to Breuer’s first belief in the subject of mental catharsis and to Korzybski belong the only acknowledgments that Dianetics really would care to make,” and he described Dianetics as a member of the same class as General Semantics and Cybernetics.<span class="cite">[<a href="#ref3">3</a>]</span><span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Adherents of General Semantics rejected the pairing. One of Korzybski’s major followers, Hayakawa, attacked Dianetics as “fictional science,” and General Semantics advocates argued that Hubbard’s grasp of the system was unsystematic. The episode is a documented case of one body of work becoming associated with a later, discredited movement; Korzybski’s system had also drawn critical attacks on its own terms before Dianetics appeared.<span class="cite">[<a href="#ref2">2</a>]</span><span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/epistemology/">Epistemology</a></li>
+      <li><a href="/reference/reasoning/">Reasoning in Language Models</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><a class="backlink" href="#first-principles">↑</a> “General semantics,” Wikipedia. <a href="https://en.wikipedia.org/wiki/General_semantics">https://en.wikipedia.org/wiki/General_semantics</a></li>
+      <li id="ref2"><a class="backlink" href="#influence">↑</a> Lee Konstantinou, “The Eccentric Polish Count Who Influenced Classic SF’s Greatest Writers,” io9 / Gizmodo, September 5, 2014. <a href="https://gizmodo.com/the-eccentric-polish-count-who-influenced-classic-sfs-g-1631001935">https://gizmodo.com/the-eccentric-polish-count-who-influenced-classic-sfs-g-1631001935</a></li>
+      <li id="ref3"><a class="backlink" href="#dianetics">↑</a> Jon Atack, “Possible origins for Dianetics and Scientology,” jonatack.co.uk. <a href="https://jonatack.co.uk/possible-origins-for-dianetics-and-scientology/">https://jonatack.co.uk/possible-origins-for-dianetics-and-scientology/</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
