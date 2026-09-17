@@ -315,6 +315,13 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertIn("1,116,726", deep)
         self.assertNotIn("ROI", comparison)
 
+    def test_eli5_attention_is_registered(self):
+        html = (ROOT / "eli5" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/eli5/attention/"', html)
+        self.assertTrue((ROOT / "eli5" / "attention" / "index.html").is_file())
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        self.assertIn("https://ngpestelos.com/eli5/attention/", locs)
+
 
 class ReferenceSeoTests(unittest.TestCase):
     def test_reference_entries_have_semantic_paragraph_kickers(self):
