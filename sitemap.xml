@@ -1314,6 +1314,16 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/eurodollar-system/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/triffins-dilemma/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/emv-3ds/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
