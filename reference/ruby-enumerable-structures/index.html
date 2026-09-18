@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby Enumerable Structures &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Ruby enumerable structures are the classes that include the Enumerable mixin: Array, Hash, Set, Range, Struct, and Enumerator. Covers the each protocol, entry order, key equivalence, deferred evaluation, and the expected cost of each structure.">
+  <meta property="og:title" content="Ruby Enumerable Structures &middot; Reference">
+  <meta property="og:description" content="The Enumerable each protocol, Array and Hash behavior, Set, Range, Struct, Enumerator::Lazy, and how to choose a structure.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-enumerable-structures/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-enumerable-structures/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+      border: 1px solid var(--line);
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      overflow-x: auto;
+      margin: 0.8rem 0 1.2rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.8rem 0 1.2rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.4rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+      .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby Enumerable Structures","description":"Ruby enumerable structures are the classes that include the Enumerable mixin: Array, Hash, Set, Range, Struct, and Enumerator. Covers the each protocol, entry order, key equivalence, deferred evaluation, and the expected cost of each structure.","url":"https://ngpestelos.com/reference/ruby-enumerable-structures/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Ruby Enumerable Structures</h1>
+    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+
+    <p class="lede"><strong>Ruby enumerable structures</strong> are the collection classes and modules that include the <code>Enumerable</code> mixin, a shared interface of iteration, query, and transformation methods built on one required method, <code>each</code>. The Ruby core classes Array, Hash, Range, Struct, and Enumerator include or extend it, and the standard library adds Set and the CSV classes.<span class="cite">[<a href="#ref1">1</a>]</span> Enumerable turns a minimal protocol, the ability to yield successive elements, into dozens of methods for filtering, mapping, sorting, grouping, and reducing a collection.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#each-protocol">The each protocol</a></li>
+            <li><a href="#structure-taxonomy">Structure taxonomy</a></li>
+            <li><a href="#fundamental-constraints">Fundamental constraints</a></li>
+          </ol>
+        </li>
+        <li><a href="#array">Array: ordered sequences</a>
+          <ol>
+            <li><a href="#array-indexing">Indexing and slicing</a></li>
+            <li><a href="#array-mutation">Mutation and selection</a></li>
+            <li><a href="#array-references">References and default fill</a></li>
+          </ol>
+        </li>
+        <li><a href="#hash">Hash: key-value maps</a>
+          <ol>
+            <li><a href="#hash-order">Entry order</a></li>
+            <li><a href="#hash-keys">Key equivalence and mutation</a></li>
+            <li><a href="#hash-defaults">Default values and procs</a></li>
+          </ol>
+        </li>
+        <li><a href="#shared-methods">Shared Enumerable methods</a>
+          <ol>
+            <li><a href="#deferred-evaluation">Deferred evaluation</a></li>
+          </ol>
+        </li>
+        <li><a href="#specialized">Specialized enumerable structures</a>
+          <ol>
+            <li><a href="#set">Set</a></li>
+            <li><a href="#range">Range</a></li>
+            <li><a href="#struct">Struct</a></li>
+            <li><a href="#enumerator">Enumerator and Comparable</a></li>
+          </ol>
+        </li>
+        <li><a href="#choosing">Choosing a structure</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="each-protocol">The each protocol</h3>
+    <p><code>Enumerable</code> is a module rather than a class.<span class="cite">[<a href="#ref1">1</a>]</span> A collection class includes it and defines one method, <code>each</code>, which yields successive elements to a block. The Ruby documentation states that virtually all methods in Enumerable call <code>#each</code> in the including class, so the behavior of the whole interface follows from that single method.</p>
+    <p>The yielded value depends on the class. <code>Hash#each</code> yields the next key-value pair as a two-element Array, and <code>Struct#each</code> yields the next name-value pair as a two-element Array. For the other classes that include the module, <code>each</code> yields the next object from the collection.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>class Foo
+  include Enumerable
+
+  def each
+    yield 1
+    yield 1, 2
+    yield
+  end
+end
+
+Foo.new.each_entry { |element| p element }
+# 1
+# [1, 2]
+# nil</pre>
+    <p>An Enumerable method iterates by calling <code>each</code> and consuming what it yields, so the mixin works on any object that supplies the method, regardless of how that object stores its data.</p>
+
+    <h3 id="structure-taxonomy">Structure taxonomy</h3>
+    <p>The structures divide by how they order elements and how they identify them.</p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Ordered sequences.</strong> Array is an ordered, integer-indexed collection of objects.<span class="cite">[<a href="#ref2">2</a>]</span> Range represents a collection of values between given begin and end values.<span class="cite">[<a href="#ref5">5</a>]</span> Position determines identity.</li>
+      <li><strong>Keyed maps.</strong> Hash maps each of its unique keys to a specific value.<span class="cite">[<a href="#ref3">3</a>]</span> Lookup is by key rather than by numeric position.</li>
+      <li><strong>Unordered unique collections.</strong> Set implements a collection of unordered values with no duplicates, described in the documentation as a hybrid of Array's inter-operation facilities and Hash's fast lookup.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+    </ul>
+
+    <h3 id="fundamental-constraints">Fundamental constraints</h3>
+    <p>Four properties constrain how these structures behave and how code that uses them must be written.</p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Ordering.</strong> Array and Range are positional. Hash presents its entries in the order of their creation. Set is unordered.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>][<a href="#ref4">4</a>][<a href="#ref5">5</a>]</span></li>
+      <li><strong>Uniqueness.</strong> Array permits duplicate elements, Hash enforces unique keys, and Set enforces unique values.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>][<a href="#ref4">4</a>]</span></li>
+      <li><strong>Key equivalence.</strong> Two objects are treated as the same Hash key when their <code>hash</code> values are identical and the two objects are <code>eql?</code> to each other.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+      <li><strong>Evaluation time.</strong> Most Enumerable methods evaluate eagerly and return an Array or Hash. Enumerator::Lazy defers evaluation, constructing chains of operations without evaluating them immediately and producing values on an as-needed basis.<span class="cite">[<a href="#ref7">7</a>]</span></li>
+    </ul>
+
+    <h2 id="array">Array: ordered sequences</h2>
+    <p><strong>Array</strong> is an ordered, integer-indexed collection of objects. Any object, including another array, may be an element, and an array can contain objects of different types. Arrays keep track of their own length at all times.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h3 id="array-indexing">Indexing and slicing</h3>
+    <p>Indexing starts at 0. A positive index counts from the first element and a negative index counts backward from the end, so <code>-1</code> is the last element. An out-of-range index returns <code>nil</code> from <code>[]</code>, while <code>fetch</code> raises <code>IndexError</code> or returns a supplied default.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <pre>arr = [1, 2, 3, 4, 5, 6]
+arr[2]       # => 3
+arr[100]     # => nil
+arr[-3]      # => 4
+arr[2, 3]    # => [3, 4, 5]
+arr[1..-3]   # => [2, 3, 4]
+arr.fetch(100, "oops") # => "oops"</pre>
+    <p>The <code>first</code> and <code>last</code> methods return leading and trailing elements, <code>take(n)</code> returns the first <code>n</code> elements, and <code>drop(n)</code> returns the elements after the first <code>n</code>.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h3 id="array-mutation">Mutation and selection</h3>
+    <p>Elements are appended with <code>push</code> or <code>&lt;&lt;</code>, prepended with <code>unshift</code>, and inserted at an offset with <code>insert</code>. The <code>pop</code> and <code>shift</code> methods remove and return the last and first elements. Selection methods return new arrays without modifying the receiver, and the destructive variants modify the receiver in place.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <pre>arr = [1, 2, 3]
+arr.push(4)        # => [1, 2, 3, 4]
+arr &lt;&lt; 5           # => [1, 2, 3, 4, 5]
+arr.unshift(0)     # => [0, 1, 2, 3, 4, 5]
+
+arr = ['foo', 0, nil, 'bar']
+arr.compact        # => ['foo', 0, 'bar']; arr unchanged
+arr.compact!       # => ['foo', 0, 'bar']; arr changed</pre>
+    <p><code>select</code> and <code>reject</code> return a new array of matching and non-matching elements. <code>select!</code> and <code>reject!</code> perform the same filtering in place. <code>uniq</code> removes duplicate elements and <code>uniq!</code> does so destructively.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h3 id="array-references">References and default fill</h3>
+    <p><code>Array.new(3, true)</code> returns an array whose three elements are references to the same object. The documentation recommends that form only when the shared object is natively immutable, such as a symbol, a numeric value, <code>nil</code>, <code>true</code>, or <code>false</code>. The block form, <code>Array.new(4) { Hash.new }</code>, calls the block once per index and is safe for mutable values, because each element is a separate object.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="hash">Hash: key-value maps</h2>
+    <p><strong>Hash</strong> maps each of its unique keys to a specific value. An Array index is always an integer, while a Hash key can be almost any object. Hash includes Enumerable, so the shared methods apply to its entries.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span></p>
+
+    <h3 id="hash-order">Entry order</h3>
+    <p>A Hash presents its entries in the order of their creation. Iterative methods such as <code>each</code>, <code>each_key</code>, and <code>each_value</code> observe that order, as do order-sensitive methods such as <code>shift</code>, <code>keys</code>, <code>values</code>, and <code>inspect</code>. Adding an entry appends it, updating a value leaves the order unchanged, and deleting an entry then re-creating it appends the new entry at the end.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <pre>h = {foo: 0, bar: 1}
+h[:baz] = 2   # => {:foo=>0, :bar=>1, :baz=>2}
+h[:foo] = 3   # => {:foo=>3, :bar=>1, :baz=>2}
+h.delete(:foo)
+h[:foo] = 5   # => {:bar=>1, :baz=>2, :foo=>5}</pre>
+
+    <h3 id="hash-keys">Key equivalence and mutation</h3>
+    <p>To be usable as a key, an object implements <code>hash</code> and <code>eql?</code>. Modifying a key while it is in use damages the hash's index, and <code>rehash</code> rebuilds it. An unfrozen String passed as a key is replaced by a duplicated and frozen String, which makes String keys safe by construction. <code>compare_by_identity</code> switches comparison from hash and <code>eql?</code> to object identity.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <pre>a0 = [:foo, :bar]
+h = {a0 => 0}
+h.include?(a0)  # => true
+a0[0] = :bam
+h.include?(a0)  # => false
+h.rehash
+h.include?(a0)  # => true</pre>
+
+    <h3 id="hash-defaults">Default values and procs</h3>
+    <p>When a key is not found, <code>[]</code>, <code>values_at</code>, and <code>dig</code> return the hash's default value or the result of its default proc. The default value is returned without being duplicated, so a mutable default object is shared across missing keys and the documentation advises against using one. A default proc receives the hash and the missing key, and it may create the entry. A default proc that modifies the hash is not thread-safe when multiple threads call it concurrently for the same key.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="shared-methods">Shared Enumerable methods</h2>
+    <p>Because every including class supplies <code>each</code>, the Enumerable interface is the same across Array, Hash, Set, Range, Struct, and Enumerator.<span class="cite">[<a href="#ref1">1</a>]</span> The documentation groups the methods by purpose.</p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Querying:</strong> <code>include?</code> and <code>member?</code>, <code>all?</code>, <code>any?</code>, <code>none?</code>, <code>one?</code>, <code>count</code>, <code>tally</code>.</li>
+      <li><strong>Fetching:</strong> <code>entries</code> and <code>to_a</code>, <code>first</code>, <code>take</code>, <code>drop</code>, <code>take_while</code>, <code>drop_while</code>, <code>min</code>, <code>max</code>, <code>minmax</code>, <code>min_by</code>, <code>max_by</code>.</li>
+      <li><strong>Searching and filtering:</strong> <code>find</code> and <code>detect</code>, <code>find_all</code>, <code>select</code>, and <code>filter</code>, <code>find_index</code>, <code>reject</code>, <code>uniq</code>.</li>
+      <li><strong>Sorting:</strong> <code>sort</code>, <code>sort_by</code>.</li>
+      <li><strong>Iterating:</strong> <code>each_entry</code>, <code>each_with_index</code>, <code>each_with_object</code>, <code>each_slice</code>, <code>each_cons</code>, <code>reverse_each</code>.</li>
+      <li><strong>Transforming and combining:</strong> <code>map</code> and <code>collect</code>, <code>filter_map</code>, <code>flat_map</code> and <code>collect_concat</code>, <code>grep</code>, <code>grep_v</code>, <code>reduce</code> and <code>inject</code>, <code>sum</code>, <code>zip</code>, <code>cycle</code>.</li>
+    </ul>
+    <p>Several of these names are aliases for the same method: <code>collect</code> for <code>map</code>, <code>inject</code> for <code>reduce</code>, <code>filter</code> and <code>find_all</code> for <code>select</code>, and <code>detect</code> for <code>find</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h3 id="deferred-evaluation">Deferred evaluation</h3>
+    <p>Enumerator::Lazy is a special kind of Enumerator that redefines most Enumerable methods so that each call constructs another lazy enumerator instead of evaluating immediately. The chain is evaluated on an as-needed basis, and a lazy enumerator can be built from an infinite range because values are produced only when requested.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+    <pre>lazy = (1..Float::INFINITY).lazy
+                    .select(&amp;:odd?)
+                    .drop(10)
+                    .take_while { |i| i &lt; 30 }</pre>
+
+    <h2 id="specialized">Specialized enumerable structures</h2>
+
+    <h3 id="set">Set</h3>
+    <p><strong>Set</strong> implements a collection of unordered values with no duplicates, described in the documentation as a hybrid of Array's intuitive inter-operation facilities and Hash's fast lookup. It includes Enumerable and belongs to the standard library. The method <code>to_set</code> is added to Enumerable for convenience.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>]</span></p>
+
+    <h3 id="range">Range</h3>
+    <p><strong>Range</strong> represents a collection of values between given begin and end values. The <code>..</code> form includes the end value and the <code>...</code> form excludes it. A Range includes Enumerable, so integer and string ranges enumerate in order.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h3 id="struct">Struct</h3>
+    <p><strong>Struct</strong> provides a convenient way to create a simple class that can store and fetch values under named members. Its <code>each</code> yields each name-value pair as a two-element Array, so a struct participates in Enumerable like any other collection.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref6">6</a>]</span></p>
+
+    <h3 id="enumerator">Enumerator and Comparable</h3>
+    <p><strong>Enumerator</strong> is a class that allows both internal and external iteration. In internal iteration the collection drives the loop through a block, and in external iteration the caller advances the sequence with <code>next</code> and <code>peek</code>. An Enumerator includes Enumerable and can wrap any object that responds to <code>each</code>, through <code>to_enum</code>, <code>enum_for</code>, or <code>Enumerator.new</code>.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+    <p><strong>Comparable</strong> is a related mixin for classes whose objects may be ordered. A class defines the <code>&lt;=&gt;</code> operator, and Comparable uses it to supply <code>&lt;</code>, <code>&lt;=</code>, <code>==</code>, <code>&gt;=</code>, <code>&gt;</code>, and <code>between?</code>.<span class="cite">[<a href="#ref8">8</a>]</span> The Enumerable methods <code>sort</code> and <code>max</code> rely on <code>&lt;=&gt;</code> when no block is given.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="choosing">Choosing a structure</h2>
+    <p>The choice follows from ordering, uniqueness, and the access pattern.</p>
+    <table>
+      <thead>
+        <tr><th>Structure</th><th>Ordering</th><th>Uniqueness</th><th>Access</th><th>Typical use</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Array</td><td>Positional</td><td>Duplicates allowed</td><td>Integer index</td><td>Sequences, stacks, queues</td></tr>
+        <tr><td>Hash</td><td>Insertion order</td><td>Unique keys</td><td>Key</td><td>Mappings, counts, lookups</td></tr>
+        <tr><td>Set</td><td>Unordered</td><td>Unique values</td><td>Membership</td><td>Membership tests, deduplication</td></tr>
+        <tr><td>Range</td><td>Positional</td><td>Not applicable</td><td>Position or <code>cover?</code></td><td>Contiguous spans, intervals</td></tr>
+        <tr><td>Struct</td><td>Member order</td><td>Not applicable</td><td>Named member</td><td>Fixed records with named fields</td></tr>
+      </tbody>
+    </table>
+    <p class="unattributed">The cost figures below describe the expected behavior of the underlying data structures. They are the conventional costs of arrays, hash tables, and hash-backed sets, not asymptotic guarantees published in the Ruby documentation.</p>
+    <table>
+      <thead>
+        <tr><th>Operation</th><th>Array</th><th>Hash</th><th>Set</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Access by position or key</td><td>\(O(1)\)</td><td>expected \(O(1)\)</td><td>not applicable</td></tr>
+        <tr><td>Membership test</td><td>\(O(n)\)</td><td>expected \(O(1)\)</td><td>expected \(O(1)\)</td></tr>
+        <tr><td>Append</td><td>amortized \(O(1)\)</td><td>amortized \(O(1)\)</td><td>amortized \(O(1)\)</td></tr>
+        <tr><td>Delete by position or key</td><td>\(O(n)\)</td><td>expected \(O(1)\)</td><td>expected \(O(1)\)</td></tr>
+        <tr><td>Ordered iteration</td><td>\(O(n)\)</td><td>\(O(n)\)</td><td>\(O(n)\)</td></tr>
+      </tbody>
+    </table>
+    <p>Array suits ordered sequences, positional access, and stack or queue use. Hash suits keyed lookup, counting, and any mapping from a small set of identifying objects to values. Set suits membership tests and deduplication where order is irrelevant. Struct suits fixed records with named fields, and Enumerator::Lazy suits chains over large or unbounded sequences where eager evaluation would waste work.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/recursion/">Recursion</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby Documentation, "Module Enumerable," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Enumerable.html">docs.ruby-lang.org/en/3.3/Enumerable.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ruby Documentation, "Class Array," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Array.html">docs.ruby-lang.org/en/3.3/Array.html</a></li>
+      <li id="ref3"><span class="backlink">^</span> Ruby Documentation, "Class Hash," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Hash.html">docs.ruby-lang.org/en/3.3/Hash.html</a></li>
+      <li id="ref4"><span class="backlink">^</span> Ruby Documentation, "Class Set," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Set.html">docs.ruby-lang.org/en/3.3/Set.html</a></li>
+      <li id="ref5"><span class="backlink">^</span> Ruby Documentation, "Class Range," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Range.html">docs.ruby-lang.org/en/3.3/Range.html</a></li>
+      <li id="ref6"><span class="backlink">^</span> Ruby Documentation, "Class Struct," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Struct.html">docs.ruby-lang.org/en/3.3/Struct.html</a></li>
+      <li id="ref7"><span class="backlink">^</span> Ruby Documentation, "Class Enumerator" and "Enumerator::Lazy," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Enumerator.html">docs.ruby-lang.org/en/3.3/Enumerator.html</a> and <a href="https://docs.ruby-lang.org/en/3.3/Enumerator/Lazy.html">docs.ruby-lang.org/en/3.3/Enumerator/Lazy.html</a></li>
+      <li id="ref8"><span class="backlink">^</span> Ruby Documentation, "Module Comparable," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Comparable.html">docs.ruby-lang.org/en/3.3/Comparable.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
