@@ -751,6 +751,16 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/transformer-block/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/lm-head/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/agents/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
