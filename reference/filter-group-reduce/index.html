@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter, Group, and Reduce (Ruby Enumerable) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Filter, group, and reduce are three Ruby Enumerable iteration protocols: select and reject keep or drop elements, group_by partitions into buckets, and reduce and inject collapse a collection into one value. Covers signatures, aliases, empty-collection behavior, sum, composition, and cost.">
+  <meta property="og:title" content="Filter, Group, and Reduce (Ruby Enumerable) &middot; Reference">
+  <meta property="og:description" content="The three core Enumerable protocols: keep or drop, partition into buckets, and collapse to one value.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/filter-group-reduce/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/filter-group-reduce/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+      border: 1px solid var(--line);
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      overflow-x: auto;
+      margin: 0.8rem 0 1.2rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.8rem 0 1.2rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.4rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Filter, Group, and Reduce (Ruby Enumerable)","description":"Filter, group, and reduce are three Ruby Enumerable iteration protocols: select and reject keep or drop elements, group_by partitions into buckets, and reduce and inject collapse a collection into one value. Covers signatures, aliases, empty-collection behavior, sum, composition, and cost.","url":"https://ngpestelos.com/reference/filter-group-reduce/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Filter, Group, and Reduce (Ruby Enumerable)</h1>
+    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+
+    <p class="lede"><strong>Filter, group, and reduce</strong> are three iteration protocols in Ruby's <code>Enumerable</code> module. Filter keeps or drops elements by a predicate, group partitions elements into buckets, and reduce collapses elements into a single value.<span class="cite">[<a href="#ref1">1</a>]</span> Each protocol is a distinct way of threading state from one element to the next, and each is available on every class that includes the module.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#filter">Filter</a></li>
+        <li><a href="#group">Group</a></li>
+        <li><a href="#reduce">Reduce</a></li>
+        <li><a href="#composition">Composition</a></li>
+        <li><a href="#cost">Cost</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p><code>Enumerable</code> is a module, not a class. A collection includes the module and defines one required method, <code>each</code>, which yields successive elements to a block. The module's documentation states that virtually all of its methods call <code>#each</code> in the including class, so the protocol gives dozens of methods over a single iteration primitive.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The three protocols differ in the state they thread across elements:</p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Filter</strong> threads a growing result collection. For each element the block decides keep or drop, and only kept elements enter the result.</li>
+      <li><strong>Group</strong> threads a hash of buckets. For each element the block names a bucket, and the element is appended to that bucket.</li>
+      <li><strong>Reduce</strong> threads one value, the accumulator. For each element the block combines the accumulator with the element and returns the new accumulator.</li>
+    </ul>
+    <p>Reduce is the general case. It is the fold that the other two specialize. Filter and group can each be written as a reduce that threads an array or a hash, but a reduce cannot be written as a filter or a group without keeping the full collection. The three names are the standard vocabulary: filter is also called select, group is often called partition into buckets, and reduce is also called inject or fold.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="filter">Filter</h2>
+    <pre>select {|element| ... }  →  array
+select                   →  enumerator</pre>
+    <p><code>select</code> calls the block with successive elements and returns an array of those for which the block returns a truthy value. <code>find_all</code> is the original name, and <code>filter</code> is an alias of it.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>(0..9).select { |i| i % 3 == 0 }   # => [0, 3, 6, 9]
+(0..9).filter { |i| i % 3 == 0 }   # => [0, 3, 6, 9]</pre>
+    <p><code>reject</code> is the complement. It returns the elements for which the block returns <code>nil</code> or <code>false</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>(0..9).reject { |i| i % 3 == 0 }   # => [1, 2, 4, 5, 7, 8]</pre>
+    <p>On a Hash, <code>select</code> yields each entry as a key and a value, and returns a Hash rather than an array.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>{foo: 0, bar: 1, baz: 2}.select { |key, value| key.start_with?('b') }
+# => {:bar=>1, :baz=>2}</pre>
+    <p>With no block, <code>select</code> and <code>reject</code> each return an Enumerator instead of evaluating immediately.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="group">Group</h2>
+    <pre>group_by {|element| ... }  →  hash
+group_by                   →  enumerator</pre>
+    <p><code>group_by</code> returns a hash in which each key is a block return value and each value is an array of the elements for which the block returned that key.<span class="cite">[<a href="#ref1">1</a>]</span> Keys appear in the order their first element appeared, consistent with Hash insertion order.</p>
+    <pre>(1..6).group_by { |i| i % 3 }
+# => {1=>[1, 4], 2=>[2, 5], 0=>[3, 6]}</pre>
+    <p>On a Hash, the block receives a key and a value, so the buckets contain <code>[key, value]</code> pairs.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>{foo: 0, bar: 1, baz: 0, bat: 1}.group_by { |key, value| value }
+# => {0=>[[:foo, 0], [:baz, 0]], 1=>[[:bar, 1], [:bat, 1]]}</pre>
+    <p>With no block, it returns an Enumerator.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="reduce">Reduce</h2>
+    <pre>inject(symbol)                   →  object
+inject(initial_operand, symbol)  →  object
+inject {|memo, operand| ... }    →  object
+inject(initial_operand) {|memo, operand| ... }  →  object</pre>
+    <p><code>reduce</code> is an alias of <code>inject</code>. It combines the operands either with a method named by a symbol or with a block that receives the accumulator and the next operand.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>(1..4).inject(:+)                       # => 10
+(1..4).inject(10, :+)                   # => 20
+(1..4).inject { |sum, n| sum + n*n }    # => 30
+(1..4).inject(2) { |sum, n| sum + n*n } # => 32</pre>
+    <p>The initial operand changes the operands. Without it, the operands are the elements themselves, so the first element starts the accumulator. With it, that value is the first operand and the elements follow. On an empty collection, reduce without an initial operand returns <code>nil</code>, because there is no first operand to start from, while a supplied initial operand is returned.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>[].reduce(:+)      # => nil
+[].reduce(0, :+)   # => 0</pre>
+    <h3 id="sum">sum</h3>
+    <p><code>sum</code> is the common special case of reduce for addition. Its initial value defaults to <code>0</code>, and an optional block transforms each element before adding. The documentation notes that for ranges the result may be computed with Gauss's summation formula rather than element by element.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>(1..100).sum                  # => 5050
+(1..4).sum { |i| i*i }        # => 30
+[].sum                        # => 0</pre>
+
+    <h2 id="composition">Composition</h2>
+    <p>The three protocols chain naturally, because each returns an object that responds to <code>each</code> or supplies the next stage's input. A filter followed by a group and a reduce is the standard pipeline for "keep these, bucket them, then total each bucket."</p>
+    <pre>rows
+  .select  { |row| row[:qty] > 0 }
+  .group_by { |row| row[:category] }
+  .transform_values { |group| group.sum { |row| row[:qty] } }</pre>
+    <p>Use filter when the result is a subset, group when the result is a set of buckets, and reduce or sum when the result is one value. A filter that also needs to total is two operations in sequence, not one method that does both.</p>
+
+    <h2 id="cost">Cost</h2>
+    <p>Each protocol makes one pass over the collection, so each is linear in the number of elements. The difference is the space they thread. Filter allocates a result collection. Group allocates a hash plus one array per key. Reduce holds a single accumulator, and <code>sum</code> may avoid per-element addition on ranges through the documented Gauss formula.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p class="unattributed">The linear bounds describe the expected behavior of one pass over n elements and the result containers each protocol builds. They are conventional costs, not asymptotic guarantees published in the Ruby documentation.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/ruby-enumerable-structures/">Ruby Enumerable Structures</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby Documentation, "Module Enumerable," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Enumerable.html">docs.ruby-lang.org/en/3.3/Enumerable.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
