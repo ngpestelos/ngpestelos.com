@@ -554,6 +554,28 @@ class ReferenceSeoTests(unittest.TestCase):
         trans_html = (REF / "transformer-architecture" / "index.html").read_text(encoding="utf-8")
         self.assertIn('href="/reference/self-attention/"', trans_html)
 
+    def test_transformer_block_and_lm_head_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        for slug in ("transformer-block", "lm-head"):
+            self.assertIn(f'href="/reference/{slug}/"', html, f"Missing from reference/index.html: {slug}")
+            self.assertIn(
+                f"https://ngpestelos.com/reference/{slug}/",
+                locs,
+                f"Missing from sitemap.xml: {slug}",
+            )
+            entry_html = (REF / slug / "index.html").read_text(encoding="utf-8")
+            self.assertIn("application/ld+json", entry_html)
+            self.assertIn('"@type":"DefinedTerm"', entry_html)
+            self.assertIn('<h2 id="first-principles">', entry_html)
+        trans_html = (REF / "transformer-architecture" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/transformer-block/"', trans_html)
+        self.assertIn('href="/reference/lm-head/"', trans_html)
+        self_attn_html = (REF / "self-attention" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/transformer-block/"', self_attn_html)
+        moe_html = (REF / "mixture-of-experts" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('href="/reference/transformer-block/"', moe_html)
+
     def test_reference_numbered_toc_suppresses_list_style(self):
         for path in sorted(REF.glob("*/index.html")):
             html = path.read_text(encoding="utf-8")

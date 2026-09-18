@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformer Block &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A Transformer block is one identical layer in an encoder or decoder stack. It maps a sequence of d_model vectors to another sequence of the same shape through residual self-attention and a position-wise feed-forward network.">
+  <meta property="og:title" content="Transformer Block &middot; Reference">
+  <meta property="og:description" content="Definition, first principles, encoder and decoder sub-layers, position-wise FFN, residual LayerNorm, stacking, and scoped FFN-as-memory findings for a Transformer block.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/transformer-block/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/transformer-block/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Transformer Block","description":"A Transformer block is one identical unit in an encoder or decoder stack. It maps a sequence of d_model vectors to another sequence of the same shape.","url":"https://ngpestelos.com/reference/transformer-block/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mute);
+      margin-bottom: 0.2rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1.1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .toc h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.45rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2.2rem 0 0.9rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+    li { margin-bottom: 0.35rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.85rem;
+      background: var(--well);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .back-to-top:hover { opacity: 1; }
+    @media print {
+      .back, .back-to-top { display: none !important; }
+    }
+  </style>
+</head>
+<body class="reference">
+  <main>
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Machine Learning &middot; Transformers</p>
+    <h1>Transformer Block</h1>
+    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+
+    <p class="lede"><strong>Transformer block</strong> (also called a Transformer layer) is one identical unit in the encoder or decoder stack. It maps a sequence of \(d_{\text{model}}\) vectors to another sequence of the same shape.<span class="cite">[<a href="#ref-1">1</a>]</span> The full <a href="/reference/transformer-architecture/">Transformer architecture</a> is the tokenizer, the stack of these blocks, and the <a href="/reference/lm-head/">language modeling head</a>.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">First principles</a></li>
+        <li><a href="#sub-layers">Encoder and decoder sub-layers</a></li>
+        <li><a href="#self-attention">Self-attention</a></li>
+        <li><a href="#feed-forward">Position-wise feed-forward network</a></li>
+        <li><a href="#residual-layernorm">Residual connection and layer normalization</a></li>
+        <li><a href="#stacking">Stacking identical layers</a></li>
+        <li><a href="#ffn-memories">Feed-forward layers as memories</a></li>
+        <li><a href="#mixture-of-experts">Mixture of experts as an FFN replacement</a></li>
+        <li><a href="#limits">Limits</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles: Shape-Preserving Residual Layer</h2>
+    <p>A block takes a matrix \(X \in \mathbb{R}^{n \times d_{\text{model}}}\) and returns a matrix of the same size. Sequence length \(n\) and model width \(d_{\text{model}}\) do not change. Because the map preserves shape, \(N\) copies can be stacked without resizing the sequence.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>Each sub-layer is wrapped by a residual add. The residual keeps the identity path open, so the sub-layer computes a correction to \(x\) rather than a replacement for \(x\). In the 2017 paper the correction is then layer-normalized:</p>
+    \[
+    \mathrm{LayerNorm}(x + \mathrm{Sublayer}(x))
+    \]
+    <p>Vaswani et al. set \(d_{\text{model}} = 512\).<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <h2 id="sub-layers">2. Encoder and Decoder Sub-Layers</h2>
+    <p>The encoder is a stack of \(N = 6\) identical layers. Each encoder layer has two sub-layers: multi-head <a href="/reference/self-attention/">self-attention</a>, then a position-wise fully connected feed-forward network. A residual connection wraps each sub-layer, then layer normalization is applied.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>The decoder is also \(N = 6\) identical layers. It adds a third sub-layer: multi-head attention over the encoder stack (encoder-decoder attention). Decoder self-attention is masked so that position \(i\) cannot attend to subsequent positions.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>Decoder-only language models keep the masked self-attention and the feed-forward sub-layers and omit encoder-decoder attention. That configuration is described on the <a href="/reference/transformer-architecture/">Transformer architecture</a> page. This page stays on one layer.</p>
+
+    <h2 id="self-attention">3. Self-Attention</h2>
+    <p>The first sub-layer is multi-head self-attention. Queries, keys, and values all come from the same sequence. The scaled dot-product formula, the multi-head split, and causal masking are defined on the <a href="/reference/self-attention/">self-attention</a> page. This block page does not re-derive those projections.</p>
+    <p>In the encoder, every position may attend to every position. In the decoder, the mask zeros out future positions before the <a href="/reference/softmax/">softmax</a>. Encoder-decoder attention uses decoder queries against encoder keys and values.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <h2 id="feed-forward">4. Position-Wise Feed-Forward Network</h2>
+    <p>The second sub-layer (third in the decoder) is a fully connected network applied to each position separately and identically. Vaswani et al. give equation (2):<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    \[
+    \mathrm{FFN}(x) = \max(0, x W_1 + b_1) W_2 + b_2
+    \]
+    <p>The inner width is \(d_{\mathrm{ff}} = 2048\) in the 2017 base model, four times \(d_{\text{model}}\). The ReLU sits between two linear maps. Positions share the same weights. They do not share activations: each row of \(X\) is transformed on its own.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+
+    <h2 id="residual-layernorm">5. Residual Connection and Layer Normalization</h2>
+    <p>Around each sub-layer the paper uses a residual connection, then layer normalization. The output of each sub-layer is \(\mathrm{LayerNorm}(x + \mathrm{Sublayer}(x))\), where \(\mathrm{Sublayer}(x)\) is the function implemented by the attention or feed-forward module.<span class="cite">[<a href="#ref-1">1</a>]</span></p>
+    <p>The add requires the sub-layer output to have the same width as \(x\). Multi-head attention therefore projects concatenated heads back to \(d_{\text{model}}\). The feed-forward network expands to \(d_{\mathrm{ff}}\) and contracts back to \(d_{\text{model}}\).</p>
+
+    <h2 id="stacking">6. Stacking Identical Layers</h2>
+    <p>Encoder and decoder each stack \(N = 6\) copies of the same layer, with separate parameters per copy.<span class="cite">[<a href="#ref-1">1</a>]</span> Because one block preserves \(n\) and \(d_{\text{model}}\), the next block can take its output as input without a reshape. Depth is a count of residual sub-layers, not a change of sequence geometry.</p>
+    <p>The stack is not the whole model. Token IDs become vectors before the first block. After the last block, a <a href="/reference/lm-head/">language modeling head</a> maps the top hidden vector to vocabulary logits.</p>
+
+    <h2 id="ffn-memories">7. Feed-Forward Layers as Memories</h2>
+    <p>Geva et al. (2021) treat the feed-forward layer as a key-value memory. Each key correlates with textual patterns in the training examples. Each value induces a distribution over the output vocabulary. Lower layers tend to capture shallow patterns. Upper layers tend to capture more semantic ones.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+    <p>Those experiments use the WikiText-103 transformer language model of Baevski and Auli (2019). The paper does not prove that every Transformer feed-forward layer is a factual store. The memory reading is an empirical account of that model, not a universal claim.<span class="cite">[<a href="#ref-2">2</a>]</span></p>
+
+    <h2 id="mixture-of-experts">8. Mixture of Experts as an FFN Replacement</h2>
+    <p>A <a href="/reference/mixture-of-experts/">mixture-of-experts</a> module can replace the dense position-wise feed-forward network. It does not replace the whole block. Self-attention, the residual add, and layer normalization remain. Sparse experts take the place of the shared \(W_1, W_2\) maps at that sub-layer.</p>
+
+    <h2 id="limits">9. Limits</h2>
+    <ul>
+      <li>The block cannot change sequence length or model width. Padding, packing, and the <a href="/reference/context-window/">context window</a> are properties of the surrounding stack, not of one layer.</li>
+      <li>Self-attention inside the block still costs \(O(n^2 \cdot d)\) time and memory per layer. That bound is derived on the <a href="/reference/self-attention/">self-attention</a> page.</li>
+      <li>Causal masking is a decoder self-attention constraint. It is not a property of the feed-forward sub-layer.</li>
+      <li>Geva et al. describe feed-forward layers as memories on one WikiText-103 language model. That finding is not a proof for every model.<span class="cite">[<a href="#ref-2">2</a>]</span></li>
+      <li>Mixture of experts changes the feed-forward sub-layer. It does not by itself change residual topology or attention.</li>
+    </ul>
+
+    <div id="see-also">
+      <h2>See also</h2>
+      <ul>
+        <li><a href="/reference/transformer-architecture/">Transformer Architecture</a></li>
+        <li><a href="/reference/self-attention/">Self-Attention (Transformers)</a></li>
+        <li><a href="/reference/lm-head/">Language Modeling Head</a></li>
+        <li><a href="/reference/mixture-of-experts/">Mixture of Experts</a></li>
+        <li><a href="/reference/softmax/">Softmax</a></li>
+        <li><a href="/reference/embeddings/">Embeddings</a></li>
+        <li><a href="/reference/tokens/">Tokens</a></li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a></li>
+      </ul>
+    </div>
+
+    <div id="references">
+      <h2>References</h2>
+      <ol>
+        <li id="ref-1"><a class="backlink" href="#first-principles">&uarr;</a> A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, &#321;. Kaiser, and I. Polosukhin, &ldquo;Attention Is All You Need,&rdquo; in <em>Advances in Neural Information Processing Systems</em>, vol. 30, 2017. Encoder and decoder stacks, residual \(\mathrm{LayerNorm}(x + \mathrm{Sublayer}(x))\), and the position-wise feed-forward network (equation 2) are in Sections 3.1 and 3.3. Free full text: <a href="https://arxiv.org/html/1706.03762">https://arxiv.org/html/1706.03762</a></li>
+        <li id="ref-2"><a class="backlink" href="#ffn-memories">&uarr;</a> M. Geva, R. Schuster, J. Berant, and O. Levy, &ldquo;Transformer Feed-Forward Layers Are Key-Value Memories,&rdquo; in <em>Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing</em>, 2021. Experiments use the WikiText-103 transformer language model of Baevski and Auli (2019). Free full text: <a href="https://arxiv.org/html/2012.14913">https://arxiv.org/html/2012.14913</a></li>
+      </ol>
+    </div>
+  </main>
+
+  <button id="backToTop" class="back-to-top" aria-label="Back to top">Back to top</button>
+  <script>
+    const btt = document.getElementById("backToTop");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        btt.style.display = "block";
+      } else {
+        btt.style.display = "none";
+      }
+    });
+    btt.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

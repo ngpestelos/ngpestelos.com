@@ -93,6 +93,8 @@
     <div class="companion-box">
       <h2>See Also</h2>
       <ul>
+        <li><a href="/reference/transformer-block/">Transformer Block</a></li>
+        <li><a href="/reference/lm-head/">Language Modeling Head</a></li>
         <li><a href="/reference/large-language-models/">Large Language Models</a></li>
         <li><a href="/reference/tokens/">Tokens</a></li>
         <li><a href="/reference/embeddings/">Embeddings</a></li>
@@ -146,10 +148,10 @@
         <strong>Tokenizer.</strong> Converts input text into a sequence of integer token IDs drawn from a fixed vocabulary, often near 50,000 entries. Most systems use a subword scheme such as byte-pair encoding, which grows the vocabulary by repeatedly merging the most frequent adjacent symbol pair <span class="cite">[<a href="#ref4">4</a>]</span>. The vocabulary is fixed before training and holds special control tokens, for example a start-of-sequence marker. A fixed vocabulary size gives every token one row in the embedding table, so the embedding lookup is a constant-time index operation. The output side is not a lookup: the language modeling head multiplies the hidden vector by a matrix of the same width to produce one logit per vocabulary entry, a cost that scales with vocabulary size and hidden width rather than an index operation (below).
       </li>
       <li>
-        <strong>Stack of Transformer blocks.</strong> An embedding lookup maps each token ID to a dense vector of width \(d_{\text{model}}\). The vectors pass through \(N\) identical blocks. Each block applies masked multi-head self-attention and a position-wise feed-forward network, each wrapped in a residual connection and normalization (Sections 3 to 5). A block emits one vector per input position. The number of positions a forward pass can hold is the <a href="/reference/context-window/">context window</a>.
+        <strong><a href="/reference/transformer-block/">Stack of Transformer blocks</a>.</strong> An embedding lookup maps each token ID to a dense vector of width \(d_{\text{model}}\). The vectors pass through \(N\) identical blocks. Each block applies masked multi-head self-attention and a position-wise feed-forward network, each wrapped in a residual connection and normalization (Sections 3 to 5). A block emits one vector per input position. The number of positions a forward pass can hold is the <a href="/reference/context-window/">context window</a>.
       </li>
       <li>
-        <strong>Language modeling head.</strong> A final linear layer projects the top block's output vector at each position to \(V\) logits, one per vocabulary entry. Many models tie this projection to the input embedding matrix, which drops a large parameter block and tends to lower perplexity <span class="cite">[<a href="#ref5">5</a>]</span>. A <a href="/reference/softmax/">softmax</a> over the \(V\) logits gives the next-token probability distribution (Section 7).
+        <strong><a href="/reference/lm-head/">Language modeling head</a>.</strong> A final linear layer projects the top block's output vector at each position to \(V\) logits, one per vocabulary entry. Many models tie this projection to the input embedding matrix, which drops a large parameter block and tends to lower perplexity <span class="cite">[<a href="#ref5">5</a>]</span>. A <a href="/reference/softmax/">softmax</a> over the \(V\) logits gives the next-token probability distribution (Section 7).
       </li>
     </ul>
     <p>
