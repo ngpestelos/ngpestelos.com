@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>transform_values (Ruby Hash Method) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="transform_values is a Ruby Hash method that returns a new Hash with the same keys and values replaced by the result of a block. Covers the no-block Enumerator form, transform_values!, the nil default of the returned Hash, related methods, and cost.">
+  <meta property="og:title" content="transform_values (Ruby Hash Method) &middot; Reference">
+  <meta property="og:description" content="The value-side map for a Ruby Hash: keys fixed, values replaced, result a new Hash. Includes the in-place variant and the dropped default.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/transform-values/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/transform-values/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.3em;
+      border-radius: 3px;
+      border: 1px solid var(--line);
+    }
+    pre {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.8rem 1rem;
+      overflow-x: auto;
+      margin: 0.8rem 0 1.2rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 0.8rem 0 1.2rem;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 0.4rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"transform_values (Ruby Hash Method)","description":"transform_values is a Ruby Hash method that returns a new Hash with the same keys and values replaced by the result of a block. Covers the no-block Enumerator form, transform_values!, the nil default of the returned Hash, related methods, and cost.","url":"https://ngpestelos.com/reference/transform-values/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>transform_values (Ruby Hash Method)</h1>
+    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+
+    <p class="lede"><strong>transform_values</strong> is a method on Ruby's <code>Hash</code> class that returns a new Hash whose keys are unchanged and whose values are the results of applying a block to each original value.<span class="cite">[<a href="#ref1">1</a>]</span> It transforms the value side of a key-value map while holding the key side fixed, and it leaves the receiver untouched. Its in-place counterpart is <code>transform_values!</code>.</p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#signature">Signature and behavior</a></li>
+        <li><a href="#bang">transform_values!</a></li>
+        <li><a href="#related">Related methods</a></li>
+        <li><a href="#cost">Cost</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p>A <strong>Hash</strong> is a finite map from unique keys to values. Each key identifies at most one value, and entries iterate in the order they were created.<span class="cite">[<a href="#ref1">1</a>]</span> Transforming the value side alone means taking each value, producing a replacement, and rebuilding a map from the original keys and the replacement values.</p>
+    <p><code>transform_values</code> is that operation. The block receives one argument, the value, and its result becomes the value at the same key. The keys are never yielded, so the block cannot change them, and the result always carries the receiver's keys.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The nearest Enumerable method is <code>map</code>. On a Hash, <code>map</code> yields each entry as a two-element Array and returns an Array, so its block can change both components and can change the shape of the result. <code>transform_values</code> is the narrower operation: keys fixed, values replaced, and the result is still a Hash.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The method is non-mutating. It returns a new Hash and leaves the receiver unchanged. The bang variant, <code>transform_values!</code>, performs the same replacement on the receiver itself. Ruby added both methods in version 2.4.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="signature">Signature and behavior</h2>
+    <pre>transform_values {|value| ... }  →  new_hash
+transform_values                 →  new_enumerator</pre>
+    <p>With a block, the method returns a new Hash. The block receives each value in turn, and the result pairs every original key with the block's output.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>h = {foo: 0, bar: 1, baz: 2}
+h.transform_values { |value| value * 100 }
+# => {:foo=>0, :bar=>100, :baz=>200}</pre>
+    <p>Three properties follow from the signature.</p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Keys and order are preserved.</strong> The result has the same keys as the receiver, in the same insertion order.</li>
+      <li><strong>The receiver is unchanged.</strong> The result is a separate Hash object, so writing to one does not affect the other.</li>
+      <li><strong>The default is dropped.</strong> The returned Hash has a <code>nil</code> default even when the receiver was built with a default value or a default proc. The implementation sets the new Hash's default to <code>nil</code>.</li>
+    </ul>
+    <p>Without a block, the method returns a new Enumerator, which can be driven with <code>each</code> or combined with other Enumerable methods.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>h = {foo: 0, bar: 1, baz: 2}
+e = h.transform_values
+e.each { |value| value * 100 }
+# => {:foo=>0, :bar=>100, :baz=>200}</pre>
+
+    <h2 id="bang">transform_values!</h2>
+    <pre>transform_values! {|value| ... }  →  self
+transform_values!                 →  new_enumerator</pre>
+    <p>The bang variant replaces each value in the receiver with the block's result and returns the receiver. It mutates the Hash in place, so any other reference to the same object observes the new values.<span class="cite">[<a href="#ref1">1</a>]</span> Without a block it returns an Enumerator rather than mutating.</p>
+    <pre>h = {foo: 0, bar: 1, baz: 2}
+h.transform_values! { |value| value * 100 }
+h # => {:foo=>0, :bar=>100, :baz=>200}</pre>
+
+    <h2 id="related">Related methods</h2>
+    <p>Several Hash and Enumerable methods transform entries. They differ in which component the block sees and in what the method returns.</p>
+    <table>
+      <thead>
+        <tr><th>Method</th><th>Block sees</th><th>Result</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>transform_values</code></td><td>Value</td><td>New Hash, keys unchanged</td></tr>
+        <tr><td><code>transform_values!</code></td><td>Value</td><td>Same Hash, values replaced</td></tr>
+        <tr><td><code>transform_keys</code></td><td>Key</td><td>New Hash, values unchanged</td></tr>
+        <tr><td><code>map</code></td><td>Key-value pair</td><td>Array of block results</td></tr>
+        <tr><td><code>each_value</code></td><td>Value</td><td>Same Hash, no replacement</td></tr>
+        <tr><td><code>select</code> / <code>reject</code></td><td>Key-value pair</td><td>New Hash of kept or dropped entries</td></tr>
+      </tbody>
+    </table>
+    <p><code>transform_keys</code> is the key-side counterpart: it rebuilds the map with new keys and the original values. When a block must change both components, or when the result should be an Array rather than a Hash, <code>map</code> is the method that fits.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="cost">Cost</h2>
+    <p><code>transform_values</code> visits each entry once and builds one new Hash, so it takes linear time in the number of entries and linear additional space for the result. The values themselves are not copied; the new Hash holds whatever the block returned.</p>
+    <p class="unattributed">The linear cost describes the expected behavior of building a hash table from n entries. It is a conventional bound, not an asymptotic guarantee published in the Ruby documentation.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/ruby-enumerable-structures/">Ruby Enumerable Structures</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby Documentation, "Class Hash," Ruby 3.3.0. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Hash.html">docs.ruby-lang.org/en/3.3/Hash.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ruby Documentation, "Ruby 2.4.0 NEWS," Hash section, Feature #12512. Ruby 2.4.0. Free full text: <a href="https://docs.ruby-lang.org/en/2.4.0/NEWS.html">docs.ruby-lang.org/en/2.4.0/NEWS.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

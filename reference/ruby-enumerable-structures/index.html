@@ -333,7 +333,7 @@ arr.compact!       # => ['foo', 0, 'bar']; arr changed</pre>
     <p><code>Array.new(3, true)</code> returns an array whose three elements are references to the same object. The documentation recommends that form only when the shared object is natively immutable, such as a symbol, a numeric value, <code>nil</code>, <code>true</code>, or <code>false</code>. The block form, <code>Array.new(4) { Hash.new }</code>, calls the block once per index and is safe for mutable values, because each element is a separate object.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 
     <h2 id="hash">Hash: key-value maps</h2>
-    <p><strong>Hash</strong> maps each of its unique keys to a specific value. An Array index is always an integer, while a Hash key can be almost any object. Hash includes Enumerable, so the shared methods apply to its entries.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span></p>
+    <p><strong>Hash</strong> maps each of its unique keys to a specific value. An Array index is always an integer, while a Hash key can be almost any object. Hash includes Enumerable, so the shared methods apply to its entries.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span> Hash also supplies value-side and key-side transforms, <code><a href="/reference/transform-values/">transform_values</a></code> and <code>transform_keys</code>, which rebuild the map from one component of each entry.</p>
 
     <h3 id="hash-order">Entry order</h3>
     <p>A Hash presents its entries in the order of their creation. Iterative methods such as <code>each</code>, <code>each_key</code>, and <code>each_value</code> observe that order, as do order-sensitive methods such as <code>shift</code>, <code>keys</code>, <code>values</code>, and <code>inspect</code>. Adding an entry appends it, updating a value leaves the order unchanged, and deleting an entry then re-creating it appends the new entry at the end.<span class="cite">[<a href="#ref3">3</a>]</span></p>
@@ -422,6 +422,7 @@ h.include?(a0)  # => true</pre>
     <h2 id="see-also">See also</h2>
     <ul>
       <li><a href="/reference/recursion/">Recursion</a></li>
+      <li><a href="/reference/transform-values/">transform_values (Ruby Hash Method)</a></li>
     </ul>
 
     <h2 id="references">References</h2>
