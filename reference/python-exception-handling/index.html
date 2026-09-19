@@ -79,7 +79,7 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Programming Languages &middot; Python</p>
     <h1>Python Exception Handling</h1>
-    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
 
     <p class="lede"><strong>Python exception handling</strong> is the <code>try</code> statement and the <code>raise</code> statement working together. A <code>try</code> statement runs a suite under one or more handlers (<code>except</code>), an optional no-error branch (<code>else</code>), and an optional cleanup branch (<code>finally</code>). The <code>raise</code> statement starts a new exception or re-raises the active one. Exceptions are ordinary objects, and the built-in hierarchy separates ordinary program errors from the system-exiting signals.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></p>
 
@@ -119,7 +119,7 @@
     <p>An exception is an instance of a class. Raising one creates or selects that instance, and a handler binds it to a name with <code>except SomeError as exc</code>. Because the raised value is an object, it carries attributes, and Python supplies useful ones such as <code>args</code> and, when chained, <code>__cause__</code> and <code>__context__</code>.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span></p>
 
     <h3 id="hierarchy">The BaseException hierarchy</h3>
-    <p><code>BaseException</code> is the root of the exception hierarchy. <code>Exception</code> derives from it and is the base for the errors a program normally handles, such as <code>ValueError</code>, <code>KeyError</code>, and <code>OSError</code>. Three classes derive from <code>BaseException</code> directly and not from <code>Exception</code>: <code>SystemExit</code>, <code>KeyboardInterrupt</code>, and <code>GeneratorExit</code>.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p><code>BaseException</code> is the root of the exception hierarchy. <code>Exception</code> derives from it and is the base for the errors a program normally handles, such as <code>ValueError</code>, <code>KeyError</code>, and <code>OSError</code>. <code>SystemExit</code>, <code>KeyboardInterrupt</code>, and <code>GeneratorExit</code> derive directly from <code>BaseException</code>, not from <code>Exception</code>.<span class="cite">[<a href="#ref4">4</a>]</span></p>
     <p>The split is deliberate. Catching <code>Exception</code> leaves the interpreter-control signals alone, while a bare <code>except:</code> is equivalent to <code>except BaseException:</code> and can swallow an interrupt or an exit request. Verified: <code>issubclass(KeyboardInterrupt, Exception)</code> is <code>False</code>, and <code>issubclass(ValueError, Exception)</code> is <code>True</code>.</p>
 
     <h3 id="propagation">Propagation and handlers</h3>
