@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Exception Handling &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Python exception handling is the try statement with except, else, and finally clauses, plus the raise statement. Covers the BaseException hierarchy, chaining, and the EAFP and LBYL styles.">
+  <meta property="og:title" content="Python Exception Handling &middot; Reference">
+  <meta property="og:description" content="try, except, else, finally, raise, chaining, the exception hierarchy, and custom exceptions.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/python-exception-handling/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/python-exception-handling/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Python Exception Handling","description":"Python exception handling is the try statement with except, else, and finally clauses, plus the raise statement. Covers the BaseException hierarchy, chaining, custom exceptions, and the EAFP and LBYL styles.","url":"https://ngpestelos.com/reference/python-exception-handling/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Python</p>
+    <h1>Python Exception Handling</h1>
+    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+
+    <p class="lede"><strong>Python exception handling</strong> is the <code>try</code> statement and the <code>raise</code> statement working together. A <code>try</code> statement runs a suite under one or more handlers (<code>except</code>), an optional no-error branch (<code>else</code>), and an optional cleanup branch (<code>finally</code>). The <code>raise</code> statement starts a new exception or re-raises the active one. Exceptions are ordinary objects, and the built-in hierarchy separates ordinary program errors from the system-exiting signals.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#objects">Exceptions are objects</a></li>
+            <li><a href="#hierarchy">The BaseException hierarchy</a></li>
+            <li><a href="#propagation">Propagation and handlers</a></li>
+          </ol>
+        </li>
+        <li><a href="#try">The try statement</a>
+          <ol>
+            <li><a href="#except">except</a></li>
+            <li><a href="#else">else</a></li>
+            <li><a href="#finally">finally</a></li>
+          </ol>
+        </li>
+        <li><a href="#raising">Raising exceptions</a>
+          <ol>
+            <li><a href="#raise">raise and re-raise</a></li>
+            <li><a href="#chaining">Exception chaining</a></li>
+            <li><a href="#custom">Custom exceptions</a></li>
+          </ol>
+        </li>
+        <li><a href="#eafp-lbyl">EAFP and LBYL</a></li>
+        <li><a href="#guidelines">Guidelines</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="objects">Exceptions are objects</h3>
+    <p>An exception is an instance of a class. Raising one creates or selects that instance, and a handler binds it to a name with <code>except SomeError as exc</code>. Because the raised value is an object, it carries attributes, and Python supplies useful ones such as <code>args</code> and, when chained, <code>__cause__</code> and <code>__context__</code>.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span></p>
+
+    <h3 id="hierarchy">The BaseException hierarchy</h3>
+    <p><code>BaseException</code> is the root of the exception hierarchy. <code>Exception</code> derives from it and is the base for the errors a program normally handles, such as <code>ValueError</code>, <code>KeyError</code>, and <code>OSError</code>. Three classes derive from <code>BaseException</code> directly and not from <code>Exception</code>: <code>SystemExit</code>, <code>KeyboardInterrupt</code>, and <code>GeneratorExit</code>.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>The split is deliberate. Catching <code>Exception</code> leaves the interpreter-control signals alone, while a bare <code>except:</code> is equivalent to <code>except BaseException:</code> and can swallow an interrupt or an exit request. Verified: <code>issubclass(KeyboardInterrupt, Exception)</code> is <code>False</code>, and <code>issubclass(ValueError, Exception)</code> is <code>True</code>.</p>
+
+    <h3 id="propagation">Propagation and handlers</h3>
+    <p>When an exception occurs in the <code>try</code> suite, Python searches the <code>except</code> clauses in order until one matches, then runs that handler. A clause that names a class also handles any of its subclasses. At most one handler runs. If no handler matches, the exception propagates to the next enclosing <code>try</code>, and an unhandled exception ends the program with a traceback.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="try">The try statement</h2>
+
+    <h3 id="except">except</h3>
+    <p>A <code>try</code> statement may have more than one <code>except</code> clause, each naming a different exception. The clause runs only if its named class matches the raised exception. Catching the specific type keeps the handler meaningful; catching the broad type hides bugs.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>try:
+    value = int(raw)
+except ValueError as exc:
+    print("not an integer:", exc)</pre>
+
+    <h3 id="else">else</h3>
+    <p>An <code>else</code> clause is executed if control leaves the <code>try</code> suite with no exception, and it is skipped when a <code>return</code>, <code>continue</code>, or <code>break</code> leaves the suite. It must follow all <code>except</code> clauses, and exceptions raised in the <code>else</code> clause are not handled by the preceding <code>except</code> clauses. The practical use is to narrow the guarded region: keep only the risky call in the <code>try</code>, and put the follow-up work in <code>else</code>.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h3 id="finally">finally</h3>
+    <p>A <code>finally</code> clause is a cleanup handler. It runs as the last task before the <code>try</code> statement completes, whether or not an exception occurred, and whether or not the suite returned. Verified: a <code>return</code> in the <code>try</code> suite still runs the <code>finally</code> block and skips the <code>else</code> block.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="raising">Raising exceptions</h2>
+
+    <h3 id="raise">raise and re-raise</h3>
+    <p><code>raise</code> with an exception instance or class starts that exception. When a class is given, Python instantiates it with no arguments. A bare <code>raise</code> inside a handler re-raises the active exception, which is how a handler can log and then decline to suppress.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <pre>try:
+    handle()
+except ValueError:
+    log()
+    raise</pre>
+
+    <h3 id="chaining">Exception chaining</h3>
+    <p>When a handler raises a new exception, Python records the original as the implicit context and prints both in the traceback under "During handling of the above exception, another exception occurred". The optional <code>from</code> clause makes the link explicit: <code>raise NewError(...) from exc</code> attaches <code>exc</code> to the <code>__cause__</code> attribute.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span></p>
+    <pre>try:
+    parse(text)
+except ValueError as exc:
+    raise ConfigError("bad config") from exc</pre>
+
+    <h3 id="custom">Custom exceptions</h3>
+    <p>A program can define its own exception classes. The convention is to derive from <code>Exception</code>, directly or indirectly, and to keep the class simple. An exception class carries a name that the caller can catch, which is more precise than returning an error value or raising a built-in type that means something else.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>class ConfigError(Exception):
+    pass</pre>
+
+    <h2 id="eafp-lbyl">EAFP and LBYL</h2>
+    <p>Python documents two opposing styles. EAFP, "easier to ask for forgiveness than permission," assumes a valid key or attribute and catches the exception if the assumption fails; it is characterized by many <code>try</code> and <code>except</code> statements. LBYL, "look before you leap," tests preconditions before the call and is characterized by many <code>if</code> statements.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p>The glossary notes that the LBYL style can introduce a race condition between the check and the act in a multi-threaded program, because the condition can change in the gap. EAFP performs the operation once and reacts to the result.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <pre># EAFP
+try:
+    value = mapping[key]
+except KeyError:
+    value = default
+
+# LBYL
+value = mapping[key] if key in mapping else default</pre>
+
+    <h2 id="guidelines">Guidelines</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Catch the specific type you can handle.</strong> A handler should do something for the exception it names.</li>
+      <li><strong>Avoid a bare <code>except:</code>.</strong> It catches <code>BaseException</code>, including <code>KeyboardInterrupt</code> and <code>SystemExit</code>. Catch <code>Exception</code> or a narrower type instead.</li>
+      <li><strong>Narrow the guarded region.</strong> Put the risky call in the <code>try</code> and the follow-up in <code>else</code>, so unrelated failures are not caught.</li>
+      <li><strong>Use <code>finally</code> or a context manager for cleanup.</strong> The <code>with</code> statement expresses the common case more directly than a manual <code>try</code> and <code>finally</code>.</li>
+      <li><strong>Preserve the cause when you re-raise.</strong> Use <code>raise ... from exc</code> so the original failure survives in the traceback.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Python Documentation, "Errors and Exceptions." Free full text: <a href="https://docs.python.org/3/tutorial/errors.html">docs.python.org/3/tutorial/errors.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Python Documentation, "The try statement." Free full text: <a href="https://docs.python.org/3/reference/compound_stmts.html#the-try-statement">docs.python.org/3/reference/compound_stmts.html</a></li>
+      <li id="ref3"><span class="backlink">^</span> Python Documentation, "The raise statement." Free full text: <a href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement">docs.python.org/3/reference/simple_stmts.html</a></li>
+      <li id="ref4"><span class="backlink">^</span> Python Documentation, "Built-in Exceptions." Free full text: <a href="https://docs.python.org/3/library/exceptions.html">docs.python.org/3/library/exceptions.html</a></li>
+      <li id="ref5"><span class="backlink">^</span> Python Documentation, "Glossary," entries for EAFP and LBYL. Free full text: <a href="https://docs.python.org/3/glossary.html">docs.python.org/3/glossary.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
