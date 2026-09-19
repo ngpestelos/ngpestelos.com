@@ -79,9 +79,9 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Programming Languages &middot; Python</p>
     <h1>Python Default Initialization Idioms</h1>
-    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
 
-    <p class="lede"><strong>Python default initialization idioms</strong> are the patterns Python programmers use to supply a value when a name is unset or a dictionary key is absent. Python has no operator equivalent to Ruby's <code>||=</code>. The closest runtime form is <code>x = x or y</code>, which tests truth value rather than nil and therefore behaves differently on <code>0</code>, <code>""</code>, and empty containers. For dictionaries, the standard library supplies <code>dict.get</code>, <code>dict.setdefault</code>, and <code>collections.defaultdict</code>.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+    <p class="lede"><strong>Python default initialization idioms</strong> are the patterns Python programmers use to supply a value when an existing value needs a default or a dictionary key is absent. Python has no operator equivalent to Ruby's <code>||=</code>. For an already bound name, <code>x = x or y</code> replaces any falsy value, including <code>0</code>, <code>""</code>, and empty containers. Use <code>if x is None</code> when only <code>None</code> means unset. For dictionaries, the standard library supplies <code>dict.get</code>, <code>dict.setdefault</code>, and <code>collections.defaultdict</code>.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
 
     <nav class="toc" aria-label="Contents">
       <p class="toc-title">Contents</p>
@@ -118,16 +118,16 @@
     <h3 id="truthiness">Truth value and the object model</h3>
     <p>A Python name is a binding to an object, not a reserved storage cell with a type. Any object can be tested for truth value, for use in an <code>if</code> or <code>while</code> condition or as an operand of the Boolean operations. By default an object is considered true, and a class can override that by defining <code>__bool__()</code> to return false or <code>__len__()</code> to return zero.<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <p>The false values are the constants <code>None</code> and <code>False</code>, numeric zeros, empty strings, and empty containers such as <code>[]</code> and <code>{}</code>. This set is broader than the Ruby pair of <code>nil</code> and <code>false</code>, and the difference drives every idiom on this page.</p>
-    <p>The Boolean operators return one of their operands rather than a coerced Boolean. The expression <code>x or y</code> first evaluates <code>x</code>; if <code>x</code> is true, its value is returned, and otherwise <code>y</code> is evaluated and its value is returned.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span> The operand that decides the result is handed back unchanged, which is why <code>or</code> can stand in for a default.</p>
+    <p>The Boolean operators <code>and</code> and <code>or</code> return one of their operands. The operator <code>not</code> returns a Boolean. The expression <code>x or y</code> first evaluates <code>x</code>; if <code>x</code> is true, its value is returned, and otherwise <code>y</code> is evaluated and its value is returned.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span></p>
 
     <h3 id="no-operator">Why there is no or-assign operator</h3>
-    <p>Ruby defines <code>||=</code> as conditional assignment: assign the right side only when the left side is <code>nil</code> or <code>false</code>. Python provides assignment statements, augmented assignment for arithmetic and sequence operators, and the assignment expression <code>:=</code> introduced in Python 3.8. It defines no operator that assigns only when the current value is falsy. The idiom <code>x = x or y</code> reproduces the assignment through the Boolean operator.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Ruby defines <code>||=</code> as conditional assignment: assign the right side only when the left side is <code>nil</code> or <code>false</code>. Python provides assignment statements, augmented assignment for arithmetic and sequence operators, and the assignment expression <code>:=</code> introduced in Python 3.8. It defines no operator that assigns only when the current value is falsy. The idiom <code>x = x or y</code> uses <code>or</code> to choose the value, then assigns it.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref5">5</a>]</span></p>
 
     <h3 id="dict-lookup">Dictionary lookup and KeyError</h3>
     <p>A dictionary maps unique keys to values, and a subscription lookup for an absent key raises <code>KeyError</code>. The read-with-default methods avoid the exception. <code>dict.get(key, default)</code> returns the value or the default and leaves the dictionary unchanged, while <code>dict.setdefault(key, default)</code> returns the value, or inserts the default when the key is missing and returns it.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 
     <h2 id="or-assign">Conditional assignment without an operator</h2>
-    <p>The direct translation of <code>x ||= y</code> is <code>x = x or y</code>. It reads: evaluate <code>x</code>, keep it if it is truthy, otherwise take <code>y</code>.</p>
+    <p>The idiom <code>x = x or y</code> evaluates <code>x</code>, keeps it if it is truthy, and otherwise takes <code>y</code>. Both this form and <code>if x is None</code> require an existing binding. An unbound name raises <code>NameError</code>, or <code>UnboundLocalError</code> for a local variable read before assignment. Initialize the name before testing it.<span class="cite">[<a href="#ref4">4</a>]</span></p>
     <pre>x = None
 x = x or "default"   # "default"
 
@@ -135,12 +135,13 @@ x = 0
 x = x or 1           # 1, because 0 is falsy</pre>
 
     <h3 id="falsy-caveat">The falsy-value caveat</h3>
-    <p>Because the test is truth value, a legitimate <code>0</code>, <code>False</code>, <code>""</code>, or empty container is replaced. The first assignment above is safe because <code>None</code> is the intended sentinel. The second is a bug in most contexts: a counter that has reached zero is not the same as a counter that was never set, and <code>x = x or 1</code> discards the zero.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Because the test is truth value, a legitimate <code>0</code>, <code>False</code>, <code>""</code>, or empty container is replaced. Use <code>or</code> only when every falsy value should trigger the default. If zero is a valid counter value, <code>x = x or 1</code> discards it.<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <p>Ruby's operator tests a narrower condition. <code>x ||= y</code> assigns when <code>x</code> is <code>nil</code> or <code>false</code> and leaves a legitimate <code>0</code> or empty string in place. Code ported from Ruby to Python by mechanical substitution changes behavior at every falsy value that is not <code>None</code> or <code>False</code>.</p>
 
     <h3 id="sentinel">Testing for a sentinel instead</h3>
     <p>When a value can legitimately be zero, an empty string, or an empty container, test for the sentinel explicitly rather than for truth value.</p>
-    <pre>if x is None:
+    <pre>x = None
+if x is None:
     x = 0</pre>
     <p>Use <code>is None</code> rather than a bare <code>if not x</code> when the sentinel is <code>None</code>, because <code>if not x</code> also fires on every other falsy value.</p>
 
@@ -152,20 +153,21 @@ x = x or 1           # 1, because 0 is falsy</pre>
 counts.get("email", 0)   # 0, and "email" is still absent</pre>
 
     <h3 id="setdefault">setdefault: insert on first use</h3>
-    <p><code>d.setdefault(k, default)</code> returns the value for <code>k</code>. When <code>k</code> is missing it inserts <code>k</code> with <code>default</code> and returns <code>default</code>. The default argument itself defaults to <code>None</code>.<span class="cite">[<a href="#ref1">1</a>]</span> This is the direct analogue of the Ruby accumulator <code>(h[k] ||= v)</code>, and with a mutable default it is the standard grouping idiom.</p>
+    <p><code>d.setdefault(k, default)</code> returns the value for <code>k</code>. When <code>k</code> is missing it inserts <code>k</code> with <code>default</code> and returns <code>default</code>. The default argument itself defaults to <code>None</code>.<span class="cite">[<a href="#ref1">1</a>]</span> It tests key presence and preserves existing <code>None</code> and <code>False</code> values. Ruby's <code>h[k] ||= v</code> replaces <code>nil</code> and <code>false</code>.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p>Python evaluates the default argument before calling <code>setdefault</code>, even when the key exists: <code>d.setdefault(k, make_value())</code> always calls <code>make_value()</code>. The same applies to <code>get</code>.<span class="cite">[<a href="#ref3">3</a>]</span></p>
     <pre>groups = {}
 for row in rows:
     groups.setdefault(row["dept"], []).append(row["name"])</pre>
     <p>The call inserts an empty list on the first row for a department and returns the existing list on later rows, so the append accumulates names per department and no row is dropped.</p>
 
     <h3 id="defaultdict">defaultdict: a factory on the dict</h3>
-    <p><code>collections.defaultdict</code> is a <code>dict</code> subclass that calls a factory function to supply missing values.<span class="cite">[<a href="#ref2">2</a>]</span> A missing key invokes <code>__missing__</code>: when the <code>default_factory</code> attribute is <code>None</code> the lookup raises <code>KeyError</code>, and when it is set the factory is called with no arguments to provide the default.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p><code>collections.defaultdict</code> is a <code>dict</code> subclass that calls a factory function to supply missing values.<span class="cite">[<a href="#ref2">2</a>]</span> A subscription such as <code>d[k]</code> for a missing key invokes <code>__missing__</code>: when the <code>default_factory</code> attribute is <code>None</code> the lookup raises <code>KeyError</code>, and when it is set the factory is called with no arguments to provide the default.<span class="cite">[<a href="#ref2">2</a>]</span></p>
     <pre>from collections import defaultdict
 
 groups = defaultdict(list)
 for row in rows:
     groups[row["dept"]].append(row["name"])</pre>
-    <p>The two idioms differ in where the default lives. <code>setdefault</code> takes a per-call default and works on an ordinary dictionary. <code>defaultdict</code> holds one factory for the whole dictionary and supplies the default on plain subscription, so the accumulation loop needs no helper call.</p>
+    <p><code>setdefault</code> takes a per-call default and works on an ordinary dictionary. <code>defaultdict</code> holds one factory and calls it for each missing-key subscription, then stores the result. With <code>list</code>, each new key gets a distinct list. Methods such as <code>get</code> do not call the factory.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 
     <h2 id="comparison">Comparison with Ruby</h2>
     <table>
@@ -173,9 +175,9 @@ for row in rows:
         <tr><th>Behavior</th><th>Ruby</th><th>Python</th></tr>
       </thead>
       <tbody>
-        <tr><td>Conditional assignment</td><td><code>x ||= y</code></td><td>no operator; <code>x = x or y</code></td></tr>
-        <tr><td>Assignment trigger</td><td><code>nil</code> or <code>false</code></td><td>any falsy value</td></tr>
-        <tr><td>Insert a dict default</td><td><code>h[k] ||= v</code></td><td><code>d.setdefault(k, v)</code></td></tr>
+        <tr><td>Conditional assignment</td><td><code>x ||= y</code></td><td>no operator; <code>x = x or y</code> requires a bound name</td></tr>
+        <tr><td>Default trigger for the forms above</td><td><code>nil</code> or <code>false</code></td><td>any falsy value</td></tr>
+        <tr><td>Insert a dict default</td><td><code>h[k] ||= v</code>: replaces <code>nil</code> or <code>false</code></td><td><code>d.setdefault(k, v)</code>: inserts only if the key is absent; evaluates <code>v</code> even if present</td></tr>
         <tr><td>Grouping accumulator</td><td><code>(h[k] ||= []) &lt;&lt; v</code></td><td><code>d.setdefault(k, []).append(v)</code></td></tr>
         <tr><td>Auto-default dictionary</td><td><code>Hash.new { |h, k| h[k] = [] }</code></td><td><code>defaultdict(list)</code></td></tr>
       </tbody>
@@ -185,9 +187,9 @@ for row in rows:
     <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
       <li><strong>Read a default without inserting:</strong> <code>d.get(k, default)</code>.</li>
       <li><strong>Insert a default on first use:</strong> <code>d.setdefault(k, default)</code>.</li>
-      <li><strong>Every key shares one default, supplied automatically:</strong> <code>defaultdict(factory)</code>.</li>
-      <li><strong>A plain variable whose only unset value is <code>None</code>:</strong> <code>x = x or y</code> is safe; otherwise test <code>if x is None</code>.</li>
-      <li><strong>A value where any falsy value is real:</strong> never use <code>x = x or y</code>.</li>
+      <li><strong>Call a factory for each missing-key subscription:</strong> <code>defaultdict(factory)</code>.</li>
+      <li><strong>An already bound variable where only <code>None</code> means unset:</strong> test <code>if x is None</code>.</li>
+      <li><strong>An already bound variable where every falsy value should trigger the default:</strong> use <code>x = x or y</code>.</li>
     </ul>
 
     <h2 id="see-also">See also</h2>
@@ -200,6 +202,8 @@ for row in rows:
       <li id="ref1"><span class="backlink">^</span> Python Documentation, "Built-in Types." Free full text: <a href="https://docs.python.org/3/library/stdtypes.html">docs.python.org/3/library/stdtypes.html</a></li>
       <li id="ref2"><span class="backlink">^</span> Python Documentation, "collections: Container datatypes." Free full text: <a href="https://docs.python.org/3/library/collections.html">docs.python.org/3/library/collections.html</a></li>
       <li id="ref3"><span class="backlink">^</span> Python Documentation, "Expressions." Free full text: <a href="https://docs.python.org/3/reference/expressions.html">docs.python.org/3/reference/expressions.html</a></li>
+      <li id="ref4"><span class="backlink">^</span> Python Documentation, "Execution model: Resolution of names." <a href="https://docs.python.org/3/reference/executionmodel.html#resolution-of-names">docs.python.org/3/reference/executionmodel.html</a></li>
+      <li id="ref5"><span class="backlink">^</span> Ruby Documentation, "Assignment: Abbreviated Assignment." <a href="https://docs.ruby-lang.org/en/3.4/syntax/assignment_rdoc.html#label-Abbreviated+Assignment">docs.ruby-lang.org/en/3.4/syntax/assignment_rdoc.html</a></li>
     </ol>
 
     <footer class="meta">
