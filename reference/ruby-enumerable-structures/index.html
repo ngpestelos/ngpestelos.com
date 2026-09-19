@@ -366,7 +366,7 @@ h.include?(a0)  # => true</pre>
       <li><strong>Iterating:</strong> <code>each_entry</code>, <code>each_with_index</code>, <code>each_with_object</code>, <code>each_slice</code>, <code>each_cons</code>, <code>reverse_each</code>.</li>
       <li><strong>Transforming and combining:</strong> <code>map</code> and <code>collect</code>, <code>filter_map</code>, <code>flat_map</code> and <code>collect_concat</code>, <code>grep</code>, <code>grep_v</code>, <code>reduce</code> and <code>inject</code>, <code>sum</code>, <code>zip</code>, <code>cycle</code>.</li>
     </ul>
-    <p>Several of these names are aliases for the same method: <code>collect</code> for <code>map</code>, <code>inject</code> for <code>reduce</code>, <code>filter</code> and <code>find_all</code> for <code>select</code>, and <code>detect</code> for <code>find</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Several of these names are aliases for the same method: <code>collect</code> for <code>map</code>, <code>inject</code> for <code>reduce</code>, <code>filter</code> and <code>find_all</code> for <code>select</code>, and <code>detect</code> for <code>find</code>.<span class="cite">[<a href="#ref1">1</a>]</span> The filtering, grouping, and reducing protocols are covered together in <a href="/reference/filter-group-reduce/">Filter, Group, and Reduce</a>.</p>
 
     <h3 id="deferred-evaluation">Deferred evaluation</h3>
     <p>Enumerator::Lazy is a special kind of Enumerator that redefines most Enumerable methods so that each call constructs another lazy enumerator instead of evaluating immediately. The chain is evaluated on an as-needed basis, and a lazy enumerator can be built from an infinite range because values are produced only when requested.<span class="cite">[<a href="#ref7">7</a>]</span></p>
@@ -423,6 +423,7 @@ h.include?(a0)  # => true</pre>
     <ul>
       <li><a href="/reference/recursion/">Recursion</a></li>
       <li><a href="/reference/transform-values/">transform_values (Ruby Hash Method)</a></li>
+      <li><a href="/reference/filter-group-reduce/">Filter, Group, and Reduce (Ruby Enumerable)</a></li>
     </ul>
 
     <h2 id="references">References</h2>
