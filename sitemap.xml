@@ -651,6 +651,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/python-exception-handling/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/python-string-splitting/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
