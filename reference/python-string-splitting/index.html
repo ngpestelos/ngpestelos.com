@@ -79,9 +79,9 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Programming Languages &middot; Python</p>
     <h1>Python String Splitting</h1>
-    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
 
-    <p class="lede"><strong>Python string splitting</strong> is the set of <code>str</code> methods that divide a string into parts at a separator or a line boundary. The primary method is <code>str.split</code>, with <code>str.rsplit</code> splitting from the right, <code>str.splitlines</code> breaking at line boundaries, and <code>str.partition</code> returning the parts around one separator. Every method returns new objects and leaves the original string unchanged, because a Python string is immutable.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p class="lede"><strong>Python string splitting</strong> is the set of <code>str</code> methods that divide a string into parts at a separator or a line boundary. The primary method is <code>str.split</code>, with <code>str.rsplit</code> splitting from the right, <code>str.splitlines</code> breaking at line boundaries, and <code>str.partition</code> returning the parts around one separator. These methods leave the original string unchanged.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 
     <nav class="toc" aria-label="Contents">
       <p class="toc-title">Contents</p>
@@ -116,8 +116,9 @@
     <h2 id="first-principles">First principles and definitions</h2>
 
     <h3 id="strings-immutable">Strings and the split operation</h3>
-    <p>A Python <code>str</code> is an immutable sequence of Unicode code points. Indexing and slicing read from it, and no method changes it in place. Splitting therefore returns a new list of new strings and leaves the receiver intact.<span class="cite">[<a href="#ref1">1</a>]</span></p>
-    <p>Splitting is the inverse of joining. <code>str.split</code> breaks a string into a list, and <code>str.join</code> rebuilds a string from a list. The round trip <code>" ".join(text.split())</code> collapses every run of whitespace to a single space.</p>
+    <p>A Python <code>str</code> is an immutable sequence of Unicode code points. Indexing and slicing read from it, and no method changes it in place. <code>split</code>, <code>rsplit</code>, and <code>splitlines</code> return lists of strings. <code>partition</code> and <code>rpartition</code> return tuples.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p><code>str.split</code> breaks a string into a list, and <code>str.join</code> combines strings from an iterable with a separator. Joining the parts may not recover the original: <code>" ".join(text.split())</code> removes leading and trailing whitespace and replaces each internal run of whitespace with one space.</p>
+    <pre>" ".join("  a  b ".split())   # 'a b'</pre>
 
     <h3 id="two-algorithms">Two splitting algorithms</h3>
     <p>The <code>sep</code> argument selects one of two algorithms. When <code>sep</code> is an explicit string, the method matches that substring and every match separates two parts. When <code>sep</code> is omitted or <code>None</code>, the method treats runs of consecutive whitespace as a single separator, which is a different rule set.<span class="cite">[<a href="#ref1">1</a>]</span></p>
@@ -142,9 +143,10 @@
 "a\nb".splitlines(True)       # ['a\n', 'b']</pre>
 
     <h3 id="partition">partition and rpartition</h3>
-    <p><code>str.partition(sep)</code> splits at the first occurrence of <code>sep</code> and returns a 3-tuple of the part before the separator, the separator itself, and the part after it. When the separator is not found, it returns the string followed by two empty strings. <code>str.rpartition</code> searches from the right instead.<span class="cite">[<a href="#ref1">1</a>]</span> A 3-tuple with fixed positions is easier to unpack than a variable-length list when exactly one separator is expected.</p>
+    <p><code>str.partition(sep)</code> splits at the first occurrence of <code>sep</code> and returns a 3-tuple of the part before the separator, the separator itself, and the part after it. When the separator is not found, it returns the string followed by two empty strings. <code>str.rpartition</code> splits at the last occurrence. If the separator is absent, it returns two empty strings followed by the original string.<span class="cite">[<a href="#ref1">1</a>]</span> A 3-tuple with fixed positions is easier to unpack than a variable-length list when exactly one separator is expected.</p>
     <pre>"k=v".partition("=")    # ('k', '=', 'v')
-"k".partition("=")      # ('k', '', '')</pre>
+"k".partition("=")      # ('k', '', '')
+"k".rpartition("=")     # ('', '', 'k')</pre>
 
     <h2 id="rules">Separator and boundary rules</h2>
 
@@ -156,8 +158,9 @@
     <p>This is why <code>"  a  b ".split()</code> returns two clean tokens while <code>"  a  b ".split(" ")</code> returns several empty strings.</p>
 
     <h3 id="maxsplit">maxsplit</h3>
-    <p>When <code>maxsplit</code> is given, at most that many splits are performed, so the result has at most <code>maxsplit + 1</code> elements and the unsplit remainder stays in the final element. The value <code>-1</code> means no limit. <code>split</code> takes the leftmost splits and <code>rsplit</code> takes the rightmost ones.<span class="cite">[<a href="#ref1">1</a>]</span></p>
-    <pre>"a,b,c".split(",", 1)    # ['a', 'b,c']</pre>
+    <p>When <code>maxsplit</code> is nonnegative, at most that many splits are performed, so the result has at most <code>maxsplit + 1</code> elements. The default value <code>-1</code> means no limit. <code>split</code> takes the leftmost splits and leaves the unsplit remainder in the final element. <code>rsplit</code> takes the rightmost splits and leaves the remainder in the first element.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>"a,b,c".split(",", 1)    # ['a', 'b,c']
+"a,b,c".rsplit(",", 1)   # ['a,b', 'c']</pre>
 
     <h2 id="comparison">Comparison</h2>
     <table>
