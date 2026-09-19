@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python String Splitting &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Python string splitting uses str.split with an explicit separator or with whitespace, str.rsplit from the right, str.splitlines at line boundaries, and str.partition for a three part split.">
+  <meta property="og:title" content="Python String Splitting &middot; Reference">
+  <meta property="og:description" content="str.split, rsplit, splitlines, and partition, with the separator, whitespace, and maxsplit rules.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/python-string-splitting/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/python-string-splitting/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Python String Splitting","description":"Python string splitting uses str.split with an explicit separator or with whitespace, str.rsplit from the right, str.splitlines at line boundaries, and str.partition for a three part split.","url":"https://ngpestelos.com/reference/python-string-splitting/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Python</p>
+    <h1>Python String Splitting</h1>
+    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
+
+    <p class="lede"><strong>Python string splitting</strong> is the set of <code>str</code> methods that divide a string into parts at a separator or a line boundary. The primary method is <code>str.split</code>, with <code>str.rsplit</code> splitting from the right, <code>str.splitlines</code> breaking at line boundaries, and <code>str.partition</code> returning the parts around one separator. Every method returns new objects and leaves the original string unchanged, because a Python string is immutable.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#strings-immutable">Strings and the split operation</a></li>
+            <li><a href="#two-algorithms">Two splitting algorithms</a></li>
+          </ol>
+        </li>
+        <li><a href="#methods">Splitting methods</a>
+          <ol>
+            <li><a href="#split">split</a></li>
+            <li><a href="#rsplit">rsplit</a></li>
+            <li><a href="#splitlines">splitlines</a></li>
+            <li><a href="#partition">partition and rpartition</a></li>
+          </ol>
+        </li>
+        <li><a href="#rules">Separator and boundary rules</a>
+          <ol>
+            <li><a href="#explicit-sep">Explicit separator</a></li>
+            <li><a href="#whitespace">Whitespace separator</a></li>
+            <li><a href="#maxsplit">maxsplit</a></li>
+          </ol>
+        </li>
+        <li><a href="#comparison">Comparison</a></li>
+        <li><a href="#choosing">Choosing a method</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="strings-immutable">Strings and the split operation</h3>
+    <p>A Python <code>str</code> is an immutable sequence of Unicode code points. Indexing and slicing read from it, and no method changes it in place. Splitting therefore returns a new list of new strings and leaves the receiver intact.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Splitting is the inverse of joining. <code>str.split</code> breaks a string into a list, and <code>str.join</code> rebuilds a string from a list. The round trip <code>" ".join(text.split())</code> collapses every run of whitespace to a single space.</p>
+
+    <h3 id="two-algorithms">Two splitting algorithms</h3>
+    <p>The <code>sep</code> argument selects one of two algorithms. When <code>sep</code> is an explicit string, the method matches that substring and every match separates two parts. When <code>sep</code> is omitted or <code>None</code>, the method treats runs of consecutive whitespace as a single separator, which is a different rule set.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The distinction changes the output shape. An explicit separator can produce empty strings, and the whitespace algorithm cannot produce them at the ends of the result.</p>
+
+    <h2 id="methods">Splitting methods</h2>
+
+    <h3 id="split">split</h3>
+    <p><code>str.split(sep=None, maxsplit=-1)</code> returns a list of the words in the string using <code>sep</code> as the delimiter. With an explicit separator, consecutive delimiters are not grouped and are treated as delimiting empty strings, so <code>'1,,2'.split(',')</code> returns <code>['1', '', '2']</code>. The separator may be multiple characters and is treated as one delimiter. To split on several different delimiters, use <code>re.split()</code>.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+    <pre>"a,b,c".split(",")     # ['a', 'b', 'c']
+"1,,2".split(",")      # ['1', '', '2']
+"  a  b ".split()      # ['a', 'b']
+"".split()             # []</pre>
+
+    <h3 id="rsplit">rsplit</h3>
+    <p><code>str.rsplit(sep=None, maxsplit=-1)</code> behaves like <code>split</code> except that it splits from the right. When <code>maxsplit</code> is given, the rightmost splits are the ones taken. It is the common way to peel one suffix from a string.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>"a/b/c".rsplit("/", 1)   # ['a/b', 'c']</pre>
+
+    <h3 id="splitlines">splitlines</h3>
+    <p><code>str.splitlines(keepends=False)</code> returns a list of the lines in the string, breaking at line boundaries. Line breaks are not included in the result unless <code>keepends</code> is true. The recognized boundaries are a superset of universal newlines and include <code>\n</code>, <code>\r</code>, and <code>\r\n</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>"a\nb\r\nc".splitlines()      # ['a', 'b', 'c']
+"a\nb".splitlines(True)       # ['a\n', 'b']</pre>
+
+    <h3 id="partition">partition and rpartition</h3>
+    <p><code>str.partition(sep)</code> splits at the first occurrence of <code>sep</code> and returns a 3-tuple of the part before the separator, the separator itself, and the part after it. When the separator is not found, it returns the string followed by two empty strings. <code>str.rpartition</code> searches from the right instead.<span class="cite">[<a href="#ref1">1</a>]</span> A 3-tuple with fixed positions is easier to unpack than a variable-length list when exactly one separator is expected.</p>
+    <pre>"k=v".partition("=")    # ('k', '=', 'v')
+"k".partition("=")      # ('k', '', '')</pre>
+
+    <h2 id="rules">Separator and boundary rules</h2>
+
+    <h3 id="explicit-sep">Explicit separator</h3>
+    <p>With an explicit <code>sep</code>, each occurrence marks a boundary. Repeated delimiters delimit empty strings, and a delimiter at either end produces an empty string at that end. Splitting an empty string with an explicit separator also returns a one-element list containing the empty string.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h3 id="whitespace">Whitespace separator</h3>
+    <p>With <code>sep</code> omitted or <code>None</code>, runs of consecutive whitespace are treated as a single separator, and the result contains no empty strings at the start or end when the string has leading or trailing whitespace. Splitting an empty string or a string of only whitespace with a <code>None</code> separator returns <code>[]</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>This is why <code>"  a  b ".split()</code> returns two clean tokens while <code>"  a  b ".split(" ")</code> returns several empty strings.</p>
+
+    <h3 id="maxsplit">maxsplit</h3>
+    <p>When <code>maxsplit</code> is given, at most that many splits are performed, so the result has at most <code>maxsplit + 1</code> elements and the unsplit remainder stays in the final element. The value <code>-1</code> means no limit. <code>split</code> takes the leftmost splits and <code>rsplit</code> takes the rightmost ones.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>"a,b,c".split(",", 1)    # ['a', 'b,c']</pre>
+
+    <h2 id="comparison">Comparison</h2>
+    <table>
+      <thead>
+        <tr><th>Method</th><th>Returns</th><th>Breaks at</th><th>Direction</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>split</code></td><td>list of strings</td><td>separator matches</td><td>left to right</td></tr>
+        <tr><td><code>rsplit</code></td><td>list of strings</td><td>separator matches</td><td>right to left</td></tr>
+        <tr><td><code>splitlines</code></td><td>list of strings</td><td>line boundaries</td><td>left to right</td></tr>
+        <tr><td><code>partition</code></td><td>3-tuple</td><td>first separator</td><td>left to right</td></tr>
+        <tr><td><code>rpartition</code></td><td>3-tuple</td><td>last separator</td><td>right to left</td></tr>
+      </tbody>
+    </table>
+    <p class="unattributed">The <code>None</code> separator applies only to <code>split</code> and <code>rsplit</code>. <code>splitlines</code> takes no separator, and <code>partition</code> requires one.</p>
+
+    <h2 id="choosing">Choosing a method</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Words separated by any whitespace:</strong> <code>s.split()</code>.</li>
+      <li><strong>A fixed delimiter:</strong> <code>s.split(",")</code>.</li>
+      <li><strong>Limit the number of fields, keep the remainder:</strong> <code>s.split(",", 2)</code>.</li>
+      <li><strong>Peel one suffix or extension:</strong> <code>s.rsplit(".", 1)</code>.</li>
+      <li><strong>Lines:</strong> <code>s.splitlines()</code>.</li>
+      <li><strong>Head, separator, and tail around one marker:</strong> <code>s.partition("=")</code>.</li>
+      <li><strong>Several different delimiters or a pattern:</strong> <code>re.split()</code>.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Python Documentation, "Built-in Types," String Methods. Free full text: <a href="https://docs.python.org/3/library/stdtypes.html#string-methods">docs.python.org/3/library/stdtypes.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Python Documentation, "re: Regular expression operations." Free full text: <a href="https://docs.python.org/3/library/re.html#re.split">docs.python.org/3/library/re.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
