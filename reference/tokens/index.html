@@ -265,7 +265,7 @@
       <h2>1. Tokenization Fundamentals</h2>
 
       <h3 id="definition-and-vocabulary">1.1 Vocabulary Representation</h3>
-      <p>A tokenizer operates as a bijective lookup between a finite vocabulary of subwords \(V\) and integer identifiers \(\{0, 1, \dots, |V|-1\}\). Modern vocabulary sizes typically range from \(|V| = 32,000\) (Llama 2) to \(|V| = 128,256\) (Llama 3/4) and \(|V| = 256,000\) (Gemma). Each token index corresponds to an embedding vector in the model's input projection matrix \(W_e \in \mathbb{R}^{|V| \times d_{\text{model}}}\).</p>
+      <p>A tokenizer operates as a bijective lookup between a finite vocabulary of subwords \(V\) and integer identifiers \(\{0, 1, \dots, |V|-1\}\). Modern vocabulary sizes typically range from \(|V| = 32,000\) (Llama 2) to \(|V| = 128,256\) (Llama 3/4) and \(|V| = 256,000\) (Gemma). Each token index corresponds to an <a href="/reference/embeddings/">embedding vector</a> in the model's input projection matrix \(W_e \in \mathbb{R}^{|V| \times d_{\text{model}}}\).</p>
       <p>In standard English text corpora, 1,000 tokens represent approximately 750 words (an average compression ratio of 1.33 tokens per word, or roughly 4 characters per token) [1].</p>
 
       <h3 id="algorithms">1.2 Subword Tokenization Algorithms</h3>
@@ -282,7 +282,7 @@
       <h2>2. Token Lifecycle and Processing Phases</h2>
 
       <h3 id="prefill-vs-decode">2.1 Prefill (Input) vs. Decode (Output)</h3>
-      <p>Transformer execution splits into two computationally distinct phases [6]:</p>
+      <p><a href="/reference/transformer-architecture/">Transformer</a> execution splits into two computationally distinct phases [6]:</p>
       <ul>
         <li><strong>Prefill Phase (Input Tokens):</strong> All input prompt tokens are processed simultaneously in parallel. The operation is compute-bound, saturating GPU tensor cores (matrix-matrix multiplication, GEMM). During prefill, Key (\(K\)) and Value (\(V\)) activation tensors for all prompt tokens are computed and written to GPU high-bandwidth memory (HBM).</li>
         <li><strong>Decode Phase (Output Tokens):</strong> Output tokens are generated sequentially, one at a time, autoregressively. Each step requires reading the entire accumulated KV cache from HBM for a single vector-matrix multiplication (GEMV). The decode phase is memory-bandwidth bound, resulting in lower hardware utilization.</li>
@@ -308,7 +308,7 @@
 
       \[M_{\text{KV}} = 2 \times B \times L \times n_{\text{layers}} \times d_{\text{model}} \times \text{BytesPerElement}\]
 
-      <p>where \(B\) is batch size, \(L\) is context length, \(n_{\text{layers}}\) is the number of transformer layers, \(d_{\text{model}}\) is the hidden dimension, and the factor of 2 accounts for both \(K\) and \(V\) matrices. In FP16 precision (2 bytes per element), a 70B parameter model with a 128,000-token context requires approximately 160 GB of dedicated memory solely for a single user's KV cache.</p>
+      <p>where \(B\) is batch size, \(L\) is <a href="/reference/context-window/">context length</a>, \(n_{\text{layers}}\) is the number of <a href="/reference/transformer-block/">transformer layers</a>, \(d_{\text{model}}\) is the hidden dimension, and the factor of 2 accounts for both \(K\) and \(V\) matrices. In FP16 precision (2 bytes per element), a 70B parameter model with a 128,000-token context requires approximately 160 GB of dedicated memory solely for a single user's KV cache.</p>
 
       <h3 id="attention-variants">3.2 Attention Architectures: MHA, MQA, and GQA</h3>
       <p>To mitigate the memory scaling bottleneck of Multi-Head Attention, modern architectures compress the key and value heads [9]:</p>
@@ -349,12 +349,17 @@
     <section class="see-also" id="see-also">
       <h2>See also</h2>
       <ul>
-        <li><a href="/eli5/tokens/">ELI5: Tokens</a> — Visual picture-book explainer of subword chunking and token budgets.</li>
-        <li><a href="/reference/large-language-models/">Large Language Models</a> — Transformer self-attention architecture and sequence generation.</li>
-        <li><a href="/reference/frontier-models/">Frontier Models, Architectures, and Tokens</a> — Overview of frontier compute scale and Mixture-of-Experts.</li>
-        <li><a href="/reference/context-engineering/">Context Engineering</a> — Prompt window structuring and memory optimization.</li>
-        <li><a href="/reference/autoregressive/">Autoregressive Models</a> — Mathematical formulation of next-token prediction.</li>
-        <li><a href="/reference/softmax/">Softmax Function</a> — Probability normalization for next-token vocabulary logits.</li>
+        <li><a href="/eli5/tokens/">ELI5: Tokens</a></li>
+        <li><a href="/reference/embeddings/">Embeddings</a></li>
+        <li><a href="/reference/transformer-architecture/">Transformer Architecture</a></li>
+        <li><a href="/reference/transformer-block/">Transformer Block</a></li>
+        <li><a href="/reference/lm-head/">Language Modeling Head</a></li>
+        <li><a href="/reference/context-window/">Context Windows</a></li>
+        <li><a href="/reference/large-language-models/">Large Language Models</a></li>
+        <li><a href="/reference/frontier-models/">Frontier Models, Architectures, and Tokens</a></li>
+        <li><a href="/reference/context-engineering/">Context Engineering</a></li>
+        <li><a href="/reference/autoregressive/">Autoregressive Models</a></li>
+        <li><a href="/reference/softmax/">Softmax Function</a></li>
       </ul>
     </section>
 
