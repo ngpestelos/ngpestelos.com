@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>transform_values (Ruby Hash Method) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <title>transform_values (Ruby Hash Method, archived 20260920) &middot; Reference &middot; Nestor G Pestelos Jr</title>
   <meta name="description" content="transform_values is a Ruby Hash method that returns a new Hash with the same keys and values replaced by the result of a block. Covers the no-block Enumerator form, transform_values!, the nil default of the returned Hash, related methods, and cost.">
-  <meta property="og:title" content="transform_values (Ruby Hash Method) &middot; Reference">
+  <meta property="og:title" content="transform_values (Ruby Hash Method, archived 20260920) &middot; Reference">
   <meta property="og:description" content="The value-side map for a Ruby Hash: keys fixed, values replaced, result a new Hash. Includes the in-place variant and the dropped default.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ngpestelos.com/reference/transform-values/">
-  <link rel="canonical" href="https://ngpestelos.com/reference/transform-values/">
+  <meta property="og:url" content="https://ngpestelos.com/reference/transform-values-20260920/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/transform-values-20260920/">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
   <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
   <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
@@ -199,7 +199,7 @@
     }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"transform_values (Ruby Hash Method)","description":"transform_values is a Ruby Hash method that returns a new Hash with the same keys and values replaced by the result of a block. Covers the no-block Enumerator form, transform_values!, the nil default of the returned Hash, related methods, and cost.","url":"https://ngpestelos.com/reference/transform-values/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"transform_values (Ruby Hash Method)","description":"transform_values is a Ruby Hash method that returns a new Hash with the same keys and values replaced by the result of a block. Covers the no-block Enumerator form, transform_values!, the nil default of the returned Hash, related methods, and cost.","url":"https://ngpestelos.com/reference/transform-values-20260920/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
@@ -207,15 +207,11 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Programming Languages &middot; Ruby</p>
     <h1>transform_values (Ruby Hash Method)</h1>
-    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
+    <p class="updated">Reference entry &middot; last updated September 19, 2026</p>
 
-    <p class="lede"><strong>transform_values</strong> is a method on Ruby's <code>Hash</code> class that returns a new Hash whose keys are unchanged and whose values are the results of applying a block to each original value.<span class="cite">[<a href="#ref1">1</a>]</span> Its in-place counterpart is <code>transform_values!</code>.</p>
+    <p class="updated">Archived September 20, 2026. This version preserves earlier claims. <a href="/reference/transform-values/">Read the current entry</a>.</p>
 
-    <pre>h = {foo: 0, bar: 1, baz: 2}
-h.transform_values { |value| value * 100 }
-# => {:foo=>0, :bar=>100, :baz=>200}</pre>
-
-    <p class="updated"><a href="/reference/transform-values-20260920/">Previous version, archived September 20, 2026</a></p>
+    <p class="lede"><strong>transform_values</strong> is a method on Ruby's <code>Hash</code> class that returns a new Hash whose keys are unchanged and whose values are the results of applying a block to each original value.<span class="cite">[<a href="#ref1">1</a>]</span> It transforms the value side of a key-value map while holding the key side fixed, and it leaves the receiver untouched. Its in-place counterpart is <code>transform_values!</code>.</p>
 
     <nav class="toc" aria-label="Contents">
       <p class="toc-title">Contents</p>
@@ -231,24 +227,24 @@ h.transform_values { |value| value * 100 }
     </nav>
 
     <h2 id="first-principles">First principles and definitions</h2>
-    <p>A <strong>Hash</strong> maps unique keys to values and iterates over entries in insertion order.<span class="cite">[<a href="#ref1">1</a>]</span></p>
-    <p>The <code>transform_values</code> block receives each value and returns its replacement. On a Hash, <code>map</code> yields each key-value pair as a two-element Array and returns an Array of block results.<span class="cite">[<a href="#ref1">1</a>]</span></p>
-    <p>Ruby added <code>transform_values</code> and <code>transform_values!</code> in version 2.4.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>A <strong>Hash</strong> is a finite map from unique keys to values. Each key identifies at most one value, and entries iterate in the order they were created.<span class="cite">[<a href="#ref1">1</a>]</span> Transforming the value side alone means taking each value, producing a replacement, and rebuilding a map from the original keys and the replacement values.</p>
+    <p><code>transform_values</code> is that operation. The block receives one argument, the value, and its result becomes the value at the same key. The keys are never yielded, so the block cannot change them, and the result always carries the receiver's keys.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The nearest Enumerable method is <code>map</code>. On a Hash, <code>map</code> yields each entry as a two-element Array and returns an Array, so its block can change both components and can change the shape of the result. <code>transform_values</code> is the narrower operation: keys fixed, values replaced, and the result is still a Hash.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The method is non-mutating. It returns a new Hash and leaves the receiver unchanged. The bang variant, <code>transform_values!</code>, performs the same replacement on the receiver itself. Ruby added both methods in version 2.4.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 
     <h2 id="signature">Signature and behavior</h2>
     <pre>transform_values {|value| ... }  →  new_hash
 transform_values                 →  new_enumerator</pre>
     <p>With a block, the method returns a new Hash. The block receives each value in turn, and the result pairs every original key with the block's output.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>h = {foo: 0, bar: 1, baz: 2}
+h.transform_values { |value| value * 100 }
+# => {:foo=>0, :bar=>100, :baz=>200}</pre>
+    <p>Three properties follow from the signature.</p>
     <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
       <li><strong>Keys and order are preserved.</strong> The result has the same keys as the receiver, in the same insertion order.</li>
-      <li><strong>The result is a separate Hash.</strong> Replacing an entry in the result leaves the original entry intact. Values are not deep-copied, so mutable objects can remain shared.</li>
+      <li><strong>The receiver is unchanged.</strong> The result is a separate Hash object, so writing to one does not affect the other.</li>
       <li><strong>The default is dropped.</strong> The returned Hash has a <code>nil</code> default even when the receiver was built with a default value or a default proc. The implementation sets the new Hash's default to <code>nil</code>.</li>
     </ul>
-    <p>Mutating a shared value through the result also changes the value seen through the original Hash. The block can mutate an original value directly, too.<span class="cite">[<a href="#ref1">1</a>]</span></p>
-    <pre>original = {items: [1]}
-result = original.transform_values { |value| value }
-result[:items] &lt;&lt; 2
-original # => {:items=>[1, 2]}</pre>
     <p>Without a block, the method returns a new Enumerator, which can be driven with <code>each</code> or combined with other Enumerable methods.<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <pre>h = {foo: 0, bar: 1, baz: 2}
 e = h.transform_values
@@ -258,16 +254,10 @@ e.each { |value| value * 100 }
     <h2 id="bang">transform_values!</h2>
     <pre>transform_values! {|value| ... }  →  self
 transform_values!                 →  new_enumerator</pre>
-    <p>The bang variant replaces each value in the receiver with the block's result and returns the receiver. It mutates the Hash in place, so any other reference to the same object observes the new values.<span class="cite">[<a href="#ref1">1</a>]</span> Without a block, it returns an Enumerator and defers mutation. Calling <code>each</code> with a block on that Enumerator replaces values in the original Hash.</p>
+    <p>The bang variant replaces each value in the receiver with the block's result and returns the receiver. It mutates the Hash in place, so any other reference to the same object observes the new values.<span class="cite">[<a href="#ref1">1</a>]</span> Without a block it returns an Enumerator rather than mutating.</p>
     <pre>h = {foo: 0, bar: 1, baz: 2}
 h.transform_values! { |value| value * 100 }
 h # => {:foo=>0, :bar=>100, :baz=>200}</pre>
-
-    <pre>h = {foo: 1}
-e = h.transform_values!
-h # => {:foo=>1}
-e.each { |value| value * 100 }
-h # => {:foo=>100}</pre>
 
     <h2 id="related">Related methods</h2>
     <p>Several Hash and Enumerable methods transform entries. They differ in which component the block sees and in what the method returns.</p>
@@ -287,8 +277,8 @@ h # => {:foo=>100}</pre>
     <p><code>transform_keys</code> is the key-side counterpart: it rebuilds the map with new keys and the original values. When a block must change both components, or when the result should be an Array rather than a Hash, <code>map</code> is the method that fits.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 
     <h2 id="cost">Cost</h2>
-    <p>For <code>n</code> entries, <code>transform_values</code> has O(n) traversal overhead, plus the total cost of the block calls. The new Hash structure uses O(n) additional space; objects allocated by the block add to that cost. The Hash holds the objects returned by the block.</p>
-    <p class="unattributed">These linear bounds describe the expected overhead of traversing and copying a Hash with n entries. Ruby documentation does not publish these as asymptotic guarantees.</p>
+    <p><code>transform_values</code> visits each entry once and builds one new Hash, so it takes linear time in the number of entries and linear additional space for the result. The values themselves are not copied; the new Hash holds whatever the block returned.</p>
+    <p class="unattributed">The linear cost describes the expected behavior of building a hash table from n entries. It is a conventional bound, not an asymptotic guarantee published in the Ruby documentation.</p>
 
     <h2 id="see-also">See also</h2>
     <ul>
