@@ -54,7 +54,7 @@ footer { border-top:1px solid var(--line); margin-top:2rem; }
 <p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
 <p class="kicker">Finance · Payments</p>
 <h1>Payment Tokenization</h1>
-<p class="updated">Reference entry &middot; last updated 20260911</p>
+<p class="updated">Reference entry &middot; last updated 20260920</p>
 <p class="lede"><strong>Payment tokenization</strong> replaces sensitive Primary Account Numbers (PANs) with non-sensitive surrogate values (tokens). A token cannot be used outside its authorized merchant, device, or network context.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 <nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
 <li><a href="#first-principles">First principles: surrogate credentials</a></li>
@@ -83,7 +83,7 @@ footer { border-top:1px solid var(--line); margin-top:2rem; }
 <p>Digital wallets implement tokenization to secure transactions initiated from consumer devices, though their underlying credential models differ:</p>
 <ul>
 <li><strong>Apple Pay:</strong> Provisions a Device Account Number (DAN) into the device’s hardware Secure Element during enrollment. For each transaction, the device uses an isolated cryptographic key inside the Secure Element to sign transaction data, generating a dynamic one-time cryptogram.<span class="cite">[<a href="#ref3">3</a>]</span><span class="cite">[<a href="#ref4">4</a>]</span></li>
-<li><strong>Google Pay:</strong> Can return either a device-bound network token (identified by <code>CRYPTOGRAM_3DS</code>, backed by an Android device key or cloud tokenization service) or a cloud-stored primary account number (identified by <code>PAN_ONLY</code>, requiring standard 3-D Secure authentication or gateway processing). The merchant or gateway inspects the returned tokenization type to determine transaction processing.<span class="cite">[<a href="#ref6">6</a>]</span></li>
+<li><strong>Google Pay:</strong> Returns a payment credential whose authentication method is either <code>CRYPTOGRAM_3DS</code> (a device-bound network token backed by an Android device key or cloud tokenization service) or <code>PAN_ONLY</code> (a cloud-stored primary account number, processed with the usual card risk checks and 3-D Secure where applicable). This authentication method is separate from the tokenization type (<code>PAYMENT_GATEWAY</code> or <code>DIRECT</code>), which describes how Google delivers the payment data: a direct integration inspects the authentication method on the decrypted credential, while a gateway integration leaves that decision to the provider.<span class="cite">[<a href="#ref6">6</a>]</span><span class="cite">[<a href="#ref7">7</a>]</span></li>
 </ul>
 <h2 id="pci-scope">4. PCI DSS compliance and security impact</h2>
 <p>Using tokenization reduces the systems in scope for <a href="/reference/pci-dss/">PCI DSS</a> assessment. When merchants delegate card entry to hosted iframes and store only tokens, their servers never store, process, or transmit sensitive PAN data.<span class="cite">[<a href="#ref1">1</a>]</span></p>
@@ -105,6 +105,7 @@ footer { border-top:1px solid var(--line); margin-top:2rem; }
 <li id="ref4"><a href="https://docs.stripe.com/payments/network-tokens">Stripe. Network tokens guide.</a></li>
 <li id="ref5"><a href="https://www.pcisecuritystandards.org/faqs/1588/">PCI SSC. FAQ 1588: SAQ A eligibility criteria for scripts.</a></li>
 <li id="ref6"><a href="https://developers.google.com/pay/api/android/guides/resources/payment-data-cryptography">Google Developers. Payment data cryptography and token types.</a></li>
+<li id="ref7"><a href="https://developers.google.com/pay/api/android/reference/response-objects#PaymentMethodTokenizationData">Google Developers. JSON response objects: PaymentMethodTokenizationData.</a></li>
 </ol>
 <footer><p><a href="#top">Back to top</a></p></footer>
 </main>
