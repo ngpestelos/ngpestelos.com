@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area and Perimeter of Composite 2D Shapes (Geometry) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A composite 2D shape is a region formed by combining simpler shapes. Its area is the sum or difference of the component areas; its perimeter is the total length of the boundary of the final region, including the boundaries of any holes.">
+  <meta property="og:title" content="Area and Perimeter of Composite 2D Shapes (Geometry) &middot; Reference">
+  <meta property="og:description" content="Additive and subtractive area, component formulas, and why perimeter is not the sum of component perimeters.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/composite-shapes/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/composite-shapes/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Area and Perimeter of Composite 2D Shapes (Geometry)","description":"A composite 2D shape is a region formed by combining simpler shapes. Its area is the sum or difference of the component areas; its perimeter is the total length of the boundary of the final region, including the boundaries of any holes.","url":"https://ngpestelos.com/reference/composite-shapes/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .unattributed { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); font-style: italic; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--ink); border-bottom: none; padding-bottom: 0; }
+    .toc ol { list-style: none; padding-left: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    .formula { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1.2rem; margin: 0.5rem 0 1.2rem; text-align: center; }
+    table.data { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1.2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    table.data th, table.data td { border: 1px solid var(--line); padding: 0.4rem 0.7rem; text-align: left; }
+    table.data th { background: var(--well); }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back { display: none !important; } .back-to-top { display: none !important; } }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics · Euclidean Geometry</p>
+    <h1>Area and Perimeter of Composite 2D Shapes</h1>
+    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
+
+    <p class="lede"><strong>A composite shape</strong> is a plane region built by joining simpler shapes such as rectangles, triangles, circles, and trapezoids. Its area equals the sum of the component areas when the components do not overlap, or the difference when one region is removed from another. Its perimeter is the total length of the boundary of the final region: every exposed edge counts once, including the boundary of any hole, and it is not the sum of the component perimeters.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First principles</a></li>
+        <li><a href="#components">2. Component area formulas</a></li>
+        <li><a href="#additive">3. Additive and subtractive composition</a></li>
+        <li><a href="#perimeter">4. Perimeter of a composite shape</a></li>
+        <li><a href="#worked">5. Worked example</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First principles</h2>
+    <p>Area is additive over disjoint regions. If a region \(R\) is partitioned into pieces \(R_1, R_2, \dots, R_k\) whose interiors do not overlap, then the total area is:</p>
+    <div class="formula">\( A(R) = A(R_1) + A(R_2) + \cdots + A(R_k) \)</div>
+    <p>Subtraction is the same principle applied to a hole: if \(R_2\) lies entirely inside \(R_1\), the remaining region has area \(A(R_1) - A(R_2)\). Perimeter is different. It measures the length of the complete boundary of the final region: the outer boundary plus the boundary of every hole. Shared interior edges introduced only by the decomposition are not part of it <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>.</p>
+
+    <h2 id="components">2. Component area formulas</h2>
+    <table class="data">
+      <tr><th>Shape</th><th>Area</th><th>Perimeter</th></tr>
+      <tr><td>Rectangle</td><td>\( A = lw \)</td><td>\( P = 2l + 2w \)</td></tr>
+      <tr><td>Parallelogram</td><td>\( A = bh \)</td><td>Sum of four sides</td></tr>
+      <tr><td>Triangle</td><td>\( A = \tfrac{1}{2}bh \)</td><td>\( P = a + b + c \)</td></tr>
+      <tr><td>Trapezoid</td><td>\( A = \tfrac{1}{2}(b_1 + b_2)h \)</td><td>Sum of four sides</td></tr>
+      <tr><td>Circle</td><td>\( A = \pi r^2 \)</td><td>\( C = 2\pi r \)</td></tr>
+      <tr><td>Semicircle</td><td>\( A = \tfrac{1}{2}\pi r^2 \)</td><td>\( \pi r + 2r \)</td></tr>
+    </table>
+    <p>The perimeter of a circular arc is the arc length alone. A semicircle's boundary consists of the curved half plus the straight diameter, so its perimeter is \( \pi r + 2r \), not \( \pi r \).</p>
+
+    <h2 id="additive">3. Additive and subtractive composition</h2>
+    <p>Decomposition is a choice, and more than one valid decomposition exists. An L-shaped region can be split into two rectangles or treated as a large rectangle with a rectangular corner removed. Both routes give the same area, which is a useful check on the work.</p>
+    <ul>
+      <li><strong>Additive method</strong>: split the region into non-overlapping pieces, compute each area, and add.</li>
+      <li><strong>Subtractive method</strong>: enclose the region in a larger simple shape and subtract the areas of the missing parts.</li>
+    </ul>
+    <p>Choose the method that produces fewer, simpler pieces. The total is invariant under the choice.</p>
+
+    <h2 id="perimeter">4. Perimeter of a composite shape</h2>
+    <p>Trace every exposed edge of the final region once and add those segment lengths and arc lengths. The boundary includes the outer contour and the contour of every hole. Interior cut lines introduced only by the decomposition do not belong to the boundary and are not counted. In the additive example below, the shared edge between the two rectangles appears in both component perimeters but contributes zero to the boundary of the union <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>Removing an interior \(2 \times 2\) square hole from a \(6 \times 4\) rectangle adds the hole's perimeter \(8\) to the rectangle's \(20\), for a total of \(28\). Counting only the outer contour would report \(20\) and miss the hole.</p>
+    <p class="unattributed">A common error is to sum component perimeters. For two rectangles sharing a side of length \(s\), that sum overcounts the true perimeter by \(2s\), the shared edge counted on both sides.</p>
+
+    <h2 id="worked">5. Worked example</h2>
+    <p>Take an L-shape formed by a \(6 \times 4\) rectangle with a \(2 \times 2\) square removed from one corner.</p>
+    <ul>
+      <li>Area: \( 6 \cdot 4 - 2 \cdot 2 = 24 - 4 = 20 \) square units.</li>
+      <li>Perimeter: tracing the remaining boundary gives segments \(6\), \(4\), \(4\), \(2\), \(2\), \(2\), totaling \(20\) units.</li>
+    </ul>
+    <p>Decompose the L-shape into a \(6 \times 2\) rectangle and a \(4 \times 2\) rectangle. Their areas sum to \(12 + 8 = 20\), as required. Their perimeters sum to \(16 + 12 = 28\), which exceeds the true perimeter by \(8\). The excess is twice the shared edge of length \(4\), counted once in each component perimeter. Tracing every exposed edge is the reliable method.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul id="see-also-list">
+      <li><a href="/reference/properties-of-polygons/">Properties and Angles of Polygons</a></li>
+      <li><a href="/reference/circle-fundamentals/">Circle Fundamentals</a></li>
+      <li><a href="/reference/polygon-perimeter/">Polygon Perimeter</a></li>
+      <li><a href="/reference/triangle-perimeter/">Triangle Perimeter (Geometry)</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref-1"><span class="backlink">^</span>H.S.M. Coxeter, <em>Introduction to Geometry</em>, 2nd ed., John Wiley &amp; Sons, 1969.</li>
+      <li id="ref-2"><span class="backlink">^</span>Euclid, <em>Elements</em>, Books I and VI (Area of rectilinear figures and the equality of figures on equal bases).</li>
+    </ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factoring Polynomials (Algebra) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Factoring rewrites a polynomial as a product of simpler factors. The techniques are greatest common factor, difference of squares, trinomial patterns, and grouping.">
+  <meta property="og:title" content="Factoring Polynomials (Algebra) &middot; Reference">
+  <meta property="og:description" content="A decision path through GCF, difference of squares, perfect square trinomials, cube patterns, trinomials, and grouping.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/polynomial-factoring/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/polynomial-factoring/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Factoring Techniques for Polynomials (Algebra)","description":"Factoring rewrites a polynomial as a product of simpler factors. The techniques are greatest common factor, difference of squares, trinomial patterns, and grouping.","url":"https://ngpestelos.com/reference/polynomial-factoring/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .unattributed { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); font-style: italic; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--ink); border-bottom: none; padding-bottom: 0; }
+    .toc ol { list-style: none; padding-left: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    .formula { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1.2rem; margin: 0.5rem 0 1.2rem; text-align: center; }
+    table.data { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1.2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    table.data th, table.data td { border: 1px solid var(--line); padding: 0.4rem 0.7rem; text-align: left; }
+    table.data th { background: var(--well); }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back { display: none !important; } .back-to-top { display: none !important; } }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics · Algebra</p>
+    <h1>Factoring Techniques for Polynomials</h1>
+    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
+
+    <p class="lede"><strong>Factoring</strong> a polynomial means writing it as a product of polynomials of lower degree. It reverses multiplication and is the main tool for solving polynomial equations, because a product equals zero only when at least one factor equals zero.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First principles</a></li>
+        <li><a href="#gcf">2. Greatest common factor</a></li>
+        <li><a href="#squares">3. Difference of squares</a></li>
+        <li><a href="#trinomials">4. Perfect square trinomials</a></li>
+        <li><a href="#cubes">5. Sum and difference of cubes</a></li>
+        <li><a href="#general">6. General trinomials and grouping</a></li>
+        <li><a href="#strategy">7. Strategy</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First principles</h2>
+    <p>Factoring relies on the distributive law read in reverse: \( ab + ac = a(b + c) \). The <strong>zero-product property</strong> then states that if a product of real factors is zero, at least one factor is zero. Together they convert a hard root-finding problem into simpler ones <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>.</p>
+
+    <h2 id="gcf">2. Greatest common factor</h2>
+    <p>Always try the greatest common factor first. Factor out the largest monomial dividing every term. Example: \( 6x^3 - 9x^2 = 3x^2(2x - 3) \).</p>
+
+    <h2 id="squares">3. Difference of squares</h2>
+    <div class="formula">\( a^2 - b^2 = (a - b)(a + b) \)</div>
+    <p>A sum of squares, \(a^2 + b^2\), does not factor over the real numbers. The difference-of-squares pattern can be applied more than once, as in \( x^4 - 16 = (x^2 - 4)(x^2 + 4) = (x - 2)(x + 2)(x^2 + 4) \).</p>
+
+    <h2 id="trinomials">4. Perfect square trinomials</h2>
+    <div class="formula">\( a^2 + 2ab + b^2 = (a + b)^2, \qquad a^2 - 2ab + b^2 = (a - b)^2 \)</div>
+    <p>Recognize the pattern by checking that the first and last terms are perfect squares, written \(A^2\) and \(B^2\), and that the middle term equals \(2AB\) or \(-2AB\). Using the square roots rather than the terms themselves is what makes the rule correct: in \(x^2 + 6x + 9\) the square roots are \(x\) and \(3\), and \(2 \cdot x \cdot 3 = 6x\).</p>
+
+    <h2 id="cubes">5. Sum and difference of cubes</h2>
+    <div class="formula">\( a^3 + b^3 = (a + b)(a^2 - ab + b^2) \)</div>
+    <div class="formula">\( a^3 - b^3 = (a - b)(a^2 + ab + b^2) \)</div>
+    <p>The quadratic factor does not factor further over the reals. Keep the signs straight: the linear factor takes the sign of the cube, and the middle term of the quadratic takes the opposite sign.</p>
+
+    <h2 id="general">6. General trinomials and grouping</h2>
+    <p>For \( x^2 + bx + c \), find two numbers whose product is \(c\) and whose sum is \(b\), then write \( (x + p)(x + q) \).</p>
+    <p>For \( ax^2 + bx + c \) with \( a \neq 1 \), use the \(ac\) method: find two numbers whose product is \(ac\) and whose sum is \(b\), split the middle term, and factor by grouping. Example: \( 2x^2 + 7x + 3 \) becomes \( 2x^2 + 6x + x + 3 = 2x(x + 3) + 1(x + 3) = (2x + 1)(x + 3) \).</p>
+    <p>With four terms, group in pairs and factor each pair: \( x^3 + 3x^2 + 2x + 6 = x^2(x + 3) + 2(x + 3) = (x^2 + 2)(x + 3) \).</p>
+
+    <h2 id="strategy">7. Strategy</h2>
+    <ol>
+      <li>Factor out the GCF.</li>
+      <li>Count the terms. Two terms suggest difference of squares or cubes; three terms suggest a trinomial pattern; four terms suggest grouping.</li>
+      <li>Factor again until every factor is irreducible.</li>
+      <li>Check by multiplying the factors back and comparing with the original.</li>
+    </ol>
+
+    <h2 id="see-also">See also</h2>
+    <ul id="see-also-list">
+      <li><a href="/reference/exponent-rules/">Exponent Rules</a></li>
+      <li><a href="/reference/radical-operations/">Radical Operations and Rationalizing Denominators</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref-1"><span class="backlink">^</span>OpenStax, <em>College Algebra 2e</em>, Rice University (Factoring polynomials).</li>
+      <li id="ref-2"><span class="backlink">^</span>Michael Sullivan, <em>Algebra and Trigonometry</em>, 11th ed., Pearson, 2019.</li>
+    </ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

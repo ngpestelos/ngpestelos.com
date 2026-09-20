@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piecewise-Defined Functions (Functions) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A piecewise function applies a different rule to each interval of its domain. Evaluating it means selecting the branch whose condition holds.">
+  <meta property="og:title" content="Piecewise-Defined Functions (Functions) &middot; Reference">
+  <meta property="og:description" content="How piecewise functions are defined, evaluated, graphed, and checked for continuity at branch boundaries.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/piecewise-functions/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/piecewise-functions/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Piecewise-Defined Functions (Functions)","description":"A piecewise function applies a different rule to each interval of its domain. Evaluating it means selecting the branch whose condition holds.","url":"https://ngpestelos.com/reference/piecewise-functions/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .unattributed { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); font-style: italic; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--ink); border-bottom: none; padding-bottom: 0; }
+    .toc ol { list-style: none; padding-left: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    .formula { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1.2rem; margin: 0.5rem 0 1.2rem; text-align: center; }
+    table.data { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1.2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    table.data th, table.data td { border: 1px solid var(--line); padding: 0.4rem 0.7rem; text-align: left; }
+    table.data th { background: var(--well); }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back { display: none !important; } .back-to-top { display: none !important; } }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics · Functions</p>
+    <h1>Piecewise-Defined Functions</h1>
+    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
+
+    <p class="lede"><strong>A piecewise-defined function</strong> uses two or more sub-functions, each applying to a different part of the domain. The rule is not a single formula but a list of cases, and the domain is partitioned so that exactly one case applies to each input.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First principles and notation</a></li>
+        <li><a href="#evaluating">2. Evaluating a piecewise function</a></li>
+        <li><a href="#graphing">3. Graphing and boundary points</a></li>
+        <li><a href="#continuity">4. Continuity at boundaries</a></li>
+        <li><a href="#absolute">5. Absolute value as a piecewise function</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First principles and notation</h2>
+    <p>A piecewise function is written as a list of cases <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>:</p>
+    <div class="formula">\( f(x) = \begin{cases} f_1(x), & x \in D_1 \\ f_2(x), & x \in D_2 \\ \vdots \end{cases} \)</div>
+    <p>The pieces \(D_1, D_2, \dots\) must be disjoint and their union must equal the domain. Overlapping pieces make the function ill-defined at the overlap; a gap leaves inputs with no output.</p>
+
+    <h2 id="evaluating">2. Evaluating a piecewise function</h2>
+    <p>To evaluate \(f(c)\), test \(c\) against each condition in order and use the first branch whose condition is true. For example, with \( f(x) = 2x \) for \(x < 0\) and \( f(x) = x + 3 \) for \(x \ge 0\):</p>
+    <ul>
+      <li>\( f(-2) = 2(-2) = -4 \), because \(-2 < 0\).</li>
+      <li>\( f(0) = 0 + 3 = 3 \), because \(0 \ge 0\).</li>
+      <li>\( f(5) = 5 + 3 = 8 \), because \(5 \ge 0\).</li>
+    </ul>
+
+    <h2 id="graphing">3. Graphing and boundary points</h2>
+    <p>Graph each branch on its own interval. At a boundary between branches, use a closed circle when the endpoint belongs to the branch and an open circle when it does not. The open circle marks a value the function does not attain.</p>
+
+    <h2 id="continuity">4. Continuity at boundaries</h2>
+    <p>A piecewise function is continuous at a boundary point \(c\) when the left-hand limit, the right-hand limit, and the value \(f(c)\) all agree. If the two one-sided limits differ, the graph has a jump discontinuity. If the limits agree but \(f(c)\) is defined differently or not at all, the graph has a removable discontinuity.</p>
+
+    <h2 id="absolute">5. Absolute value as a piecewise function</h2>
+    <p>The absolute value function is the standard piecewise example:</p>
+    <div class="formula">\( |x| = \begin{cases} x, & x \ge 0 \\ -x, & x < 0 \end{cases} \)</div>
+    <p>Other common models are tax brackets, where the rate changes at income thresholds, and tiered pricing, where the unit rate changes at quantity thresholds.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul id="see-also-list">
+      <li><a href="/reference/absolute-value-inequalities/">Absolute Value Equations and Inequalities</a></li>
+      <li><a href="/reference/domain-and-range/">Domain and Range of Real Functions</a></li>
+      <li><a href="/reference/function-transformations/">Transformations of Functions</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref-1"><span class="backlink">^</span>OpenStax, <em>College Algebra 2e</em>, Rice University (Piecewise functions).</li>
+      <li id="ref-2"><span class="backlink">^</span>James Stewart, Lothar Redlin, and Saleem Watson, <em>Precalculus: Mathematics for Calculus</em>, 7th ed., Cengage Learning, 2015.</li>
+    </ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
