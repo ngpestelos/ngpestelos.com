@@ -152,7 +152,7 @@ reviews.length   # => 1</pre>
 
     <h2 id="when-not">When it does not make sense</h2>
     <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
-      <li><strong>Identity is the intended key.</strong> The inherited <code>Object#eql?</code> and <code>Hash#hash</code> already make each object a distinct key. Overriding collapses keys that should stay separate.</li>
+      <li><strong>Identity is the intended key.</strong> The inherited <code>Object#eql?</code> and <code>Object#hash</code> already make each object a distinct key. Overriding collapses keys that should stay separate.</li>
       <li><strong>The key is already a value type.</strong> String, Symbol, Integer, and Array define value equality and a matching <code>hash</code>, so a tuple key such as <code>[id, type]</code> already deduplicates by value.</li>
       <li><strong>The equality fields are mutable.</strong> Changing a field that feeds <code>hash</code> after the key is stored corrupts its bucket. This is the practical reason to keep keys immutable.</li>
       <li><strong>The hash opted into identity.</strong> <code>compare_by_identity</code> makes a hash compare keys by object identity and ignore <code>hash</code> and <code>eql?</code>.<span class="cite">[<a href="#ref1">1</a>]</span></li>
