@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Payment Money Flow &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="How funds move through a card payment: authorization and hold, capture and clearing, interbank settlement, and merchant payout.">
+  <meta property="og:title" content="Card Payment Money Flow &middot; Reference">
+  <meta property="og:description" content="How funds move through a card payment, phase by phase, and where the documented picture leaves gaps.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/card-payment-money-flow/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/card-payment-money-flow/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      sequence: { useMaxWidth: false },
+      themeVariables: {
+        primaryColor: '#fffaf3',
+        primaryTextColor: '#1c1915',
+        primaryBorderColor: '#d8d2c6',
+        lineColor: '#5c564e',
+        secondaryColor: '#f4efe6',
+        tertiaryColor: '#fffaf3',
+        mainBkg: '#fffaf3',
+        nodeBorder: '#d8d2c6',
+        clusterBkg: '#fdfbf7',
+        clusterBorder: '#9a3412',
+        titleColor: '#9a3412',
+        edgeLabelBackground: '#f4efe6',
+        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        fontSize: '13px'
+      }
+    });
+  </script>
+  <style>
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { line-height:1.65; }
+main { max-width:48rem; margin:auto; padding:1.4rem 1.4rem 4rem; }
+h1 { font-size:clamp(1.9rem,5vw,2.4rem); font-weight:400; line-height:1.2; border-bottom:1px solid var(--line); padding-bottom:.5rem; }
+h2 { font-weight:400; margin-top:2rem; font-size:1.45rem; border-bottom:1px solid var(--line); padding-bottom:.3rem; }
+p,li { margin-bottom:.7rem; }
+.back,.kicker,.updated,.toc,footer { font-family:"Segoe UI",Helvetica,Arial,sans-serif; }
+.back,.updated,footer { font-size:.85rem; color:var(--mute); }
+.kicker { font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--mute); }
+.lede { margin:1.4rem 0; }
+.toc { background:var(--well); border:1px solid var(--line); border-radius:4px; padding:1rem 1.3rem; margin:1.7rem 0; font-size:.9rem; }
+.toc ol { margin-bottom:0; padding-left:1.5rem; }
+.toc li { margin-bottom:.25rem; }
+.cite { font-size:.75em; vertical-align:super; }
+.cite a { text-decoration:none; }
+table { width:100%; border-collapse:collapse; margin:1rem 0 1.4rem; font-size:.92rem; }
+th,td { border:1px solid var(--line); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+th { background:var(--well); font-weight:700; }
+.diagram-box { background:var(--well); border:1px solid var(--line); border-radius:6px; padding:1.2rem; margin:1.4rem 0; overflow-x:auto; text-align:center; }
+.diagram-box pre.mermaid { margin:0; background:transparent; border:none; padding:0; display:flex; justify-content:center; font-family:inherit; }
+.diagram-box svg { max-width:none; height:auto; }
+#references ~ ol { font-size:.9rem; overflow-wrap:anywhere; }
+footer { border-top:1px solid var(--line); margin-top:2rem; }
+.back-to-top { position:fixed; bottom:1.5rem; right:1.5rem; width:2.6rem; height:2.6rem; border-radius:50%; background:var(--bg); color:var(--ink); border:1px solid var(--line); cursor:pointer; opacity:0; visibility:hidden; }
+.back-to-top.visible { opacity:1; visibility:visible; }
+@media print { .back,.back-to-top { display:none !important; } main { max-width:none; padding:0; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"Card Payment Money Flow","description":"The movement of funds between the participants in a card payment, from authorization and hold through clearing, interbank settlement, and merchant payout.","url":"https://ngpestelos.com/reference/card-payment-money-flow/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script>
+</head>
+<body class="reference">
+<main id="top">
+<p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Finance &middot; Payments</p>
+<h1>Card Payment Money Flow</h1>
+<p class="updated">Reference entry &middot; last updated 20260920</p>
+<p class="lede"><strong>Card payment money flow</strong> is the movement of funds between the participants in a card payment. A four-party card scheme involves the cardholder, the card acceptor, the issuer, and the acquirer.<span class="cite">[<a href="#ref3">3</a>]</span> The funds move in four phases: authorization and hold, capture and clearing, interbank settlement, and merchant payout.</p>
+<nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
+<li><a href="#first-principles">First principles: obligations and funds</a></li>
+<li><a href="#participants">Participants</a></li>
+<li><a href="#phases">The four phases</a></li>
+<li><a href="#authorization">Phase 1: authorization and hold</a></li>
+<li><a href="#clearing">Phase 2: capture and clearing</a></li>
+<li><a href="#settlement">Phase 3: interbank settlement</a></li>
+<li><a href="#payout">Phase 4: merchant payout</a></li>
+<li><a href="#gaps">Knowledge gaps</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">1. First principles: obligations and funds</h2>
+<p><a href="/reference/clearing/">Clearing</a> is the reconciliation, and in some cases the confirmation, of transactions before settlement. It can include netting the obligations and establishing final positions for settlement.<span class="cite">[<a href="#ref1">1</a>]</span> <a href="/reference/settlement/">Settlement</a> is the completion of processing with the aim of discharging participants’ obligations through the transfer of funds. Settlement may be final or provisional.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<p>Settlement uses accounts held at a central bank, a central securities depository, a central counterparty, or another institution acting as a settlement agent.<span class="cite">[<a href="#ref2">2</a>]</span> These accounts are institutional, and they are separate from a customer’s deposit account.</p>
+<p>Three events follow from those definitions, and a card statement can merge them. An authorization reserves funds or credit and does not move them. Settlement transfers funds between institutions. Payout moves funds from the acquirer or provider to the merchant. Adyen records a payment as Settled once it has received the funds, and states that this does not mean the funds have been paid out to the merchant.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+<h2 id="participants">2. Participants</h2>
+<p>A four-party card scheme has four stakeholders: the issuer, the acquirer, the cardholder, and the card acceptor.<span class="cite">[<a href="#ref3">3</a>]</span> An online payment adds intermediaries between the merchant and the issuer. The table lists the participants in the sequence diagram below.</p>
+<table>
+<thead><tr><th>Participant</th><th>Role</th></tr></thead>
+<tbody>
+<tr><td>Cardholder</td><td>The person to whom a payment card is issued and who is authorised to use it.<span class="cite">[<a href="#ref1">1</a>]</span></td></tr>
+<tr><td>Merchant (card acceptor)</td><td>Accepts the card payment, submits the capture, and receives the payout.</td></tr>
+<tr><td>Payment gateway</td><td>Collects the payment request at checkout and routes it into the card network through the acquirer.</td></tr>
+<tr><td>Acquirer</td><td>The entity to which the acceptor transmits the information needed to process the card payment.<span class="cite">[<a href="#ref4">4</a>]</span></td></tr>
+<tr><td>Card network</td><td>Operates the scheme that connects issuing and acquiring institutions under common rules.<span class="cite">[<a href="#ref3">3</a>]</span></td></tr>
+<tr><td>Issuer</td><td>Makes cards available to cardholders, authorises transactions, and guarantees payment to the acquirer for transactions that conform to the scheme rules.<span class="cite">[<a href="#ref1">1</a>]</span></td></tr>
+<tr><td>Settlement authority</td><td>Holds the accounts through which participants discharge their interbank obligations.<span class="cite">[<a href="#ref2">2</a>]</span></td></tr>
+</tbody>
+</table>
+<p>A <a href="/reference/payment-service-providers/">payment service provider</a> can perform several of these roles. Its exact position depends on the region and the merchant agreement, so the diagram separates the functions.</p>
+<h2 id="phases">3. The four phases</h2>
+<p>Each phase has its own timing and moves a different object.</p>
+<table>
+<thead><tr><th>Phase</th><th>Typical timing</th><th>What moves</th></tr></thead>
+<tbody>
+<tr><td>1. Authorization and hold</td><td>Real time, at checkout</td><td>An approval and a reservation of funds or credit</td></tr>
+<tr><td>2. Capture and clearing</td><td>Batch, after the merchant’s cut-off</td><td>Instructions, reconciled and netted into positions</td></tr>
+<tr><td>3. Interbank settlement</td><td>Institutional settlement cycle</td><td>Funds between settlement accounts</td></tr>
+<tr><td>4. Merchant payout</td><td>Provider payout schedule</td><td>Net funds to the merchant’s deposit account</td></tr>
+</tbody>
+</table>
+<div class="diagram-box">
+  <pre class="mermaid">
+sequenceDiagram
+    participant CH as Cardholder
+    participant M as Merchant
+    participant GW as Payment gateway
+    participant AC as Acquirer
+    participant NW as Card network
+    participant IS as Issuer
+    participant CB as Settlement authority
+
+    rect rgb(255, 250, 243)
+    Note over CH,IS: Phase 1 - Authorization and hold (real time)
+    CH->>M: Pay with card details
+    M->>GW: Payment request
+    GW->>AC: Authorization request
+    AC->>NW: Authorization request
+    NW->>IS: Authorization request
+    IS->>IS: Check account and reserve funds or credit
+    IS-->>NW: Approval
+    NW-->>AC: Approval
+    AC-->>GW: Approval
+    GW-->>M: Authorized
+    M-->>CH: Order confirmed
+    end
+
+    rect rgb(244, 239, 230)
+    Note over M,IS: Phase 2 - Capture and clearing (batch)
+    M->>GW: Capture or submit for settlement
+    GW->>AC: Capture
+    AC->>NW: Clearing message
+    NW->>IS: Clearing message
+    NW->>NW: Reconcile instructions and net positions
+    AC-->>M: Capture confirmation
+    end
+
+    rect rgb(253, 251, 247)
+    Note over AC,CB: Phase 3 - Interbank settlement
+    IS->>CB: Fund issuer settlement obligation
+    CB->>NW: Credit network settlement account
+    NW->>AC: Credit acquirer, less interchange and network fees
+    end
+
+    rect rgb(244, 239, 230)
+    Note over M,AC: Phase 4 - Merchant payout
+    AC->>M: Payout to merchant account, less processing fees
+    end
+  </pre>
+</div>
+<p>The diagram is illustrative. Participant names, message paths, and the settlement mechanism vary by scheme, region, and provider.</p>
+<h2 id="authorization">4. Phase 1: authorization and hold</h2>
+<p>For card payments, the provider sends an authorization request through the card network from the issuer to the acquirer, and the funds for the payment are reserved.<span class="cite">[<a href="#ref6">6</a>]</span> Stripe describes authorization as a guarantee that places the amount on hold on the customer’s payment method.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+<p>The hold has a validity window that depends on the card network and the transaction type. Stripe documents about five days for Visa and seven days for Mastercard, American Express, and Discover card-not-present transactions. Visa’s exact window is four days and eighteen hours, which allows time for clearing processes.<span class="cite">[<a href="#ref9">9</a>]</span> Adyen documents up to 28 days for card payments.<span class="cite">[<a href="#ref6">6</a>]</span> The two figures describe different provider configurations and transaction types, not a single industry constant.</p>
+<p>If a merchant does not capture before the window closes, the authorization expires. Stripe states that the funds are then released and the payment is canceled.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+<h2 id="clearing">5. Phase 2: capture and clearing</h2>
+<p>Capture submits an authorized amount for collection. A capture can be partial, and a partial capture releases the remainder. Multiple captures are available for only some card payments.<span class="cite">[<a href="#ref9">9</a>]</span> Adyen describes a capture as the transfer of reserved funds to the provider.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+<p>Clearing is the reconciliation step that precedes settlement.<span class="cite">[<a href="#ref1">1</a>]</span> Card networks commonly run clearing in batches, so capture and clearing follow the provider’s cut-off times rather than the checkout moment. Provider statuses preserve the distinction: Adyen marks a payment Settled when it has received the funds, and treats the payout to the merchant as a later event.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+<h2 id="settlement">6. Phase 3: interbank settlement</h2>
+<p>Settlement discharges the obligations that clearing established.<span class="cite">[<a href="#ref2">2</a>]</span> Participants hold dedicated settlement accounts for this purpose, at a central bank or another institution acting as a settlement agent.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<p>In the four-party model the issuer carries the cardholder’s obligation and the acquirer collects for the merchant.<span class="cite">[<a href="#ref3">3</a>]</span> The network reconciles the obligations and establishes each participant’s final position.<span class="cite">[<a href="#ref1">1</a>]</span> The amount that reaches the acquirer is net of fees taken along the chain.</p>
+<p><a href="/reference/interchange/">Interchange</a> is a transaction fee payable between the payment service providers involved in a transaction.<span class="cite">[<a href="#ref5">5</a>]</span> Under US Regulation II, a debit card interchange fee is received by the debit card issuer.<span class="cite">[<a href="#ref10">10</a>]</span> The merchant’s total processing cost also includes network fees and the acquirer’s markup; the <a href="/reference/interchange/">Interchange reference entry</a> covers those components.</p>
+<p>The settlement mechanism itself varies. Some schemes settle through a central bank real-time gross settlement system, and others through commercial settlement accounts. The direction of value is the same: the issuer funds its obligation and the acquirer is credited.</p>
+<h2 id="payout">7. Phase 4: merchant payout</h2>
+<p>Payout moves the collected funds from the provider to the merchant’s deposit account. Adyen calculates payouts on a net basis: the merchant receives sales from a period minus transaction costs, refunds, chargebacks, and other adjustments.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+<p>Payout timing depends on the model and the merchant’s configuration. Adyen offers a sales day payout, which groups a whole sales day into one batch, and a pass-through payout, which can split one sales day across several batches depending on when the scheme transfers funds. Payout frequency is configurable, and payout funds can take up to two days to arrive.<span class="cite">[<a href="#ref7">7</a>]</span></p>
+<p>Providers can also require a reserve. Adyen lets a merchant set a reserve threshold; the amount needed to reach it is deducted from the payable balance when a payout batch closes, and a refund that cannot be covered by the pending or next payout balance is drawn from the reserve.<span class="cite">[<a href="#ref8">8</a>]</span></p>
+<h2 id="gaps">8. Knowledge gaps</h2>
+<p>The reviewed sources document the common shape of the flow. They leave the following questions open.</p>
+<table>
+<thead><tr><th>Gap</th><th>What the sources document</th><th>Open question</th></tr></thead>
+<tbody>
+<tr><td>Multi-currency and FX</td><td>Adyen settles like-for-like without conversion when the payout currency is also supported as a settlement currency by the payment method.<span class="cite">[<a href="#ref7">7</a>]</span></td><td>Where conversion happens in the chain, and the markup applied at each step.</td></tr>
+<tr><td>Merchant reserves</td><td>A reserve threshold is deducted from the payable balance, and refunds can draw on the reserve.<span class="cite">[<a href="#ref8">8</a>]</span></td><td>Reserve ratios, rolling dispute-liability holdbacks, and the conditions for releasing them.</td></tr>
+<tr><td>Payout schedules</td><td>Sales day and pass-through models exist, frequency is configurable, and arrival can take up to two days.<span class="cite">[<a href="#ref7">7</a>]</span></td><td>The merchant-specific schedule, such as T+2, rolling payout, or immediate settlement, and its contractual basis.</td></tr>
+<tr><td>Card versus account-to-account</td><td>FedNow processes and settles individual payments within seconds, 24 hours a day, every day.<span class="cite">[<a href="#ref11">11</a>]</span> ACH operators distribute files through scheduled windows and settle in batch.<span class="cite">[<a href="#ref12">12</a>]</span></td><td>How reserves, payout timing, and dispute rules differ when no card authorization exists.</td></tr>
+</tbody>
+</table>
+<p>A credit-push transfer on a rail such as <a href="/reference/instapay/">InstaPay</a> or FedNow does not use the card authorization and hold stage. The sending institution debits the sender and the receiving institution credits the receiver, with settlement between them. The Philippine rails are described in <a href="/reference/instapay/">InstaPay</a>, <a href="/reference/pesonet/">PESONet</a>, and the <a href="/reference/nrps/">National Retail Payment System</a>.</p>
+<h2 id="see-also">9. See also</h2>
+<ul>
+<li><a href="/reference/online-payments/">Online Payments</a></li>
+<li><a href="/reference/card-authorization-capture/">Card Authorization and Capture</a></li>
+<li><a href="/reference/clearing/">Clearing (Payments)</a></li>
+<li><a href="/reference/settlement/">Settlement (Payments)</a></li>
+<li><a href="/reference/interchange/">Interchange (Card Payments)</a></li>
+<li><a href="/reference/payment-gateway/">Payment Gateway</a></li>
+<li><a href="/reference/payment-service-providers/">Payment Service Providers (Merchant Payments)</a></li>
+<li><a href="/reference/chargebacks/">Chargebacks (Card Payments)</a></li>
+<li><a href="/reference/payment-tokenization/">Payment Tokenization</a></li>
+<li><a href="/reference/ach/">Automated Clearing House (ACH)</a></li>
+<li><a href="/trees/online-payments/">Online Payments Knowledge Tree</a></li>
+</ul>
+<h2 id="references">10. References</h2>
+<ol>
+<li id="ref1"><a href="https://www.ecb.europa.eu/services/glossary/html/act7c.en.html">European Central Bank. Payments and markets glossary: clearing, cardholder, and card issuer.</a></li>
+<li id="ref2"><a href="https://www.ecb.europa.eu/services/glossary/html/act7s.en.html">European Central Bank. Payments and markets glossary: settlement and settlement account.</a></li>
+<li id="ref3"><a href="https://www.ecb.europa.eu/services/glossary/html/act7f.en.html">European Central Bank. Payments and markets glossary: four-party card scheme.</a></li>
+<li id="ref4"><a href="https://www.ecb.europa.eu/services/glossary/html/glossa.en.html">European Central Bank. Payments and markets glossary: acquirer (card acquirer).</a></li>
+<li id="ref5"><a href="https://www.ecb.europa.eu/services/glossary/html/act7i.en.html">European Central Bank. Payments and markets glossary: interchange fee.</a></li>
+<li id="ref6"><a href="https://docs.adyen.com/account/payments-lifecycle/">Adyen. Payments lifecycle.</a></li>
+<li id="ref7"><a href="https://docs.adyen.com/account/getting-paid">Adyen. Getting paid.</a></li>
+<li id="ref8"><a href="https://docs.adyen.com/account/balances/reserve">Adyen. Reserve.</a></li>
+<li id="ref9"><a href="https://docs.stripe.com/payments/place-a-hold-on-a-payment-method">Stripe. Place a hold on a payment method.</a></li>
+<li id="ref10"><a href="https://www.federalreserve.gov/paymentsystems/regii-about.htm">Board of Governors of the Federal Reserve System. Regulation II (Debit Card Interchange Fees and Routing).</a></li>
+<li id="ref11"><a href="https://www.federalreserve.gov/paymentsystems/fednow-additional-questions-and-answers.htm">Board of Governors of the Federal Reserve System. FedNow Service: additional questions and answers.</a></li>
+<li id="ref12"><a href="https://www.theclearinghouse.org/payment-systems/ach">The Clearing House. ACH services and the EPN network.</a></li>
+</ol>
+<footer><p><a href="#top">Back to top</a></p></footer>
+</main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
