@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby String Tokenization &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Ruby string tokenization splits text into tokens with String#split, normalizes them with downcase, and removes leading and trailing non-letters with an anchored gsub pattern.">
+  <meta property="og:title" content="Ruby String Tokenization &middot; Reference">
+  <meta property="og:description" content="Splitting on whitespace, downcasing, stripping edge punctuation with anchored regex alternation, and dropping empty tokens.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-string-tokenization/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-string-tokenization/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby String Tokenization","description":"Ruby string tokenization splits text into tokens with String#split, normalizes them with downcase, and removes leading and trailing non-letters with an anchored gsub pattern.","url":"https://ngpestelos.com/reference/ruby-string-tokenization/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Ruby String Tokenization</h1>
+    <p class="updated">Reference entry &middot; last updated September 21, 2026</p>
+
+    <p class="lede"><strong>Ruby string tokenization</strong> turns a body of text into a list of normalized words. The usual pipeline splits the text on whitespace with <code>String#split</code>, lowercases each piece, removes leading and trailing characters that are not letters, and discards anything that becomes empty. Each step is a pure string operation that returns a new string, so the original text is unchanged.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#split-algorithm">The split algorithm</a></li>
+            <li><a href="#anchors">Anchors and the edge of a string</a></li>
+          </ol>
+        </li>
+        <li><a href="#splitting">Splitting on whitespace</a></li>
+        <li><a href="#normalizing">Normalizing tokens</a></li>
+        <li><a href="#classes">Character classes</a></li>
+        <li><a href="#pipeline">A full pipeline</a></li>
+        <li><a href="#choosing">Choosing the rules</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="split-algorithm">The split algorithm</h3>
+    <p><code>String#split</code> divides a string into substrings at a delimiter. The delimiter selects one of two algorithms. An explicit pattern marks a boundary at each match. When the pattern is <code>nil</code>, which is the default, the value of <code>$;</code> is used, and because that global is <code>nil</code> by default the string is split on whitespace as if a single space had been given. Splitting on whitespace ignores leading and trailing whitespace and treats a run of contiguous whitespace as one separator, so no empty strings appear at the edges.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Two consequences follow. An empty input returns an empty Array, because the string has no fields to split. And a token that is entirely punctuation becomes an empty string after normalization, so it must be dropped rather than counted.</p>
+    <pre>"  The  law ".split   # => ["The", "law"]
+"".split              # => []
+"!!! ... !!!".split   # => ["!!!", "...", "!!!"]</pre>
+
+    <h3 id="anchors">Anchors and the edge of a string</h3>
+    <p>A pattern that removes edge characters must say which edge it means. <code>\A</code> matches the start of the string and <code>\z</code> matches the end, while <code>^</code> and <code>$</code> match the start and end of a line. Tokens produced by whitespace splitting contain no newlines, so the difference does not show there, but using the string anchors states the intent exactly.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Because <code>String#gsub</code> replaces every match, a single pattern with two alternatives can remove a leading run and a trailing run in one pass. The alternatives are a run of non-letters at the start, or a run of non-letters at the end.</p>
+
+    <h2 id="splitting">Splitting on whitespace</h2>
+    <p>Calling <code>split</code> with no argument is equivalent to <code>split(' ')</code> for ordinary input and is the normal way to get words. Both forms collapse runs of whitespace and strip the edges.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>"The law governs contracts.".split
+# => ["The", "law", "governs", "contracts."]</pre>
+    <p>Note that <code>"contracts."</code> keeps its period. Splitting decides where tokens end, but it does not remove punctuation attached to a token. That is the job of the normalization step.</p>
+
+    <h2 id="normalizing">Normalizing tokens</h2>
+    <p><code>String#downcase</code> folds case so that <code>"The"</code> and <code>"the"</code> count as one word. <code>String#strip</code> removes leading and trailing whitespace and takes no argument; it removes only whitespace, so it does not touch punctuation and it cannot be given a pattern. Removing punctuation from the edges requires a substitution.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <pre>"  The  ".downcase.strip        # => "the"
+"(governs)".downcase.gsub(/\A[^a-z]+|[^a-z]+\z/, '')
+# => "governs"</pre>
+    <p>The pattern reads as two alternatives. <code>\A[^a-z]+</code> matches a run of characters that are not lowercase letters at the start, and <code>[^a-z]+\z</code> matches such a run at the end. <code>gsub</code> removes both. Punctuation inside a token is left alone, which is why an internal apostrophe or hyphen survives.</p>
+    <p>A token that was only punctuation becomes an empty string, so the loop that consumes the tokens must skip it.</p>
+
+    <h2 id="classes">Character classes</h2>
+    <p>The class <code>\W</code> means a character that is not a word character, and a word character includes letters, digits, and the underscore. That is wider than the rule "not a letter", so a token such as a bare number would not be stripped by <code>\W</code>. The class <code>[^a-z]</code> states the narrower rule directly, and it is correct after <code>downcase</code> has removed the upper case letters.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <table>
+      <thead>
+        <tr><th>Class</th><th>Matches</th><th>Note</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>[^a-z]</code></td><td>anything that is not a lowercase ASCII letter</td><td>the rule "not a letter", after downcase</td></tr>
+        <tr><td><code>\W</code></td><td>anything that is not a letter, digit, or underscore</td><td>keeps digits and underscore</td></tr>
+        <tr><td><code>[[:alpha:]]</code></td><td>a Unicode letter</td><td>use for non ASCII text</td></tr>
+      </tbody>
+    </table>
+    <p class="unattributed">The examples here use the ASCII class <code>[^a-z]</code>. Text in other scripts needs <code>[[:alpha:]]</code> or an equivalent Unicode class, and case folding for those scripts is a separate question.</p>
+
+    <h2 id="pipeline">A full pipeline</h2>
+    <p>Combining the steps gives a counting routine over normalized tokens. The split produces raw tokens, each is normalized in place, empty results are skipped, and a hash accumulates the counts.</p>
+    <pre>counts = Hash.new(0)
+
+"The law governs contracts. The parties govern the parties!".split.each do |raw|
+  token = raw.downcase.gsub(/\A[^a-z]+|[^a-z]+\z/, '')
+  next if token.empty?
+  counts[token] += 1
+end
+
+counts
+# => {"the"=>3, "law"=>1, "governs"=>1, "contracts"=>1, "parties"=>2, "govern"=>1}</pre>
+    <p>Ordering the result is a separate concern; see <a href="/reference/ruby-composite-sort-keys/">Ruby Composite Sort Keys</a> for count descending with an alphabetical tiebreak, and <a href="/reference/ruby-hash-accumulators/">Ruby Hash Accumulators</a> for the accumulator choice.</p>
+
+    <h2 id="choosing">Choosing the rules</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Words separated by any whitespace:</strong> <code>text.split</code>.</li>
+      <li><strong>Case-insensitive comparison:</strong> <code>downcase</code> before counting.</li>
+      <li><strong>Remove edge punctuation only:</strong> <code>gsub(/\A[^a-z]+|[^a-z]+\z/, '')</code>.</li>
+      <li><strong>Remove all punctuation inside a token too:</strong> use a single class, <code>gsub(/[^a-z]/, '')</code>, and accept that contractions and hyphenated words are split.</li>
+      <li><strong>Non ASCII text:</strong> use a Unicode letter class instead of <code>[^a-z]</code>.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "String," <code>split</code>. Free full text: <a href="https://ruby-doc.org/core-2.6.10/String.html">ruby-doc.org/core-2.6.10/String.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "String," <code>downcase</code>, <code>strip</code>, and <code>gsub</code>. Free full text: <a href="https://ruby-doc.org/core-2.6.10/String.html">ruby-doc.org/core-2.6.10/String.html</a></li>
+      <li id="ref3"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Regexp," anchors and character classes. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Regexp.html">ruby-doc.org/core-2.6.10/Regexp.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

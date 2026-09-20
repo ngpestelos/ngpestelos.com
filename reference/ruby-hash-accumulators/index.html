@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby Hash Accumulators &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A Ruby hash accumulator aggregates values under keys, such as a running sum or a list per key, using either ||= seeding or a Hash.new default, and returns its entries in a chosen key order.">
+  <meta property="og:title" content="Ruby Hash Accumulators &middot; Reference">
+  <meta property="og:description" content="Seeding a Ruby hash accumulator with ||= or Hash.new, the shared default trap, and returning ordered pairs.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-hash-accumulators/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-hash-accumulators/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby Hash Accumulators","description":"A Ruby hash accumulator aggregates values under keys, such as a running sum or a list per key, using either ||= seeding or a Hash.new default, and returns its entries in a chosen key order.","url":"https://ngpestelos.com/reference/ruby-hash-accumulators/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Ruby Hash Accumulators</h1>
+    <p class="updated">Reference entry &middot; last updated September 21, 2026</p>
+
+    <p class="lede"><strong>A Ruby hash accumulator</strong> is a <code>Hash</code> used to aggregate values under keys, for example a running sum per category or a list of names per group. Because a lookup of a key that has not been stored returns the hash's default value, an accumulator must either seed each key on first sight or configure a default. Producing a fixed output order then means sorting the hash's pairs, since a <code>Hash</code> enumerates in insertion order rather than sorted order.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#lookup">Lookup and the default value</a></li>
+            <li><a href="#objects-references">Objects, references, and mutation</a></li>
+          </ol>
+        </li>
+        <li><a href="#seeding">Seeding an accumulator</a>
+          <ol>
+            <li><a href="#or-equals">Seeding with ||=</a></li>
+            <li><a href="#hash-new">Configuring a default with Hash.new</a></li>
+            <li><a href="#shared-default">The shared default trap</a></li>
+          </ol>
+        </li>
+        <li><a href="#ordering">Ordering the result</a></li>
+        <li><a href="#choosing">Choosing a seed</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="lookup">Lookup and the default value</h3>
+    <p>A <code>Hash</code> is a collection of unique keys mapped to values. A lookup with a key that is not present returns a default. With <code>Hash.new</code> and no argument the default is <code>nil</code>. With <code>Hash.new(obj)</code> that single object is returned for every missing key. With a block, the block is called with the hash and the key, and it is responsible for storing a value if one is wanted.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>This default rule is what makes an accumulator necessary. Writing <code>totals["a"] += 3</code> against an empty <code>{}</code> first reads <code>totals["a"]</code>, which is <code>nil</code>, and then attempts <code>nil + 3</code>, which raises. The seed step gives the first read an arithmetic starting point.</p>
+    <pre>totals = {}
+totals["a"] += 3   # NoMethodError: undefined method '+' for nil</pre>
+
+    <h3 id="objects-references">Objects, references, and mutation</h3>
+    <p>Ruby variables hold references to objects. Assigning the same object as a default for many keys means those keys share one object, so a mutating method called through any of them is visible through all of them. Immutable values such as integers avoid this, because no method changes them in place. The distinction between an immutable default and a shared mutable default is the source of the most common accumulator bug.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="seeding">Seeding an accumulator</h2>
+
+    <h3 id="or-equals">Seeding with ||=</h3>
+    <p>The <code>||=</code> operator assigns a value only when the current value is <code>nil</code> or <code>false</code>. On an empty hash, a missing key reads as <code>nil</code>, so the first visit stores the seed and later visits keep the accumulated value. A missing key stays <code>nil</code> until it is assigned, so a mistyped key remains visible as <code>nil</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>totals = {}
+totals["a"] ||= 0
+totals["a"] += 3   # => 3
+
+totals["zzz"]      # => nil</pre>
+
+    <h3 id="hash-new">Configuring a default with Hash.new</h3>
+    <p><code>Hash.new(0)</code> makes every missing key read as <code>0</code>, so the seed line is not needed. Reading a missing key does not store it, so the key appears in the hash only once a value is assigned through <code>+=</code> or <code>=</code>. This is the shorter form and the conventional choice for integer counters.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>totals = Hash.new(0)
+totals["a"] += 3   # => 3
+totals             # => {"a"=>3}
+
+totals["zzz"]      # => 0
+totals.keys        # => ["a"]</pre>
+    <p>The tradeoff is that the default applies to every absent key. A mistyped key reads as <code>0</code> instead of <code>nil</code>, so the mistake is silently absorbed into the result.</p>
+
+    <h3 id="shared-default">The shared default trap</h3>
+    <p>A mutable default object is shared by every missing key. <code>Hash.new([])</code> therefore hands the same array to each lookup, and appending to it through one key changes what every other key sees, while storing no key at all. The block form avoids this by creating and storing a fresh value per key on first access.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>groups = Hash.new([])
+groups["a"] << 1
+groups["b"] << 2
+groups["a"]        # => [1, 2]
+groups.keys        # => []
+
+groups = Hash.new { |hash, key| hash[key] = [] }
+groups["a"] << 1   # => [1]
+groups.keys        # => ["a"]</pre>
+    <p><code>Hash(0)</code> is not a default constructor at all. <code>Kernel#Hash</code> converts an argument by calling <code>to_hash</code>, and an integer has no such method, so it raises <code>TypeError</code>.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="ordering">Ordering the result</h2>
+    <p>A <code>Hash</code> enumerates its entries in insertion order, which is the order in which keys were first stored. That order is not sorted order. To return pairs in a chosen order, call <code>sort</code>, which comes from <code>Enumerable</code> and returns an Array of the entries, not a Hash. For a hash each entry is a two element <code>[key, value]</code> pair.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>]</span></p>
+    <pre>h = {}
+h["z"] = 1
+h["a"] = 2
+h.keys              # => ["z", "a"]
+
+h.sort              # => [["a", 2], ["z", 1]]
+h.sort.to_h         # => {"a"=>2, "z"=>1}</pre>
+    <p>Pairs sort by their elements in order. <code>Array#&lt;=&gt;</code> compares the first element of each array, and only when those are equal does it compare the second.<span class="cite">[<a href="#ref4">4</a>]</span> That single rule is what makes a composite sort key work: the first element is the primary key and the second is the tiebreak.</p>
+    <p><code>transform_values(&amp;:sort)</code> is a different operation. It transforms each value rather than ordering the entries, so it is meaningful only when the values are themselves collections. Applied to integer values it raises <code>NoMethodError</code>.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="choosing">Choosing a seed</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Integer or float accumulation:</strong> <code>Hash.new(0)</code>, one line per item.</li>
+      <li><strong>You want unseen keys to stay distinguishable from a real zero:</strong> <code>{}</code> with <code>||=</code>.</li>
+      <li><strong>List or hash per key:</strong> the block form, <code>Hash.new { |h, k| h[k] = [] }</code>.</li>
+      <li><strong>Ordered output:</strong> <code>h.sort.to_h</code> for keys ascending, or <code>sort_by</code> for a computed key.</li>
+      <li><strong>Composite order:</strong> see <a href="/reference/ruby-composite-sort-keys/">Ruby Composite Sort Keys</a>.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Hash," including <code>Hash.new</code>, defaults, and insertion order. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Hash.html">ruby-doc.org/core-2.6.10/Hash.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Kernel," <code>Hash(arg)</code>. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Kernel.html">ruby-doc.org/core-2.6.10/Kernel.html</a></li>
+      <li id="ref3"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Enumerable," <code>sort</code>. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Enumerable.html">ruby-doc.org/core-2.6.10/Enumerable.html</a></li>
+      <li id="ref4"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Array," <code>&lt;=&gt;</code> element-wise comparison. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Array.html">ruby-doc.org/core-2.6.10/Array.html</a></li>
+      <li id="ref5"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Hash," <code>transform_values</code>. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Hash.html">ruby-doc.org/core-2.6.10/Hash.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
