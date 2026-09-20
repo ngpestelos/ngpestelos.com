@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circle Fundamentals (Geometry) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A circle is the set of points at a fixed distance from a center. Covers circumference, arc length, sector area, chord properties, and the inscribed angle theorem.">
+  <meta property="og:title" content="Circle Fundamentals (Geometry) &middot; Reference">
+  <meta property="og:description" content="Radius, chord, arc, sector, and the angle theorems that connect them.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/circle-fundamentals/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/circle-fundamentals/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Circle Fundamentals (Geometry)","description":"A circle is the set of points at a fixed distance from a center. Covers circumference, arc length, sector area, chord properties, and the inscribed angle theorem.","url":"https://ngpestelos.com/reference/circle-fundamentals/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { line-height: 1.6; }
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .unattributed { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); font-style: italic; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc h2 { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; color: var(--ink); border-bottom: none; padding-bottom: 0; }
+    .toc ol { list-style: none; padding-left: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    .formula { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1.2rem; margin: 0.5rem 0 1.2rem; text-align: center; }
+    table.data { width: 100%; border-collapse: collapse; margin: 0.5rem 0 1.2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    table.data th, table.data td { border: 1px solid var(--line); padding: 0.4rem 0.7rem; text-align: left; }
+    table.data th { background: var(--well); }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.92rem; }
+    #references .backlink { margin-right: 0.3rem; text-decoration: none; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back { display: none !important; } .back-to-top { display: none !important; } }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics · Euclidean Geometry</p>
+    <h1>Circle Fundamentals</h1>
+    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
+
+    <p class="lede"><strong>A circle</strong> is the set of all points in a plane at a fixed distance, the radius, from a fixed point, the center. The disk is the filled region bounded by the circle. Every subsequent quantity, circumference, arc length, sector area, and chord length, follows from the radius and the central angle.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#first-principles">1. First principles and definitions</a></li>
+        <li><a href="#circumference">2. Circumference and pi</a></li>
+        <li><a href="#arc">3. Arc length and radians</a></li>
+        <li><a href="#sector">4. Sector and segment area</a></li>
+        <li><a href="#chords">5. Chord and angle properties</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First principles and definitions</h2>
+    <p>Let the center be \(O\) and the radius be \(r\). A point \(P\) lies on the circle exactly when \(OP = r\). The key elements are <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <ul>
+      <li><strong>Diameter</strong>: a chord through the center, of length \(d = 2r\).</li>
+      <li><strong>Chord</strong>: a segment whose endpoints lie on the circle.</li>
+      <li><strong>Arc</strong>: a connected portion of the circle; a minor arc is less than a semicircle, a major arc more.</li>
+      <li><strong>Central angle</strong>: an angle with its vertex at the center, subtending an arc.</li>
+      <li><strong>Sector</strong>: the region bounded by two radii and an arc.</li>
+      <li><strong>Tangent</strong>: a line meeting the circle at exactly one point.</li>
+    </ul>
+
+    <h2 id="circumference">2. Circumference and pi</h2>
+    <p>The number \(\pi\) is defined as the ratio of a circle's circumference to its diameter, and that ratio is the same for every circle. Therefore <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>:</p>
+    <div class="formula">\( C = \pi d = 2\pi r \)</div>
+    <p>\(\pi\) is irrational, so no exact finite decimal or fraction represents it. The value \(3.14159\ldots\) is an approximation; the digits never terminate or repeat.</p>
+
+    <h2 id="arc">3. Arc length and radians</h2>
+    <p>A full turn is \(360^\circ\) or \(2\pi\) radians. A central angle of \(\theta\) radians subtends an arc whose length is the angle times the radius:</p>
+    <div class="formula">\( s = r\theta \qquad (\theta \text{ in radians}) \)</div>
+    <p>In degrees the same arc length is a fraction of the circumference:</p>
+    <div class="formula">\( s = \frac{\theta}{360^\circ} \cdot 2\pi r \)</div>
+    <p>Radians are dimensionless, which is why \(s = r\theta\) needs no conversion factor. Degrees require the explicit \(2\pi/360\) ratio.</p>
+
+    <h2 id="sector">4. Sector and segment area</h2>
+    <p>A sector is a fraction of the disk set by its central angle. Its area is <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <div class="formula">\( A_{\text{sector}} = \frac{1}{2} r^2 \theta = \frac{\theta}{360^\circ} \cdot \pi r^2 \)</div>
+    <p>A circular segment is the region between a chord and its arc. Its area is the sector area minus the triangle formed by the two radii and the chord. When the central angle is \(\theta\), that triangle has area \(\tfrac{1}{2} r^2 \sin\theta\), so:</p>
+    <div class="formula">\( A_{\text{segment}} = \frac{1}{2} r^2 (\theta - \sin\theta) \)</div>
+
+    <h2 id="chords">5. Chord and angle properties</h2>
+    <ul>
+      <li>A line from the center perpendicular to a chord bisects that chord. If the perpendicular distance from the center to the chord is \(d\), the chord has length \( 2\sqrt{r^2 - d^2} \).</li>
+      <li><strong>Inscribed angle theorem</strong>: an angle inscribed in a circle is half the central angle that subtends the same arc.</li>
+      <li><strong>Thales' theorem</strong>: an angle inscribed in a semicircle is a right angle. It is the special case of the inscribed angle theorem at central angle \(180^\circ\).</li>
+      <li>A tangent is perpendicular to the radius drawn to the point of tangency.</li>
+      <li>The tangent-chord angle equals the inscribed angle in the alternate segment.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul id="see-also-list">
+      <li><a href="/reference/composite-shapes/">Area and Perimeter of Composite 2D Shapes</a></li>
+      <li><a href="/reference/properties-of-polygons/">Properties and Angles of Polygons</a></li>
+      <li><a href="/reference/triangle-perimeter/">Triangle Perimeter (Geometry)</a></li>
+      <li><a href="/reference/triangle-inequality-theorem/">Triangle Inequality Theorem</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref-1"><span class="backlink">^</span>Euclid, <em>Elements</em>, Book III (Circle definitions, chord, tangent, and inscribed angle propositions).</li>
+      <li id="ref-2"><span class="backlink">^</span>H.S.M. Coxeter, <em>Introduction to Geometry</em>, 2nd ed., John Wiley &amp; Sons, 1969.</li>
+    </ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

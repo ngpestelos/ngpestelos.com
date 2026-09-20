@@ -603,6 +603,38 @@ class ReferenceSeoTests(unittest.TestCase):
             self.assertIn('"@type":"DefinedTerm"', entry_html)
             self.assertIn('id="first-principles"', entry_html)
 
+    def test_foundational_math_references_registered(self):
+        html = (REF / "index.html").read_text(encoding="utf-8")
+        locs = sitemap_locs(SITEMAP.read_text(encoding="utf-8"))
+        math_slugs = (
+            "absolute-value-inequalities",
+            "circle-fundamentals",
+            "composite-shapes",
+            "compound-inequalities",
+            "domain-and-range",
+            "exponent-rules",
+            "exponential-functions",
+            "function-transformations",
+            "linear-equation-forms",
+            "linear-systems-classification",
+            "piecewise-functions",
+            "polynomial-factoring",
+            "properties-of-polygons",
+            "radical-operations",
+            "systems-of-linear-equations",
+        )
+        for slug in math_slugs:
+            self.assertIn(f'href="/reference/{slug}/"', html, f"Missing from reference/index.html: {slug}")
+            self.assertIn(
+                f"https://ngpestelos.com/reference/{slug}/",
+                locs,
+                f"Missing from sitemap.xml: {slug}",
+            )
+            entry_html = (REF / slug / "index.html").read_text(encoding="utf-8")
+            self.assertIn("application/ld+json", entry_html)
+            self.assertIn('"@type":"DefinedTerm"', entry_html)
+            self.assertIn('id="first-principles"', entry_html)
+
 
 if __name__ == "__main__":
     unittest.main()
