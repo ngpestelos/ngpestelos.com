@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Area and Perimeter of Composite 2D Shapes (Geometry) &middot; Reference &middot; Nestor G Pestelos Jr</title>
-  <meta name="description" content="A composite 2D shape is a region formed by combining simpler shapes. Its area is the sum or difference of the component areas; its perimeter is the outer boundary only.">
+  <meta name="description" content="A composite 2D shape is a region formed by combining simpler shapes. Its area is the sum or difference of the component areas; its perimeter is the total length of the boundary of the final region, including the boundaries of any holes.">
   <meta property="og:title" content="Area and Perimeter of Composite 2D Shapes (Geometry) &middot; Reference">
   <meta property="og:description" content="Additive and subtractive area, component formulas, and why perimeter is not the sum of component perimeters.">
   <meta property="og:type" content="article">
@@ -40,7 +40,7 @@
     gtag("config", "G-TLBY8P4GG9");
   </script>
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Area and Perimeter of Composite 2D Shapes (Geometry)","description":"A composite 2D shape is a region formed by combining simpler shapes. Its area is the sum or difference of the component areas; its perimeter is the outer boundary only.","url":"https://ngpestelos.com/reference/composite-shapes/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Area and Perimeter of Composite 2D Shapes (Geometry)","description":"A composite 2D shape is a region formed by combining simpler shapes. Its area is the sum or difference of the component areas; its perimeter is the total length of the boundary of the final region, including the boundaries of any holes.","url":"https://ngpestelos.com/reference/composite-shapes/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -98,7 +98,7 @@
     <h1>Area and Perimeter of Composite 2D Shapes</h1>
     <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
 
-    <p class="lede"><strong>A composite shape</strong> is a plane region built by joining simpler shapes such as rectangles, triangles, circles, and trapezoids. Its area equals the sum of the component areas when the components do not overlap, or the difference when one region is removed from another. Its perimeter is the length of the outer boundary alone, which is not the sum of the component perimeters.</p>
+    <p class="lede"><strong>A composite shape</strong> is a plane region built by joining simpler shapes such as rectangles, triangles, circles, and trapezoids. Its area equals the sum of the component areas when the components do not overlap, or the difference when one region is removed from another. Its perimeter is the total length of the boundary of the final region: every exposed edge counts once, including the boundary of any hole, and it is not the sum of the component perimeters.</p>
 
     <nav class="toc" aria-label="Table of contents">
       <h2>Contents</h2>
@@ -116,7 +116,7 @@
     <h2 id="first-principles">1. First principles</h2>
     <p>Area is additive over disjoint regions. If a region \(R\) is partitioned into pieces \(R_1, R_2, \dots, R_k\) whose interiors do not overlap, then the total area is:</p>
     <div class="formula">\( A(R) = A(R_1) + A(R_2) + \cdots + A(R_k) \)</div>
-    <p>Subtraction is the same principle applied to a hole: if \(R_2\) lies entirely inside \(R_1\), the remaining region has area \(A(R_1) - A(R_2)\). Perimeter is different. It measures the length of the boundary of the final region, so shared interior edges between components are not part of it <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>.</p>
+    <p>Subtraction is the same principle applied to a hole: if \(R_2\) lies entirely inside \(R_1\), the remaining region has area \(A(R_1) - A(R_2)\). Perimeter is different. It measures the length of the complete boundary of the final region: the outer boundary plus the boundary of every hole. Shared interior edges introduced only by the decomposition are not part of it <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>.</p>
 
     <h2 id="components">2. Component area formulas</h2>
     <table class="data">
@@ -139,7 +139,8 @@
     <p>Choose the method that produces fewer, simpler pieces. The total is invariant under the choice.</p>
 
     <h2 id="perimeter">4. Perimeter of a composite shape</h2>
-    <p>Trace the outer boundary once and add only those segment lengths and arc lengths. Interior cut lines used for the decomposition do not belong to the boundary and are not counted. In the additive example below, the shared edge between the two rectangles appears in both component perimeters but contributes zero to the boundary of the union <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>Trace every exposed edge of the final region once and add those segment lengths and arc lengths. The boundary includes the outer contour and the contour of every hole. Interior cut lines introduced only by the decomposition do not belong to the boundary and are not counted. In the additive example below, the shared edge between the two rectangles appears in both component perimeters but contributes zero to the boundary of the union <span class="cite">[<a href="#ref-1">1</a>]</span>.</p>
+    <p>Removing an interior \(2 \times 2\) square hole from a \(6 \times 4\) rectangle adds the hole's perimeter \(8\) to the rectangle's \(20\), for a total of \(28\). Counting only the outer contour would report \(20\) and miss the hole.</p>
     <p class="unattributed">A common error is to sum component perimeters. For two rectangles sharing a side of length \(s\), that sum overcounts the true perimeter by \(2s\), the shared edge counted on both sides.</p>
 
     <h2 id="worked">5. Worked example</h2>
@@ -148,7 +149,7 @@
       <li>Area: \( 6 \cdot 4 - 2 \cdot 2 = 24 - 4 = 20 \) square units.</li>
       <li>Perimeter: tracing the remaining boundary gives segments \(6\), \(4\), \(4\), \(2\), \(2\), \(2\), totaling \(20\) units.</li>
     </ul>
-    <p>Decompose the L-shape into a \(6 \times 2\) rectangle and a \(4 \times 2\) rectangle. Their areas sum to \(12 + 8 = 20\), as required. Their perimeters sum to \(16 + 12 = 28\), which exceeds the true perimeter by \(8\). The excess is twice the shared edge of length \(4\), counted once in each component perimeter. Tracing the outer boundary is the reliable method.</p>
+    <p>Decompose the L-shape into a \(6 \times 2\) rectangle and a \(4 \times 2\) rectangle. Their areas sum to \(12 + 8 = 20\), as required. Their perimeters sum to \(16 + 12 = 28\), which exceeds the true perimeter by \(8\). The excess is twice the shared edge of length \(4\), counted once in each component perimeter. Tracing every exposed edge is the reliable method.</p>
 
     <h2 id="see-also">See also</h2>
     <ul id="see-also-list">

@@ -137,10 +137,12 @@
     <p>Radians are dimensionless, which is why \(s = r\theta\) needs no conversion factor. Degrees require the explicit \(2\pi/360\) ratio.</p>
 
     <h2 id="sector">4. Sector and segment area</h2>
-    <p>A sector is a fraction of the disk set by its central angle. Its area is <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
-    <div class="formula">\( A_{\text{sector}} = \frac{1}{2} r^2 \theta = \frac{\theta}{360^\circ} \cdot \pi r^2 \)</div>
-    <p>A circular segment is the region between a chord and its arc. Its area is the sector area minus the triangle formed by the two radii and the chord. When the central angle is \(\theta\), that triangle has area \(\tfrac{1}{2} r^2 \sin\theta\), so:</p>
-    <div class="formula">\( A_{\text{segment}} = \frac{1}{2} r^2 (\theta - \sin\theta) \)</div>
+    <p>A sector is a fraction of the disk set by its central angle. With the angle measured in radians, its area is <span class="cite">[<a href="#ref-1">1</a>]</span>:</p>
+    <div class="formula">\( A_{\text{sector}} = \frac{1}{2} r^2 \theta \qquad (\theta \text{ in radians}) \)</div>
+    <p>With the angle measured in degrees, the same area is the corresponding fraction of the disk. The two formulas are not interchangeable as written, because the same symbol \(\theta\) carries a different numerical measure in each:</p>
+    <div class="formula">\( A_{\text{sector}} = \frac{\theta}{360^\circ} \cdot \pi r^2 \qquad (\theta \text{ in degrees}) \)</div>
+    <p>A circular segment is the region between a chord and its arc. Its area is the sector area minus the triangle formed by the two radii and the chord. With \(\theta\) in radians, that triangle has area \(\tfrac{1}{2} r^2 \sin\theta\), so:</p>
+    <div class="formula">\( A_{\text{segment}} = \frac{1}{2} r^2 (\theta - \sin\theta) \qquad (\theta \text{ in radians}) \)</div>
 
     <h2 id="chords">5. Chord and angle properties</h2>
     <ul>

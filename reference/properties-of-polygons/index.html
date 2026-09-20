@@ -125,9 +125,9 @@
     <p>Every simple polygon can be triangulated into exactly \(n - 2\) triangles by drawing \(n - 3\) non-crossing diagonals. That count is the source of the interior angle formula.</p>
 
     <h2 id="interior">2. Interior angle sum</h2>
-    <p>Triangulating an \(n\)-gon from one vertex produces \(n - 2\) triangles. Each triangle has interior angles summing to \(180^\circ\), and the triangles partition the polygon's interior angles, so the sums add <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>:</p>
+    <p>For a convex \(n\)-gon, triangulating from one vertex produces \(n - 2\) triangles. Each triangle has interior angles summing to \(180^\circ\), and the triangles partition the polygon's interior angles, so the sums add <span class="cite">[<a href="#ref-1">1</a>, <a href="#ref-2">2</a>]</span>:</p>
     <div class="formula">\( S_{\text{interior}} = (n - 2) \cdot 180^\circ \)</div>
-    <p>The result is independent of convexity. A concave polygon triangulates the same way; reflex vertices simply contribute angles larger than \(180^\circ\).</p>
+    <p>The result is independent of convexity. Every simple polygon admits some noncrossing triangulation into \(n - 2\) triangles, so the same angle argument applies. For a concave polygon the triangulation may not be a fan from a single vertex, because such diagonals can leave the interior; a reflex vertex contributes an angle larger than \(180^\circ\), and the total still works out to \((n - 2) \cdot 180^\circ\).</p>
     <table class="data">
       <tr><th>Polygon</th><th>Sides \(n\)</th><th>Interior angle sum</th><th>Regular interior angle</th></tr>
       <tr><td>Triangle</td><td>3</td><td>180°</td><td>60°</td></tr>
