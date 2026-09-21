@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby User-Defined Hash Keys &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A Ruby hash key uses the object's hash method to select a bucket and its eql? method to test equality within that bucket, so a class whose instances should match by value overrides both.">
+  <meta property="og:title" content="Ruby User-Defined Hash Keys &middot; Reference">
+  <meta property="og:description" content="When to override eql? and hash for a Ruby hash key, the identity versus value distinction, and the alternatives.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-user-defined-hash-keys/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-user-defined-hash-keys/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby User-Defined Hash Keys","description":"A Ruby hash key uses the object's hash method to select a bucket and its eql? method to test equality within that bucket, so a class whose instances should match by value overrides both.","url":"https://ngpestelos.com/reference/ruby-user-defined-hash-keys/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Ruby User-Defined Hash Keys</h1>
+    <p class="updated">Reference entry &middot; last updated September 21, 2026</p>
+
+    <p class="lede"><strong>A user-defined hash key</strong> in Ruby is an object whose equality the program defines. A <code>Hash</code> calls the key's <code>hash</code> method to choose a bucket, then calls <code>eql?</code> to decide whether a key already in that bucket is the same key. The inherited <code>Object</code> versions make every object a distinct key, so a class whose instances should match by value overrides both methods. Overriding <code>eql?</code> alone is not enough: two equal keys that hash differently land in different buckets and both survive as separate keys.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#identity">Identity and equality</a></li>
+            <li><a href="#lookup">How a Hash looks a key up</a></li>
+            <li><a href="#invariant">The hash and eql? invariant</a></li>
+          </ol>
+        </li>
+        <li><a href="#overriding">Overriding eql? and hash</a></li>
+        <li><a href="#when-not">When it does not make sense</a></li>
+        <li><a href="#alternatives">Alternatives</a></li>
+        <li><a href="#choosing">Choosing</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="identity">Identity and equality</h3>
+    <p>Ruby separates three questions. <code>equal?</code> asks whether two references point at the same object, and it is never overridden. <code>==</code> asks whether two objects are equal, and classes define what that means. <code>eql?</code> is the stricter form that a <code>Hash</code> uses, and for <code>Object</code> it is synonymous with <code>==</code>.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>The split between <code>==</code> and <code>eql?</code> is easiest to see with numbers. <code>==</code> converts across numeric types, but <code>eql?</code> does not, which keeps <code>1</code> and <code>1.0</code> as different hash keys.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <pre>1 == 1.0      # => true
+1.eql?(1.0)   # => false</pre>
+
+    <h3 id="lookup">How a Hash looks a key up</h3>
+    <p>To be usable as a hash key, an object must implement <code>hash</code> and <code>eql?</code>. The <code>hash</code> value selects a bucket, and <code>eql?</code> is then used to test members inside that bucket for equality. <code>Object#hash</code> returns an Integer for this purpose.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+    <p>This two-step lookup is why both methods must agree. The bucket choice is a fast filter, and <code>eql?</code> is the exact test. A key that skips the first step is never compared.</p>
+
+    <h3 id="invariant">The hash and eql? invariant</h3>
+    <p>The required property is: if <code>a.eql?(b)</code> is true, then <code>a.hash</code> must equal <code>b.hash</code>.<span class="cite">[<a href="#ref2">2</a>]</span> Two objects that are equal by <code>eql?</code> but hash differently break the lookup, because they never reach the same bucket.</p>
+    <p><code>eql?</code> should also be symmetric and transitive, and the pair must stay consistent: two keys that are <code>eql?</code> must return the same <code>hash</code>, and the <code>hash</code> value must not change while the key is stored.</p>
+
+    <h2 id="overriding">Overriding eql? and hash</h2>
+    <p>Override both when two distinct objects should be the same key because their data is equal, and identity is not the point. Typical cases are a domain value object, a composite identifier used for deduplication, or a cache key.</p>
+    <p>A <code>hash</code> is derived from the same fields the equality uses, and <code>eql?</code> is aliased to the class's own <code>==</code>. The alias is safe only when that <code>==</code> is type-strict, which is why the usual form guards with a class check before comparing fields.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <pre>class Book
+  attr_reader :author, :title
+
+  def initialize(author, title)
+    @author = author
+    @title = title
+  end
+
+  def ==(other)
+    self.class == other.class &amp;&amp;
+      other.author == @author &amp;&amp;
+      other.title == @title
+  end
+  alias eql? ==
+
+  def hash
+    [self.class, @author, @title].hash
+  end
+end
+
+book1 = Book.new('matz', 'Ruby in a Nutshell')
+book2 = Book.new('matz', 'Ruby in a Nutshell')
+
+reviews = {}
+reviews[book1] = 'Great reference!'
+reviews[book2] = 'Nice and compact!'
+
+reviews.length   # => 1</pre>
+    <p>Without the overrides, <code>book1</code> and <code>book2</code> are two distinct keys and the hash holds two entries.</p>
+
+    <h2 id="when-not">When it does not make sense</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Identity is the intended key.</strong> The inherited <code>Object#eql?</code> and <code>Object#hash</code> already make each object a distinct key. Overriding collapses keys that should stay separate.</li>
+      <li><strong>The key is already a value type.</strong> String, Symbol, Integer, and Array define value equality and a matching <code>hash</code>, so a tuple key such as <code>[id, type]</code> already deduplicates by value.</li>
+      <li><strong>The equality fields are mutable.</strong> Changing a field that feeds <code>hash</code> after the key is stored corrupts its bucket. This is the practical reason to keep keys immutable.</li>
+      <li><strong>The hash opted into identity.</strong> <code>compare_by_identity</code> makes a hash compare keys by object identity and ignore <code>hash</code> and <code>eql?</code>.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+    </ul>
+
+    <h2 id="alternatives">Alternatives</h2>
+    <p><code>Struct</code> bundles members and defines member-based <code>eql?</code> and <code>hash</code>, so its instances work as value keys without hand-written overrides.<span class="cite">[<a href="#ref3">3</a>]</span> <code>Data</code>, added in Ruby 3.2, is the immutable counterpart for the same purpose.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>When the key is a composite, a plain Array or a joined String is often simpler than a custom class, because the built-in classes already satisfy the contract. Reach for a custom key when the object carries behavior or identity that the key must represent.</p>
+
+    <h2 id="choosing">Choosing</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Each object is a distinct key:</strong> do nothing, keep the inherited methods.</li>
+      <li><strong>Value equality is wanted and the key is simple:</strong> use a built-in type such as Array or String.</li>
+      <li><strong>A value object is the key:</strong> use <code>Struct</code>, or override <code>==</code>, alias <code>eql?</code>, and define <code>hash</code> from the same fields.</li>
+      <li><strong>Identity is wanted on purpose:</strong> call <code>compare_by_identity</code> instead of overriding equality.</li>
+      <li><strong>Keys stay immutable:</strong> never mutate a field that participates in <code>hash</code> after insertion.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby 3.3 core documentation, "Hash," User-Defined Hash Keys and <code>compare_by_identity</code>. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Hash.html">docs.ruby-lang.org/en/3.3/Hash.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ruby 3.3 core documentation, "Object," <code>eql?</code>, <code>hash</code>, and <code>equal?</code>. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Object.html">docs.ruby-lang.org/en/3.3/Object.html</a></li>
+      <li id="ref3"><span class="backlink">^</span> Ruby 3.3 core documentation, "Struct." Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Struct.html">docs.ruby-lang.org/en/3.3/Struct.html</a></li>
+      <li id="ref4"><span class="backlink">^</span> Ruby 3.3 core documentation, "Data." Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Data.html">docs.ruby-lang.org/en/3.3/Data.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
