@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby String Splitting &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Ruby string splitting uses String#split with a literal String or a Regexp pattern and an optional limit, returning an Array of substrings; the result distinguishes a one-element split from an empty field.">
+  <meta property="og:title" content="Ruby String Splitting &middot; Reference">
+  <meta property="og:description" content="String#split pattern types, the limit argument, the whitespace default, and the nil versus empty-string result.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-string-splitting/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-string-splitting/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby String Splitting","description":"Ruby string splitting uses String#split with a literal String or a Regexp pattern and an optional limit, returning an Array of substrings; the result distinguishes a one-element split from an empty field.","url":"https://ngpestelos.com/reference/ruby-string-splitting/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Ruby String Splitting</h1>
+    <p class="updated">Reference entry &middot; last updated September 21, 2026</p>
+
+    <p class="lede"><strong>Ruby string splitting</strong> is <code>String#split</code>, which divides a string at a separator and returns an Array of substrings. The separator is either a literal String or a Regexp, and those two behave differently. An optional limit caps the number of fields. The result distinguishes "no separator was found" from "the separator was found and the field is empty".<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#patterns">Two pattern types</a></li>
+            <li><a href="#whitespace">The whitespace default</a></li>
+          </ol>
+        </li>
+        <li><a href="#limit">The limit argument</a></li>
+        <li><a href="#results">Results and edge cases</a></li>
+        <li><a href="#choosing">Choosing a method</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="patterns">Two pattern types</h3>
+    <p>The pattern decides the algorithm. A String pattern is matched literally: every character is ordinary, so regex metacharacters lose their meaning. A Regexp pattern is matched as a regular expression, and the string is divided wherever it matches.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>"THX1138".split(/\d+/, 2)      # => ["THX", ""]
+"THX1138".split('\d+', 2)      # => ["THX1138"]</pre>
+    <p>The first call splits on one or more digits. The second looks for the literal characters backslash, <code>d</code>, plus, finds none, and returns the whole string as one element. Single quotes keep the backslash; a double-quoted <code>"\d+"</code> drops it to <code>"d+"</code>.</p>
+
+    <h3 id="whitespace">The whitespace default</h3>
+    <p>With no argument, the pattern is <code>nil</code>, and the value of <code>$;</code> is used. Because <code>$;</code> is <code>nil</code> by default, the string is split on whitespace as if a single space had been passed. That form ignores leading and trailing whitespace and treats a run of whitespace as one separator.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>" now  the  time ".split        # => ["now", "the", "time"]
+"a\nb".split("\n")               # => ["a", "b"]
+"".split                         # => []</pre>
+    <p>An empty string returns an empty Array, because there are no fields to split.</p>
+
+    <h2 id="limit">The limit argument</h2>
+    <p>The optional second argument caps how many fields are returned. It also controls trailing empty fields.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <table>
+      <thead>
+        <tr><th>Limit</th><th>Effect</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>omitted</td><td>trailing empty fields are suppressed</td></tr>
+        <tr><td>positive n</td><td>at most n fields; the last field keeps the unsplit remainder</td></tr>
+        <tr><td><code>1</code></td><td>the whole string as a one-element Array</td></tr>
+        <tr><td>negative</td><td>no field limit, and trailing empty fields are kept</td></tr>
+      </tbody>
+    </table>
+    <pre>"a,b,c".split(",", 2)     # => ["a", "b,c"]
+"a,b,,".split(",")        # => ["a", "b"]
+"a,b,,".split(",", -1)    # => ["a", "b", "", ""]</pre>
+    <p>The limit is a separate argument to <code>split</code>, not part of the pattern. Writing it inside the regex, as in <code>split(/\s*=\s*, 2/)</code>, makes it pattern text and also leaves the regex unterminated if the closing slash is lost.</p>
+
+    <h2 id="results">Results and edge cases</h2>
+    <p>The Array length carries information that a multiple assignment hides. A one-element result means no separator matched, so a second variable receives <code>nil</code>. A two-element result with an empty second string means the separator matched and the field after it is empty.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>line = "badline"
+key, value = line.split(/=/, 2)   # key "badline", value nil
+
+line = "a="
+key, value = line.split(/=/, 2)   # key "a", value ""</pre>
+    <p>Those are different cases: <code>nil</code> is "there was no separator", while <code>""</code> is "there was a separator with nothing after it". A guard written as <code>value.nil? || value.empty?</code> conflates them and drops valid empty fields.</p>
+
+    <h2 id="choosing">Choosing a method</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Words separated by any whitespace:</strong> <code>str.split</code>.</li>
+      <li><strong>A fixed delimiter, keep the remainder:</strong> <code>str.split("=", 2)</code>.</li>
+      <li><strong>A pattern:</strong> <code>str.split(/\s*=\s*/)</code>.</li>
+      <li><strong>Keep trailing empty fields:</strong> a negative limit.</li>
+      <li><strong>Only the first separator, with a fixed three-part result:</strong> <code>str.partition("=")</code>.</li>
+      <li><strong>Remove edge characters rather than divide the string:</strong> see <a href="/reference/ruby-string-tokenization/">Ruby String Tokenization</a>.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby 3.3 core documentation, "String," <code>split</code>. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/String.html">docs.ruby-lang.org/en/3.3/String.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ruby 3.3 core documentation, "String," <code>partition</code>. Free full text: <a href="https://docs.ruby-lang.org/en/3.3/String.html">docs.ruby-lang.org/en/3.3/String.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

@@ -661,12 +661,22 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/ruby-string-splitting/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/ruby-string-tokenization/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/ruby-user-defined-hash-keys/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/python-dedupe-with-composite-keys/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

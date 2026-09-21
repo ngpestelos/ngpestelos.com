@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Dedupe with Composite Keys &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Deduplicating a Python list while preserving first-seen order keeps a result list and a seen set or dict of keys, appending a record only when its key is new; a composite key is a tuple of the distinguishing fields.">
+  <meta property="og:title" content="Python Dedupe with Composite Keys &middot; Reference">
+  <meta property="og:description" content="First-seen dedupe with a seen set, tuple composite keys, hashability, and the check-before-insert order.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/python-dedupe-with-composite-keys/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/python-dedupe-with-composite-keys/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Python Dedupe with Composite Keys","description":"Deduplicating a Python list while preserving first-seen order keeps a result list and a seen set or dict of keys, appending a record only when its key is new; a composite key is a tuple of the distinguishing fields.","url":"https://ngpestelos.com/reference/python-dedupe-with-composite-keys/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Python</p>
+    <h1>Python Dedupe with Composite Keys</h1>
+    <p class="updated">Reference entry &middot; last updated September 21, 2026</p>
+
+    <p class="lede"><strong>Deduplicating a list</strong> in Python while preserving first-seen order keeps a result list and a <code>seen</code> set or dict of keys, and appends a record only when its key has not been seen. When records are distinct only by a combination of fields, the key is a tuple of those fields. A <code>set</code> is an unordered collection with no duplicate elements, used for membership testing.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#hashable">Hashability</a></li>
+            <li><a href="#containers">Set and dict membership</a></li>
+          </ol>
+        </li>
+        <li><a href="#first-seen">First-seen order</a></li>
+        <li><a href="#composite">Composite keys</a></li>
+        <li><a href="#order-bug">Check before insert</a></li>
+        <li><a href="#pass-through">Pass-through exceptions</a></li>
+        <li><a href="#choosing">Choosing a structure</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="hashable">Hashability</h3>
+    <p>An object is hashable if it has a hash value that never changes during its lifetime and can be compared to other objects, through <code>__hash__</code> and <code>__eq__</code>. Objects that compare equal must have the same hash value. Hashability is what makes an object usable as a dictionary key and a set member.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Most immutable built-ins are hashable. Mutable containers such as lists and dictionaries are not, and immutable containers such as tuples are hashable only if their elements are.<span class="cite">[<a href="#ref3">3</a>]</span> This is why a composite key is a tuple and not a list.</p>
+    <pre>seen = {("call_ended", "c1")}       # tuple key, fine
+seen = {["call_ended", "c1"]}       # TypeError: unhashable type: 'list'</pre>
+
+    <h3 id="containers">Set and dict membership</h3>
+    <p>A <code>set</code> stores distinct hashable members and answers membership by hash. A <code>dict</code> maps hashable keys to values and preserves insertion order, and updating a key does not change its position.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span> Either can serve as the seen structure.</p>
+
+    <h2 id="first-seen">First-seen order</h2>
+    <p>A set alone cannot preserve order, and a set alone also discards the records. The pattern pairs the seen structure with a result list: iterate in order, compute the key, and append the record only when the key is new.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>def dedupe(records):
+    seen = set()
+    result = []
+    for record in records:
+        key = record["id"]
+        if key not in seen:
+            seen.add(key)
+            result.append(record)
+    return result</pre>
+    <p>Because the loop visits the input in order and appends on first sight, the output preserves first-seen order. Deduplicating with <code>set(records)</code> alone would lose both the order and the record bodies.</p>
+
+    <h2 id="composite">Composite keys</h2>
+    <p>When one field is not unique, the key is a tuple of the fields that together are. The tuple is hashable, so it works as a set member or dict key.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <pre>key = (record["event"], record["call_id"])</pre>
+    <p>A tuple is immutable, so it cannot be extended in place. Build it with all the fields at once, or concatenate a one-element tuple. Note the trailing comma: <code>(x)</code> is just <code>x</code>, while <code>(x,)</code> is a one-element tuple.</p>
+    <pre>key = key + (record["start_timestamp"],)   # concatenate
+key = (record["event"], record["call_id"], record["start_timestamp"])</pre>
+    <p>Two records with the same event and call but different timestamps have different keys, so both survive. That is the point of adding the field to the key: it turns an otherwise duplicate pair into a distinct one.</p>
+
+    <h2 id="order-bug">Check before insert</h2>
+    <p>The membership test must run before the key is recorded. Writing the insert first makes the test always false, because the key is already in the structure by the time it is checked, and every record is then either dropped or kept by accident.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre># wrong order: the test can never be true
+seen.add(key)
+if key not in seen:
+    result.append(record)
+
+# correct order
+if key not in seen:
+    result.append(record)
+    seen.add(key)</pre>
+    <p>The same order matters with a dict, where the equivalent is to check <code>if key not in seen:</code> before assigning <code>seen[key] = True</code>.</p>
+
+    <h2 id="pass-through">Pass-through exceptions</h2>
+    <p>Some records must be processed every time even when their key repeats, such as a streaming transcript update. The condition becomes an OR: append when the record is a pass-through type, or when its key is new. The key is still recorded either way.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>if record["event"] == "transcript_updated" or key not in seen:
+    result.append(record)
+seen.add(key)</pre>
+
+    <h2 id="choosing">Choosing a structure</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Only membership matters:</strong> a <code>set</code> of keys.</li>
+      <li><strong>You need a value per key, such as the first or last record:</strong> a <code>dict</code> keyed by the composite key.</li>
+      <li><strong>One field is not unique:</strong> a tuple of the distinguishing fields.</li>
+      <li><strong>Order is part of the contract:</strong> a result list plus the seen structure, never a bare set.</li>
+      <li><strong>Splitting the text first:</strong> see <a href="/reference/python-string-splitting/">Python String Splitting</a>.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Python Documentation, "Data Structures," Sets. Free full text: <a href="https://docs.python.org/3/tutorial/datastructures.html">docs.python.org/3/tutorial/datastructures.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Python Documentation, "Built-in Types," Set Types and Mapping Types. Free full text: <a href="https://docs.python.org/3/builtins/stdtypes.html">docs.python.org/3/builtins/stdtypes.html</a></li>
+      <li id="ref3"><span class="backlink">^</span> Python Documentation, "Glossary," hashable. Free full text: <a href="https://docs.python.org/3/glossary.html">docs.python.org/3/glossary.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
