@@ -161,7 +161,7 @@ counts
       <li><strong>Words separated by any whitespace:</strong> <code>text.split</code>.</li>
       <li><strong>Case-insensitive comparison:</strong> <code>downcase</code> before counting.</li>
       <li><strong>Remove edge punctuation only:</strong> <code>gsub(/\A[^a-z]+|[^a-z]+\z/, '')</code>.</li>
-      <li><strong>Remove all punctuation inside a token too:</strong> use a single class, <code>gsub(/[^a-z]/, '')</code>, and accept that contractions and hyphenated words are split.</li>
+      <li><strong>Remove all punctuation inside a token too:</strong> use a single class, <code>gsub(/[^a-z]/, '')</code>, which joins fragments: <code>mother-in-law</code> becomes <code>motherinlaw</code>.</li>
       <li><strong>Non ASCII text:</strong> use a Unicode letter class instead of <code>[^a-z]</code>.</li>
     </ul>
 
