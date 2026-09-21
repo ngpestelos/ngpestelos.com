@@ -122,7 +122,7 @@
       </thead>
       <tbody>
         <tr><td>omitted</td><td>trailing empty fields are suppressed</td></tr>
-        <tr><td>positive n</td><td>at most n fields; the last field keeps the unsplit remainder</td></tr>
+        <tr><td>positive n</td><td>at most n fields plus any captured groups; the last field keeps the unsplit remainder</td></tr>
         <tr><td><code>1</code></td><td>the whole string as a one-element Array</td></tr>
         <tr><td>negative</td><td>no field limit, and trailing empty fields are kept</td></tr>
       </tbody>
@@ -130,15 +130,18 @@
     <pre>"a,b,c".split(",", 2)     # => ["a", "b,c"]
 "a,b,,".split(",")        # => ["a", "b"]
 "a,b,,".split(",", -1)    # => ["a", "b", "", ""]</pre>
+    <p>One exception: when the pattern contains a capture group, the captured groups are inserted into the result as well, and they do not count toward the limit.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>"a,b,c".split(/(,)/, 2)  # => ["a", ",", "b,c"]</pre>
     <p>The limit is a separate argument to <code>split</code>, not part of the pattern. Writing it inside the regex, as in <code>split(/\s*=\s*, 2/)</code>, makes it pattern text and also leaves the regex unterminated if the closing slash is lost.</p>
 
     <h2 id="results">Results and edge cases</h2>
-    <p>The Array length carries information that a multiple assignment hides. A one-element result means no separator matched, so a second variable receives <code>nil</code>. A two-element result with an empty second string means the separator matched and the field after it is empty.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>With a limit of 2, the Array length carries information that a multiple assignment hides. A one-element result means no separator matched, so a second variable receives <code>nil</code>. A two-element result with an empty second string means the separator matched and the field after it is empty.<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <pre>line = "badline"
 key, value = line.split(/=/, 2)   # key "badline", value nil
 
 line = "a="
 key, value = line.split(/=/, 2)   # key "a", value ""</pre>
+    <p>That reading depends on the limit. With the default limit, trailing empty fields are suppressed, so <code>"a=".split(/=/)</code> returns <code>["a"]</code> even though the separator matched. The limit of 2 keeps the empty field and makes the distinction visible.</p>
     <p>Those are different cases: <code>nil</code> is "there was no separator", while <code>""</code> is "there was a separator with nothing after it". A guard written as <code>value.nil? || value.empty?</code> conflates them and drops valid empty fields.</p>
 
     <h2 id="choosing">Choosing a method</h2>

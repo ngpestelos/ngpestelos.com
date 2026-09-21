@@ -123,7 +123,7 @@ seen = {["call_ended", "c1"]}       # TypeError: unhashable type: 'list'</pre>
             seen.add(key)
             result.append(record)
     return result</pre>
-    <p>Because the loop visits the input in order and appends on first sight, the output preserves first-seen order. Deduplicating with <code>set(records)</code> alone would lose both the order and the record bodies.</p>
+    <p>Because the loop visits the input in order and appends on first sight, the output preserves first-seen order. A bare <code>set(records)</code> is not a substitute. With the dict records shown here it raises <code>TypeError: unhashable type: 'dict'</code>, and with hashable records it keeps complete elements, loses the order, and does not extract the keys. The seen set holds only the keys, while the result list retains the first-seen records.</p>
 
     <h2 id="composite">Composite keys</h2>
     <p>When one field is not unique, the key is a tuple of the fields that together are. The tuple is hashable, so it works as a set member or dict key.<span class="cite">[<a href="#ref3">3</a>]</span></p>
