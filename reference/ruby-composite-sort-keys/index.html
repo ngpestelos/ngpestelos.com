@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby Composite Sort Keys &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A Ruby composite sort key orders a collection by more than one field by returning an array from a sort_by block, with the first element as the primary key, a negated number for descending order, and later elements as tiebreaks.">
+  <meta property="og:title" content="Ruby Composite Sort Keys &middot; Reference">
+  <meta property="og:description" content="Sorting Ruby collections by several keys with sort_by, descending a numeric field by negation, and tiebreaking.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-composite-sort-keys/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-composite-sort-keys/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby Composite Sort Keys","description":"A Ruby composite sort key orders a collection by more than one field by returning an array from a sort_by block, with the first element as the primary key, a negated number for descending order, and later elements as tiebreaks.","url":"https://ngpestelos.com/reference/ruby-composite-sort-keys/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Ruby Composite Sort Keys</h1>
+    <p class="updated">Reference entry &middot; last updated September 21, 2026</p>
+
+    <p class="lede"><strong>A Ruby composite sort key</strong> orders a collection by more than one field at once. It is formed by returning an Array from a <code>sort_by</code> block, where acceptance order follows the array element by element: the first element is the primary key, and each later element breaks a tie left by the ones before it. Ruby sorts ascending only, so a descending numeric field is expressed by negating it inside the key.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#comparison">Comparison and the spaceship operator</a></li>
+            <li><a href="#sort-by">What sort_by does</a></li>
+          </ol>
+        </li>
+        <li><a href="#composite">Building a composite key</a></li>
+        <li><a href="#descending">Descending a numeric key</a></li>
+        <li><a href="#ties">Ties and stability</a></li>
+        <li><a href="#choosing">Choosing a sort method</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="comparison">Comparison and the spaceship operator</h3>
+    <p>A sort needs a comparison for every pair of elements. Ruby's base comparison is the spaceship operator, which returns <code>-1</code>, <code>0</code>, or <code>1</code> depending on whether the left operand is less than, equal to, or greater than the right, and <code>nil</code> when the two are incomparable. <code>Enumerable#sort</code> uses each element's own comparison unless a block is supplied.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Arrays compare element-wise. <code>Array#&lt;=&gt;</code> compares the first elements of the two arrays, and as soon as that comparison is not zero it decides the whole result. Only when the first elements are equal does it compare the second, and so on.<span class="cite">[<a href="#ref3">3</a>]</span> That single rule is the mechanism behind a composite key.</p>
+
+    <h3 id="sort-by">What sort_by does</h3>
+    <p><code>Enumerable#sort_by</code> takes a block that maps each element to a key object, then sorts ascending by those keys. The key can be any comparable object, including an Array. Because the key is computed once per element instead of once per comparison, <code>sort_by</code> is the usual choice when the key is more expensive than a direct comparison.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Both <code>sort</code> and <code>sort_by</code> return an Array. They are not guaranteed to be stable, which means elements whose keys compare equal may come out in any order.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="composite">Building a composite key</h2>
+    <p>Return an array from the block. The first element is the primary sort field and the second is the tiebreak, and each further element extends the same rule. The result is a single ascending sort that satisfies several orderings at once.</p>
+    <pre>words = [["the", 3], ["parties", 2], ["law", 2]]
+
+# count descending, then word ascending
+words.sort_by { |word, count| [-count, word] }
+# => [["the", 3], ["law", 2], ["parties", 2]]</pre>
+    <p>When the block receives a Hash entry, the entry is a two element pair, so the block can destructure it into the key and the value with <code>|word, count|</code>. Sorting a hash this way returns an Array of pairs, which is already the shape such a result is usually reported in, so no <code>to_h</code> is needed.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="descending">Descending a numeric key</h2>
+    <p><code>sort_by</code> sorts ascending and has no descending flag. For an ordered numeric field, negating the value reverses its order: a larger count becomes a smaller key, so it sorts first. This is exact for integers and floats and keeps the remaining key elements ascending.</p>
+    <table>
+      <thead>
+        <tr><th>Key expression</th><th>Primary order</th><th>Tiebreak</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>[count, word]</code></td><td>count ascending</td><td>word ascending</td></tr>
+        <tr><td><code>[-count, word]</code></td><td>count descending</td><td>word ascending</td></tr>
+      </tbody>
+    </table>
+    <p>Negation only works when the field is a number that can be negated. A <code>nil</code> or a non-numeric value raises inside the block. Reversing the whole result with <code>.reverse</code> is not a substitute: it flips every key element, so the tiebreak becomes descending as well.</p>
+
+    <h2 id="ties">Ties and stability</h2>
+    <p>Because the sort is not stable, two elements with equal keys can appear in either order. A deterministic result therefore needs an element that is unique across the collection as the final key component, such as an identifier or a name. When the atomic values are already distinct, the last key element makes the order total and no separate stability mechanism is required.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="choosing">Choosing a sort method</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>One computed key, or several:</strong> <code>sort_by</code> with a single value or an array.</li>
+      <li><strong>A one-off custom comparison:</strong> <code>sort</code> with a two parameter block.</li>
+      <li><strong>Only the largest n elements:</strong> <code>max_by(n)</code> accepts composite keys for tiebreaks. Order is unspecified when complete keys are equal.</li>
+      <li><strong>Descending numeric primary with ascending tiebreak:</strong> negate the number inside the composite key.</li>
+      <li><strong>Ordering an aggregated hash:</strong> see <a href="/reference/ruby-hash-accumulators/">Ruby Hash Accumulators</a>.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Enumerable," <code>sort_by</code>. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Enumerable.html">ruby-doc.org/core-2.6.10/Enumerable.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Enumerable," <code>sort</code>. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Enumerable.html">ruby-doc.org/core-2.6.10/Enumerable.html</a></li>
+      <li id="ref3"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Array," <code>&lt;=&gt;</code> element-wise comparison. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Array.html">ruby-doc.org/core-2.6.10/Array.html</a></li>
+      <li id="ref4"><span class="backlink">^</span> Ruby 2.6.10 core documentation, "Hash," enumeration in insertion order. Free full text: <a href="https://ruby-doc.org/core-2.6.10/Hash.html">ruby-doc.org/core-2.6.10/Hash.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
