@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ruby User-Defined Hash Keys &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <title>Ruby User-Defined Hash Keys (20260921 archive) &middot; Reference &middot; Nestor G Pestelos Jr</title>
   <meta name="description" content="A Ruby hash key uses the object's hash method to select a bucket and its eql? method to test equality within that bucket, so a class whose instances should match by value overrides both.">
-  <meta property="og:title" content="Ruby User-Defined Hash Keys &middot; Reference">
+  <meta property="og:title" content="Ruby User-Defined Hash Keys (20260921 archive) &middot; Reference">
   <meta property="og:description" content="When to override eql? and hash for a Ruby hash key, the identity versus value distinction, and the alternatives.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-user-defined-hash-keys/">
-  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-user-defined-hash-keys/">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-user-defined-hash-keys-20260921/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-user-defined-hash-keys-20260921/">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
   <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
   <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
@@ -71,7 +71,7 @@
     @media print { .back-to-top { display: none !important; } }
   </style>
   <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby User-Defined Hash Keys","description":"A Ruby hash key uses the object's hash method to select a bucket and its eql? method to test equality within that bucket, so a class whose instances should match by value overrides both.","url":"https://ngpestelos.com/reference/ruby-user-defined-hash-keys/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby User-Defined Hash Keys (20260921 archive)","description":"A Ruby hash key uses the object's hash method to select a bucket and its eql? method to test equality within that bucket, so a class whose instances should match by value overrides both.","url":"https://ngpestelos.com/reference/ruby-user-defined-hash-keys-20260921/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
   </script>
 </head>
 <body class="reference">
@@ -79,9 +79,8 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Programming Languages &middot; Ruby</p>
     <h1>Ruby User-Defined Hash Keys</h1>
+    <p class="updated">Archived version captured 20260921 before the field-equality correction. <a href="/reference/ruby-user-defined-hash-keys/">Current entry</a>.</p>
     <p class="updated">Reference entry &middot; last updated September 21, 2026</p>
-
-    <p class="updated"><a href="/reference/ruby-user-defined-hash-keys-20260921/">Previous version (20260921)</a></p>
 
     <p class="lede"><strong>A user-defined hash key</strong> in Ruby is an object whose equality the program defines. A <code>Hash</code> calls the key's <code>hash</code> method to choose a bucket, then calls <code>eql?</code> to decide whether a key already in that bucket is the same key. The inherited <code>Object</code> versions make every object a distinct key, so a class whose instances should match by value overrides both methods. Overriding <code>eql?</code> alone is not enough: two equal keys that hash differently land in different buckets and both survive as separate keys.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
 
@@ -121,7 +120,7 @@
 
     <h2 id="overriding">Overriding eql? and hash</h2>
     <p>Override both when two distinct objects should be the same key because their data is equal, and identity is not the point. Typical cases are a domain value object, a composite identifier used for deduplication, or a cache key.</p>
-    <p>Derive <code>hash</code> from the fields used for equality. Aliasing <code>eql?</code> to <code>==</code> is safe only when the field comparisons agree with their hashes. Checking the outer class does not enforce this: <code>1 == 1.0</code> is true, while <code>1.eql?(1.0)</code> is false. This example compares each field with <code>eql?</code>.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>A <code>hash</code> is derived from the same fields the equality uses, and <code>eql?</code> is aliased to the class's own <code>==</code>. The alias is safe only when that <code>==</code> is type-strict, which is why the usual form guards with a class check before comparing fields.<span class="cite">[<a href="#ref2">2</a>]</span></p>
     <pre>class Book
   attr_reader :author, :title
 
@@ -132,8 +131,8 @@
 
   def ==(other)
     self.class == other.class &amp;&amp;
-      other.author.eql?(@author) &amp;&amp;
-      other.title.eql?(@title)
+      other.author == @author &amp;&amp;
+      other.title == @title
   end
   alias eql? ==
 
@@ -168,7 +167,7 @@ reviews.length   # => 1</pre>
     <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
       <li><strong>Each object is a distinct key:</strong> do nothing, keep the inherited methods.</li>
       <li><strong>Value equality is wanted and the key is simple:</strong> use a built-in type such as Array or String.</li>
-      <li><strong>A value object is the key:</strong> use <code>Struct</code>, or define <code>eql?</code> and <code>hash</code> from the same fields. Alias <code>eql?</code> to <code>==</code> only if its field comparisons satisfy the hash contract.</li>
+      <li><strong>A value object is the key:</strong> use <code>Struct</code>, or override <code>==</code>, alias <code>eql?</code>, and define <code>hash</code> from the same fields.</li>
       <li><strong>Identity is wanted on purpose:</strong> call <code>compare_by_identity</code> instead of overriding equality.</li>
       <li><strong>Keys stay immutable:</strong> never mutate a field that participates in <code>hash</code> after insertion.</li>
     </ul>
