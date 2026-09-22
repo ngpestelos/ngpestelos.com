@@ -79,7 +79,7 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Programming Languages &middot; Python</p>
     <h1>Python Exception Handling</h1>
-    <p class="updated">Reference entry &middot; last updated September 20, 2026</p>
+    <p class="updated">Reference entry &middot; last updated September 22, 2026</p>
 
     <p class="lede"><strong>Python exception handling</strong> is the <code>try</code> statement and the <code>raise</code> statement working together. A <code>try</code> statement runs a suite under one or more handlers (<code>except</code>), an optional no-error branch (<code>else</code>), and an optional cleanup branch (<code>finally</code>). The <code>raise</code> statement starts a new exception or re-raises the active one. Exceptions are ordinary objects, and the built-in hierarchy separates ordinary program errors from the system-exiting signals.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></p>
 
@@ -96,6 +96,7 @@
         <li><a href="#try">The try statement</a>
           <ol>
             <li><a href="#except">except</a></li>
+            <li><a href="#as-target">The as target</a></li>
             <li><a href="#else">else</a></li>
             <li><a href="#finally">finally</a></li>
           </ol>
@@ -109,6 +110,7 @@
         </li>
         <li><a href="#eafp-lbyl">EAFP and LBYL</a></li>
         <li><a href="#guidelines">Guidelines</a></li>
+        <li><a href="#see-also">See also</a></li>
         <li><a href="#references">References</a></li>
       </ol>
     </nav>
@@ -128,11 +130,15 @@
     <h2 id="try">The try statement</h2>
 
     <h3 id="except">except</h3>
-    <p>A <code>try</code> statement may have more than one <code>except</code> clause, each naming a different exception. The clause runs only if its named class matches the raised exception. Catching the specific type keeps the handler meaningful; catching the broad type hides bugs.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>A <code>try</code> statement may have more than one <code>except</code> clause, each naming a different exception. The clause runs only if its named class matches the raised exception. Clauses are inspected in order and the first match wins, so a specific type must come before a broader one that would also match it, and an expression-less <code>except:</code> must be last. An <code>except</code> expression may also name a tuple of types, <code>except (TypeError, KeyError):</code>. Catching the specific type keeps the handler meaningful; catching the broad type hides bugs.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
     <pre>try:
     value = int(raw)
 except ValueError as exc:
     print("not an integer:", exc)</pre>
+
+    <h3 id="as-target">The as target</h3>
+    <p>A handler that binds the exception with <code>except SomeError as exc</code> clears <code>exc</code> at the end of the clause. The clause behaves as if its body ran inside a <code>try</code> statement whose <code>finally</code> clause deletes the name, so <code>exc</code> is unavailable after the handler. Python clears it because the exception's traceback forms a reference cycle with the stack frame, which would keep that frame's locals alive until the next garbage collection. Assign the exception to a second name inside the handler to keep it after the clause.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Verified on Python 3.13.7: a name bound by <code>as</code> raised <code>NameError</code> when read after the handler.</p>
 
     <h3 id="else">else</h3>
     <p>An <code>else</code> clause is executed if control leaves the <code>try</code> suite with no exception, and it is skipped when a <code>return</code>, <code>continue</code>, or <code>break</code> leaves the suite. It must follow all <code>except</code> clauses, and exceptions raised in the <code>else</code> clause are not handled by the preceding <code>except</code> clauses. The practical use is to narrow the guarded region: keep only the risky call in the <code>try</code>, and put the follow-up work in <code>else</code>.<span class="cite">[<a href="#ref2">2</a>]</span></p>
@@ -143,7 +149,7 @@ except ValueError as exc:
     <h2 id="raising">Raising exceptions</h2>
 
     <h3 id="raise">raise and re-raise</h3>
-    <p><code>raise</code> with an exception instance or class starts that exception. When a class is given, Python instantiates it with no arguments. A bare <code>raise</code> inside a handler re-raises the active exception, which is how a handler can log and then decline to suppress.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p><code>raise</code> with an exception instance or class starts that exception. When a class is given, Python instantiates it with no arguments. A bare <code>raise</code> inside a handler re-raises the active exception, which is how a handler can log and then decline to suppress. A bare <code>raise</code> requires an active exception and raises <code>RuntimeError</code> when there is none. Raising a named object instead, <code>raise exc</code>, adds the current frame to the traceback, so the two forms are not interchangeable. Verified on Python 3.13.7: a bare re-raise kept three traceback frames where <code>raise exc</code> produced four.<span class="cite">[<a href="#ref3">3</a>]</span></p>
     <pre>try:
     handle()
 except ValueError:
@@ -161,6 +167,11 @@ except ValueError as exc:
     <p>A program can define its own exception classes. The convention is to derive from <code>Exception</code>, directly or indirectly, and to keep the class simple. An exception class carries a name that the caller can catch, which is more precise than returning an error value or raising a built-in type that means something else.<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <pre>class ConfigError(Exception):
     pass</pre>
+    <p>The usual reason to define one is to carry data a handler reads. The tutorial describes exception classes as kept simple and often offering a number of attributes that let a handler extract information about the error. A subclass that overrides <code>__init__</code> calls <code>super().__init__()</code> with the message so <code>args</code> and <code>str()</code> keep working, then stores the extra fields as attributes.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>]</span></p>
+    <pre>class RateLimited(Exception):
+    def __init__(self, retry_after):
+        super().__init__(f"rate limited, retry after {retry_after}s")
+        self.retry_after = retry_after</pre>
 
     <h2 id="eafp-lbyl">EAFP and LBYL</h2>
     <p>Python documents two opposing styles. EAFP, "easier to ask for forgiveness than permission," assumes a valid key or attribute and catches the exception if the assumption fails; it is characterized by many <code>try</code> and <code>except</code> statements. LBYL, "look before you leap," tests preconditions before the call and is characterized by many <code>if</code> statements.<span class="cite">[<a href="#ref5">5</a>]</span></p>
@@ -181,6 +192,11 @@ value = mapping[key] if key in mapping else default</pre>
       <li><strong>Narrow the guarded region.</strong> Put the risky call in the <code>try</code> and the follow-up in <code>else</code>, so unrelated failures are not caught.</li>
       <li><strong>Use <code>finally</code> or a context manager for cleanup.</strong> The <code>with</code> statement expresses the common case more directly than a manual <code>try</code> and <code>finally</code>.</li>
       <li><strong>Preserve the cause when you re-raise.</strong> Use <code>raise ... from exc</code> so the original failure survives in the traceback.</li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/exponential-backoff/">Exponential Backoff</a></li>
     </ul>
 
     <h2 id="references">References</h2>
