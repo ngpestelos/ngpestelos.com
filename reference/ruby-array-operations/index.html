@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby Array Operations &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Ruby array operations are the methods of the Array class, an ordered integer-indexed collection: construction, access, mutation, selection, transformation, ordering, and conversion.">
+  <meta property="og:title" content="Ruby Array Operations &middot; Reference">
+  <meta property="og:description" content="The Array method surface grouped by purpose, with the destructive and non-destructive distinction.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-array-operations/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-array-operations/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby Array Operations","description":"Ruby array operations are the methods of the Array class, an ordered integer-indexed collection: construction, access, mutation, selection, transformation, ordering, and conversion.","url":"https://ngpestelos.com/reference/ruby-array-operations/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Ruby Array Operations</h1>
+    <p class="updated">Reference entry &middot; last updated September 22, 2026</p>
+
+    <p class="lede"><strong>Ruby array operations</strong> are the methods of the <code>Array</code> class, an ordered, integer-indexed collection of objects. They group into construction, access, mutation, selection, transformation, ordering, and conversion. The class also includes <code>Enumerable</code>, so the shared iteration methods apply to arrays as well.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a>
+          <ol>
+            <li><a href="#order-index">Order and index</a></li>
+            <li><a href="#destructive">Destructive and non-destructive</a></li>
+          </ol>
+        </li>
+        <li><a href="#construction">Construction</a></li>
+        <li><a href="#access">Access</a></li>
+        <li><a href="#mutation">Mutation</a></li>
+        <li><a href="#selection">Selection and search</a></li>
+        <li><a href="#transformation">Transformation</a></li>
+        <li><a href="#ordering">Ordering</a></li>
+        <li><a href="#conversion">Conversion</a></li>
+        <li><a href="#choosing">Choosing an operation</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+
+    <h3 id="order-index">Order and index</h3>
+    <p>An array is ordered and indexed by integers starting at 0. A negative index counts from the end, so <code>-1</code> is the last element. An array tracks its own length, and an out-of-range read through <code>[]</code> returns <code>nil</code> rather than raising, which is the difference between <code>[]</code> and <code>fetch</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>[10, 20, 30][-1]        # => 30
+[10, 20, 30][9]         # => nil
+[10, 20, 30].fetch(9)   # IndexError
+[10, 20, 30].fetch(9, :d) # => :d</pre>
+
+    <h3 id="destructive">Destructive and non-destructive</h3>
+    <p>Some methods have plain and bang forms: <code>sort</code> and <code>sort!</code>. <code>sort</code> returns a new array; <code>sort!</code> changes the receiver and returns it, even when the order stays the same. <code>pop</code> removes an element without a bang, and <code>select!</code> returns <code>nil</code> when nothing changes. <code>&lt;&lt;</code> also changes the receiver.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>a = [3, 1, 2]
+a.sort        # => [1, 2, 3]
+a             # => [3, 1, 2]
+a.sort!       # => [1, 2, 3]
+a             # => [1, 2, 3]</pre>
+
+    <h2 id="construction">Construction</h2>
+    <p>The literal <code>[1, 2, 3]</code> and <code>%w[a b c]</code> cover most cases. <code>Array.new(n)</code> builds <code>n</code> <code>nil</code> elements, and <code>Array.new(n, obj)</code> fills with one shared object. When the fill is mutable, pass a block instead, so each slot receives a distinct object.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>Array.new(3)        # => [nil, nil, nil]
+Array.new(3, [])    # three references to one array
+Array.new(3) { [] } # three distinct arrays
+
+a = Array.new(3, [])
+a[0] &lt;&lt; 1
+a                   # => [[1], [1], [1]]</pre>
+
+    <h2 id="access">Access</h2>
+    <p>Indexing reads one element or a slice. The helper methods read from the ends or take a count, and <code>dig</code> walks nested arrays without raising on a missing level.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>a = [10, 20, 30, 40]
+a[1]           # => 20
+a[1, 2]        # => [20, 30]
+a[1..2]        # => [20, 30]
+a.first        # => 10
+a.last         # => 40
+a.take(2)      # => [10, 20]
+a.drop(2)      # => [30, 40]
+[[1, [2, 3]]].dig(0, 1, 1) # => 3</pre>
+    <p><code>values_at</code> reads several indices at once, and <code>sample</code> reads a random element. <code>[]</code> returns <code>nil</code> for an out-of-range index; <code>fetch</code> raises <code>IndexError</code> or returns a supplied default.</p>
+
+    <h2 id="mutation">Mutation</h2>
+    <p>Append with <code>push</code> or <code>&lt;&lt;</code>, prepend with <code>unshift</code>, and insert at an offset with <code>insert</code>. <code>pop</code> and <code>shift</code> remove and return the last and first elements. <code>concat</code> appends another array in place; <code>+</code> returns a new array instead.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>a = [1, 2]
+a &lt;&lt; 3          # => [1, 2, 3]
+a.unshift(0)    # => [0, 1, 2, 3]
+a.insert(2, 9)  # => [0, 1, 9, 2, 3]
+a.pop           # => 3
+a.shift         # => 0
+a.delete(9)     # => 9, removes every 9
+a.delete_at(0)  # removes by index
+a.clear         # => []
+
+b = [1]
+c = b + [2]     # new array; b unchanged
+b.concat([2])   # b is now [1, 2]</pre>
+
+    <h2 id="selection">Selection and search</h2>
+    <p>Selection returns a new array of the elements that match, and the bang variants filter in place. <code>compact</code> removes <code>nil</code>, <code>uniq</code> removes duplicates, and <code>flatten</code> collapses nested arrays. <code>find</code> returns the first match or <code>nil</code>, while <code>find_all</code> is an alias for <code>select</code>.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+    <pre>[1, 2, 3, 4].select { |x| x.even? }   # => [2, 4]
+[1, 2, 3, 4].reject { |x| x.even? }   # => [1, 3]
+[1, 2, 3].find { |x| x &gt; 1 }          # => 2
+[1, 2, 3].include?(2)                 # => true
+[1, nil, 2].compact                   # => [1, 2]
+[1, 1, 2].uniq                        # => [1, 2]
+[[1, [2]], 3].flatten                 # => [1, 2, 3]
+[1, 2, 3].partition { |x| x.odd? }    # => [[1, 3], [2]]</pre>
+
+    <h2 id="transformation">Transformation</h2>
+    <p>These methods map the array into a new shape. <code>map</code> transforms each element, <code>reduce</code> folds the array to one value, and <code>each_with_object</code> carries an accumulator through the iteration. <code>group_by</code> and <code>partition</code> split the array by a block result, and <code>tally</code> counts occurrences of each distinct element.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+    <pre>[1, 2, 3].map { |x| x * 2 }             # => [2, 4, 6]
+[1, 2, 3].reduce(0) { |sum, x| sum + x } # => 6
+[1, 2, 3].sum                            # => 6
+[1, 2, 3, 4].each_slice(2).to_a          # => [[1, 2], [3, 4]]
+[1, 2, 3, 4].group_by { |x| x.even? }    # => {false=>[1, 3], true=>[2, 4]}
+[1, 1, 2].tally                          # => {1=>2, 2=>1}  (Ruby 2.7+)</pre>
+    <p><code>filter_map</code> combines a filter and a map in one pass (Ruby 2.7+). <code>flat_map</code> maps and then flattens one level. <code>zip</code> pairs the array with others, and <code>each_cons</code> yields each consecutive window.</p>
+
+    <h2 id="ordering">Ordering</h2>
+    <p><code>sort</code> orders by each element's own comparison, or by a two-argument block. <code>sort_by</code> maps each element to a key once and sorts by it. Neither is stable, so a deterministic order needs a unique final key component.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <pre>[3, 1, 2].sort                       # => [1, 2, 3]
+%w[apple pear fig].sort_by(&amp;:length)  # => ["fig", "pear", "apple"]
+[3, 1, 2].reverse                    # => [2, 1, 3]
+[1, 2, 3].min, [1, 2, 3].max         # => 1, 3
+[1, 2, 3].max_by(2) { |x| -x }       # => [1, 2]</pre>
+    <p>For a composite order, such as count descending then word ascending, see <a href="/reference/ruby-composite-sort-keys/">Ruby Composite Sort Keys</a>.</p>
+
+    <h2 id="conversion">Conversion</h2>
+    <p><code>join</code> turns an array of strings into one string, and <code>to_h</code> builds a hash from an array of pairs. The splat operator expands an array into arguments. <a href="https://docs.ruby-lang.org/en/3.3/Kernel.html"><code>Array()</code></a> tries <code>to_ary</code>, then <code>to_a</code>, and wraps the value if neither converts it. <code>nil</code> becomes an empty array, and an existing array stays unchanged.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre>%w[a b c].join("-")        # => "a-b-c"
+[[:a, 1], [:b, 2]].to_h    # => {:a=>1, :b=>2}
+Array(nil)                 # => []
+Array([1, 2])              # => [1, 2]</pre>
+
+    <h2 id="choosing">Choosing an operation</h2>
+    <ul style="padding-left: 1.5rem; margin-bottom: 0.9rem;">
+      <li><strong>Keep the original:</strong> the plain form, such as <code>map</code> or <code>select</code>.</li>
+      <li><strong>Update in place:</strong> the bang form, such as <code>map!</code> or <code>select!</code>.</li>
+      <li><strong>One element:</strong> <code>find</code> or <code>detect</code>; use <code>fetch</code> when a missing index should raise.</li>
+      <li><strong>One value from many:</strong> <code>reduce</code> or <code>sum</code>.</li>
+      <li><strong>Order by a computed key:</strong> <code>sort_by</code>; for two keys, see <a href="/reference/ruby-composite-sort-keys/">Ruby Composite Sort Keys</a>.</li>
+      <li><strong>Count per distinct element:</strong> <code>tally</code> (Ruby 2.7+), or a hash accumulator, see <a href="/reference/ruby-hash-accumulators/">Ruby Hash Accumulators</a>.</li>
+      <li><strong>The structure itself:</strong> see <a href="/reference/ruby-enumerable-structures/">Ruby Enumerable Structures</a>.</li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby 3.3 core documentation, "Array." Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Array.html">docs.ruby-lang.org/en/3.3/Array.html</a></li>
+      <li id="ref2"><span class="backlink">^</span> Ruby 3.3 core documentation, "Enumerable." Free full text: <a href="https://docs.ruby-lang.org/en/3.3/Enumerable.html">docs.ruby-lang.org/en/3.3/Enumerable.html</a></li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
