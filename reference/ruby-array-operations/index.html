@@ -114,7 +114,7 @@
 [10, 20, 30].fetch(9, :d) # => :d</pre>
 
     <h3 id="destructive">Destructive and non-destructive</h3>
-    <p>Most operations come in two forms. The plain form returns a new array and leaves the receiver unchanged. The bang form, written with a trailing <code>!</code>, performs the same work in place and returns the receiver, or <code>nil</code> when nothing changed. The operator <code>&lt;&lt;</code> is destructive even without a bang.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>Some methods have plain and bang forms: <code>sort</code> and <code>sort!</code>. <code>sort</code> returns a new array; <code>sort!</code> changes the receiver and returns it, even when the order stays the same. <code>pop</code> removes an element without a bang, and <code>select!</code> returns <code>nil</code> when nothing changes. <code>&lt;&lt;</code> also changes the receiver.<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <pre>a = [3, 1, 2]
 a.sort        # => [1, 2, 3]
 a             # => [3, 1, 2]
@@ -191,7 +191,7 @@ b.concat([2])   # b is now [1, 2]</pre>
     <p>For a composite order, such as count descending then word ascending, see <a href="/reference/ruby-composite-sort-keys/">Ruby Composite Sort Keys</a>.</p>
 
     <h2 id="conversion">Conversion</h2>
-    <p><code>join</code> turns an array of strings into one string, and <code>to_h</code> builds a hash from an array of pairs. The splat operator expands an array into arguments, and <code>Array()</code> wraps a single value without double wrapping an existing array.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p><code>join</code> turns an array of strings into one string, and <code>to_h</code> builds a hash from an array of pairs. The splat operator expands an array into arguments. <a href="https://docs.ruby-lang.org/en/3.3/Kernel.html"><code>Array()</code></a> tries <code>to_ary</code>, then <code>to_a</code>, and wraps the value if neither converts it. <code>nil</code> becomes an empty array, and an existing array stays unchanged.<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <pre>%w[a b c].join("-")        # => "a-b-c"
 [[:a, 1], [:b, 2]].to_h    # => {:a=>1, :b=>2}
 Array(nil)                 # => []
