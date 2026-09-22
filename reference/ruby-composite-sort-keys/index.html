@@ -79,9 +79,9 @@
     <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
     <p class="kicker">Programming Languages &middot; Ruby</p>
     <h1>Ruby Composite Sort Keys</h1>
-    <p class="updated">Reference entry &middot; last updated September 21, 2026</p>
+    <p class="updated">Reference entry &middot; last updated September 22, 2026</p>
 
-    <p class="lede"><strong>A Ruby composite sort key</strong> orders a collection by more than one field at once. It is formed by returning an Array from a <code>sort_by</code> block, where acceptance order follows the array element by element: the first element is the primary key, and each later element breaks a tie left by the ones before it. Ruby sorts ascending only, so a descending numeric field is expressed by negating it inside the key.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+    <p class="lede"><strong>A Ruby composite sort key</strong> orders a collection by more than one field at once. It is formed by returning an Array from a <code>sort_by</code> block, where acceptance order follows the array element by element: the first element is the primary key, and each later element breaks a tie left by the ones before it. <code>sort_by</code> sorts by ascending keys, so a descending numeric field is expressed by negating it inside the key.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
 
     <nav class="toc" aria-label="Contents">
       <p class="toc-title">Contents</p>
@@ -90,6 +90,7 @@
           <ol>
             <li><a href="#comparison">Comparison and the spaceship operator</a></li>
             <li><a href="#sort-by">What sort_by does</a></li>
+            <li><a href="#sort-vs-sort-by">sort versus sort_by</a></li>
           </ol>
         </li>
         <li><a href="#composite">Building a composite key</a></li>
@@ -103,12 +104,32 @@
     <h2 id="first-principles">First principles and definitions</h2>
 
     <h3 id="comparison">Comparison and the spaceship operator</h3>
-    <p>A sort needs a comparison for every pair of elements. Ruby's base comparison is the spaceship operator, which returns <code>-1</code>, <code>0</code>, or <code>1</code> depending on whether the left operand is less than, equal to, or greater than the right, and <code>nil</code> when the two are incomparable. <code>Enumerable#sort</code> uses each element's own comparison unless a block is supplied.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>A sort needs a comparison for every pair of elements. Ruby's base comparison is the spaceship operator, which returns a negative integer, zero, or a positive integer depending on whether the left operand is less than, equal to, or greater than the right, and <code>nil</code> when the two are incomparable. <code>Enumerable#sort</code> uses each element's own comparison unless a block is supplied.<span class="cite">[<a href="#ref2">2</a>]</span></p>
     <p>Arrays compare element-wise. <code>Array#&lt;=&gt;</code> compares the first elements of the two arrays, and as soon as that comparison is not zero it decides the whole result. Only when the first elements are equal does it compare the second, and so on.<span class="cite">[<a href="#ref3">3</a>]</span> That single rule is the mechanism behind a composite key.</p>
 
     <h3 id="sort-by">What sort_by does</h3>
     <p><code>Enumerable#sort_by</code> takes a block that maps each element to a key object, then sorts ascending by those keys. The key can be any comparable object, including an Array. Because the key is computed once per element instead of once per comparison, <code>sort_by</code> is the usual choice when the key is more expensive than a direct comparison.<span class="cite">[<a href="#ref1">1</a>]</span></p>
     <p>Both <code>sort</code> and <code>sort_by</code> return an Array. They are not guaranteed to be stable, which means elements whose keys compare equal may come out in any order.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+
+    <h3 id="sort-vs-sort-by">sort versus sort_by</h3>
+    <p>The two differ in what the block receives and how often it runs.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+    <table>
+      <thead>
+        <tr><th></th><th><code>sort</code></th><th><code>sort_by</code></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Block arity</td><td>two elements, <code>|a, b|</code></td><td>one element, <code>|obj|</code></td></tr>
+        <tr><td>Block returns</td><td>a comparison: negative integer, zero, or positive integer</td><td>a sort key</td></tr>
+        <tr><td>Block runs</td><td>once per comparison, about O(n log n) times</td><td>once per element, O(n) times</td></tr>
+        <tr><td>Order</td><td>follows the comparator; a reversed comparison gives descending order</td><td>ascending by the key</td></tr>
+        <tr><td>No block</td><td>uses each element's own <code>&lt;=&gt;</code></td><td>returns an Enumerator</td></tr>
+      </tbody>
+    </table>
+    <pre>words = %w[apple pear fig]
+
+words.sort { |a, b| a.length &lt;=&gt; b.length }   # => ["fig", "pear", "apple"]
+words.sort_by { |w| w.length }                # => ["fig", "pear", "apple"]</pre>
+    <p>Neither has a descending flag. With <code>sort</code>, a descending order comes from flipping the comparison to <code>b &lt;=&gt; a</code>; with <code>sort_by</code>, from negating a numeric key. The next sections cover the key form.</p>
 
     <h2 id="composite">Building a composite key</h2>
     <p>Return an array from the block. The first element is the primary sort field and the second is the tiebreak, and each further element extends the same rule. The result is a single ascending sort that satisfies several orderings at once.</p>
