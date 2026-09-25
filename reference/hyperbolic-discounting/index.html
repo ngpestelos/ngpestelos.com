@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hyperbolic Discounting · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Hyperbolic discounting describes how subjective value falls steeply over short delays and gently over long ones, so the implied discount rate declines with delay. Models, evidence, critiques, and commitment devices.">
+  <meta property="og:title" content="Hyperbolic Discounting · Reference">
+  <meta property="og:description" content="Subjective value falls steeply over short delays and gently over long ones, so the implied discount rate declines with delay. Models, evidence, critiques, and commitment devices.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/hyperbolic-discounting/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/hyperbolic-discounting/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" type="image/png" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '\\[', right: '\\]', display: true},
+        {left: '\\(', right: '\\)', display: false}
+      ]
+    });"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 26rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { padding-left: 1.3rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    code {
+      font-family: "SF Mono", Consolas, Monaco, monospace;
+      font-size: 0.9em;
+      background: var(--well);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back {font-family:"Segoe UI", Helvetica, Arial, sans-serif;display: none;}
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Hyperbolic Discounting","description":"Hyperbolic discounting describes how subjective value falls steeply over short delays and gently over long ones, so the implied discount rate declines with delay. Models, evidence, critiques, and commitment devices.","url":"https://ngpestelos.com/reference/hyperbolic-discounting/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Behavioral Economics · Intertemporal Choice · Decision Science</p>
+    <h1>Hyperbolic Discounting</h1>
+    <p class="updated">Reference entry · last updated 20260924</p>
+
+    <p class="lede"><strong>Hyperbolic discounting</strong> is a pattern of intertemporal choice in which the subjective value of a delayed reward falls steeply over short delays and gently over long ones, so the implied discount rate declines as the delay grows. It is contrasted with exponential discounting, in which one constant rate applies at every horizon.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>, <a href="#ref5">5</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#evidence">Evidence and limits</a></li>
+        <li><a href="#commitment">Commitment devices and applications</a></li>
+        <li><a href="#reinforcement-learning">Discounting in reinforcement learning</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p><strong>Delay discounting</strong> is the decline in the subjective value of an outcome as the delay to its delivery increases. The economics literature treats the discounted utility (DU) model, proposed by Paul Samuelson in 1937, as the standard benchmark. Under DU, the value of a reward of amount \(A\) delayed by \(d\) periods falls by a constant proportion per period, giving an exponential function with discount rate \(k\):<span class="cite">[<a href="#ref3">3</a>, <a href="#ref4">4</a>, <a href="#ref6">6</a>]</span></p>
+    <p>\[ V_d = A e^{-kd} \]</p>
+    <p>An exponential discounter is <strong>time consistent</strong>: preferences over two future dates do not depend on when the question is asked. Robert Strotz showed in 1956 that a person whose discounting is not exponential will want to constrain their own later choices, which makes commitment mechanisms potentially important determinants of economic outcomes.<span class="cite">[<a href="#ref5">5</a>, <a href="#ref7">7</a>]</span></p>
+    <p><strong>Hyperbolic discounting</strong> names the family of alternatives in which the discount rate declines with the length of the delay. The most common descriptive form, used in animal and human delay-discounting research, is the hyperbola associated with George Ainslie and James Mazur:<span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>, <a href="#ref3">3</a>]</span></p>
+    <p>\[ V_d = \frac{A}{1 + kd} \]</p>
+    <p>Here \(k\) is the rate of delay discounting. The distinction from the exponential case is that the rate is not constant across horizons. Laibson describes a hyperbolic discount function as one with a relatively high discount rate over short horizons and a relatively low rate over long horizons.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p><strong>Time inconsistency</strong> and <strong>preference reversal</strong> follow from that shape. When both a smaller sooner reward and a larger later reward are distant, the larger one is preferred. As the smaller reward becomes available sooner, its subjective value can rise above the larger one, and the choice flips without any new information arriving. Ainslie's 1975 review argued that the hyperbolic curves fitted to animal choice data predict exactly this reliable change of preference as a function of elapsed time.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref5">5</a>]</span></p>
+    <p>The <strong>quasi-hyperbolic</strong> or beta-delta form, used by Laibson in his 1997 consumption-saving model, describes the same intuition in a computationally simpler way: a present-bias factor downweights all future rewards relative to the present, while a constant factor governs discounting between any two future periods. Hyperbolic and quasi-hyperbolic models make similar behavioral predictions, but their mathematical implications differ, so the literature distinguishes them even when a statement applies to both.<span class="cite">[<a href="#ref5">5</a>, <a href="#ref8">8</a>, <a href="#ref9">9</a>]</span></p>
+    <p><strong>Illustrative example.</strong> Under the exponential benchmark, with \(A = 100\) units and \(k = 0.05\), the discounted value of a reward delayed by ten months is 60 units, so a person with that rate is indifferent between 100 units in ten months and 60 units now. At \(k = 0.20\), the same delayed reward is worth 13 units, and the smaller sooner option wins. Those two figures are the ones Madden and Johnson use to illustrate the exponential function.<span class="cite">[<a href="#ref3">3</a>]</span> The same rates applied to the hyperbola give 66.7 units and 33.3 units, since the two functions agree closely at very short delays and separate as the delay grows. The figures show how a fitted rate maps onto choice; they are not estimates of any population's rate.</p>
+    <p>Both the hyperbolic and the quasi-hyperbolic models are descriptive, or positive, accounts of behavior rather than claims about psychological or neural mechanism. Time discounting should also be separated from time preference, since a lower weight on a future consequence can come from uncertainty, changing tastes, or anticipation rather than from impatience alone.<span class="cite">[<a href="#ref6">6</a>, <a href="#ref8">8</a>]</span></p>
+
+    <h2 id="evidence">Evidence and limits</h2>
+    <p>Systematic departures from exponential discounting have been reported in human subjects, including people with substance-use disorders, with real and hypothetical rewards and for both delayed gains and delayed losses, and in animal experiments with rats and pigeons choosing between immediate and delayed food. Fitted to such data, the exponential function tends to overestimate discounted values at short delays and underestimate them at long delays, while the hyperbolic function fits more closely.<span class="cite">[<a href="#ref2">2</a>, <a href="#ref3">3</a>]</span></p>
+    <p>The exact shape remains an open question. Green and Myerson showed that adding an exponent to the denominator of the hyperbola improves fits for human data, but once that exponent departs from one, the fitted \(k\) can no longer be read as a simple rate of discounting; several rat and pigeon experiments found no improvement from the extra parameter. A hypothesis-free alternative is to compute the area under the obtained indifference points rather than fit a curve at all.<span class="cite">[<a href="#ref3">3</a>, <a href="#ref10">10</a>, <a href="#ref11">11</a>]</span></p>
+    <p>Declining impatience itself has been challenged. Read's three choice experiments found strong evidence of <strong>subadditive discounting</strong>, meaning that discounting over a delay is greater when the delay is divided into subintervals than when it is left undivided, but no evidence of declining impatience. Read concluded by questioning whether hyperbolic discounting is a plausible account of time preference.<span class="cite">[<a href="#ref10">10</a>]</span></p>
+    <p>Estimated discount rates also vary enormously across and within studies. Frederick, Loewenstein, and O'Donoghue attribute part of that variation to differences in elicitation procedures and part to the assumption that a single rate can represent considerations that differ across choices, and they record that virtually every assumption of the DU model has been found descriptively invalid in at least some situations.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <p>Meta-analytic work narrows one part of the question. Cheung, Tymula, and Wang pooled 89 papers and 109 estimates of the present-bias parameter. After correcting for selective reporting, the estimated present bias for monetary rewards is close to absent, at 0.98 with a 95 percent confidence interval of [0.979, 0.981], while non-monetary rewards show a much stronger present bias at 0.68 with a confidence interval of [0.57, 0.82]. The authors report substantial heterogeneity across studies arising from elicitation methodology, study location, and reward type, and note earlier findings of no present bias for money once transaction costs and trust in the experimenter are controlled.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+    <p>Neural evidence does not settle the model. Imaging studies have supported a separate neural systems account, in which one system values immediate rewards and another values delayed rewards. Kable and Glimcher reported behavioral and functional imaging results inconsistent with both the standard behavioral models and that dual-system hypothesis: their participants did not necessarily make the preference reversals predicted by hyperbolic-like discounting, and activity in ventral striatum, medial prefrontal, and posterior cingulate cortex correlated with the subjective value of both immediate and delayed rewards rather than tracking the presence of an immediate option. They propose instead that subjective value declines hyperbolically relative to the soonest currently available reward.<span class="cite">[<a href="#ref8">8</a>]</span></p>
+
+    <h2 id="commitment">Commitment devices and applications</h2>
+    <p>If preferences are time inconsistent, a person who anticipates the inconsistency has a reason to restrict their own future options. Strotz framed the point in 1956 and listed everyday evidence, including arranged savings plans and the person who "is commonly precommitting" when a garnished income makes saving involuntary. Ainslie's later work developed the same logic as a conflict among successive selves.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref5">5</a>, <a href="#ref7">7</a>]</span></p>
+    <p>Laibson's 1997 model formalizes an imperfect commitment technology: an illiquid asset whose sale must be initiated a period before the proceeds arrive. Illiquid assets behave like the goose that laid golden eggs, since they promise substantial long-run benefits that cannot be realized immediately without a capital loss. The model predicts that consumption tracks income and that consumers show asset-specific marginal propensities to consume. Its welfare implication, that financial innovation raising liquidity can reduce welfare by eliminating commitment opportunities, is a model result rather than a settled empirical finding.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p>Field evidence links measured discounting to real commitment decisions. Ashraf, Karlan, and Yin designed a commitment savings account for a rural bank in Mindanao and tested it with a randomized design. Of 1,777 surveyed clients, 710 were offered the account and 202, or 28.4 percent, opened one. Women who had shown a lower discount rate on future relative to current tradeoffs in the baseline survey were significantly more likely to open it. After twelve months, average savings balances in the treatment group were 411 pesos higher than in the control group, an 81 percentage point increase over pre-intervention levels. The account restricted access to deposits at the client's own instruction and paid nothing for the restriction, and the authors describe it as designed for people who want to commit and are sophisticated enough to do so.<span class="cite">[<a href="#ref12">12</a>]</span></p>
+    <p>Policy proposals that follow from present bias, including commitment savings products and default enrollment in retirement plans, depend on the same commitment logic. Their justification is weaker where the meta-analytic evidence finds little present bias for monetary rewards, and stronger where the reward is non-monetary.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+
+    <h2 id="reinforcement-learning">Discounting in reinforcement learning</h2>
+    <p>Reinforcement learning defines a discount factor as part of the Markov decision process, and the usual exponential scheme is what yields convergence guarantees for the Bellman equation. Fedus and colleagues note that this convention sits awkwardly against the psychological, economic, and neuroscientific evidence for hyperbolic time preferences, and implement an agent that acts via hyperbolic discounting while still using temporal-difference learning to approximate the hyperbolic discount functions. Separately from the discounting question, they report that learning value functions over multiple time horizons at once works as an effective auxiliary task and often improves on a strong value-based baseline.<span class="cite">[<a href="#ref13">13</a>]</span></p>
+    <p>This is a design application, not evidence about human choice. Discount functions in an agent are chosen for convergence properties and task performance, and the parallel with human discounting is a modelling analogy.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/exponential-decay/">Exponential decay</a></li>
+      <li><a href="/reference/reinforcement-learning/">Reinforcement learning</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1">George Ainslie. <a href="http://picoeconomics.org/Articles/SpeciousReward75Reduc.pdf">"Specious Reward: A Behavioral Theory of Impulsiveness and Impulse Control."</a> <em>Psychological Bulletin</em> 82(4), 463–496, 1975. DOI: 10.1037/h0076860. Free full text.</li>
+      <li id="ref2">James E. Mazur. "An adjusting procedure for studying delayed reinforcement." In M. L. Commons, J. E. Mazur, J. A. Nevin, and H. Rachlin (eds.), <em>Quantitative Analysis of Behavior: Vol. 5. The Effect of Delay and of Intervening Events on Reinforcement Value</em>, 55–73. Hillsdale, NJ: Erlbaum, 1987. Print source; cited here through Madden and Johnson and through Kable and Glimcher, who attribute the hyperbolic form to it.</li>
+      <li id="ref3">Gregory J. Madden and Patrick S. Johnson. <a href="https://digitalcommons.usu.edu/cgi/viewcontent.cgi?article=1452&context=psych_facpub">"A Delay-Discounting Primer."</a> In <em>Impulsivity: The Behavioral and Neurological Science of Discounting</em>, 11–37. Washington, DC: American Psychological Association, 2010. Free full text.</li>
+      <li id="ref4">Paul A. Samuelson. "A Note on the Measurement of Utility." <em>Review of Economic Studies</em> 4(2), 155–161, 1937. Print source for the discounted utility model; cited here through Frederick, Loewenstein, and O'Donoghue and through Kable and Glimcher.</li>
+      <li id="ref5">David Laibson. <a href="https://econweb.ucsd.edu/~jandreon/Econ264/papers/Laibson%20QJE%201997.pdf">"Golden Eggs and Hyperbolic Discounting."</a> <em>Quarterly Journal of Economics</em> 112(2), 443–477, 1997. DOI: 10.1162/003355397555253.</li>
+      <li id="ref6">Shane Frederick, George Loewenstein, and Ted O'Donoghue. <a href="https://bpb-us-e1.wpmucdn.com/blogs.cornell.edu/dist/b/5495/files/2015/10/FLO-JEL-2002-1ko3v9w.pdf">"Time Discounting and Time Preference: A Critical Review."</a> <em>Journal of Economic Literature</em> 40(2), 351–401, 2002. DOI: 10.1257/002205102320161311. Free full text.</li>
+      <li id="ref7">Robert H. Strotz. "Myopia and Inconsistency in Dynamic Utility Maximization." <em>Review of Economic Studies</em> 23(3), 165–180, 1956. Print source; quoted here through Laibson's 1997 discussion of precommitment.</li>
+      <li id="ref8">Joseph W. Kable and Paul W. Glimcher. <a href="https://www.neuroeconomicslab.org/s/2010-KableGlimcher.pdf">"An 'As Soon As Possible' Effect in Human Intertemporal Decision Making: Behavioral Evidence and Neural Mechanisms."</a> <em>Journal of Neurophysiology</em> 103(5), 2513–2531, 2010. DOI: 10.1152/jn.00177.2009. Free full text.</li>
+      <li id="ref9">Stephen L. Cheung, Agnieszka Tymula, and Xueting Wang. <a href="http://www.tymula.com/agnieszka/wp-content/uploads/sites/3/2024/02/2023_CheungTymulaWang.pdf">"A Meta-Analysis of Quasi-Hyperbolic Discounting."</a> Working paper, December 2023. Free full text.</li>
+      <li id="ref10">Daniel Read. <a href="https://link.springer.com/article/10.1023/A:1011198414683">"Is Time-Discounting Hyperbolic or Subadditive?"</a> <em>Journal of Risk and Uncertainty</em> 23(1), 5–32, 2001. DOI: 10.1023/A:1011198414683. Abstract; full text by subscription.</li>
+      <li id="ref11">Joel Myerson, Leonard Green, and Missaka Warusawitharana. "Area Under the Curve as a Measure of Discounting." <em>Journal of the Experimental Analysis of Behavior</em> 76(2), 235–243, 2001. Print source; cited here through Madden and Johnson, who recommend the measure.</li>
+      <li id="ref12">Nava Ashraf, Dean S. Karlan, and Wesley Yin. <a href="https://elischolar.library.yale.edu/cgi/viewcontent.cgi?article=1924&context=egcenter-discussion-paper-series">"Tying Odysseus to the Mast: Evidence from a Commitment Savings Product in the Philippines."</a> Yale University Economic Growth Center Discussion Paper 917, 2005. Free full text.</li>
+      <li id="ref13">William Fedus, Carles Gelada, Yoshua Bengio, Marc G. Bellemare, and Hugo Larochelle. <a href="https://arxiv.org/abs/1902.06865">"Hyperbolic Discounting and Learning over Multiple Horizons."</a> arXiv:1902.06865, 2019. DOI: 10.48550/arXiv.1902.06865.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
