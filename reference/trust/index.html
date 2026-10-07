@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trust · Reference · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Trust is the willingness of an agent to become vulnerable to another based on expectations of good will, competence, or shared interest. First principles, models, and mechanisms.">
+  <meta property="og:title" content="Trust · Reference">
+  <meta property="og:description" content="Trust is the willingness of an agent to become vulnerable to another based on expectations of good will, competence, or shared interest. First principles, models, and mechanisms.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/trust/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/trust/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body {
+      line-height: 1.6;
+    }
+    main {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 1.4rem 1.4rem 4rem;
+    }
+    .back {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      margin-bottom: 0.3rem;
+    }
+    h1 {
+      font-size: clamp(1.9rem, 5vw, 2.4rem);
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .updated {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--mute);
+      margin-bottom: 1.4rem;
+    }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .toc {
+      background: var(--well);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      max-width: 24rem;
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.92rem;
+    }
+    .toc .toc-title {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .toc ol { list-style: none; padding-left: 0; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 0.3rem;
+      margin: 2rem 0 0.9rem;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 1.4rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite {
+      font-size: 0.75em;
+      vertical-align: super;
+      line-height: 0;
+      text-decoration: none;
+    }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol {
+      padding-left: 1.5rem;
+    }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    .unattributed {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+      font-style: italic;
+    }
+    footer.meta {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line);
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 0.85rem;
+      color: var(--mute);
+    }
+    footer.meta a { color: var(--link); }
+    @media print {
+      .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; }
+    }
+    .back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease;
+      z-index: 100;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--well);
+      border-color: var(--link);
+      color: var(--link);
+    }
+    .back-to-top:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 2px;
+    }
+    @media print {
+      .back-to-top { display: none !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Trust","description":"Trust is the willingness of an agent to accept vulnerability to the actions of another based on expectations of good will, competence, or shared interests.","url":"https://ngpestelos.com/reference/trust/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Philosophy · Epistemology</p>
+    <h1>Trust</h1>
+    <p class="updated">Reference entry &middot; last updated October 7, 2026</p>
+
+    <p class="lede"><strong>Trust</strong> is the willingness of an agent to become vulnerable to the actions or choices of another, based on the confidence that the other party will act with competence, integrity, or goodwill.<span class="cite">[<a href="#ref1">1</a>]</span> In social epistemology, philosophy, and organization theory, trust is distinguished from reliance: an agent can rely on an inanimate machine or a predictable adversary without trusting them, because trust entails a normative expectation that makes betrayal distinct from mechanical failure.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">1. First Principles and Definitions</a></li>
+        <li><a href="#reliance-vs-trust">2. Trust Versus Mere Reliance</a></li>
+        <li><a href="#theoretical-models">3. Theoretical Models of Trust</a></li>
+        <li><a href="#mechanics-of-erosion">4. Dynamics of Cultivation and Erosion</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">1. First Principles and Definitions</h2>
+    <p>A formal definition of trust contains three primary elements:</p>
+    <ol style="padding-left: 1.5rem; margin-bottom: 1rem;">
+      <li><strong>Vulnerability:</strong> The trusting party willingly accepts exposure to downside risk. Without exposure to potential loss, trust is meaningless.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+      <li><strong>Lack of direct control:</strong> The trusting party cannot monitor, force, or guarantee the trustee's performance at zero cost.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+      <li><strong>Favorable expectation:</strong> The trusting party expects positive or benign intentions and actions from the trustee.<span class="cite">[<a href="#ref2">2</a>]</span></li>
+    </ol>
+    <p>Economically and socially, trust acts as a mechanism that dramatically reduces transaction costs, enabling cooperation across distributed systems without constant verification or enforcement.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+
+    <h2 id="reliance-vs-trust">2. Trust Versus Mere Reliance</h2>
+    <p>Philosopher Annette Baier formulated the foundational distinction between reliance and trust: trust is reliance on another agent's goodwill, whereas mere reliance involves reliance on their habits, constraints, or mechanical predictability.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>When an alarm clock fails to ring, the user experiences disappointment or frustration at a broken tool. When a confidant leaks a secret, the victim experiences betrayal. Betrayal is unique to broken trust because trust grants discretionary power over something the trustor cares about.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="theoretical-models">3. Theoretical Models of Trust</h2>
+    <p>Scholars categorize trust through several distinct lenses:</p>
+    <ul style="padding-left: 1.5rem; margin-bottom: 1rem;">
+      <li><strong>Encapsulated interest model:</strong> Russell Hardin posited that actor A trusts actor B when B encapsulates A's interests: B values maintaining the relationship with A enough that B has intrinsic incentive to protect A's interests.<span class="cite">[<a href="#ref4">4</a>]</span></li>
+      <li><strong>Affective and goodwill accounts:</strong> Baier and Karen Jones view trust as an attitude of optimism about the trustee's goodwill, accompanied by expectations that the trustee will be motivated directly by the thought that someone counts on them.<span class="cite">[<a href="#ref1">1</a>]</span></li>
+      <li><strong>Calculative trust:</strong> An economic perspective where trust is modeled as a subjective probability estimate regarding whether another party will fulfill an agreement under specific payoffs.<span class="cite">[<a href="#ref3">3</a>]</span></li>
+    </ul>
+
+    <h2 id="mechanics-of-erosion">4. Dynamics of Cultivation and Erosion</h2>
+    <p>Trust exhibits an asymmetrical lifecycle: it accumulates slowly through repetitive cycles of predictable follow-through, but can collapse instantly through a single major breach.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>In social and technological architectures, excessive monitoring can erode interpersonal trust by signaling an expectation of opportunism. Conversely, calibrated vulnerability offers opportunities to prove reliability, establishing stronger equilibrium bonds over time.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/courage/">Courage</a></li>
+      <li><a href="/reference/forgiveness/">Forgiveness</a></li>
+      <li><a href="/reference/love/">Love</a></li>
+      <li><a href="/reference/epistemology/">Epistemology</a></li>
+      <li><a href="/reference/fail-closed/">Fail-Closed</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Carolyn McLeod, "Trust," <em>Stanford Encyclopedia of Philosophy</em> (Fall 2021 Edition). Online resource: <a href="https://plato.stanford.edu/entries/trust/">https://plato.stanford.edu/entries/trust/</a></li>
+      <li id="ref2"><span class="backlink">^</span> Annette Baier, "Trust and Antitrust," <em>Ethics</em> 96(2), 231–260 (1986). Seminal philosophical formulation of trust as discretionary reliance on goodwill distinguished from mechanical reliance.</li>
+      <li id="ref3"><span class="backlink">^</span> Diego Gambetta (ed.), <em>Trust: Making and Breaking Cooperative Relations</em> (Basil Blackwell, 1988). Classic volume exploring game theory, sociology, and economics of trust.</li>
+      <li id="ref4"><span class="backlink">^</span> Russell Hardin, <em>Trust and Trustworthiness</em> (Russell Sage Foundation, 2002). Develops the encapsulated interest account of rational trust.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
