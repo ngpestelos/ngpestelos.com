@@ -130,7 +130,7 @@ end</pre>
     <p>When a managed file loads, Zeitwerk checks that it defines the expected constant. A file mapped to <code>Shop::Order</code> that fails to define it raises <code>Zeitwerk::NameError</code>.<span class="cite">[<a href="#ref5">5</a>]</span></p>
 
     <h2 id="reloading">Reloading</h2>
-    <p>Native autoload does not watch for file changes or reload an existing class. Zeitwerk offers reloading separately: <code>loader.enable_reloading</code> must run before <code>loader.setup</code>. Calling <code>loader.reload</code> removes loaded classes and modules managed by that loader and resets it to load current file contents. Concurrent autoloading and reloading require coordination by the application.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>][<a href="#ref5">5</a>]</span></p>
+    <p>Native autoload does not watch for file changes or reload an existing class. Zeitwerk offers reloading separately: <code>loader.enable_reloading</code> must run before <code>loader.setup</code>. Calling <code>loader.reload</code> removes the managed constant definitions and resets it to load current file contents. Concurrent autoloading and reloading require coordination by the application.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>][<a href="#ref5">5</a>]</span></p>
 
     <h2 id="see-also">See also</h2>
       <ul style="padding-left: 1.5rem;">
