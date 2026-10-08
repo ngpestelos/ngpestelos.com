@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby Autoload &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Ruby autoload registers a file for a constant and delays loading until the constant is accessed. Zeitwerk derives these mappings from file paths.">
+  <meta property="og:title" content="Ruby Autoload &middot; Reference">
+  <meta property="og:description" content="Ruby autoload registers a file for a constant and delays loading until the constant is accessed. Zeitwerk derives these mappings from file paths.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/ruby-autoload/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/ruby-autoload/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Ruby Autoload","description":"Ruby autoload registers a file for a constant and delays loading until the constant is accessed. Zeitwerk derives these mappings from file paths.","url":"https://ngpestelos.com/reference/ruby-autoload/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Programming Languages &middot; Ruby</p>
+    <h1>Ruby Autoload</h1>
+    <p class="updated">Reference entry &middot; last updated October 9, 2026</p>
+
+    <p class="lede"><strong>Ruby autoload</strong> registers a file to load when a named constant is first accessed in a class or module.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#registration">Registration and first access</a></li>
+        <li><a href="#require">Autoload and require</a></li>
+        <li><a href="#zeitwerk">Zeitwerk</a></li>
+        <li><a href="#reloading">Reloading</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p>A Ruby class name is a constant that refers to a class object. In <code>Shop::Order</code>, <code>Order</code> names the class within <code>Shop</code>. A namespace is a class or module that contains names, allowing different namespaces to contain their own <code>Order</code> constants.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref6">6</a>]</span></p>
+    <p><code>Shop.autoload(:Order, path)</code> associates one constant with one file in the <code>Shop</code> namespace. The <code>:Order</code> argument is a symbol naming the constant. Registration does not define the class body; the file supplies that definition when loaded.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="registration">Registration and first access</h2>
+    <p>This illustrative example uses two files in one directory. <code>main.rb</code> defines <code>Shop</code> manually, then registers <code>Order</code>. The namespace exists before registration.</p>
+    <pre># main.rb
+module Shop
+  autoload :Order, File.expand_path("order.rb", __dir__)
+end
+
+p File.basename(Shop.autoload?(:Order)) # =&gt; "order.rb"
+p Shop::Order.new.total                # =&gt; 100
+p Shop.autoload?(:Order)               # =&gt; nil</pre>
+    <pre># order.rb
+module Shop
+  class Order
+    def total
+      100
+    end
+  end
+end</pre>
+    <p><code>File.expand_path</code> produces an absolute path using <code>__dir__</code>, the directory containing <code>main.rb</code>, as its starting point. This keeps the example independent of the process's working directory.<span class="cite">[<a href="#ref3">3</a>][<a href="#ref4">4</a>]</span></p>
+    <p>Running <code>ruby main.rb</code> prints <code>"order.rb"</code>, <code>100</code>, and <code>nil</code>. <code>autoload?</code> inspects the pending registration without loading the file. After <code>Shop::Order</code> loads successfully, that registration is consumed and <code>autoload?</code> returns <code>nil</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="require">Autoload and require</h2>
+    <p><code>require</code> loads a file when the call executes. It returns <code>true</code> when it loads the file and <code>false</code> when the file is already loaded. Ruby autoload uses <code>require</code> when the registered constant is accessed.<span class="cite">[<a href="#ref4">4</a>][<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="zeitwerk">Zeitwerk</h2>
+    <p>Zeitwerk derives constant names from file paths and sets Ruby autoloads.<span class="cite">[<a href="#ref7">7</a>]</span> With <code>lib</code> configured as a root directory, its default naming rules map <code>lib/shop/order.rb</code> to <code>Shop::Order</code>. After <code>loader.setup</code>, accessing that constant loads its file.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p>If <code>shop</code> contains managed Ruby files and has no matching <code>shop.rb</code>, Zeitwerk can create the <code>Shop</code> module implicitly. The native example above creates <code>Shop</code> itself.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p>When a managed file loads, Zeitwerk checks that it defines the expected constant. A file mapped to <code>Shop::Order</code> that fails to define it raises <code>Zeitwerk::NameError</code>.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="reloading">Reloading</h2>
+    <p>Native autoload does not watch for file changes or reload an existing class. Zeitwerk offers reloading separately: <code>loader.enable_reloading</code> must run before <code>loader.setup</code>. Calling <code>loader.reload</code> removes loaded classes and modules managed by that loader and resets it to load current file contents. Concurrent autoloading and reloading require coordination by the application.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>][<a href="#ref5">5</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+      <ul style="padding-left: 1.5rem;">
+        <li><a href="/reference/ruby-array-operations/">Ruby Array Operations</a></li>
+        <li><a href="/reference/ruby-enumerable-structures/">Ruby Enumerable Structures</a></li>
+      </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> Ruby 4.0 documentation, <a href="https://docs.ruby-lang.org/en/4.0/Module.html#method-i-autoload">Module#autoload</a> and <a href="https://docs.ruby-lang.org/en/4.0/Module.html#method-i-autoload-3F">Module#autoload?</a>.</li>
+      <li id="ref2"><span class="backlink">^</span> Ruby 4.0 documentation, <a href="https://docs.ruby-lang.org/en/4.0/Class.html">Class</a>.</li>
+      <li id="ref3"><span class="backlink">^</span> Ruby 4.0 documentation, <a href="https://docs.ruby-lang.org/en/4.0/File.html#method-c-expand_path">File.expand_path</a>.</li>
+      <li id="ref4"><span class="backlink">^</span> Ruby 4.0 documentation, <a href="https://docs.ruby-lang.org/en/4.0/Kernel.html#method-i-require">Kernel#require</a> and <a href="https://docs.ruby-lang.org/en/4.0/Kernel.html#method-i-__dir__">Kernel#__dir__</a>.</li>
+      <li id="ref5"><span class="backlink">^</span> Xavier Noria, <a href="https://github.com/fxn/zeitwerk">Zeitwerk README</a>, file structure, autoloading, and reloading.</li>
+      <li id="ref6"><span class="backlink">^</span> Ruby 4.0 documentation, <a href="https://docs.ruby-lang.org/en/4.0/syntax/modules_and_classes_rdoc.html">Modules and classes</a>.</li>
+      <li id="ref7"><span class="backlink">^</span> Zeitwerk source, <a href="https://raw.githubusercontent.com/fxn/zeitwerk/0616bcd004274f19055a8b80cd1ea35561fbc216/lib/zeitwerk/cref.rb">Cref#autoload</a>, commit <code>0616bcd</code>, lines 46–47.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
