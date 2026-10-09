@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActiveRecord Scopes &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="ActiveRecord scopes name reusable database queries in Rails. Relations, lambdas, composition, default_scope, unscoping, and creation defaults in Rails 8.1.">
+  <meta property="og:title" content="ActiveRecord Scopes &middot; Reference">
+  <meta property="og:description" content="ActiveRecord scopes name reusable database queries in Rails. Relations, lambdas, composition, default_scope, unscoping, and creation defaults in Rails 8.1.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/activerecord-scopes/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/activerecord-scopes/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre code { background: none; padding: 0; border: 0; }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"ActiveRecord Scopes","description":"ActiveRecord scopes name reusable database queries in Rails. Relations, lambdas, composition, default_scope, unscoping, and creation defaults in Rails 8.1.","url":"https://ngpestelos.com/reference/activerecord-scopes/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Software Development &middot; Ruby on Rails</p>
+    <h1>ActiveRecord Scopes</h1>
+    <p class="updated">Reference entry &middot; last updated October 9, 2026</p>
+    <p class="lede"><strong>ActiveRecord scopes</strong> are named, reusable database queries defined on Rails models. A scope normally returns an <code>ActiveRecord::Relation</code>, allowing further query methods and scopes to be chained.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>This entry describes Rails 8.1. Examples are illustrative and assume a <code>Post</code> model with <code>published</code>, <code>created_at</code>, <code>author_id</code> and <code>id</code> columns, plus an <code>Author</code> model with <code>has_many :posts</code>. Unless stated, no default scope is present.</p>
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#definition">Defining scopes</a></li>
+        <li><a href="#return-values">Scopes and class methods</a></li>
+        <li><a href="#composition">Combining scopes</a></li>
+        <li><a href="#associations">Associations</a></li>
+        <li><a href="#defaults">Default scopes</a></li>
+        <li><a href="#unscoping">Removing conditions</a></li>
+        <li><a href="#creation">Creation defaults and pitfalls</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p>A relation holds query conditions. Building it with methods such as <code>where</code> and <code>order</code> normally defers fetching rows. <code>to_a</code> loads records; <code>to_sql</code> returns the SQL representation. A Rails console can load a relation when displaying it.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></p>
+    <pre><code>query = Post.where(published: true).order(:id)
+query.to_sql  # SQL for inspection
+query.to_a    # load matching Post records</code></pre>
+    <h2 id="definition">Defining scopes</h2>
+    <p><code>scope</code> takes a name and a callable body. A lambda runs when the scope is called, so time expressions inside it are evaluated on each call. Parameters become lambda arguments.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <pre><code>class Post &lt; ApplicationRecord
+  scope :published, -> { where(published: true) }
+  scope :since, ->(time) { where("created_at >= ?", time) }
+  scope :recent, -> { since(1.week.ago) }
+end
+
+Post.published.recent</code></pre>
+    <p>Placeholder values avoid interpolating input into SQL text.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <h2 id="return-values">Scopes and class methods</h2>
+    <p>A class method returning a relation can serve the same purpose. A scope body returning <code>nil</code> or <code>false</code> falls back to <code>all</code> in the current scope. A class method returns its ordinary Ruby result; <code>nil</code> breaks further chaining. <code>none</code> explicitly returns a chainable relation with no records.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>]</span></p>
+    <pre><code>class Post &lt; ApplicationRecord
+  def self.since(time)
+    time ? where("created_at >= ?", time) : all
+  end
+
+  scope :by_author, ->(id) { id ? where(author_id: id) : none }
+end</code></pre>
+    <p>The class method above is an alternative to the earlier <code>since</code> scope. <code>by_author(nil)</code> deliberately matches nothing.</p>
+    <h2 id="composition">Combining scopes</h2>
+    <p>Chained <code>where</code> conditions combine with SQL <code>AND</code>. Explicit <code>and</code> and <code>or</code> combine relations from the same model that differ only in <code>where</code>, or in <code>having</code> when grouped.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref4">4</a>]</span></p>
+    <pre><code>Post.published.where(author_id: 7)
+Post.where(author_id: 7).or(Post.where(author_id: 9))</code></pre>
+    <p><code>merge</code> imports another relation's conditions. Overlapping conditions from the supplied relation take precedence; <code>and</code> expresses intersection. <code>merge</code> can also import conditions for a joined association.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <pre><code>Post.where(published: true).merge(Post.where(published: false))
+# published = false
+
+Author.joins(:posts).merge(Post.published)
+# authors joined to published posts</code></pre>
+    <p><code>order</code> appends ordering terms; <code>reorder</code> replaces them.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <pre><code>Post.order(:created_at).order(:id)   # created_at, then id
+Post.order(:created_at).reorder(:id) # id only</code></pre>
+    <h2 id="associations">Associations</h2>
+    <p>Model scopes and relation-returning class methods are available through collection associations. <code>author.posts.published</code> keeps the association's author condition while adding the publication filter.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref2">2</a>]</span></p>
+    <h2 id="defaults">Default scopes</h2>
+    <p><code>default_scope</code> adds implicit query conditions and can supply attributes when building records. Multiple default scopes combine. Ordinary instance updates and deletes do not apply the default scope; <code>all_queries: true</code> extends its <code>where</code> conditions to those operations. Ordering is excluded from that extension.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <pre><code># Separate example: published becomes the implicit filter.
+class Post &lt; ApplicationRecord
+  default_scope { where(published: true) }
+end
+
+# Alternative declaration, including instance updates/deletes:
+# default_scope -> { where(published: true) }, all_queries: true</code></pre>
+    <h2 id="unscoping">Removing conditions</h2>
+    <p><code>unscoped</code> removes previous scoping, including default and association conditions. <code>author.posts.unscoped</code> can therefore return posts belonging to other authors.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <p><code>unscope(:order)</code> removes ordering; <code>unscope(where: :published)</code> targets an attribute condition. <code>rewhere</code> replaces specified conditions. Unlike <code>except</code>, <code>unscope</code> persists across merges.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <pre><code>Post.published.unscope(where: :published)
+Post.published.rewhere(published: false)</code></pre>
+    <h2 id="creation">Creation defaults and pitfalls</h2>
+    <p>Hash equality conditions can supply attributes to <code>new</code> and <code>create</code>.<span class="cite">[<a href="#ref3">3</a>]</span> SQL fragments do not supply those defaults.<span class="cite">[<a href="#ref2">2</a>]</span> <code>create_with</code> sets creation attributes explicitly.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <pre><code>Post.published.new.published                   # true
+Post.where("published = ?", true).new.published # column default
+Post.create_with(published: true).new.published # true</code></pre>
+    <p>Returning an array or a single record from a scope body loses relation composition. A conditional scope's <code>nil</code> fallback adds no restriction, so <code>none</code> is required when missing input must produce an empty result.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>]</span></p>
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/ruby-enumerable-structures/">Ruby Enumerable Structures</a></li>
+    </ul>
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1">Rails source, <a href="https://raw.githubusercontent.com/rails/rails/v8.1.0/activerecord/lib/active_record/scoping/named.rb">Named scoping</a>, tag v8.1.0.</li>
+      <li id="ref2">Rails Guides, <a href="https://guides.rubyonrails.org/v8.1/active_record_querying.html">Active Record Query Interface</a>, Rails 8.1, sections 3 and 17.</li>
+      <li id="ref3">Rails API, <a href="https://api.rubyonrails.org/v8.1.0/classes/ActiveRecord/Relation.html">ActiveRecord::Relation</a>, v8.1.0.</li>
+      <li id="ref4">Rails API, <a href="https://api.rubyonrails.org/v8.1.0/classes/ActiveRecord/QueryMethods.html">ActiveRecord::QueryMethods</a>, v8.1.0.</li>
+      <li id="ref5">Rails API, <a href="https://api.rubyonrails.org/v8.1.0/classes/ActiveRecord/SpawnMethods.html">ActiveRecord::SpawnMethods</a>, v8.1.0, merge.</li>
+      <li id="ref6">Rails source, <a href="https://raw.githubusercontent.com/rails/rails/v8.1.0/activerecord/lib/active_record/scoping/default.rb">Default scoping</a>, tag v8.1.0.</li>
+    </ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
