@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Perpetual Contracts Explained | ELI5 | Nestor G Pestelos Jr</title>
+  <meta name="description" content="A visual guide to crypto perps: price exposure, long and short payoffs, margin, funding and liquidation.">
+  <meta property="og:title" content="How do perps work? | ELI5">
+  <meta property="og:description" content="Six pictures explain crypto perpetual contracts using one illustrative example.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/perpetual-contracts-explained/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/perpetual-contracts-explained/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root { --paper: #f4eee4; --ink: #1c1612; --card: #fffaf3; --op: #9a3412; --op-edge: #7c2d12; --leaf: #0f5c57; --leaf-edge: #0b4a46; --line: #d4c9bb; --mute: #6e645a; }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Iowan Old Style", Palatino, Georgia, serif; line-height: 1.5; }
+    main { max-width: 48rem; margin: auto; padding: 1.5rem 1.25rem 3rem; }
+    a { color: var(--op); text-underline-offset: 0.16em; }
+    .back, .kicker, svg, .sources, .longer, .to-top, .more { font-family: "Segoe UI", Helvetica, Arial, sans-serif; }
+    .back { font-size: 0.95rem; margin: 0 0 2rem; font-weight: 700; }
+    .kicker { color: var(--mute); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    h1, h2 { line-height: 1.12; }
+    h1 { font-size: clamp(2.4rem, 6vw, 3.8rem); margin: 0.5rem 0; }
+    h2 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin: 0 0 1rem; }
+    .lead { font-size: 1.4rem; max-width: 35ch; margin: 1rem 0 2.5rem; }
+    .block { padding: 2.2rem 0; border-top: 1px solid var(--line); }
+    .one { font-size: 1.3rem; max-width: 42ch; margin: 0 0 1.5rem; }
+    .figure { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 0.7rem; max-width: 37rem; margin: 0 auto; }
+    svg { display: block; width: 100%; height: auto; color: var(--ink); font-size: 28px; font-weight: 600; }
+    svg text { fill: var(--ink); }
+    svg .small { font-size: 24px; font-weight: 400; }
+    svg .large { font-size: 34px; }
+    .box { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+    .process { fill: #f9e2d1; stroke: var(--op-edge); stroke-width: 1.5; }
+    .data { fill: #dceee8; stroke: var(--leaf-edge); stroke-width: 1.5; }
+    .edge { fill: none; stroke: var(--mute); stroke-width: 2; stroke-linejoin: round; }
+    .arrow { fill: var(--mute); }
+    .dot { fill: var(--leaf); }
+    .danger-dot { fill: #9f1239; }
+    .rule { fill: none; stroke: var(--line); stroke-width: 1.5; }
+    .threshold { stroke: #9f1239; stroke-width: 2; stroke-dasharray: 6 5; }
+    svg .gain { fill: #166534; }
+    svg .loss { fill: #9f1239; }
+    .more { font-size: 1rem; margin: 1.25rem 0 0; }
+    .more summary { color: var(--op); cursor: pointer; font-weight: 700; }
+    .more ul { padding-left: 1.4rem; }
+    .more li { margin: 0.6rem 0; }
+    footer { border-top: 1px solid var(--line); padding-top: 1.5rem; }
+    .sources, .longer { font-size: 0.95rem; }
+    .to-top { text-align: center; margin-top: 2rem; font-weight: 700; }
+    .back-to-top { position: fixed; right: 1.25rem; bottom: 1.25rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--card); border: 1px solid var(--line); color: var(--ink); font-size: 1.2rem; cursor: pointer; opacity: 0; visibility: hidden; transition: opacity 0.2s ease; }
+    .back-to-top.visible { opacity: 1; visibility: visible; }
+    .back-to-top:hover { background: var(--paper); color: var(--op); }
+    a:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid var(--op); outline-offset: 4px; }
+    @media (max-width: 600px) { main { padding: 1.2rem 0.9rem 3rem; } .figure { padding: 0.2rem; } .block { padding: 1.8rem 0; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .back-to-top { transition: none; } }
+  </style>
+</head>
+<body class="eli5">
+  <main>
+    <header>
+      <p class="back" id="top"><a href="/">Home</a> · <a href="/eli5/">ELI5</a></p>
+      <p class="kicker">Cryptocurrency · Picture explainer</p>
+      <h1>How do perps work?</h1>
+      <p class="lead">A perp lets you gain or lose money as a token's price changes.</p>
+    </header>
+
+    <section class="block" aria-labelledby="exposure">
+      <h2 id="exposure">1. You hold a contract</h2>
+      <p class="one">The contract gives you price exposure without giving you the tokens.</p>
+      <div class="figure">
+        <svg viewBox="0 0 560 310" role="img" aria-labelledby="exposure-title exposure-desc">
+          <title id="exposure-title">An illustrative contract for 100 tokens at $10</title>
+          <desc id="exposure-desc">The contract tracks 100 tokens at an entry price of ten dollars, giving one thousand dollars of price exposure, called notional. The contract delivers zero tokens to your wallet.</desc>
+          <text x="280" y="36" class="small" text-anchor="middle">ILLUSTRATIVE LINEAR CONTRACT</text>
+          <rect x="35" y="60" width="490" height="115" rx="8" class="process"/>
+          <text x="280" y="105" text-anchor="middle">100 tokens × $10</text>
+          <text x="280" y="147" class="large" text-anchor="middle">$1,000 exposure</text>
+          <path d="M280 175 V210" class="edge"/>
+          <polygon points="280,220 272,207 288,207" class="arrow"/>
+          <rect x="95" y="220" width="370" height="65" rx="8" class="data"/>
+          <text x="280" y="262" text-anchor="middle">Tokens received: 0</text>
+        </svg>
+      </div>
+      <details class="more"><summary>What “notional” means</summary><ul>
+        <li>Notional is the value of the position: quantity × price.</li>
+        <li>All dollar amounts here are illustrative, with stable-value collateral and a linear payoff.</li>
+        <li>Inverse contracts use different math.</li>
+      </ul></details>
+    </section>
+
+    <section class="block" aria-labelledby="expiry">
+      <h2 id="expiry">2. There is no expiry date</h2>
+      <p class="one">A crypto perp can stay open while you meet its margin and funding requirements.</p>
+      <div class="figure">
+        <svg viewBox="0 0 560 270" role="img" aria-labelledby="expiry-title expiry-desc">
+          <title id="expiry-title">A position continues through time without a scheduled expiry</title>
+          <desc id="expiry-desc">A timeline runs from open to day two to later, with an arrow continuing beyond later. An exit can happen when you close the position or the venue liquidates it.</desc>
+          <path d="M75 95 H478" class="edge"/>
+          <polygon points="495,95 475,85 475,105" class="arrow"/>
+          <circle cx="75" cy="95" r="12" class="dot"/>
+          <circle cx="245" cy="95" r="12" class="dot"/>
+          <circle cx="415" cy="95" r="12" class="dot"/>
+          <text x="75" y="57" text-anchor="middle">Open</text>
+          <text x="245" y="57" text-anchor="middle">Day 2</text>
+          <text x="415" y="57" text-anchor="middle">Later</text>
+          <text x="280" y="145" text-anchor="middle">No scheduled finish</text>
+          <rect x="35" y="180" width="490" height="60" rx="8" class="box"/>
+          <text x="280" y="219" class="small" text-anchor="middle">Exit: you close it, or liquidation closes it</text>
+        </svg>
+      </div>
+      <details class="more"><summary>Why the product name matters</summary><ul>
+        <li>This page covers crypto contracts with no fixed expiry.</li>
+        <li>Some “perpetual-style” products do expire: Coinbase's US contracts have a five-year term.</li>
+      </ul></details>
+    </section>
+
+    <section class="block" aria-labelledby="direction">
+      <h2 id="direction">3. Pick a price direction</h2>
+      <p class="one">A long gains when the price rises; a short gains when it falls.</p>
+      <div class="figure">
+        <svg viewBox="0 0 560 340" role="img" aria-labelledby="direction-title direction-desc">
+          <title id="direction-title">Gross payoff for the same 100-token contract</title>
+          <desc id="direction-desc">At eleven dollars, a long gains one hundred dollars and a short loses one hundred dollars. At nine dollars, a long loses one hundred dollars and a short gains one hundred dollars. Both enter at ten dollars. Fees, funding and liquidation are excluded.</desc>
+          <text x="280" y="37" class="small" text-anchor="middle">100 TOKENS · ENTRY $10</text>
+          <rect x="25" y="60" width="510" height="220" rx="8" class="box"/>
+          <text x="115" y="102" text-anchor="middle">Price</text>
+          <text x="295" y="102" text-anchor="middle">Long</text>
+          <text x="455" y="102" text-anchor="middle">Short</text>
+          <path d="M45 121 H515" class="rule"/>
+          <text x="115" y="175" class="large" text-anchor="middle">$11</text>
+          <text x="295" y="175" class="gain" text-anchor="middle">+$100</text>
+          <text x="455" y="175" class="loss" text-anchor="middle">−$100</text>
+          <text x="115" y="245" class="large" text-anchor="middle">$9</text>
+          <text x="295" y="245" class="loss" text-anchor="middle">−$100</text>
+          <text x="455" y="245" class="gain" text-anchor="middle">+$100</text>
+          <text x="280" y="319" class="small" text-anchor="middle">Before fees, funding and liquidation</text>
+        </svg>
+      </div>
+      <details class="more"><summary>Check the payoff</summary><ul>
+        <li>Long at $11: 100 × ($11 − $10) = $100 gain.</li>
+        <li>Short at $11: 100 × ($10 − $11) = $100 loss.</li>
+        <li>These are possible price outcomes, not a promise that a position survives to them.</li>
+      </ul></details>
+    </section>
+
+    <section class="block" aria-labelledby="margin">
+      <h2 id="margin">4. Margin backs the position</h2>
+      <p class="one">Less collateral behind the same position makes each dollar of loss a larger share of your margin.</p>
+      <div class="figure">
+        <svg viewBox="0 0 560 440" role="img" aria-labelledby="margin-title margin-desc">
+          <title id="margin-title">Same exposure, different initial leverage</title>
+          <desc id="margin-desc">For one thousand dollars of exposure, initial margin of one thousand dollars means one times leverage, two hundred dollars means five times, and one hundred dollars means ten times. A fifty-dollar loss is respectively five, twenty-five and fifty percent of starting margin.</desc>
+          <text x="280" y="36" class="small" text-anchor="middle">SAME $1,000 STARTING EXPOSURE</text>
+          <rect x="30" y="60" width="500" height="95" rx="8" class="box"/>
+          <text x="55" y="99">$1,000 margin</text><text x="500" y="99" text-anchor="end">1×</text>
+          <text x="55" y="134" class="small">$50 loss = 5% of starting margin</text>
+          <rect x="30" y="175" width="500" height="95" rx="8" class="box"/>
+          <text x="55" y="214">$200 margin</text><text x="500" y="214" text-anchor="end">5×</text>
+          <text x="55" y="249" class="small">$50 loss = 25% of starting margin</text>
+          <rect x="30" y="290" width="500" height="95" rx="8" class="process"/>
+          <text x="55" y="329">$100 margin</text><text x="500" y="329" text-anchor="end">10×</text>
+          <text x="55" y="364" class="small">$50 loss = 50% of starting margin</text>
+          <text x="280" y="424" class="small" text-anchor="middle">Long: $10 → $9.50 gives a $50 loss</text>
+        </svg>
+      </div>
+      <details class="more"><summary>How leverage changes after a loss</summary><ul>
+        <li>Initial leverage = starting notional ÷ starting margin.</li>
+        <li>In the $100-margin long, a $50 loss leaves $50 of equity; the position is now worth $950.</li>
+        <li>Effective leverage is now $950 ÷ $50 = 19×, if the position remains open.</li>
+        <li>These calculations exclude fees and funding and assume no other positions share the collateral.</li>
+      </ul></details>
+    </section>
+
+    <section class="block" aria-labelledby="funding">
+      <h2 id="funding">5. Funding moves money between sides</h2>
+      <p class="one">At each funding interval, the rate's sign decides which side pays the other.</p>
+      <div class="figure">
+        <svg viewBox="0 0 560 360" role="img" aria-labelledby="funding-title funding-desc">
+          <title id="funding-title">Funding can flow in either direction</title>
+          <desc id="funding-desc">Positive funding flows from long to short. Negative funding flows from short to long. In an illustrative interval, a rate of positive 0.01 percent on one thousand dollars of funding notional means the long pays ten cents.</desc>
+          <text x="280" y="38" text-anchor="middle">Positive rate</text>
+          <path d="M185 93 H370" class="edge"/>
+          <polygon points="375,93 360,85 360,101" class="arrow"/>
+          <rect x="30" y="63" width="155" height="60" rx="8" class="process"/>
+          <rect x="375" y="63" width="155" height="60" rx="8" class="data"/>
+          <text x="107" y="102" text-anchor="middle">Long</text><text x="452" y="102" text-anchor="middle">Short</text>
+          <text x="280" y="177" text-anchor="middle">Negative rate</text>
+          <path d="M190 232 H375" class="edge"/>
+          <polygon points="185,232 200,224 200,240" class="arrow"/>
+          <rect x="30" y="202" width="155" height="60" rx="8" class="process"/>
+          <rect x="375" y="202" width="155" height="60" rx="8" class="data"/>
+          <text x="107" y="241" text-anchor="middle">Long</text><text x="452" y="241" text-anchor="middle">Short</text>
+          <text x="280" y="308" class="small" text-anchor="middle">Illustrative: +0.01% × $1,000 = $0.10</text>
+          <text x="280" y="341" class="small" text-anchor="middle">For one interval; the long pays</text>
+        </svg>
+      </div>
+      <details class="more"><summary>What sets the payment</summary><ul>
+        <li>Funding encourages the perp price to stay near the underlying market price; the prices can still differ.</li>
+        <li>Rates can change sign. A token's rise or fall alone does not tell you the funding rate.</li>
+        <li>Hyperliquid pays funding hourly and uses a spot oracle price for funding notional. Its formula includes interest and a market premium.</li>
+        <li>The diagram assumes $1,000 of funding notional at that interval. Schedules and formulas vary by contract.</li>
+      </ul></details>
+    </section>
+
+    <section class="block" aria-labelledby="liquidation">
+      <h2 id="liquidation">6. Liquidation can close it early</h2>
+      <p class="one">The venue can forcibly close a position when its equity falls below the required maintenance margin.</p>
+      <div class="figure">
+        <svg viewBox="0 0 560 400" role="img" aria-labelledby="liquidation-title liquidation-desc">
+          <title id="liquidation-title">An illustrative maintenance threshold above zero</title>
+          <desc id="liquidation-desc">A schematic tracks the one-hundred-dollar-margin long. Equity drops from one hundred dollars to fifty to twenty-five, crossing an invented fixed forty-dollar maintenance threshold. Liquidation can begin before equity reaches zero. These are not venue rules or a liquidation price calculation.</desc>
+          <text x="280" y="36" class="small" text-anchor="middle">ILLUSTRATIVE MAINTENANCE THRESHOLD</text>
+          <path d="M70 70 V320 H510" class="rule"/>
+          <text x="50" y="326" class="small" text-anchor="end">$0</text>
+          <path d="M70 228 H510" class="threshold"/>
+          <text x="93" y="257" class="small">Maintenance: $40</text>
+          <path d="M115 90 L270 205 L445 262.5" class="edge"/>
+          <circle cx="115" cy="90" r="8" class="dot"/>
+          <circle cx="270" cy="205" r="8" class="dot"/>
+          <circle cx="445" cy="262.5" r="8" class="danger-dot"/>
+          <text x="115" y="67" text-anchor="middle">$100</text>
+          <text x="270" y="182" text-anchor="middle">$50</text>
+          <text x="445" y="304" class="loss" text-anchor="middle">$25</text>
+          <text x="280" y="359" class="small" text-anchor="middle">Equity = collateral + unrealized payoff</text>
+          <text x="280" y="389" class="small" text-anchor="middle">Liquidation can begin above $0</text>
+        </svg>
+      </div>
+      <details class="more"><summary>Why there is no universal liquidation price</summary><ul>
+        <li>The $40 line is invented for this picture. Actual maintenance requirements can change with position value and size.</li>
+        <li>Hyperliquid uses a mark price for liquidation. Funding payments and other positions with shared margin can change the threshold price.</li>
+        <li>Liquidation may close some or all of a position; remaining collateral depends on the venue and execution.</li>
+      </ul></details>
+    </section>
+
+    <footer>
+      <p class="sources">Sources: <a href="https://www.coinbase.com/advanced-perpetuals">Coinbase: perps</a> · <a href="https://www.bybit.com/en/help-center/article/FAQ-Profit-Loss-Calculation">Bybit: payoff math</a> · <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/trading/funding">Hyperliquid: funding</a> · <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/trading/liquidations">Hyperliquid: liquidation</a> · <a href="https://help.coinbase.com/en/coinbase/derivatives/us-perpetual-futures-overview">Coinbase: US product expiry</a>.</p>
+      <p class="longer">Longer version: <a href="/reference/perpetual-futures/">Perpetual Futures Reference</a>.</p>
+      <p class="to-top"><a href="#top">Back to top ↑</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+  <script>
+    (function () {
+      const button = document.getElementById('backToTop');
+      window.addEventListener('scroll', function () {
+        button.classList.toggle('visible', window.scrollY > 250);
+      }, { passive: true });
+      button.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      });
+    }());
+  </script>
+</body>
+</html>
