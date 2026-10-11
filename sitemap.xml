@@ -931,6 +931,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/writing/when-ai-writes-code-types-become-proof-harness/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/writing/legacy-rails-upgrade-with-agents/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
