@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>When AI Writes Code, Types Become the Proof Harness — Nestor G Pestelos Jr</title>
+  <meta name="description" content="Static typecheckers check encoded constraints; formal proof verifiers check stated propositions under explicit assumptions. Both can bound AI search, while humans remain responsible for the…">
+  <meta property="og:title" content="When AI Writes Code, Types Become the Proof Harness">
+  <meta property="og:description" content="Static typecheckers check encoded constraints; formal proof verifiers check stated propositions under explicit assumptions. Both can bound AI search, while humans remain responsible for the…">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/writing/when-ai-writes-code-types-become-proof-harness/">
+  <link rel="canonical" href="https://ngpestelos.com/writing/when-ai-writes-code-types-become-proof-harness/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="alternate" type="application/atom+xml" title="Writing" href="https://ngpestelos.com/writing/atom.xml">
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"When AI Writes Code, Types Become the Proof Harness","description":"Static typecheckers check encoded constraints; formal proof verifiers check stated propositions under explicit assumptions. Both can bound AI search, while humans remain responsible for the…","url":"https://ngpestelos.com/writing/when-ai-writes-code-types-become-proof-harness/","author":{"@type":"Person","name":"Nestor G Pestelos Jr","url":"https://ngpestelos.com/"},"datePublished":"2026-10-11"}
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+</head>
+<body>
+  <main class="article">
+    <p class="back" id="top"><a href="/">Nestor G Pestelos Jr</a> &middot; <a href="/writing/">Writing</a><span class="print"> &middot; <a href="#print" onclick="window.print();return false">Print</a></span></p>
+    <h1 id="when-ai-writes-code-types-become-proof-harness">When AI Writes Code, Types Become the Proof Harness</h1>
+<p class="byline">Published October 11, 2026</p>
+
+
+<div class="tldr"><span class="tldr-label">TL;DR</span><p>Static typecheckers check encoded constraints; formal proof verifiers check stated propositions under explicit assumptions. Both can bound AI search, while humans remain responsible for the specification and behavior those checks do not cover.</p></div>
+
+<hr>
+
+<p>A common reaction to modern AI coding assistants is that static type safety has become obsolete. If an LLM can generate boilerplate instantly and infer shapes on the fly, why bother with strict type systems, compiler rituals, and formal annotations? Why not let Python, JavaScript, and Ruby dominate while the model fills in the gaps?</p>
+
+<p>This reaction mistakes authoring convenience for system verification.</p>
+
+<p>When a human writes code, static typing can feel like friction: you stop to satisfy the compiler. When an AI writes code, human attention can become the scarce resource. If an LLM generates 500 lines of dynamically typed code, reviewers still need evidence about branches, variable references, and runtime assumptions. Tests and static analysis can check some of these; human review covers the remaining risks.</p>
+
+<p>For autonomous AI agents, static types provide an automated verification harness that bounds probabilistic search.</p>
+
+<h2 id="1-the-verification-asymmetry">1. The Verification Asymmetry</h2>
+
+<p>The Bitter Lesson of computing applies to AI-assisted software engineering. Paras Chopra formulated the <a href="https://x.com/paraschopra/status/2077006533582610753/">modern economic rule behind scaling laws</a>:</p>
+
+<blockquote><p>&quot;if a good solution can be verified cheaply, scale will dominate cleverness&quot;</p></blockquote>
+
+<p>Where verification is cheap and automated, you can generate candidate rollouts and keep only the ones that pass. This generate-and-check strategy becomes harder to scale when verification is expensive or ambiguous.</p>
+
+<p>In <a href="https://obryant.dev/p/2x-not-10x/">2x, not 10x: coding with LLMs in 2026</a>, O’Bryant proposes that reliable automated feedback explains much of the gain he has observed. He identifies maintainability and documentation judgment as remaining limits. This is a hypothesis based on his own experience.</p>
+
+<p>Both dynamic and statically typed programs need runtime tests for behavior outside static checks. A static typechecker adds automated checks of type constraints before execution. Their cost depends on the language, configuration, and codebase.</p>
+
+<h2 id="2-programs-as-proofs-the-curry-howard-foundation">2. Programs as Proofs: The Curry-Howard Foundation</h2>
+
+<p>The <strong>Curry-Howard correspondence</strong> relates propositions to types and proofs to programs in suitable formal calculi. Prabhakar Ragde details this connection in <a href="https://cs.uwaterloo.ca/~plragde/flane/LACI"><em>Logic and Computation Intertwined</em></a>:</p>
+
+<ul>
+
+<li>A <strong>type</strong> is a logical proposition (a specification of required invariants).</li>
+
+<li>A <strong>program expression</strong> is a proof term (evidence that a value of that type can be constructed).</li>
+
+<li>A <strong>type-checker</strong> is an automated proof verifier (a decision procedure confirming that the proof term is valid).</li>
+
+</ul>
+
+<p>In a proof assistant, an LLM can synthesize a proof term for a stated proposition. A mainstream typed function usually carries a narrower contract, such as its input and output types. Passing its typechecker does not prove that the function implements the intended algorithm.</p>
+
+<pre><code>       Logic (Propositions)       &lt;---&gt;      Computation (Types)
+   ─────────────────────────────────────────────────────────────
+   Proposition A                   &lt;---&gt;      Data Type A
+   Conjunction (A ∧ B)             &lt;---&gt;      Product Type (Pair A B)
+   Disjunction (A ∨ B)             &lt;---&gt;      Sum Type (Either A B)
+   Implication (A → B)             &lt;---&gt;      Function Type (A -&gt; B)
+   Universal Proof (∀ x:A. B(x))   &lt;---&gt;      Dependent Function (Π-Type)
+   Proof Verification              &lt;---&gt;      Type Checking</code></pre>
+
+<p>Proof assistants such as Agda, Coq, and Lean use dependent types to express propositions and check proof terms. When an AI generates a proof in Lean, the kernel checks it against the stated proposition. The result depends on the axioms and assumptions used, as the <a href="https://lean-lang.org/theorem_proving_in_lean4/Axioms-and-Computation/">Lean documentation explains</a>.</p>
+
+<p>Alon and eight coauthors present a <a href="https://arxiv.org/abs/2605.20695">digested, human-verified version</a> of OpenAI’s unit-distance counterexample. Their work combines human checking and explanation of a machine-generated result.</p>
+
+<p>Formal verification can establish that an artifact satisfies a stated proposition under its assumptions before a human can explain the proof.</p>
+
+<p>Human understanding still supports teaching and extending results. In a <a href="https://terrytao.wordpress.com/2026/09/11/a-severe-misalignment-of-ai-in-mathematics/">collective declaration posted by Terence Tao on 20260911</a>, Fields Medallists describe how talks, discussions and simplification turn results into textbook material. They stress that work with students develops their ability to pursue new ideas, and warn that mass production of results may erode this human transmission chain.</p>
+
+<h2 id="3-compiler-feedback-for-candidate-search">3. Compiler Feedback for Candidate Search</h2>
+
+<p>When an LLM generates a type error in a dynamically typed language, it may remain undetected until execution. A function receives <code>nil</code> instead of a string, or an object missing a required attribute, and the program crashes three stack frames away at runtime.</p>
+
+<p>A static typechecker can catch mismatches represented in its type rules before the code runs. Consider an agent implementing a payment state transition. In dynamically typed code, an agent can accidentally transition a <code>Failed</code> payment to <code>Refunded</code>:</p>
+
+<pre><code># This invalid state transition can pass without an exception.
+def process_refund(payment):
+    payment.status = &quot;refunded&quot;
+    gateway.send_refund(payment.id, payment.amount)</code></pre>
+
+<p>In a language using the typestate pattern, states are distinct types, making invalid transitions unrepresentable:</p>
+
+<pre><code>// Static: compiler rejects invalid state transition at compile time
+struct SettledPayment { id: String, amount: u64, receipt: Receipt }
+struct FailedPayment  { id: String, reason: String }
+
+fn process_refund(payment: SettledPayment) -&gt; RefundReceipt { ... }</code></pre>
+
+<p>When an agent passes a <code>FailedPayment</code> to <code>process_refund</code>, the Rust compiler reports a type mismatch:</p>
+
+<pre><code>error[E0308]: mismatched types
+  --&gt; src/checkout.rs:42:25
+   |
+42 |     process_refund(payment);
+   |                    ^^^^^^^ expected `SettledPayment`, found `FailedPayment`</code></pre>
+
+<p>This diagnostic identifies a mismatch with the encoded state constraint. An autonomous coding agent can use it to adjust the implementation and retry. It does not establish that the refund amount or gateway behavior is correct.</p>
+
+<h2 id="4-the-two-hard-limits-of-type-safety">4. The Two Hard Limits of Type Safety</h2>
+
+<h3 id="a-type-safety-is-not-semantic-correctness">A. Type Safety Is Not Semantic Correctness</h3>
+
+<p><a href="https://x.com/gergelyorosz/status/2083111743182500028">Gergely Orosz disputes claims that agentic code is error-free</a>. He argues that it remains buggy and can introduce errors and vulnerabilities that are harder to spot.</p>
+
+<p>A program can satisfy its type constraints and memory-safety rules while computing the wrong tax calculation, discarding user data, or causing race conditions in external services. Static guarantees cover properties represented in the type system, subject to its soundness and assumptions.</p>
+
+<h3 id="b-the-specification-inversion-trap">B. The Specification Inversion Trap</h3>
+
+<p>Based on what he hears and sees, <a href="https://x.com/nateberkopec/status/2015578731050664377/">Nate Berkopec reports</a> that many people review model-generated application code more closely than generated tests. He suspects verification and specification should receive more attention than implementation.</p>
+
+<p>The same inversion threatens type-driven development. If an engineer asks an LLM to generate both the complex type signatures and the implementation, the LLM can define trivial or tautological types that type-check while asserting nothing of value. A sound checker can confirm a weak or incorrect specification. Humans must review what the specification claims, as well as whether the implementation passes.</p>
+
+<h2 id="5-the-spectrum-of-practical-verification">5. The Spectrum of Practical Verification</h2>
+
+<p>Adopting formal verification for AI generation does not require writing every web application in Coq or Agda. In practice, type safety exists along an expressiveness spectrum:</p>
+
+<ol>
+
+<li><strong>Mainstream Structural Safety (TypeScript, Go)</strong>: Catches many shape mismatches, missing fields, and typo bugs. Coverage varies by language and configuration. <a href="https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness">TypeScript deliberately permits some unsound operations</a>, so a passing check is not a proof of runtime safety.</li>
+
+<li><strong>Algebraic Invariant Typing (Rust, Haskell)</strong>: Algebraic data types and pattern matching can encode states and expose unhandled cases. Rust also uses ownership rules to prevent data races in safe Rust. These guarantees depend on the encoded model and language rules; Haskell does not share Rust&#x27;s ownership model.</li>
+
+<li><strong>Dependent Type Theory (Lean 4, Agda, Idris)</strong>: Can encode mathematical propositions, array bounds, and state transition certificates in types. Proof checking establishes the encoded claim under the selected assumptions; it does not validate unstated intent.</li>
+
+</ol>
+
+<p>More expressive specifications can check more properties, but they also require work to write and validate.</p>
+
+<h2 id="the-new-engineering-division-of-labor">The New Engineering Division of Labor</h2>
+
+<p>AI coding gives developers another division of labor: define types and boundary specifications, let the model generate candidate implementations, and use automated checks to reject candidates that violate those constraints.</p>
+
+<p>Humans must still validate the specification, review behavior outside the checks, and understand enough of the result to maintain and extend it. Typecheckers and proof verifiers reduce the review burden within their scope; they cannot guarantee that an unstated requirement has been met.</p>
+
+<h2 id="sources">Sources</h2>
+
+<ul>
+
+<li>Prabhakar Ragde, <a href="https://cs.uwaterloo.ca/~plragde/flane/LACI"><em>Logic and Computation Intertwined</em></a>, University of Waterloo</li>
+
+<li>Paras Chopra, <a href="https://x.com/paraschopra/status/2077006533582610753/"><em>Why Frontier Labs Are Scaling-Pilled</em></a>, Inverted Passion (2026)</li>
+
+<li>Noga Alon and eight coauthors, <a href="https://arxiv.org/abs/2605.20695"><em>Remarks on the disproof of the unit distance conjecture</em></a> (20260520). </li>
+
+<li>Gergely Orosz, <a href="https://x.com/gergelyorosz/status/2083111743182500028"><em>The Pragmatic Engineer: Agentic Code and Error Baselines</em></a> (2026)</li>
+
+<li>Nate Berkopec, <a href="https://x.com/nateberkopec/status/2015578731050664377/"><em>AI-Generated Test Code Review Inversion</em></a> (2026)</li>
+
+<li>O’Bryant, <a href="https://obryant.dev/p/2x-not-10x/"><em>2x, not 10x: coding with LLMs in 2026</em></a> (20260725). </li>
+
+<li>Fields Medallists, <a href="https://terrytao.wordpress.com/2026/09/11/a-severe-misalignment-of-ai-in-mathematics/"><em>A Severe Misalignment of AI in Mathematics</em></a>, collective declaration posted by Terence Tao (20260911). </li>
+
+<li>TypeScript documentation, <a href="https://www.typescriptlang.org/docs/handbook/type-compatibility.html#a-note-on-soundness"><em>Type Compatibility: A Note on Soundness</em></a>. </li>
+
+<li><em>Theorem Proving in Lean 4</em>, <a href="https://lean-lang.org/theorem_proving_in_lean4/Axioms-and-Computation/"><em>Axioms and Computation</em></a>. </li>
+
+</ul>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+    <footer class="meta">
+      <a href="/privacy.html">Privacy</a>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

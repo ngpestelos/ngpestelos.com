@@ -4,10 +4,17 @@
   <link rel="self" href="https://ngpestelos.com/writing/atom.xml"/>
   <link href="https://ngpestelos.com/writing/"/>
   <id>https://ngpestelos.com/writing/</id>
-  <updated>2026-09-09T22:20:16Z</updated>
+  <updated>2026-10-11T08:13:40Z</updated>
   <author>
     <name>Nestor G Pestelos Jr</name>
   </author>
+  <entry>
+    <id>https://ngpestelos.com/writing/when-ai-writes-code-types-become-proof-harness/</id>
+    <title>When AI Writes Code, Types Become the Proof Harness</title>
+    <summary>Static typecheckers check encoded constraints; formal proof verifiers check stated propositions under explicit assumptions. Both can bound AI search, while humans remain responsible for the…</summary>
+    <updated>2026-10-11T00:00:00+08:00</updated>
+    <link href="https://ngpestelos.com/writing/when-ai-writes-code-types-become-proof-harness/"/>
+  </entry>
   <entry>
     <id>https://ngpestelos.com/writing/the-programmer-was-only-ever-one-incarnation/</id>
     <title>The Programmer Was Only Ever One Incarnation</title>
