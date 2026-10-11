@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActiveRecord::Relation &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="ActiveRecord::Relation represents a composable database query in Rails. Loading, return types, counting, eager loading, and safe query inputs in Rails 8.1.3.">
+  <meta property="og:title" content="ActiveRecord::Relation &middot; Reference">
+  <meta property="og:description" content="ActiveRecord::Relation represents a composable database query in Rails. Loading, return types, counting, eager loading, and safe query inputs in Rails 8.1.3.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/activerecord-relation/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/activerecord-relation/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    code, td, li { overflow-wrap: anywhere; }
+    caption { text-align: left; margin-bottom: .5rem; }
+    .table-wrap { overflow-x: auto; }
+    @media (prefers-reduced-motion: reduce) { .back-to-top { transition: none; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"ActiveRecord::Relation","description":"ActiveRecord::Relation represents a composable database query in Rails. Loading, return types, counting, eager loading, and safe query inputs in Rails 8.1.3.","url":"https://ngpestelos.com/reference/activerecord-relation/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script></head>
+<body class="reference"><main id="top">
+<p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Software Development &middot; Ruby on Rails</p>
+<h1>ActiveRecord::Relation</h1>
+<p class="updated">Reference entry &middot; last updated October 11, 2026</p>
+<p class="lede"><strong>ActiveRecord::Relation</strong> is a Rails object that represents a database query and can hold the model records fetched by that query.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>]</span></p>
+
+<p>This entry covers synchronous queries in Rails <strong>8.1.3</strong>, checked against its tagged source. The code uses an illustrative <code>Book</code> model with <code>category</code>, <code>available</code>, and <code>title</code> columns. Examples describe API behavior; they are not measured query logs.</p>
+<nav class="toc" aria-label="Contents"><p class="toc-title">Contents</p><ol>
+<li><a href="#first-principles">First principles and definitions</a></li>
+<li><a href="#composition">Query composition</a></li>
+<li><a href="#loading">Loading and cached records</a></li>
+<li><a href="#return-types">Return types</a></li>
+<li><a href="#counting">count, size, and length</a></li>
+<li><a href="#projection">exists?, pluck, and select</a></li>
+<li><a href="#associations">Associations and eager loading</a></li>
+<li><a href="#batching">Batching</a></li>
+<li><a href="#inputs">Safe query inputs</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">First principles and definitions</h2>
+<p>A query specifies which rows to retrieve, which columns to return, and how to order or limit the result. A relation stores these choices for one model. Query methods such as <code>where</code> return relations that can accept further query methods.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></p>
+<p>A model instance represents one record. An array holds Ruby objects returned to the application. A relation also carries query operations and a loaded state. It includes <code>Enumerable</code>, so array-like operations are available through record loading.<span class="cite">[<a href="#ref4">4</a>][<a href="#ref12">12</a>]</span></p>
+<h2 id="composition">Query composition</h2>
+<pre>fiction = Book.where(category: "fiction")
+request = fiction.where(available: true)
+                 .order(:title).limit(3)</pre>
+<p>These calls build a query without fetching its model records. Ordinary non-bang query methods create a derived relation; the additional condition leaves <code>fiction</code> available as the broader query. The two <code>where</code> conditions combine with SQL <code>AND</code>.<span class="cite">[<a href="#ref3">3</a>][<a href="#ref10">10</a>][<a href="#ref13">13</a>]</span></p>
+<p><code>request.to_sql</code> produces the query's SQL representation without loading the records. Database adapters can produce different SQL text.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+<h2 id="loading">Loading and cached records</h2>
+<pre>request.load       # loads records; returns the relation
+books = request.to_a # returns an array of Book objects
+request.loaded?    # true after a successful synchronous load</pre>
+<p><code>load</code> fetches and stores records when the relation is unloaded. Later record enumeration on the same loaded relation reuses them. <code>reload</code> clears that state and loads again. Cached records can become stale when the database changes.<span class="cite">[<a href="#ref4">4</a>][<a href="#ref12">12</a>]</span></p>
+<p>SQL execution and relation loading are separate events. A count or existence query can return a result without populating the relation's records. Inspecting an unloaded relation in a console can query a limited, derived relation while the original remains unloaded.<span class="cite">[<a href="#ref4">4</a>][<a href="#ref6">6</a>][<a href="#ref11">11</a>]</span></p>
+<h2 id="return-types">Return types</h2>
+<div class="table-wrap"><table><caption>Common synchronous calls in Rails 8.1.3.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref3">3</a>][<a href="#ref5">5</a>][<a href="#ref7">7</a>][<a href="#ref10">10</a>]</span></caption><thead><tr><th scope="col">Call</th><th scope="col">Return value</th></tr></thead><tbody>
+<tr><td><code>where(...)</code>, <code>order(...)</code>, <code>limit(...)</code></td><td>A derived relation</td></tr>
+<tr><td><code>load</code></td><td>The same relation, with records loaded</td></tr>
+<tr><td><code>to_a</code></td><td>An array of model instances</td></tr>
+<tr><td><code>first</code> without an argument</td><td>One model instance, or <code>nil</code></td></tr>
+<tr><td><code>exists?</code></td><td><code>true</code> or <code>false</code></td></tr>
+<tr><td><code>pluck(:title)</code></td><td>An array of column values</td></tr>
+<tr><td><code>select(:id, :title)</code></td><td>A relation with a narrower SQL projection</td></tr>
+<tr><td><code>select { |book| book.available }</code></td><td>An array filtered in Ruby</td></tr>
+</tbody></table></div>
+<h2 id="counting">count, size, and length</h2>
+<div class="table-wrap"><table><caption>Plain, ungrouped relation with no count block.<span class="cite">[<a href="#ref4">4</a>][<a href="#ref6">6</a>][<a href="#ref12">12</a>]</span></caption><thead><tr><th scope="col">Call</th><th scope="col">Unloaded relation</th><th scope="col">Loaded relation</th></tr></thead><tbody>
+<tr><td><code>count</code></td><td>Normally runs SQL COUNT</td><td>Normally runs SQL COUNT</td></tr>
+<tr><td><code>size</code></td><td>Calls <code>count(:all)</code></td><td>Uses the loaded records' length</td></tr>
+<tr><td><code>length</code></td><td>Loads records and counts them</td><td>Uses the loaded records' length</td></tr>
+</tbody></table></div>
+<p>Blockless <code>count</code> does not use the loaded records as its counting source. The database query cache can serve its SQL result; known-empty relations can short-circuit. <code>count(:title)</code> counts non-null titles, while <code>group(:category).count</code> returns a hash of counts. A count with a block enumerates records in Ruby.<span class="cite">[<a href="#ref5">5</a>][<a href="#ref6">6</a>]</span></p>
+<h2 id="projection">exists?, pluck, and select</h2>
+<p><code>exists?</code> normally uses a limited existence query without instantiating all matching models. It does not simply read a loaded relation's array. Known-empty conditions can return <code>false</code> without querying.<span class="cite">[<a href="#ref7">7</a>][<a href="#ref11">11</a>]</span></p>
+<p><code>pluck</code> normally fetches selected values without model instances. It can read from a loaded relation when the requested attributes are available. Its array result ends the query chain.<span class="cite">[<a href="#ref5">5</a>][<a href="#ref6">6</a>]</span></p>
+<p>Blockless <code>select</code> keeps a relation and chooses SQL columns. A block invokes Ruby filtering after loading. Reading an omitted attribute, except <code>id</code>, raises <code>ActiveModel::MissingAttributeError</code>.<span class="cite">[<a href="#ref3">3</a>][<a href="#ref10">10</a>]</span></p>
+<h2 id="associations">Associations and eager loading</h2>
+<p>A collection association such as <code>author.books</code> returns a <code>CollectionProxy</code>, a relation subclass with association-specific behavior. A loaded collection's <code>size</code> uses its records. Association counting rules should be checked separately from a plain relation.<span class="cite">[<a href="#ref8">8</a>]</span></p>
+<p><code>preload</code> fetches associations through separate queries. <code>eager_load</code> uses <code>LEFT OUTER JOIN</code>. <code>includes</code> normally uses separate queries but can use a join when conditions require it. A <code>joins</code> call alone does not preload association objects.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></p>
+<pre>authors = Author.includes(:books).to_a
+authors.each { |author| author.books.size }</pre>
+<p>For the loaded collections in this illustrative example, <code>size</code> uses the preloaded books. Replacing it with blockless <code>count</code> requests a database calculation, even though <code>includes</code> fetched the records.<span class="cite">[<a href="#ref6">6</a>][<a href="#ref8">8</a>]</span></p>
+<h2 id="batching">Batching</h2>
+<p><code>find_each</code> yields records one at a time after fetching batches. <code>find_in_batches</code> yields arrays, and <code>in_batches</code> yields relations. Batching avoids loading an entire large result into memory at once.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+<p>Rails 8.1.3 defaults to an ascending primary-key cursor. A pre-existing relation order can be ignored or rejected. Custom cursor columns need a unique tiebreaker and should remain unchanged during processing. Concurrent database writes can cause race conditions.<span class="cite">[<a href="#ref9">9</a>]</span></p>
+<h2 id="inputs">Safe query inputs</h2>
+<pre>Book.where(category: params[:category])
+Book.where("title = ?", params[:title])</pre>
+<p>Hash conditions and SQL placeholders keep values separate from the SQL expression. Direct string interpolation of untrusted values can introduce SQL injection. Placeholders do not select safe column names or sort expressions; dynamic identifiers need an application-controlled allowlist.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref10">10</a>]</span></p>
+<p>For a literal prefix search with SQL <code>LIKE</code>, <code>sanitize_sql_like</code> escapes user-supplied <code>%</code> and <code>_</code> wildcard characters before a deliberate wildcard is appended.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<h2 id="see-also">See also</h2>
+<ul><li><a href="/eli5/activerecord-relations-explained/">ActiveRecord Relations Explained</a></li><li><a href="/reference/ruby-array-operations/">Ruby Array Operations</a></li></ul>
+<h2 id="references">References</h2><ol>
+<li id="ref1"><a href="https://api.rubyonrails.org/classes/ActiveRecord/Relation.html">Rails API documentation, Relation</a>.</li>
+<li id="ref2"><a href="https://guides.rubyonrails.org/v8.1/active_record_querying.html">Rails 8.1 Guides, Active Record Query Interface</a>.</li>
+<li id="ref3"><a href="https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html">Rails API documentation, QueryMethods</a>.</li>
+<li id="ref4"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation.rb">Rails source, tag v8.1.3, relation.rb</a>.</li>
+<li id="ref5"><a href="https://api.rubyonrails.org/classes/ActiveRecord/Calculations.html">Rails API documentation, Calculations</a>.</li>
+<li id="ref6"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/calculations.rb">Rails source, tag v8.1.3, calculations.rb</a>.</li>
+<li id="ref7"><a href="https://api.rubyonrails.org/classes/ActiveRecord/FinderMethods.html">Rails API documentation, FinderMethods</a>.</li>
+<li id="ref8"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/associations/collection_proxy.rb">Rails source, tag v8.1.3, collection_proxy.rb</a>.</li>
+<li id="ref9"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/batches.rb">Rails source, tag v8.1.3, batches.rb</a>.</li>
+<li id="ref10"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/query_methods.rb">Rails source, tag v8.1.3, query_methods.rb</a>.</li>
+<li id="ref11"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/finder_methods.rb">Rails source, tag v8.1.3, finder_methods.rb</a>.</li>
+<li id="ref12"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/delegation.rb">Rails source, tag v8.1.3, delegation.rb</a>.</li>
+<li id="ref13"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/spawn_methods.rb">Rails source, tag v8.1.3, spawn_methods.rb</a>.</li>
+</ol><footer class="meta"><a href="#top">Back to top</a> · <a href="/reference/">Reference index</a></footer></main><button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+<script>
+(function () {
+  const button = document.getElementById('backToTop');
+  window.addEventListener('scroll', function () { button.classList.toggle('visible', window.scrollY > 250); }, {passive: true});
+  button.addEventListener('click', function () { window.scrollTo({top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); });
+})();
+</script></body></html>

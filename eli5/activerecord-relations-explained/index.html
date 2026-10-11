@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActiveRecord Relations Explained &middot; ELI5 &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A library request slip explains how Rails relations build queries, fetch records, and reuse loaded results.">
+  <meta property="og:title" content="ActiveRecord Relations Explained &middot; ELI5">
+  <meta property="og:description" content="A library request slip explains how Rails relations build queries, fetch records, and reuse loaded results.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/activerecord-relations-explained/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/activerecord-relations-explained/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+<style>
+:root { --paper:#f4eee4; --ink:#1c1612; --card:#fffaf3; --op:#9a3412; --op-edge:#7c2d12; --leaf:#0f5c57; --leaf-edge:#0b4a46; --line:#d4c9bb; --mute:#6e645a; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body { background:var(--paper); color:var(--ink); font-family:Georgia,"Times New Roman",serif; line-height:1.5; }
+main { max-width:48rem; margin:auto; padding:1.5rem 1.25rem 4rem; }
+a { color:var(--op); } .back { font:700 .9rem/1.5 system-ui,sans-serif; margin-bottom:1.5rem; }
+.kicker { color:var(--mute); font:.78rem/1.5 system-ui,sans-serif; letter-spacing:.12em; text-transform:uppercase; }
+h1 { font-size:clamp(2.1rem,6vw,3.1rem); line-height:1.1; margin:.5rem 0 1rem; }
+.lead { font-size:1.2rem; max-width:36rem; } .example { font:.85rem/1.5 system-ui,sans-serif; color:var(--mute); margin:1rem 0; }
+.block { border-top:1px solid var(--line); padding-top:1.7rem; margin-top:2rem; }
+h2 { font-size:clamp(1.65rem,4vw,2.15rem); line-height:1.2; margin-bottom:.6rem; }
+.one { font-size:1.2rem; margin-bottom:1rem; } .figure { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:.5rem; }
+svg { display:block; width:100%; max-width:35rem; margin:auto; height:auto; }
+svg text { font-family:system-ui,sans-serif; fill:var(--ink); font-size:18px; } svg .small { font-size:15px; }
+svg .card { fill:var(--card); stroke:var(--line); stroke-width:2; } svg .slip { fill:#fce4ce; stroke:var(--op-edge); stroke-width:2; } svg .book { fill:#dceee7; stroke:var(--leaf-edge); stroke-width:2; }
+code { font: .86em ui-monospace,SFMono-Regular,Menlo,monospace; overflow-wrap:anywhere; }
+.more { font-size:1rem; margin-top:.8rem; } summary { cursor:pointer; color:var(--op); font-family:system-ui,sans-serif; } .more ul { margin:.6rem 0 0 1.3rem; } .more li { margin:.4rem 0; }
+footer { border-top:1px solid var(--line); margin-top:2rem; padding-top:1.5rem; font:.9rem/1.6 system-ui,sans-serif; } footer p { margin-bottom:.8rem; } .to-top { font-weight:700; }
+.back-to-top { position:fixed; right:1.2rem; bottom:1.2rem; width:2.6rem; height:2.6rem; border-radius:50%; border:1px solid var(--line); background:var(--card); color:var(--ink); font-size:1.2rem; cursor:pointer; opacity:0; visibility:hidden; transition:opacity .2s; }
+.back-to-top.visible { opacity:1; visibility:visible; } .back-to-top:hover { background:var(--paper); color:var(--op); } .back-to-top:focus-visible { outline:2px solid var(--op); outline-offset:2px; }
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .back-to-top { transition:none; } }
+@media print { .back,.back-to-top { display:none; } .block { break-inside:avoid; } }
+</style></head>
+<body class="eli5"><main>
+<p class="back" id="top"><a href="/">Home</a> · <a href="/eli5/">ELI5</a></p>
+<p class="kicker">Ruby on Rails</p><h1>ActiveRecord Relations Explained</h1>
+<p class="lead">A relation holds a request for database records and can keep the records it fetches.</p>
+<p class="example">Illustrative library example · synchronous Rails 8.1.3 queries</p>
+<section class="block"><h2>1. Write a request</h2><p class="one">A relation is like a library slip asking for fiction books.</p><div class="figure"><svg viewBox="0 0 480 210" role="img" aria-label="A request slip for fiction books beside books still on a shelf"><rect class="slip" x="20" y="20" width="195" height="160" rx="8"/><text x="117" y="52" text-anchor="middle" class="">Request slip</text><text x="117" y="95" text-anchor="middle" class="">Fiction books</text><text x="117" y="153" text-anchor="middle" class="small">Relation</text><rect class="card" x="250" y="20" width="210" height="160" rx="8"/><rect class="book" x="270" y="60" width="42" height="75" rx="8"/><rect class="book" x="330" y="60" width="42" height="75" rx="8"/><rect class="book" x="390" y="60" width="42" height="75" rx="8"/><text x="355" y="157" text-anchor="middle" class="small">Books still on shelf</text></svg></div><details class="more"><summary>What the slip represents</summary><ul><li><code>Book.where(category: "fiction")</code> builds the query.</li><li>The relation can exist before any book records are fetched.</li></ul></details></section>
+<section class="block"><h2>2. Add rules</h2><p class="one">You can ask for available books, sorted by title, with a limit of three.</p><div class="figure"><svg viewBox="0 0 480 210" role="img" aria-label="One slip gains an available filter, title ordering, and a three-book limit"><rect class="slip" x="60" y="15" width="360" height="180" rx="8"/><text x="240" y="46" text-anchor="middle" class="">Build the request</text><text x="240" y="86" text-anchor="middle" class="">Fiction · available</text><text x="240" y="124" text-anchor="middle" class="">Sort by title</text><text x="240" y="166" text-anchor="middle" class="">At most 3 books</text></svg></div><details class="more"><summary>The Rails query</summary><ul><li><code>Book.where(category: "fiction").where(available: true).order(:title).limit(3)</code></li><li>These calls build a relation without fetching its records.</li></ul></details></section>
+<section class="block"><h2>3. Fetch the books</h2><p class="one">Calling <code>to_a</code> fetches matching records and gives you an array of book objects.</p><div class="figure"><svg viewBox="0 0 480 210" role="img" aria-label="The request slip goes to the database and returns three book records"><rect class="slip" x="20" y="35" width="140" height="130" rx="8"/><text x="90" y="75" text-anchor="middle" class="">Request</text><text x="90" y="114" text-anchor="middle" class="">to_a</text><path d="M 165 100 H 280" stroke="#7c2d12" stroke-width="2"/><polygon points="290,100 280,94 280,106" fill="#7c2d12"/><text x="227" y="75" text-anchor="middle" class="small">Fetch</text><rect class="card" x="305" y="35" width="155" height="130" rx="8"/><rect class="book" x="319" y="64" width="30" height="55" rx="8"/><rect class="book" x="364" y="64" width="30" height="55" rx="8"/><rect class="book" x="409" y="64" width="30" height="55" rx="8"/><text x="382" y="148" text-anchor="middle" class="small">Book objects</text><text x="240" y="197" text-anchor="middle" class="small">Database query → array</text></svg></div><details class="more"><summary>Other ways to request results</summary><ul><li>Iteration also loads records.</li><li><code>load</code> loads records and returns the relation itself.</li><li>Calls such as <code>count</code> can ask the database for an answer without fetching book objects.</li></ul></details></section>
+<section class="block"><h2>4. Keep the fetched books</h2><p class="one">The same loaded relation can reuse its fetched records when you read them again.</p><div class="figure"><svg viewBox="0 0 480 210" role="img" aria-label="Three fetched books stored beside the same loaded relation"><rect class="slip" x="25" y="25" width="165" height="160" rx="8"/><text x="107" y="66" text-anchor="middle" class="">Same relation</text><text x="107" y="118" text-anchor="middle" class="">loaded?</text><text x="107" y="155" text-anchor="middle" class="">true</text><rect class="card" x="225" y="25" width="230" height="160" rx="8"/><rect class="book" x="245" y="62" width="44" height="67" rx="8"/><rect class="book" x="317" y="62" width="44" height="67" rx="8"/><rect class="book" x="389" y="62" width="44" height="67" rx="8"/><text x="340" y="161" text-anchor="middle" class="small">Records in memory</text></svg></div><details class="more"><summary>When those books can be stale</summary><ul><li><code>loaded?</code> reports whether the relation has loaded its records.</li><li>The database can change after that load; <code>reload</code> fetches again.</li><li>Adding query rules creates a derived relation that may need another fetch.</li></ul></details></section>
+<section class="block"><h2>5. Count from the right place</h2><p class="one">On a loaded relation, <code>size</code> counts fetched records, while blockless <code>count</code> normally asks the database.</p><div class="figure"><svg viewBox="0 0 480 210" role="img" aria-label="Count asks the database while size counts records already in memory"><rect class="slip" x="20" y="20" width="210" height="165" rx="8"/><text x="125" y="55" text-anchor="middle" class="">count</text><text x="125" y="97" text-anchor="middle" class="">Ask the database</text><text x="125" y="153" text-anchor="middle" class="small">SQL count</text><rect class="book" x="250" y="20" width="210" height="165" rx="8"/><text x="355" y="55" text-anchor="middle" class="">size</text><text x="355" y="97" text-anchor="middle" class="">Count fetched books</text><text x="355" y="153" text-anchor="middle" class="small">When loaded</text></svg></div><details class="more"><summary>Counting before a fetch</summary><ul><li>On an unloaded, plain relation, <code>size</code> calls a database count.</li><li><code>length</code> loads the records before counting them.</li><li>The diagram simplifies ordinary ungrouped queries: query caching and known-empty queries can avoid a database round trip.</li></ul></details></section>
+<footer><p>Sources: <a href="https://api.rubyonrails.org/classes/ActiveRecord/Relation.html">Rails Relation API</a>, <a href="https://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html">QueryMethods</a>, <a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/calculations.rb">Rails 8.1.3 counting source</a>.</p>
+<p>Longer version: <a href="/reference/activerecord-relation/">ActiveRecord::Relation reference</a></p><a class="to-top" href="#top">Back to top</a></footer></main><button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+<script>
+(function () {
+  const button = document.getElementById('backToTop');
+  window.addEventListener('scroll', function () { button.classList.toggle('visible', window.scrollY > 250); }, {passive: true});
+  button.addEventListener('click', function () { window.scrollTo({top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); });
+})();
+</script></body></html>
