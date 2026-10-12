@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Natural Logarithm &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="The natural logarithm ln x: its inverse and integral definitions, real domain, graph, logarithm laws, calculus formulas, and common errors.">
+  <meta property="og:title" content="Natural Logarithm &middot; Reference">
+  <meta property="og:description" content="The natural logarithm ln x: its inverse and integral definitions, real domain, graph, logarithm laws, calculus formulas, and common errors.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/natural-logarithm/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/natural-logarithm/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Natural Logarithm","description":"The natural logarithm ln x: its inverse and integral definitions, real domain, graph, logarithm laws, calculus formulas, and common errors.","url":"https://ngpestelos.com/reference/natural-logarithm/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc-title { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .toc ol { list-style: none; padding-left: 0; margin-bottom: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; }
+    .cite a { text-decoration: none; }
+    .formula { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1.2rem; margin: 0.5rem 0 1.2rem; text-align: center; overflow-x: auto; }
+    .katex-display { margin: 0.35rem 0; }
+    #references { font-size: 0.92rem; }
+    #references-list li { margin-bottom: 0.5rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    .back-to-top { background: var(--bg); color: var(--ink); border-color: var(--line); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline-color: var(--link); }
+    @media print { .back, .back-to-top { display: none !important; } .formula { overflow: visible; } }
+    .table-wrap { overflow-x: auto; margin: 0.5rem 0 1.2rem; }
+    table.data { width: 100%; border-collapse: collapse; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    table.data th, table.data td { border: 1px solid var(--line); padding: 0.4rem 0.7rem; text-align: left; }
+    table.data th { background: var(--well); }
+    .graph { margin: 1rem 0 1.5rem; }
+    .graph svg { width: 100%; max-width: 36rem; height: auto; display: block; margin: 0 auto; background: var(--well); border: 1px solid var(--line); border-radius: 4px; }
+    .graph .grid { stroke: var(--line); fill: none; }
+    .graph .axis { stroke: var(--ink); fill: none; }
+    .graph .curve { stroke: var(--link); stroke-width: 2.5; fill: none; }
+    .graph .graph-point { fill: var(--link); }
+    .graph .graph-label { fill: var(--ink); font: 14px "Segoe UI", Helvetica, Arial, sans-serif; }
+    .graph figcaption { font-size: 0.9rem; color: var(--mute); margin-top: 0.5rem; text-align: center; }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics &middot; Calculus</p>
+    <h1>Natural Logarithm</h1>
+    <p class="updated">Reference entry &middot; last updated October 12, 2026</p>
+
+    <p class="lede"><strong>The natural logarithm</strong>, written \(\ln x\), is the logarithm to base <a href="/reference/eulers-number/">Euler’s number \(e\)</a>. For a positive real number \(x\), \(\ln x\) is the real exponent to which \(e\) must be raised to obtain \(x\).<span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>]</span></p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">1. First principles and definitions</a></li>
+        <li><a href="#domain-graph">2. Domain, range, and graph</a></li>
+        <li><a href="#log-laws">3. Logarithm laws</a></li>
+        <li><a href="#calculus">4. Derivatives, integrals, and change of base</a></li>
+        <li><a href="#examples-errors">5. Algebra example and common errors</a></li>
+        <li><a href="#see-also">6. See also</a></li>
+        <li><a href="#references">7. References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p>The inverse relation between the natural logarithm and the natural exponential is:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <div class="formula">\[y=\ln x\ \Longleftrightarrow\ e^y=x,\qquad x>0,\ y\in\mathbb{R}.\]</div>
+    <p>An equivalent definition uses an integral:<span class="cite">[<a href="#ref1">1</a>, <a href="#ref3">3</a>]</span></p>
+    <div class="formula">\[\ln x=\int_1^x\frac{dt}{t},\qquad x>0.\]</div>
+    <p>For \(x>1\), this is the area under \(1/t\) from \(1\) to \(x\). For \(0&lt;x&lt;1\), it is the negative of the area from \(x\) to \(1\). Thus \(\ln1=0\), while \(\ln e=1\).<span class="cite">[<a href="#ref1">1</a>, <a href="#ref3">3</a>]</span></p>
+
+    <h2 id="domain-graph">Domain, range, and graph</h2>
+    <p>The real domain is \((0,\infty)\), and the range is all real numbers. The graph passes through \((1,0)\) and \((e,1)\). It increases throughout its domain.<span class="cite">[<a href="#ref2">2</a>, <a href="#ref3">3</a>]</span></p>
+    <p>Its slope \(1/x\) decreases as \(x\) increases, so the graph is concave down. The line \(x=0\) is a vertical asymptote:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <div class="formula">\[\lim_{x\to0^+}\ln x=-\infty,\qquad \lim_{x\to\infty}\ln x=\infty.\]</div>
+    <figure class="graph">
+      <svg viewBox="0 0 510 260" role="img" aria-labelledby="log-graph-title log-graph-desc">
+        <title id="log-graph-title">Graph of the natural logarithm</title>
+        <desc id="log-graph-desc">The curve is defined only for positive x. It rises from below the plot near x equals zero, passes through (1, 0) and (e, 1), and bends downward as it rises.</desc>
+        <g class="grid" aria-hidden="true">
+          <path d="M52 30H472 M52 78H472 M52 174H472 M52 222H472 M122 30V222 M262 30V222 M402 30V222"/>
+        </g>
+        <g class="axis" aria-hidden="true">
+          <path d="M52 24V228 M46 126H480"/>
+        </g>
+        <g class="graph-label" aria-hidden="true">
+          <text x="485" y="131">x</text><text x="43" y="18">y</text>
+          <text x="37" y="143">0</text><text x="122" y="145" text-anchor="middle">1</text>
+          <text x="262" y="145" text-anchor="middle">3</text><text x="402" y="145" text-anchor="middle">5</text>
+          <text x="40" y="83" text-anchor="end">1</text><text x="40" y="35" text-anchor="end">2</text>
+          <text x="40" y="179" text-anchor="end">−1</text><text x="40" y="227" text-anchor="end">−2</text>
+          <text x="316" y="47">y = ln x</text>
+        </g>
+        <path class="curve" d="M61.47,222.00 L61.84,220.18 L62.22,218.36 L62.61,216.54 L63.03,214.72 L63.45,212.90 L63.89,211.08 L64.35,209.26 L64.83,207.44 L65.33,205.62 L65.84,203.80 L66.38,201.98 L66.93,200.16 L67.51,198.34 L68.11,196.52 L68.73,194.70 L69.38,192.88 L70.05,191.06 L70.75,189.24 L71.47,187.42 L72.22,185.60 L73.01,183.78 L73.82,181.96 L74.66,180.14 L75.54,178.32 L76.45,176.50 L77.39,174.68 L78.37,172.86 L79.39,171.04 L80.45,169.22 L81.55,167.40 L82.69,165.58 L83.88,163.76 L85.11,161.94 L86.39,160.12 L87.72,158.30 L89.10,156.48 L90.53,154.66 L92.02,152.84 L93.57,151.02 L95.17,149.20 L96.84,147.38 L98.57,145.56 L100.37,143.74 L102.24,141.92 L104.18,140.10 L106.20,138.28 L108.30,136.46 L110.47,134.64 L112.73,132.82 L115.08,131.00 L117.52,129.18 L120.05,127.36 L122.68,125.54 L125.41,123.72 L128.25,121.90 L131.19,120.08 L134.25,118.26 L137.43,116.44 L140.73,114.62 L144.16,112.80 L147.72,110.98 L151.42,109.16 L155.27,107.34 L159.26,105.52 L163.40,103.70 L167.71,101.88 L172.18,100.06 L176.82,98.24 L181.65,96.42 L186.66,94.60 L191.86,92.78 L197.27,90.96 L202.88,89.14 L208.71,87.32 L214.77,85.50 L221.06,83.68 L227.59,81.86 L234.38,80.04 L241.42,78.22 L248.74,76.40 L256.35,74.58 L264.24,72.76 L272.45,70.94 L280.97,69.12 L289.81,67.30 L299.00,65.48 L308.55,63.66 L318.47,61.84 L328.76,60.02 L339.46,58.20 L350.57,56.38 L362.11,54.56 L374.09,52.74 L386.54,50.92 L399.47,49.10 L412.89,47.28 L426.84,45.46 L441.33,43.64 L456.37,41.82 L472.00,40.00"/>
+        <g class="graph-point" aria-hidden="true">
+          <circle cx="122" cy="126" r="4"/><circle cx="242.28" cy="78" r="4"/>
+        </g>
+        <g class="graph-label" aria-hidden="true">
+          <text x="132" y="116">(1, 0)</text><text x="248" y="99">(e, 1)</text>
+        </g>
+      </svg>
+      <figcaption>The graph of \(\ln x\) for positive \(x\). Values below \(1\) have negative logarithms.</figcaption>
+    </figure>
+
+    <h2 id="log-laws">Logarithm laws</h2>
+    <p>For positive real \(a,b\) and real \(r\), the logarithm laws are:<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <div class="table-wrap" role="region" aria-label="Logarithm laws" tabindex="0">
+      <table class="data">
+        <thead><tr><th scope="col">Operation</th><th scope="col">Identity</th></tr></thead>
+        <tbody>
+          <tr><td>Product</td><td>\(\ln(ab)=\ln a+\ln b\)</td></tr>
+          <tr><td>Quotient</td><td>\(\ln(a/b)=\ln a-\ln b\)</td></tr>
+          <tr><td>Power</td><td>\(\ln(a^r)=r\ln a\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The inverse identities are \(\ln(e^x)=x\) for real \(x\) and \(e^{\ln x}=x\) for \(x>0\).<span class="cite">[<a href="#ref2">2</a>]</span></p>
+
+    <h2 id="calculus">Derivatives, integrals, and change of base</h2>
+    <p>The fundamental theorem of calculus gives the derivative. The chain rule extends it to a differentiable function \(g\):<span class="cite">[<a href="#ref3">3</a>, <a href="#ref4">4</a>]</span></p>
+    <div class="formula">\[\frac{d}{dx}\ln x=\frac1x\quad(x>0),\qquad \frac{d}{dx}\ln g(x)=\frac{g'(x)}{g(x)}\quad(g(x)>0).\]</div>
+    <p>An antiderivative of \(1/x\) uses absolute value. The formula holds on any interval that does not cross zero:<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <div class="formula">\[\int\frac{dx}{x}=\ln|x|+C,\qquad x\ne0.\]</div>
+    <p>Integration by parts with \(u=\ln x\) and \(dv=dx\) gives:<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <div class="formula">\[\int\ln x\,dx=x\ln x-x+C,\qquad x>0.\]</div>
+    <p>For \(x>0\) and a real base \(b>0\), \(b\ne1\), change of base gives:<span class="cite">[<a href="#ref1">1</a>, <a href="#ref2">2</a>]</span></p>
+    <div class="formula">\[\log_b x=\frac{\ln x}{\ln b}.\]</div>
+
+    <h2 id="examples-errors">Algebra example and common errors</h2>
+    <p>Illustrative example: solving \(e^{2x}=5\) by taking natural logarithms gives \(2x=\ln5\), so \(x=\tfrac12\ln5\).</p>
+    <ul>
+      <li>The real logarithm of zero or a negative number is undefined. A limit tending to \(-\infty\) does not assign a value to \(\ln0\).<span class="cite">[<a href="#ref2">2</a>, <a href="#ref3">3</a>]</span></li>
+      <li>Logarithms do not distribute over addition. For example, \(\ln(1+1)=\ln2\), while \(\ln1+\ln1=0\).<span class="cite">[<a href="#ref2">2</a>]</span></li>
+      <li>For real \(x\ne0\), \(\ln(x^2)=2\ln|x|\). Writing \(2\ln x\) restricts the expression to \(x>0\).<span class="cite">[<a href="#ref2">2</a>, <a href="#ref3">3</a>]</span></li>
+    </ul>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/eulers-number/">Euler’s Number</a></li>
+      <li><a href="/reference/exponent-rules/">Exponent Rules</a></li>
+      <li><a href="/reference/exponential-functions/">Exponential Growth and Decay Functions</a></li>
+      <li><a href="/reference/domain-and-range/">Domain and Range of Real Functions</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref1">NIST, <em>Digital Library of Mathematical Functions</em>, <a href="https://dlmf.nist.gov/4.2">§4.2: Definitions</a>, equations 4.2.8 and 4.2.11–14.</li>
+      <li id="ref2">OpenStax, <em>Calculus Volume 1</em>, <a href="https://openstax.org/books/calculus-volume-1/pages/1-5-exponential-and-logarithmic-functions">§1.5: Exponential and Logarithmic Functions</a>, logarithmic functions and change-of-base formulas.</li>
+      <li id="ref3">OpenStax, <em>Calculus Volume 1</em>, <a href="https://openstax.org/books/calculus-volume-1/pages/6-7-integrals-exponential-functions-and-logarithms">§6.7: Integrals, Exponential Functions, and Logarithms</a>, definition 6.24 and theorems 6.15–18.</li>
+      <li id="ref4">OpenStax, <em>Calculus Volume 1</em>, <a href="https://openstax.org/books/calculus-volume-1/pages/3-9-derivatives-of-exponential-and-logarithmic-functions">§3.9: Derivatives of Exponential and Logarithmic Functions</a>, theorem 3.15.</li>
+      <li id="ref5">OpenStax, <em>Calculus Volume 2</em>, <a href="https://openstax.org/books/calculus-volume-2/pages/3-1-integration-by-parts">§3.1: Integration by Parts</a>, theorem 3.1.</li>
+    </ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

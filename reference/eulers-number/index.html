@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Euler’s Number &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Euler’s number e: its value, integral, limit and series definitions, continuous compounding, and role in calculus and exponential growth.">
+  <meta property="og:title" content="Euler’s Number &middot; Reference">
+  <meta property="og:description" content="Euler’s number e: its value, integral, limit and series definitions, continuous compounding, and role in calculus and exponential growth.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/eulers-number/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/eulers-number/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "\\[", right: "\\]", display: true},
+          {left: "\\(", right: "\\)", display: false}
+        ],
+        throwOnError: false
+      });
+    });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-TLBY8P4GG9");
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"DefinedTerm","name":"Euler’s Number","description":"Euler’s number e: its value, integral, limit and series definitions, continuous compounding, and role in calculus and exponential growth.","url":"https://ngpestelos.com/reference/eulers-number/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+  <style>
+    main { max-width: 48rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--mute); margin-bottom: 0.2rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 0.8rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1.1rem 1.4rem; margin-bottom: 2rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.9rem; }
+    .toc-title { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+    .toc ol { list-style: none; padding-left: 0; margin-bottom: 0; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    p { margin-bottom: 0.9rem; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 0.9rem; }
+    li { margin-bottom: 0.3rem; }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; }
+    .cite a { text-decoration: none; }
+    .formula { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1.2rem; margin: 0.5rem 0 1.2rem; text-align: center; overflow-x: auto; }
+    .katex-display { margin: 0.35rem 0; }
+    #references { font-size: 0.92rem; }
+    #references-list li { margin-bottom: 0.5rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    .back-to-top { background: var(--bg); color: var(--ink); border-color: var(--line); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline-color: var(--link); }
+    @media print { .back, .back-to-top { display: none !important; } .formula { overflow: visible; } }
+  </style>
+</head>
+<body class="reference">
+  <main id="top">
+    <nav class="back" aria-label="Breadcrumb">
+      <a href="/reference/">&larr; Reference</a> &middot; <a href="/">Nestor G Pestelos Jr</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a>
+    </nav>
+
+    <p class="kicker">Mathematics &middot; Calculus</p>
+    <h1>Euler’s Number</h1>
+    <p class="updated">Reference entry &middot; last updated October 12, 2026</p>
+
+    <p class="lede"><strong>Euler’s number</strong>, denoted \(e\), is the base of the <a href="/reference/natural-logarithm/">natural logarithm</a>. Its value begins \(2.718281828459045\ldots\). The function \(e^x\) is called the natural exponential function.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">1. First principles and definitions</a></li>
+        <li><a href="#equivalent-definitions">2. Limit and series definitions</a></li>
+        <li><a href="#continuous-compounding">3. Continuous compounding</a></li>
+        <li><a href="#calculus">4. Calculus and proportional change</a></li>
+        <li><a href="#name">5. Euler’s number and Euler’s constant</a></li>
+        <li><a href="#see-also">6. See also</a></li>
+        <li><a href="#references">7. References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p>The natural logarithm can be defined by \(\ln x=\int_1^x dt/t\) for \(x>0\). Euler’s number is the unique number \(e>1\) for which this integral equals one:<span class="cite">[<a href="#ref1">1</a>, <a href="#ref3">3</a>]</span></p>
+    <div class="formula">\[\int_1^e \frac{dt}{t}=1,\qquad \ln e=1.\]</div>
+    <p>For real \(x\), the inverse relation gives \(\ln(e^x)=x\). For positive \(x\), \(e^{\ln x}=x\). The notation \(\exp(x)\) also means \(e^x\).<span class="cite">[<a href="#ref1">1</a>, <a href="#ref3">3</a>]</span></p>
+
+    <h2 id="equivalent-definitions">Limit and series definitions</h2>
+    <p>The same number is obtained from a limit over positive integers \(n\):<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <div class="formula">\[e=\lim_{n\to\infty}\left(1+\frac{1}{n}\right)^n.\]</div>
+    <p>A convergent series gives another definition. Here \(n!\) is the product of the integers from \(1\) through \(n\), with \(0!=1\):<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <div class="formula">\[e=\sum_{n=0}^{\infty}\frac{1}{n!}=1+1+\frac{1}{2!}+\frac{1}{3!}+\cdots.\]</div>
+
+    <h2 id="continuous-compounding">Continuous compounding</h2>
+    <p>In an idealized compounding model, a principal \(P>0\) earns a fixed nominal annual rate \(r\ge 0\). There are no deposits, withdrawals, fees, or taxes. With \(n\) equal compounding periods per year and \(t\ge 0\) years, at a compounding date the amount is:<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <div class="formula">\[A_n(t)=P\left(1+\frac{r}{n}\right)^{nt}.\]</div>
+    <p>As the compounding frequency tends to infinity, \(A_n(t)\) tends to \(Pe^{rt}\). Setting \(P=1\), \(r=1\), and \(t=1\) gives \(e\): a unit principal at a nominal rate of 100% for one year under continuous compounding.<span class="cite">[<a href="#ref2">2</a>, <a href="#ref4">4</a>]</span></p>
+
+    <h2 id="calculus">Calculus and proportional change</h2>
+    <p>The natural exponential equals its derivative. It is an antiderivative of itself:<span class="cite">[<a href="#ref3">3</a>, <a href="#ref5">5</a>]</span></p>
+    <div class="formula">\[\frac{d}{dx}e^x=e^x,\qquad \int e^x\,dx=e^x+C.\]</div>
+    <p>Among real exponential functions \(b^x\) with \(b>0\), the base \(e\) gives slope one at \(x=0\). For a differentiable real function \(g\), the chain rule gives \(\frac{d}{dx}e^{g(x)}=g'(x)e^{g(x)}\).<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p>With constant \(k\) and initial value \(y(0)=y_0\), the equation for change proportional to the current value has solution:<span class="cite">[<a href="#ref6">6</a>]</span></p>
+    <div class="formula">\[\frac{dy}{dt}=ky,\qquad y(t)=y_0e^{kt}.\]</div>
+    <p>For \(y_0>0\), positive \(k\) gives growth, negative \(k\) gives decay, and \(k=0\) gives a constant value. The model assumes a fixed proportional rate.<span class="cite">[<a href="#ref6">6</a>]</span></p>
+
+    <h2 id="name">Euler’s number and Euler’s constant</h2>
+    <p>Euler’s constant usually denotes the number \(\gamma\approx0.57721\). It is defined by the limit of \(1+1/2+\cdots+1/n-\ln n\) as \(n\to\infty\).<span class="cite">[<a href="#ref7">7</a>]</span></p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/natural-logarithm/">Natural Logarithm</a></li>
+      <li><a href="/reference/exponent-rules/">Exponent Rules</a></li>
+      <li><a href="/reference/exponential-functions/">Exponential Growth and Decay Functions</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol id="references-list">
+      <li id="ref1">NIST, <em>Digital Library of Mathematical Functions</em>, <a href="https://dlmf.nist.gov/4.2">§4.2: Definitions</a>, equations 4.2.11–14, 4.2.32, and 4.2.34.</li>
+      <li id="ref2">NIST, <em>Digital Library of Mathematical Functions</em>, <a href="https://dlmf.nist.gov/4.4">§4.4: Special Values and Limits</a>, equation 4.4.17.</li>
+      <li id="ref3">OpenStax, <em>Calculus Volume 1</em>, <a href="https://openstax.org/books/calculus-volume-1/pages/6-7-integrals-exponential-functions-and-logarithms">§6.7: Integrals, Exponential Functions, and Logarithms</a>.</li>
+      <li id="ref4">OpenStax, <em>Calculus Volume 1</em>, <a href="https://openstax.org/books/calculus-volume-1/pages/1-5-exponential-and-logarithmic-functions">§1.5: Exponential and Logarithmic Functions</a>, “The Number e.”</li>
+      <li id="ref5">OpenStax, <em>Calculus Volume 1</em>, <a href="https://openstax.org/books/calculus-volume-1/pages/3-9-derivatives-of-exponential-and-logarithmic-functions">§3.9: Derivatives of Exponential and Logarithmic Functions</a>, theorem 3.14.</li>
+      <li id="ref6">OpenStax, <em>Calculus Volume 1</em>, <a href="https://openstax.org/books/calculus-volume-1/pages/6-8-exponential-growth-and-decay">§6.8: Exponential Growth and Decay</a>.</li>
+      <li id="ref7">NIST, <em>Digital Library of Mathematical Functions</em>, <a href="https://dlmf.nist.gov/5.2">§5.2: Definitions</a>, equation 5.2.3.</li>
+    </ol>
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

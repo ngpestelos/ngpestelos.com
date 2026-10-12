@@ -311,6 +311,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/natural-logarithm/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/neural-networks/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -1570,6 +1575,11 @@
   </url>
   <url>
     <loc>https://ngpestelos.com/reference/domain-and-range/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ngpestelos.com/reference/eulers-number/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
