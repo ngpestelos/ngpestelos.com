@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What Is a Natural Logarithm? &middot; ELI5 &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="A picture explanation of natural logarithms as real exponents on an e-based scale, with one slider for whole, fractional, and negative steps.">
+  <meta property="og:title" content="What Is a Natural Logarithm? &middot; ELI5">
+  <meta property="og:description" content="Start at 1, multiply by e, and read the step number with ln. Explore fractional and negative exponents with one slider.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/natural-logarithm-steps/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/natural-logarithm-steps/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    main { max-width: 52rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 1.6rem; }
+    .back a { color: var(--op); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); font-weight: 700; margin-bottom: 0.6rem; }
+    h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.15; margin-bottom: 0.8rem; }
+    h2 { font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; }
+    .lead { font-size: clamp(1.15rem, 2.2vw, 1.4rem); color: var(--mute); max-width: 44ch; line-height: 1.4; margin-bottom: 2.2rem; }
+    .block { padding: 2.2rem 0; margin: 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 1.1rem; text-align: center; }
+    .one { font-size: clamp(1.1rem, 2vw, 1.3rem); max-width: 45ch; margin-inline: auto; line-height: 1.4; }
+    .figure { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 1rem; width: 100%; max-width: 42rem; margin: 0 auto; }
+    .pic { display: block; width: 100%; height: auto; }
+    .pic text { font-family: "Segoe UI", Helvetica, Arial, sans-serif; fill: var(--ink); }
+    .pic .node { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+    .pic .connector { fill: none; stroke: var(--op); stroke-width: 2; }
+    .pic .arrow { fill: var(--op); }
+    .pic .pill { fill: var(--card); stroke: var(--line); stroke-width: 1.5; }
+    .pic .value { font-size: 28px; font-weight: 700; text-anchor: middle; }
+    .pic .label { font-size: 18px; text-anchor: middle; }
+    .pic .small { font-size: 16px; text-anchor: middle; fill: var(--mute); }
+    .pic .axis { stroke: var(--ink); stroke-width: 1.5; fill: none; }
+    .pic .grid { stroke: var(--line); fill: none; }
+    .pic .curve { stroke: var(--op); stroke-width: 2.5; fill: none; }
+    .pic .point { fill: var(--op); stroke: var(--card); stroke-width: 2; }
+    figcaption { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-top: 0.5rem; }
+    .control { width: 100%; max-width: 32rem; margin: 0.4rem auto 0; font-family: "Segoe UI", Helvetica, Arial, sans-serif; }
+    .control label { display: block; text-align: left; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .control input { width: 100%; min-height: 44px; accent-color: var(--op); cursor: pointer; }
+    .control button { min-height: 44px; padding: 0.45rem 1rem; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--op); font: inherit; cursor: pointer; margin-top: 0.6rem; }
+    .control input:disabled, .control button:disabled { cursor: default; }
+    .control input:focus-visible, .control button:focus-visible, .more summary:focus-visible { outline: 2px solid var(--op); outline-offset: 3px; }
+    .readouts { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; margin: 0.4rem 0; font-size: 0.92rem; }
+    .readouts output { display: block; font-size: 1.5rem; font-weight: 700; color: var(--op); font-variant-numeric: tabular-nums; }
+    .prompt { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.95rem; margin-top: 1rem; }
+    .more { max-width: 42rem; margin: 0 auto; width: 100%; text-align: left; font-size: 1rem; }
+    .more summary { cursor: pointer; color: var(--op); font-weight: 700; text-align: center; padding: 0.3rem; }
+    .more ul { padding-left: 1.5rem; margin-top: 0.7rem; }
+    .more li { margin: 0.5rem 0; }
+    .sources { border-top: 1px solid var(--line); padding-top: 1.5rem; color: var(--mute); font-size: 0.92rem; line-height: 1.5; }
+    .sources p { margin-bottom: 0.8rem; }
+    .sources a, .to-top a { color: var(--op); }
+    .to-top { margin-top: 1.6rem; text-align: center; }
+    .back-to-top { background: var(--card); color: var(--ink); border-color: var(--line); }
+    .back-to-top:hover { background: var(--paper); border-color: var(--op); color: var(--op); }
+    .back-to-top:focus-visible { outline-color: var(--op); }
+    @media (max-width: 600px) {
+      main { padding-inline: 1rem; }
+      .figure { padding: 0.7rem 0.35rem; }
+      .pic .value { font-size: 32px; }
+      .pic .label { font-size: 26px; }
+      .pic .small { font-size: 24px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .back-to-top { transition: none; } }
+    @media print { .control, .prompt, .back-to-top { display: none !important; } .figure { break-inside: avoid; } }
+  </style>
+</head>
+<body class="eli5">
+  <main>
+    <nav class="back" id="top" aria-label="Breadcrumb"><a href="/">Home</a> &middot; <a href="/eli5/">ELI5</a></nav>
+    <p class="kicker">Mathematics &middot; Logarithms</p>
+    <h1>What is a natural logarithm?</h1>
+    <p class="lead">ln(x) gives the step number on a continuous scale where each whole step multiplies by e.</p>
+
+    <section class="block" id="whole-steps">
+      <h2>One full step multiplies by e.</h2>
+      <p class="one">Starting at 1, one full step gives e &asymp; 2.718, and two full steps give e<sup>2</sup> &asymp; 7.389.</p>
+      <figure class="figure">
+        <svg class="pic" viewBox="0 0 640 200" role="img" aria-labelledby="whole-title whole-desc">
+          <title id="whole-title">Whole steps on an e-based scale</title>
+          <desc id="whole-desc">Step zero has value one. Step one has value e, about 2.718. Step two has value e squared, about 7.389. Each arrow multiplies by e.</desc>
+          <g class="connector"><path d="M95 102H545"/></g>
+          <g class="arrow"><polygon points="254,102 242,96 242,108"/><polygon points="479,102 467,96 467,108"/></g>
+          <rect class="node" x="30" y="65" width="130" height="74" rx="8"/>
+          <rect class="node" x="255" y="65" width="130" height="74" rx="8"/>
+          <rect class="node" x="480" y="65" width="130" height="74" rx="8"/>
+          <rect class="pill" x="163" y="12" width="89" height="42" rx="12"/>
+          <rect class="pill" x="388" y="12" width="89" height="42" rx="12"/>
+          <text class="label" x="207.5" y="42">&times; e</text><text class="label" x="432.5" y="42">&times; e</text>
+          <text class="value" x="95" y="112">1</text><text class="value" x="320" y="112">2.718</text><text class="value" x="545" y="112">7.389</text>
+          <text class="small" x="95" y="177">step 0</text><text class="small" x="320" y="177">step 1</text><text class="small" x="545" y="177">step 2</text>
+        </svg>
+        <figcaption>Illustrative scale &middot; displayed decimals rounded</figcaption>
+      </figure>
+      <details class="more">
+        <summary>What a “step” means</summary>
+        <ul>
+          <li>A step number s is a real exponent: x = e<sup>s</sup>.</li>
+          <li>Euler’s number e begins 2.718281828&hellip;.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="block" id="read-steps">
+      <h2>ln reads the step number.</h2>
+      <p class="one">ln(x) returns the exponent s in e<sup>s</sup> = x.</p>
+      <figure class="figure">
+        <svg class="pic" viewBox="0 0 640 350" role="img" aria-labelledby="play-title play-desc">
+          <title id="play-title">Natural logarithm playground</title>
+          <desc id="play-desc">The horizontal axis is the positive value x. The vertical axis is the step number ln(x). The marker starts at x equals one and ln(x) equals zero.</desc>
+          <g class="grid" aria-hidden="true"><path d="M72 64H568 M72 130H568 M72 262H568 M72 314H568"/></g>
+          <g class="axis" aria-hidden="true"><path d="M72 46V316 M72 196H580"/></g>
+          <polygon class="arrow" points="580,196 570,190 570,202"/>
+          <path class="curve" d="M84.40,302.22 L84.79,300.19 L85.19,298.17 L85.60,296.14 L86.02,294.11 L86.46,292.08 L86.91,290.05 L87.38,288.02 L87.86,285.99 L88.35,283.96 L88.86,281.93 L89.39,279.91 L89.93,277.88 L90.49,275.85 L91.07,273.82 L91.66,271.79 L92.28,269.76 L92.91,267.73 L93.56,265.70 L94.24,263.67 L94.93,261.65 L95.65,259.62 L96.39,257.59 L97.15,255.56 L97.93,253.53 L98.74,251.50 L99.58,249.47 L100.44,247.44 L101.32,245.41 L102.24,243.39 L103.18,241.36 L104.16,239.33 L105.16,237.30 L106.20,235.27 L107.26,233.24 L108.37,231.21 L109.50,229.18 L110.67,227.15 L111.88,225.13 L113.12,223.10 L114.41,221.07 L115.73,219.04 L117.10,217.01 L118.50,214.98 L119.96,212.95 L121.45,210.92 L123.00,208.89 L124.59,206.87 L126.23,204.84 L127.92,202.81 L129.67,200.78 L131.47,198.75 L133.33,196.72 L135.24,194.69 L137.22,192.66 L139.25,190.63 L141.35,188.61 L143.52,186.58 L145.75,184.55 L148.05,182.52 L150.42,180.49 L152.87,178.46 L155.40,176.43 L158.00,174.40 L160.69,172.37 L163.45,170.35 L166.31,168.32 L169.25,166.29 L172.29,164.26 L175.42,162.23 L178.65,160.20 L181.98,158.17 L185.41,156.14 L188.95,154.11 L192.60,152.09 L196.37,150.06 L200.25,148.03 L204.25,146.00 L208.38,143.97 L212.64,141.94 L217.03,139.91 L221.56,137.88 L226.23,135.85 L231.04,133.83 L236.01,131.80 L241.13,129.77 L246.41,127.74 L251.85,125.71 L257.47,123.68 L263.26,121.65 L269.23,119.62 L275.38,117.59 L281.73,115.57 L288.28,113.54 L295.03,111.51 L302.00,109.48 L309.18,107.45 L316.58,105.42 L324.21,103.39 L332.09,101.36 L340.21,99.33 L348.58,97.31 L357.22,95.28 L366.12,93.25 L375.30,91.22 L384.77,89.19 L394.53,87.16 L404.60,85.13 L414.99,83.10 L425.69,81.07 L436.73,79.05 L448.12,77.02 L459.86,74.99 L471.97,72.96 L484.46,70.93 L497.33,68.90 L510.61,66.87 L524.30,64.84 L538.42,62.81 L552.98,60.79 L568.00,58.76"/>
+          <g aria-hidden="true">
+            <text class="small" x="52" y="69">2</text><text class="small" x="52" y="135">1</text><text class="small" x="52" y="201">0</text><text class="small" x="52" y="267">−1</text>
+            <text class="small" x="134" y="236">1</text><text class="small" x="320" y="236">4</text><text class="small" x="568" y="236">8</text>
+            <text class="label" x="174" y="34">steps s = ln(x)</text><text class="label" x="528" y="334">value x</text>
+          </g>
+          <circle class="point" id="logMarker" cx="134" cy="196" r="7"/>
+        </svg>
+        <figcaption>Illustrative graph &middot; x = e<sup>s</sup></figcaption>
+        <form class="control" id="logPlayground">
+          <label for="logInput">Choose a positive value x</label>
+          <input type="range" id="logInput" disabled min="0.20" max="8.00" step="0.01" value="1.00" aria-describedby="logReadouts playgroundLimits" aria-valuetext="x = 1.00; ln(x) = 0.000 steps">
+          <div class="readouts" id="logReadouts" aria-live="polite" aria-atomic="true">
+            <div>x (2 decimals)<output id="xReadout" for="logInput">1.00</output></div>
+            <div>ln(x) (3 decimals)<output id="logReadout" for="logInput">0.000</output></div>
+          </div>
+          <button type="reset" id="resetExample" disabled>Reset to 1</button>
+          <p class="prompt">Before moving below 1, predict the sign of ln(x).</p>
+        </form>
+        <noscript><p>JavaScript is off. The frozen example shows x = 1 and ln(x) = 0.</p></noscript>
+      </figure>
+      <details class="more" id="playgroundLimits">
+        <summary>Slider range and rounding</summary>
+        <ul>
+          <li>The slider covers 0.20 to 8.00 in increments of 0.01.</li>
+          <li>The point uses ln(x) before rounding; the readouts show two and three decimal places.</li>
+          <li>The slider may not land exactly on e.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="block" id="half-step">
+      <h2>Half a step uses &radic;e.</h2>
+      <p class="one">Two half-steps multiply by &radic;e twice, giving one full factor of e.</p>
+      <figure class="figure">
+        <svg class="pic" viewBox="0 0 640 200" role="img" aria-labelledby="half-title half-desc">
+          <title id="half-title">Two half-steps make one full step</title>
+          <desc id="half-desc">Start at one. Half a step gives square root of e, about 1.649. Another half-step gives e, about 2.718.</desc>
+          <g class="connector"><path d="M95 102H545"/></g>
+          <g class="arrow"><polygon points="254,102 242,96 242,108"/><polygon points="479,102 467,96 467,108"/></g>
+          <rect class="node" x="30" y="65" width="130" height="74" rx="8"/><rect class="node" x="255" y="65" width="130" height="74" rx="8"/><rect class="node" x="480" y="65" width="130" height="74" rx="8"/>
+          <rect class="pill" x="163" y="12" width="89" height="42" rx="12"/><rect class="pill" x="388" y="12" width="89" height="42" rx="12"/>
+          <text class="label" x="207.5" y="42">&times; &radic;e</text><text class="label" x="432.5" y="42">&times; &radic;e</text>
+          <text class="value" x="95" y="112">1</text><text class="value" x="320" y="112">1.649</text><text class="value" x="545" y="112">2.718</text>
+          <text class="small" x="95" y="177">step 0</text><text class="small" x="320" y="177">step 0.5</text><text class="small" x="545" y="177">step 1</text>
+        </svg>
+        <figcaption>Illustrative scale &middot; ln(&radic;e) = 0.5</figcaption>
+      </figure>
+      <details class="more">
+        <summary>Why half a step is a square root</summary>
+        <ul>
+          <li>e<sup>0.5</sup> = &radic;e.</li>
+          <li>&radic;e &times; &radic;e = e, so two moves of 0.5 give a move of 1.</li>
+          <li>A fractional step is a real exponent, not a count of whole multiplications.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="block" id="negative-step">
+      <h2>Going back one step divides by e.</h2>
+      <p class="one">A positive value below 1 has a negative step number because e raised to a negative exponent is below 1.</p>
+      <figure class="figure">
+        <svg class="pic" viewBox="0 0 640 200" role="img" aria-labelledby="negative-title negative-desc">
+          <title id="negative-title">Negative steps give positive values below one</title>
+          <desc id="negative-desc">From right to left: one at step zero, one divided by e at step minus one, and one divided by e squared at step minus two. All three values are positive.</desc>
+          <g class="connector"><path d="M95 102H545"/></g>
+          <g class="arrow"><polygon points="161,102 173,96 173,108"/><polygon points="386,102 398,96 398,108"/></g>
+          <rect class="node" x="30" y="65" width="130" height="74" rx="8"/><rect class="node" x="255" y="65" width="130" height="74" rx="8"/><rect class="node" x="480" y="65" width="130" height="74" rx="8"/>
+          <rect class="pill" x="163" y="12" width="89" height="42" rx="12"/><rect class="pill" x="388" y="12" width="89" height="42" rx="12"/>
+          <text class="label" x="207.5" y="42">&divide; e</text><text class="label" x="432.5" y="42">&divide; e</text>
+          <text class="value" x="95" y="112">0.135</text><text class="value" x="320" y="112">0.368</text><text class="value" x="545" y="112">1</text>
+          <text class="small" x="95" y="177">step −2</text><text class="small" x="320" y="177">step −1</text><text class="small" x="545" y="177">step 0</text>
+        </svg>
+        <figcaption>Positive x only &middot; ln(0) and ln(negative x) have no real value</figcaption>
+      </figure>
+      <details class="more">
+        <summary>Negative steps and the input limit</summary>
+        <ul>
+          <li>e<sup>−1</sup> = 1/e &asymp; 0.368, so ln(1/e) = −1.</li>
+          <li>e<sup>s</sup> stays positive for every real step number s.</li>
+          <li>The real natural logarithm therefore accepts only x &gt; 0.</li>
+        </ul>
+      </details>
+    </section>
+
+    <footer class="sources">
+      <p><strong>Sources:</strong> <a href="https://dlmf.nist.gov/4.2">NIST DLMF, §4.2: Definitions</a>; <a href="https://openstax.org/books/calculus-volume-1/pages/1-5-exponential-and-logarithmic-functions">OpenStax, Calculus Volume 1, §1.5: Exponential and Logarithmic Functions</a>.</p>
+      <p>Longer version: <a href="/reference/natural-logarithm/">Natural Logarithm reference</a>.</p>
+    </footer>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+  <script>
+    (function () {
+      "use strict";
+      var slider = document.getElementById("logInput");
+      var marker = document.getElementById("logMarker");
+      var xReadout = document.getElementById("xReadout");
+      var logReadout = document.getElementById("logReadout");
+      function render(x) {
+        var steps = Math.log(x);
+        marker.setAttribute("cx", (72 + 62 * x).toFixed(2));
+        marker.setAttribute("cy", (196 - 66 * steps).toFixed(2));
+        xReadout.textContent = x.toFixed(2);
+        logReadout.textContent = steps.toFixed(3);
+        slider.setAttribute("aria-valuetext", "x = " + x.toFixed(2) + "; ln(x) = " + steps.toFixed(3) + " steps");
+      }
+      slider.addEventListener("input", function () { render(Number(slider.value)); });
+      document.getElementById("logPlayground").addEventListener("reset", function () { render(1); });
+      render(Number(slider.value));
+      slider.removeAttribute("disabled");
+      document.getElementById("resetExample").removeAttribute("disabled");
+      var backToTop = document.getElementById("backToTop");
+      window.addEventListener("scroll", function () {
+        backToTop.classList.toggle("visible", window.scrollY > 250);
+      }, { passive: true });
+      backToTop.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      });
+    })();
+  </script>
+</body>
+</html>
