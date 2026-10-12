@@ -151,7 +151,7 @@ Book.where("title = ?", params[:title])</pre>
 <p>Hash conditions and SQL placeholders keep values separate from the SQL expression. Direct string interpolation of untrusted values can introduce SQL injection. Placeholders do not select safe column names or sort expressions; dynamic identifiers need an application-controlled allowlist.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref10">10</a>]</span></p>
 <p>For a literal prefix search with SQL <code>LIKE</code>, <code>sanitize_sql_like</code> escapes user-supplied <code>%</code> and <code>_</code> wildcard characters before a deliberate wildcard is appended.<span class="cite">[<a href="#ref2">2</a>]</span></p>
 <h2 id="see-also">See also</h2>
-<ul><li><a href="/eli5/activerecord-relations-explained/">ActiveRecord Relations Explained</a></li><li><a href="/reference/ruby-array-operations/">Ruby Array Operations</a></li></ul>
+<ul><li><a href="/eli5/activerecord-relations-explained-2/">Interactive ActiveRecord::Relation explainer</a></li><li><a href="/eli5/activerecord-relations-explained/">ActiveRecord Relations Explained</a></li><li><a href="/reference/ruby-array-operations/">Ruby Array Operations</a></li></ul>
 <h2 id="references">References</h2><ol>
 <li id="ref1"><a href="https://api.rubyonrails.org/classes/ActiveRecord/Relation.html">Rails API documentation, Relation</a>.</li>
 <li id="ref2"><a href="https://guides.rubyonrails.org/v8.1/active_record_querying.html">Rails 8.1 Guides, Active Record Query Interface</a>.</li>
