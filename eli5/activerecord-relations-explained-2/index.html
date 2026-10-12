@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActiveRecord::Relation &middot; ELI5 &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Choose a book filter, load the records, and see how an ActiveRecord relation keeps them for another read.">
+  <meta property="og:title" content="ActiveRecord::Relation &middot; ELI5">
+  <meta property="og:description" content="Choose a book filter, load the records, and see how an ActiveRecord relation keeps them for another read.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/activerecord-relations-explained-2/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/activerecord-relations-explained-2/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root { --paper:#f4eee4; --ink:#1c1612; --card:#fffaf3; --op:#9a3412; --op-edge:#7c2d12; --leaf:#0f5c57; --leaf-edge:#0b4a46; --line:#d4c9bb; --mute:#6e645a; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+    body { background:var(--paper); color:var(--ink); font-family:"Iowan Old Style",Palatino,Georgia,serif; line-height:1.5; }
+    main { width:100%; max-width:48rem; margin:auto; padding:1.5rem 1.25rem 4rem; }
+    a { color:var(--op); }
+    .back { font:700 .9rem/1.5 system-ui,sans-serif; margin-bottom:1.5rem; }
+    .kicker { font:.8rem/1.5 system-ui,sans-serif; color:var(--mute); letter-spacing:.07em; }
+    h1 { font-size:clamp(2.2rem,6vw,3.4rem); line-height:1.1; margin:.5rem 0 1rem; }
+    .lead { font-size:clamp(1.15rem,3vw,1.4rem); max-width:38ch; }
+    .example { font:.85rem/1.5 system-ui,sans-serif; color:var(--mute); margin:1rem 0 0; }
+    .block { border-top:1px solid var(--line); margin-top:2rem; padding-top:1.7rem; }
+    h2 { font-size:clamp(1.65rem,4vw,2.2rem); line-height:1.2; margin-bottom:.6rem; }
+    .one { font-size:clamp(1.1rem,2.7vw,1.3rem); margin-bottom:1.1rem; max-width:42ch; }
+    .figure { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1.15rem; }
+    .figure, .more { font-family:system-ui,sans-serif; }
+    .label { font-size:.78rem; font-weight:700; color:var(--mute); margin-bottom:.55rem; }
+    code, pre { font: .91em/1.55 ui-monospace,SFMono-Regular,Menlo,monospace; overflow-wrap:anywhere; }
+    pre { white-space:pre-wrap; }
+    .slip { background:#fce4ce; border:1.5px solid var(--op-edge); border-radius:8px; padding:.9rem; }
+    .slip .label { color:var(--op-edge); }
+    .shelf { margin-bottom:1rem; }
+    .shelf .books { grid-template-columns:repeat(auto-fit,minmax(5rem,1fr)); }
+    .books { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.6rem; }
+    .book { background:#dceee7; border:1.5px solid var(--leaf-edge); border-radius:8px; padding:.8rem .65rem; color:var(--leaf-edge); }
+    .book strong, .book span { display:block; }
+    .book .title { font-size:1.15rem; font-weight:700; }
+    .book .kind { font-size:.78rem; margin-top:.3rem; }
+    .controls { display:flex; gap:.65rem; flex-wrap:wrap; align-items:end; margin:1rem 0; }
+    .controls label { display:block; font-size:.85rem; font-weight:700; margin-bottom:.25rem; }
+    button, select { min-height:44px; border:1px solid var(--op-edge); border-radius:7px; padding:.6rem .8rem; font:600 .94rem/1.3 system-ui,sans-serif; background:var(--card); color:var(--ink); }
+    button { cursor:pointer; }
+    #load { background:var(--op); color:var(--card); }
+    button:disabled, select:disabled { opacity:.6; cursor:default; }
+    button:focus-visible, select:focus-visible, a:focus-visible, summary:focus-visible { outline:3px solid var(--leaf); outline-offset:3px; }
+    .prompt { font-size:.9rem; margin:.9rem 0 .6rem; }
+    .state { display:flex; flex-wrap:wrap; gap:.6rem 1.5rem; font-size:.85rem; margin:.8rem 0; }
+    .record-box { border:1px solid var(--line); border-radius:8px; min-height:6.9rem; padding:.9rem; }
+    #records .books { grid-template-columns:repeat(auto-fit,minmax(7rem,1fr)); }
+    .empty { color:var(--mute); font-size:.9rem; }
+    #status { font-size:.86rem; color:var(--mute); margin-top:.7rem; min-height:1.5em; }
+    .flow { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:.8rem; align-items:center; }
+    .connector { color:var(--op); font-size:.82rem; text-align:center; }
+    .connector span { display:block; font-size:1.4rem; }
+    .connector code { display:block; background:var(--card); border:1px solid var(--line); border-radius:7px; padding:.35rem; }
+    .stored { background:#dceee7; border:1.5px solid var(--leaf-edge); border-radius:8px; padding:.9rem; }
+    .stored .books { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .foot-label { font-size:.82rem; color:var(--mute); margin-top:.7rem; }
+    .more { font-size:.95rem; margin-top:.85rem; }
+    summary { cursor:pointer; color:var(--op); font-weight:600; }
+    .more ul { margin:.65rem 0 0 1.25rem; }
+    .more li { margin:.4rem 0; }
+    footer { border-top:1px solid var(--line); margin-top:2rem; padding-top:1.5rem; font:.9rem/1.6 system-ui,sans-serif; }
+    footer p { margin-bottom:.8rem; }
+    .to-top { font-weight:700; }
+    .back-to-top { position:fixed; right:1.2rem; bottom:1.2rem; width:2.6rem; height:2.6rem; padding:0; border-radius:50%; border:1px solid var(--line); background:var(--card); color:var(--ink); font-size:1.2rem; opacity:0; visibility:hidden; transition:opacity .2s; }
+    .back-to-top.visible { opacity:1; visibility:visible; }
+    .back-to-top:hover { background:var(--paper); color:var(--op); }
+    @media (max-width:600px) {
+      main { padding-right:3.5rem; }
+      .back-to-top { right:.25rem; width:2.75rem; height:2.75rem; }
+      .figure { padding:.9rem; }
+      .flow { display:block; }
+      .connector { margin:.65rem auto; width:max-content; max-width:100%; }
+      .connector span { transform:rotate(90deg); }
+      .controls { align-items:stretch; }
+      .controls > div { width:100%; }
+      select { width:100%; }
+      .book { padding:.6rem .4rem; }
+      .book .title { font-size:1rem; }
+    }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .back-to-top { transition:none; } }
+    @media print { .back-to-top { display:none; } .block { break-inside:avoid; } }
+  </style>
+</head>
+<body class="eli5">
+<main>
+  <p class="back" id="top"><a href="/">Home</a> · <a href="/eli5/">ELI5</a></p>
+  <header>
+    <p class="kicker">Ruby on Rails · ActiveRecord::Relation</p>
+    <h1>How Rails loads books</h1>
+    <p class="lead">A relation keeps a request for records and can hold the records it loads.</p>
+    <p class="example">Illustrative Book example · synchronous, plain Rails 8.1.3 relation</p>
+  </header>
+
+  <section class="block">
+    <h2>1. Choose the books</h2>
+    <p class="one">Calling <code>where</code> builds a relation with a rule for which books to fetch.</p>
+    <div class="figure" aria-label="Book request playground">
+      <div class="shelf">
+        <p class="label">Database rows · illustrative</p>
+        <div class="books">
+          <div class="book"><strong>Aster</strong><span class="kind">fiction · id 1</span></div>
+          <div class="book"><strong>Beacon</strong><span class="kind">history · id 2</span></div>
+          <div class="book"><strong>Cloud</strong><span class="kind">fiction · id 3</span></div>
+        </div>
+      </div>
+      <div class="slip">
+        <p class="label">Current request · relation</p>
+        <pre id="query">books = Book.where(category: "fiction").order(:title)</pre>
+      </div>
+      <p class="prompt">Predict which books will load, then read the same request twice.</p>
+      <div class="controls">
+        <div><label for="category">Book category</label><select id="category" disabled><option value="all">All books</option><option value="fiction" selected>Fiction</option><option value="history">History</option><option value="poetry">Poetry (no matches)</option></select></div>
+        <button id="load" type="button" disabled>Load books · to_a</button>
+        <button id="reset" type="button" disabled>Reset</button>
+      </div>
+      <div class="state"><span><code>loaded?</code> <strong id="loaded">false</strong></span><span>Fetches in this demo: <strong id="fetches">0</strong></span></div>
+      <div class="record-box">
+        <p class="label">Records held by this relation</p>
+        <div id="records"><p class="empty">Records have not loaded.</p></div>
+      </div>
+      <p id="status" role="status" aria-live="polite" aria-atomic="true">Request built; records not loaded.</p>
+      <noscript><p class="foot-label">JavaScript is off: this fiction request is frozen before loading; the pictures below show its results.</p></noscript>
+    </div>
+    <details class="more"><summary>What this playground models</summary><ul>
+      <li>The page uses an in-memory teaching model; it runs no Rails code or SQL.</li>
+      <li>Each category change builds a fresh, unloaded request, sorted by title.</li>
+      <li>It leaves out adapters, the SQL query cache, console inspection, async loading, and associations.</li>
+      <li>Other calls, such as <code>count</code>, can query the database without loading these Book objects.</li>
+    </ul></details>
+  </section>
+
+  <section class="block">
+    <h2>2. Chain another rule</h2>
+    <p class="one">Adding <code>order(:title)</code> returns a new relation with the sort rule while keeping the original request unchanged.</p>
+    <div class="figure">
+      <div class="flow">
+        <div class="slip"><p class="label">Original relation</p><pre>fiction = Book.where(category: "fiction")</pre><p class="foot-label">Rule: fiction</p></div>
+        <div class="connector"><code>order(:title)</code><span aria-hidden="true">→</span></div>
+        <div class="slip"><p class="label">New relation</p><pre>books = fiction.order(:title)</pre><p class="foot-label">Rules: fiction + title order</p></div>
+      </div>
+      <p class="foot-label">Both requests are unloaded in this example.</p>
+    </div>
+    <details class="more"><summary>Why chaining works</summary><ul>
+      <li>These query methods return relations, so you can add more query rules.</li>
+      <li>The new relation starts unloaded even when the original relation is loaded.</li>
+    </ul></details>
+  </section>
+
+  <section class="block">
+    <h2>3. Read the records</h2>
+    <p class="one">On this unloaded relation, <code>to_a</code> fetches the matching rows and returns an array of Book objects.</p>
+    <div class="figure">
+      <div class="flow">
+        <div class="slip"><p class="label">Request</p><pre>books.to_a</pre><p class="foot-label">Fiction · title order</p></div>
+        <div class="connector"><code>Fetch rows</code><span aria-hidden="true">→</span></div>
+        <div class="stored"><p class="label">Array of Book objects</p><div class="books"><div class="book"><strong>Aster</strong><span class="kind">Book · id 1</span></div><div class="book"><strong>Cloud</strong><span class="kind">Book · id 3</span></div></div></div>
+      </div>
+      <p class="foot-label">The relation now holds these records · <code>loaded?</code> true</p>
+    </div>
+    <details class="more"><summary>Other ways to load</summary><ul>
+      <li><code>books.each { |book| ... }</code> also loads this relation before reading each record.</li>
+      <li><code>books.load</code> loads the records and returns the relation itself.</li>
+      <li><code>to_a</code> returns a copy of the records array; the Book objects are shared.</li>
+    </ul></details>
+  </section>
+
+  <section class="block">
+    <h2>4. Read them again</h2>
+    <p class="one">Another <code>to_a</code> or <code>each</code> on the same loaded relation reuses the records it holds.</p>
+    <div class="figure">
+      <div class="flow">
+        <div class="stored"><p class="label">Same relation · stored records</p><div class="books"><div class="book"><strong>Aster</strong><span class="kind">Book · id 1</span></div><div class="book"><strong>Cloud</strong><span class="kind">Book · id 3</span></div></div></div>
+        <div class="connector"><code>books.to_a</code><span aria-hidden="true">→</span></div>
+        <div class="slip"><p class="label">Second read</p><p>Aster · Cloud</p><p class="foot-label">Uses stored Book objects</p></div>
+      </div>
+      <p class="foot-label">One fetch across both reads in this example</p>
+    </div>
+    <details class="more"><summary>When stored records get stale</summary><ul>
+      <li>Later database changes do not refresh these records automatically.</li>
+      <li><code>books.reload</code> clears the stored records and fetches them again.</li>
+      <li>A fresh relation has its own loading state.</li>
+    </ul></details>
+  </section>
+
+  <footer>
+    <p>Sources: <a href="https://guides.rubyonrails.org/v8.1/active_record_querying.html#understanding-method-chaining">Rails 8.1 querying guide</a>, <a href="https://api.rubyonrails.org/classes/ActiveRecord/Relation.html">Relation API</a>, <a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation.rb">Rails 8.1.3 relation source</a>, <a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/query_methods.rb">query-method source</a>, <a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/delegation.rb">iteration source</a>.</p>
+    <p>Longer version: <a href="/reference/activerecord-relation/">ActiveRecord::Relation reference</a></p>
+    <a class="to-top" href="#top">Back to top</a>
+  </footer>
+</main>
+<button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+<script>
+(function () {
+  const category = document.getElementById('category');
+  const load = document.getElementById('load');
+  const reset = document.getElementById('reset');
+  const query = document.getElementById('query');
+  const records = document.getElementById('records');
+  const loadedLabel = document.getElementById('loaded');
+  const fetchLabel = document.getElementById('fetches');
+  const status = document.getElementById('status');
+  const rows = [
+    {id: 1, title: 'Aster', category: 'fiction'},
+    {id: 2, title: 'Beacon', category: 'history'},
+    {id: 3, title: 'Cloud', category: 'fiction'}
+  ];
+  let cached = null;
+  let fetches = 0;
+  function render(message) {
+    query.textContent = category.value === 'all'
+      ? 'books = Book.all.order(:title)'
+      : 'books = Book.where(category: "' + category.value + '").order(:title)';
+    loadedLabel.textContent = cached === null ? 'false' : 'true';
+    fetchLabel.textContent = String(fetches);
+    load.textContent = cached === null ? 'Load books · to_a' : 'Read again · to_a';
+    records.replaceChildren();
+    if (cached === null || cached.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'empty';
+      empty.textContent = cached === null ? 'Records have not loaded.' : 'Loaded an empty array: []';
+      records.append(empty);
+    } else {
+      const books = document.createElement('div');
+      books.className = 'books';
+      cached.forEach(function (book) {
+        const card = document.createElement('div');
+        card.className = 'book';
+        const title = document.createElement('strong');
+        title.className = 'title';
+        title.textContent = book.title;
+        const kind = document.createElement('span');
+        kind.className = 'kind';
+        kind.textContent = 'Book · id ' + book.id;
+        card.append(title, kind);
+        books.append(card);
+      });
+      records.append(books);
+    }
+    status.textContent = message;
+  }
+  category.addEventListener('change', function () {
+    cached = null;
+    render('Fresh request built; records not loaded.');
+  });
+  load.addEventListener('click', function () {
+    if (cached !== null) {
+      render('Reused stored Book objects; no new fetch.');
+      return;
+    }
+    cached = rows.filter(function (book) { return category.value === 'all' || book.category === category.value; });
+    fetches += 1;
+    render('Loaded ' + cached.length + ' Book objects from the modeled rows.');
+  });
+  reset.addEventListener('click', function () {
+    category.value = 'fiction';
+    cached = null;
+    fetches = 0;
+    render('Request built; records not loaded.');
+  });
+  category.disabled = load.disabled = reset.disabled = false;
+  render('Request built; records not loaded.');
+  const back = document.getElementById('backToTop');
+  function updateBack() { back.classList.toggle('visible', window.scrollY > 250); }
+  window.addEventListener('scroll', updateBack, {passive: true});
+  updateBack();
+  back.addEventListener('click', function () {
+    window.scrollTo({top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  });
+})();
+</script>
+</body>
+</html>
