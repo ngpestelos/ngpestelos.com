@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Does RoPE Mark Position? · ELI5 · Nestor G Pestelos Jr</title>
+  <meta name="description" content="Rotate two arrows to see how rotary position embeddings add word order to attention.">
+  <meta property="og:title" content="How Does RoPE Mark Position? · ELI5">
+  <meta property="og:description" content="Rotate two arrows to see how rotary position embeddings add word order to attention.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/rotary-position-embeddings/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/rotary-position-embeddings/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    :root { --leaf: #0f5c57; }
+    main { max-width: 52rem; padding: 1.4rem 1.25rem 4rem; }
+    .back, .kicker, button, .controls, .readouts, svg text, .sources { font-family: "Segoe UI", Helvetica, Arial, sans-serif; }
+    .back { margin-bottom: 1.6rem; font-size: .95rem; font-weight: 700; }
+    .kicker { font-size: .85rem; letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
+    h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.12; margin: .6rem 0; }
+    h2 { font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.2; }
+    .lead, .one { font-size: clamp(1.1rem, 2.5vw, 1.35rem); color: var(--mute); line-height: 1.4; max-width: 43ch; }
+    .block { border-top: 1px solid var(--line); padding: 2.2rem 0; display: grid; gap: 1.2rem; }
+    .figure { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 1rem; min-width: 0; }
+    .pic { width: 100%; max-width: 28rem; height: auto; display: block; margin-inline: auto; }
+    .pic text { fill: var(--ink); font-size: 16px; }
+    .pic .q { fill: var(--op); } .pic .k { fill: var(--leaf); }
+    .q-label { color: var(--op); } .k-label { color: var(--leaf); }
+    .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem 1.5rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-weight: 700; }
+    .controls { display: grid; gap: .8rem; margin-top: 1rem; }
+    .controls label { font-weight: 700; }
+    input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--op); }
+    .actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+    button { background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: .6rem .9rem; min-height: 44px; font-size: 1rem; cursor: pointer; }
+    button:hover { border-color: var(--op); } button:disabled { opacity: .6; cursor: default; }
+    :focus-visible { outline: 3px solid var(--op); outline-offset: 3px; }
+    .readouts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; margin-top: .8rem; font-size: 1rem; }
+    .readouts div { border: 1px solid var(--line); border-radius: 8px; padding: .55rem .7rem; }
+    .readouts dt { font-size: .85rem; } .readouts dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .model-note, .motion-note { font-size: .9rem; color: var(--mute); margin-top: .7rem; }
+    .more { font-size: 1rem; max-width: 46rem; } .more summary { cursor: pointer; font-weight: 700; }
+    .more ul { margin: .6rem 0 0 1.25rem; } .more li { margin-bottom: .4rem; }
+    .sources { font-size: .9rem; margin-top: 1rem; } .to-top { margin-top: 1rem; }
+    .back-to-top { position: fixed; bottom: 1.2rem; right: 1.2rem; width: 44px; border-radius: 50%; padding: 0; visibility: hidden; opacity: 0; transition: opacity .2s; }
+    .back-to-top.visible { visibility: visible; opacity: 1; }
+    @media (max-width: 420px) { main { padding-inline: 1rem; } .figure { padding: .7rem; } }
+    @media (prefers-reduced-motion: reduce) { .back-to-top { transition: none; } }
+    @media print { button, .controls { display: none; } }
+  </style>
+</head>
+<body class="eli5">
+<main>
+  <header>
+    <p id="top" class="back"><a href="/">Home</a> · <a href="/eli5/">ELI5</a></p>
+    <p class="kicker">Word order in attention</p>
+    <h1>How Does RoPE Mark Position?</h1>
+    <p class="lead">RoPE turns query and key arrows by their token positions so their match includes how far apart they are.</p>
+  </header>
+  <section class="block" aria-labelledby="rotateTitle">
+    <h2 id="rotateTitle">Position turns the arrows</h2>
+    <p class="one">Each step along the token sequence turns this pair another 30 degrees.</p>
+    <div class="figure">
+      <div class="legend"><span class="q-label">Q: query (solid)</span><span class="k-label">K: key (dashed)</span></div>
+      <svg class="pic" viewBox="0 0 360 270" role="img" aria-labelledby="dialTitle dialDesc">
+        <title id="dialTitle">A query and a key rotate with their token positions</title>
+        <desc id="dialDesc">Frozen example: query at position zero, key at position two, relative angle 60 degrees, pair score 0.500.</desc>
+        <circle cx="180" cy="130" r="90" fill="none" stroke="var(--line)" stroke-width="2"/>
+        <path d="M75 130H285 M180 25V235" stroke="var(--line)" stroke-width="1"/>
+        <text x="288" y="136">0°</text><text x="166" y="20">90°</text>
+        <path id="angleArc" d="M240 130 A60 60 0 0 0 210 78.04" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <g id="queryArrow"><path d="M180 130H260" stroke="var(--op)" stroke-width="5"/><polygon points="270,130 255,122 255,138" fill="var(--op)"/></g>
+        <g id="keyArrow" transform="rotate(-60 180 130)"><path d="M180 130H260" stroke="var(--leaf)" stroke-width="4" stroke-dasharray="7 4"/><polygon points="270,130 255,124 255,136" fill="var(--leaf)"/></g>
+        <circle cx="180" cy="130" r="4" fill="var(--ink)"/>
+        <text x="180" y="262" text-anchor="middle">Before rotation: both point right</text>
+      </svg>
+      <svg class="pic" viewBox="0 0 360 110" role="img" aria-label="Query and key token positions along the sequence">
+        <path d="M25 35H330 M25 80H330" stroke="var(--line)" stroke-width="2"/>
+        <g id="queryToken" transform="translate(35 0)"><rect x="-17" y="18" width="34" height="34" rx="8" fill="var(--card)" stroke="var(--op)" stroke-width="2"/><text class="q" x="0" y="41" text-anchor="middle">Q</text></g>
+        <g id="keyToken" transform="translate(77 0)"><rect x="-17" y="63" width="34" height="34" rx="8" fill="var(--card)" stroke="var(--leaf)" stroke-width="2"/><text class="k" x="0" y="86" text-anchor="middle">K</text></g>
+        <text x="325" y="60" text-anchor="end">token sequence →</text>
+      </svg>
+      <dl class="readouts">
+        <div><dt class="q-label">Query position</dt><dd><span id="queryPosition">0</span> · <span id="queryAngle">0</span>°</dd></div>
+        <div><dt class="k-label">Key position</dt><dd><span id="keyPosition">2</span> · <span id="keyAngle">60</span>°</dd></div>
+        <div><dt>Relative angle</dt><dd><span id="relativeAngle">60</span>°</dd></div>
+        <div><dt>Pair score: cos(angle)</dt><dd id="pairScore">0.500</dd></div>
+      </dl>
+      <div class="controls">
+        <label for="separation">Gap: <output id="gapValue" for="separation">2</output> tokens</label>
+        <input id="separation" type="range" min="0" max="8" step="1" value="2" disabled>
+        <div class="actions"><button id="shiftBoth" disabled>Shift both +1</button><button id="playPause" disabled>Play shift</button><button id="reset" disabled>Reset</button></div>
+        <p id="shiftReadout" role="status">Paused at shift 0.</p>
+      </div>
+      <p class="model-note">Illustrative model: fixed, identical unit arrows; 30° per token is a toy speed. This score is one component pair's dot product.</p>
+      <p id="motionNote" class="motion-note" hidden>Reduced motion: use the buttons to step one position at a time.</p>
+      <noscript><p>JavaScript is off. The frozen example shows a two-token gap and a pair score of 0.500.</p></noscript>
+    </div>
+    <details class="more"><summary>What these arrows stand for</summary><ul>
+      <li>Attention compares a query with a key. Each is a list of numbers made from token content.</li>
+      <li>Two numbers form one arrow. RoPE rotates these pairs inside queries and keys. The original Transformer adds position encodings to token embeddings.</li>
+      <li>This picture holds the unrotated arrows fixed to isolate position. Actual token content also changes the match.</li>
+    </ul></details>
+  </section>
+  <section class="block" aria-labelledby="gapTitle">
+    <h2 id="gapTitle">The gap changes the match</h2>
+    <p class="one">For these fixed arrows, a wider gap changes the angle between them and their pair score.</p>
+    <div class="figure">
+<svg class="pic" viewBox="0 0 360 240" role="img" aria-label="One-token gap: angle 30 degrees, score 0.866. Four-token gap: angle 120 degrees, score minus 0.500.">
+<circle cx="90" cy="90" r="59" fill="none" stroke="var(--line)" stroke-width="2"/>
+<g transform="rotate(0 90 90)"><path d="M90 90h49" stroke="var(--op)" stroke-width="4"/><polygon points="149,90 136,83 136,97" fill="var(--op)"/></g>
+<g transform="rotate(-30 90 90)"><path d="M90 90h49" stroke="var(--leaf)" stroke-width="4" stroke-dasharray="6 4"/><polygon points="149,90 136,84 136,96" fill="var(--leaf)"/></g><circle cx="270" cy="90" r="59" fill="none" stroke="var(--line)" stroke-width="2"/>
+<g transform="rotate(0 270 90)"><path d="M270 90h49" stroke="var(--op)" stroke-width="4"/><polygon points="329,90 316,83 316,97" fill="var(--op)"/></g>
+<g transform="rotate(-120 270 90)"><path d="M270 90h49" stroke="var(--leaf)" stroke-width="4" stroke-dasharray="6 4"/><polygon points="329,90 316,84 316,96" fill="var(--leaf)"/></g><text x="90" y="178" text-anchor="middle">1 token · 30°</text><text x="270" y="178" text-anchor="middle">4 tokens · 120°</text>
+<text x="90" y="213" text-anchor="middle">score 0.866</text><text x="270" y="213" text-anchor="middle">score −0.500</text></svg>
+    </div>
+    <details class="more"><summary>Why a score can be negative</summary><ul><li>For unit arrows, the dot product measures alignment: 1 for the same direction, 0 at a right angle, and −1 for opposite directions.</li><li>This pair score contributes to an attention score. Attention combines many pairs, scales the result, and converts scores into weights; the displayed number is not an attention probability.</li></ul></details>
+  </section>
+  <section class="block" aria-labelledby="shiftTitle">
+    <h2 id="shiftTitle">Move both, keep the gap</h2>
+    <p class="one">Adding three to both positions turns both arrows equally, keeping their relative angle and pair score.</p>
+    <div class="figure">
+<svg class="pic" viewBox="0 0 360 255" role="img" aria-label="Positions zero and two, and positions three and five, both have angle 60 degrees and score 0.500 for fixed content.">
+<circle cx="90" cy="90" r="59" fill="none" stroke="var(--line)" stroke-width="2"/>
+<g transform="rotate(0 90 90)"><path d="M90 90h49" stroke="var(--op)" stroke-width="4"/><polygon points="149,90 136,83 136,97" fill="var(--op)"/></g>
+<g transform="rotate(-60 90 90)"><path d="M90 90h49" stroke="var(--leaf)" stroke-width="4" stroke-dasharray="6 4"/><polygon points="149,90 136,84 136,96" fill="var(--leaf)"/></g><circle cx="270" cy="90" r="59" fill="none" stroke="var(--line)" stroke-width="2"/>
+<g transform="rotate(-90 270 90)"><path d="M270 90h49" stroke="var(--op)" stroke-width="4"/><polygon points="329,90 316,83 316,97" fill="var(--op)"/></g>
+<g transform="rotate(-150 270 90)"><path d="M270 90h49" stroke="var(--leaf)" stroke-width="4" stroke-dasharray="6 4"/><polygon points="329,90 316,84 316,96" fill="var(--leaf)"/></g><text x="90" y="178" text-anchor="middle">Q 0 · K 2</text><text x="270" y="178" text-anchor="middle">Q 3 · K 5</text>
+<text x="90" y="212" text-anchor="middle">gap 2 · angle 60°</text><text x="270" y="212" text-anchor="middle">gap 2 · angle 60°</text>
+<text x="180" y="245" text-anchor="middle">same pair score: 0.500</text></svg>
+    </div>
+    <details class="more"><summary>When equal gaps give equal scores</summary><ul><li>The identity is R(m)ᵀR(n) = R(n − m): the two rotations reduce to their difference.</li><li>Equal gaps preserve the dot product when the unrotated query and key content stays fixed. Different content can give different scores at the same gap.</li></ul></details>
+  </section>
+  <section class="block" aria-labelledby="scalesTitle">
+    <h2 id="scalesTitle">Several pairs turn at different speeds</h2>
+    <p class="one">RoPE uses fast and slow rotations across many pairs to represent position at several scales.</p>
+    <div class="figure">
+<svg class="pic" viewBox="0 0 360 500" role="img" aria-label="Illustrative speeds for a gap of four: 30 degrees per token gives 120 degrees, 15 gives 60, and 5 gives 20.">
+<circle cx="86" cy="82" r="58" fill="none" stroke="var(--line)" stroke-width="2"/>
+<g transform="rotate(0 86 82)"><path d="M86 82h48" stroke="var(--op)" stroke-width="4"/><polygon points="144,82 131,75 131,89" fill="var(--op)"/></g>
+<g transform="rotate(-120 86 82)"><path d="M86 82h48" stroke="var(--leaf)" stroke-width="4" stroke-dasharray="6 4"/><polygon points="144,82 131,76 131,88" fill="var(--leaf)"/></g><text x="170" y="60">Faster: 30° / token</text><text x="170" y="94">gap 4 → 120°</text><circle cx="86" cy="242" r="58" fill="none" stroke="var(--line)" stroke-width="2"/>
+<g transform="rotate(0 86 242)"><path d="M86 242h48" stroke="var(--op)" stroke-width="4"/><polygon points="144,242 131,235 131,249" fill="var(--op)"/></g>
+<g transform="rotate(-60 86 242)"><path d="M86 242h48" stroke="var(--leaf)" stroke-width="4" stroke-dasharray="6 4"/><polygon points="144,242 131,236 131,248" fill="var(--leaf)"/></g><text x="170" y="220">Medium: 15° / token</text><text x="170" y="254">gap 4 → 60°</text><circle cx="86" cy="402" r="58" fill="none" stroke="var(--line)" stroke-width="2"/>
+<g transform="rotate(0 86 402)"><path d="M86 402h48" stroke="var(--op)" stroke-width="4"/><polygon points="144,402 131,395 131,409" fill="var(--op)"/></g>
+<g transform="rotate(-20 86 402)"><path d="M86 402h48" stroke="var(--leaf)" stroke-width="4" stroke-dasharray="6 4"/><polygon points="144,402 131,396 131,408" fill="var(--leaf)"/></g><text x="170" y="380">Slower: 5° / token</text><text x="170" y="414">gap 4 → 20°</text><text x="180" y="491" text-anchor="middle">Toy speeds, same four-token gap</text></svg>
+    </div>
+    <details class="more"><summary>Repeats and real context limits</summary><ul>
+      <li>One rotating pair repeats after a full turn. At the toy speed of 30° per token, positions 12 tokens apart line up again.</li>
+      <li>The original RoPE schedule uses θᵢ = 10000^(−2i/d) radians per token for pair i, where i starts at zero and d is the query/key dimension.</li>
+      <li>Multiple frequencies give different positional scales. Reliable use of long context also depends on training and the model; rotation alone does not guarantee it.</li>
+    </ul></details>
+  </section>
+  <p class="sources"><strong>Sources:</strong> <a href="https://arxiv.org/html/2104.09864v5#S3.SS2">RoFormer, §3.2</a> (rotations and relative position); <a href="https://arxiv.org/html/1706.03762v7#S3.SS5">Attention Is All You Need, §3.5</a> (added position encodings). Related: <a href="/eli5/attention/">What Is Attention?</a></p>
+  <p class="to-top"><a href="#top">Back to top</a></p>
+</main>
+<script id="ropePlayground">
+(function () {
+  "use strict";
+  var byId = function (id) { return document.getElementById(id); };
+  var slider = byId("separation"), shiftButton = byId("shiftBoth");
+  var playButton = byId("playPause"), resetButton = byId("reset");
+  var motion = matchMedia("(prefers-reduced-motion: reduce)");
+  var shift = 0, gap = 2, frame = null, start = null, from = 0, target = 0, playing = false;
+  var speed = Math.PI / 6;
+  function display(n) { return String(Math.round(n * 100) / 100); }
+  function render() {
+    var q = shift * 30, k = (shift + gap) * 30, angle = gap * speed;
+    byId("queryArrow").setAttribute("transform", "rotate(" + (-q) + " 180 130)");
+    byId("keyArrow").setAttribute("transform", "rotate(" + (-k) + " 180 130)");
+    // The gap never exceeds 240 degrees, so a single SVG arc is sufficient.
+    var x1 = 180 + 60 * Math.cos(q * Math.PI / 180), y1 = 130 - 60 * Math.sin(q * Math.PI / 180);
+    var x2 = 180 + 60 * Math.cos(k * Math.PI / 180), y2 = 130 - 60 * Math.sin(k * Math.PI / 180);
+    byId("angleArc").setAttribute("d", gap === 0 ? "" : "M" + x1 + " " + y1 + " A60 60 0 " + (gap > 6 ? 1 : 0) + " 0 " + x2 + " " + y2);
+    byId("queryPosition").textContent = display(shift);
+    byId("keyPosition").textContent = display(shift + gap);
+    byId("queryAngle").textContent = display(q);
+    byId("keyAngle").textContent = display(k);
+    byId("relativeAngle").textContent = String(gap * 30);
+    byId("pairScore").textContent = Math.cos(angle).toFixed(3);
+    byId("dialDesc").textContent = "Query at position " + display(shift) + ", key at position " + display(shift + gap) + ", relative angle " + (gap * 30) + " degrees, pair score " + Math.cos(angle).toFixed(3) + ".";
+    byId("gapValue").textContent = String(gap);
+    byId("queryToken").setAttribute("transform", "translate(" + (35 + shift * 21) + " 0)");
+    byId("keyToken").setAttribute("transform", "translate(" + (35 + (shift + gap) * 21) + " 0)");
+    slider.setAttribute("aria-valuetext", gap + " tokens, relative angle " + (gap * 30) + " degrees");
+  }
+  function stop(snap) {
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null; start = null; playing = false;
+    if (snap) shift = Math.round(shift);
+    playButton.textContent = motion.matches ? "Step both +1" : "Play shift";
+    playButton.setAttribute("aria-pressed", "false");
+    shiftButton.disabled = false;
+    byId("shiftReadout").textContent = "Paused at shift " + display(shift) + ".";
+    render();
+  }
+  function tick(time) {
+    if (start === null) start = time;
+    var progress = Math.min((time - start) / 1200, 1);
+    shift = from + (target - from) * progress;
+    render();
+    if (progress < 1) { frame = requestAnimationFrame(tick); return; }
+    frame = null;
+    if (playing && shift < 6) { from = shift; target = shift + 1; start = null; frame = requestAnimationFrame(tick); }
+    else stop(true);
+  }
+  function begin(continuous) {
+    stop(false);
+    if (shift >= 6) shift = 0;
+    if (motion.matches) { shift += 1; stop(true); return; }
+    from = shift; target = Math.floor(shift) + 1; start = null; playing = continuous;
+    playButton.textContent = "Pause";
+    playButton.setAttribute("aria-pressed", "true");
+    shiftButton.disabled = true;
+    byId("shiftReadout").textContent = "Shifting both positions; the gap stays " + gap + ".";
+    frame = requestAnimationFrame(tick);
+  }
+  slider.disabled = false; shiftButton.disabled = false; playButton.disabled = false; resetButton.disabled = false;
+  slider.addEventListener("input", function () { stop(true); gap = Number(slider.value); render(); });
+  shiftButton.addEventListener("click", function () { begin(false); });
+  playButton.addEventListener("click", function () { if (frame !== null) stop(false); else begin(true); });
+  resetButton.addEventListener("click", function () { stop(false); shift = 0; gap = 2; slider.value = "2"; stop(true); });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) stop(true); });
+  function motionChanged() { stop(true); byId("motionNote").hidden = !motion.matches; }
+  motion.addEventListener("change", motionChanged);
+  motionChanged();
+})();
+</script>
+<button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+<script>
+(function () {
+  var button = document.getElementById("backToTop");
+  window.addEventListener("scroll", function () { button.classList.toggle("visible", window.scrollY > 250); }, { passive: true });
+  button.addEventListener("click", function () { window.scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); });
+})();
+</script>
+</body>
+</html>
