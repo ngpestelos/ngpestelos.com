@@ -81,6 +81,23 @@ class MetaDescriptionParser(HTMLParser):
 
 
 class SiteDiscoverabilityTests(unittest.TestCase):
+    def test_joins_association_explainer_registered(self):
+        route = "/eli5/activerecord-joins-association-loading/"
+        self.assertIn(f'href="{route}"', (ROOT / "eli5/index.html").read_text())
+        locs = sitemap_locs(SITEMAP.read_text())
+        self.assertIn(f"https://ngpestelos.com{route}", locs)
+        reference = (REF / "activerecord-eager-loading/index.html").read_text()
+        self.assertIn(f'href="{route}"', reference)
+        page = (ROOT / route.strip("/") / "index.html").read_text()
+        self.assertIn('href="/reference/activerecord-eager-loading/"', page)
+        self.assertIn("SELECT DISTINCT authors.*", page)
+        self.assertIn("maya.books.loaded?", page)
+        self.assertIn("# =&gt; false", page)
+        self.assertIn("# =&gt; true", page)
+        self.assertIn("separate SELECTs", page)
+        self.assertIn("left outer join", page)
+        self.assertIn("<noscript>", page)
+
     def test_catalog_buckets_and_pins(self):
         items = load_catalog()
         slugs = [item["slug"] for item in items]
