@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActiveRecord Eager Loading &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="ActiveRecord eager loading in Rails 8.1.3: joins, includes, preload, eager_load, association filters, collection limits, and strict_loading.">
+  <meta property="og:title" content="ActiveRecord Eager Loading &middot; Reference">
+  <meta property="og:description" content="ActiveRecord eager loading in Rails 8.1.3: joins, includes, preload, eager_load, association filters, collection limits, and strict_loading.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/activerecord-eager-loading/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/activerecord-eager-loading/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    code, td, li { overflow-wrap: anywhere; }
+    caption { text-align: left; margin-bottom: .5rem; }
+    .table-wrap { overflow-x: auto; }
+    @media (prefers-reduced-motion: reduce) { .back-to-top { transition: none; } }
+  </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"DefinedTerm","name":"ActiveRecord Eager Loading","description":"ActiveRecord eager loading in Rails 8.1.3: joins, includes, preload, eager_load, association filters, collection limits, and strict_loading.","url":"https://ngpestelos.com/reference/activerecord-eager-loading/","inDefinedTermSet":"https://ngpestelos.com/reference/"}</script></head>
+<body class="reference"><main id="top">
+<p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+<p class="kicker">Software Development &middot; Ruby on Rails</p>
+<h1>ActiveRecord Eager Loading</h1>
+<p class="updated">Reference entry &middot; last updated October 13, 2026</p>
+<p class="lede"><strong>ActiveRecord eager loading</strong> loads specified associations alongside a set of model records, so later association access can reuse those records.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>]</span></p>
+<p>This entry covers synchronous record loading in <strong>Rails 8.1.3</strong>. Examples assume persisted <code>Author</code> records with an ordinary, unscoped <code>has_many :books</code> association; <code>Book</code> has <code>author_id</code>, <code>title</code>, and <code>published</code> columns. Ruby and SQL examples are illustrative, not executed query logs. SQL spelling depends on the database adapter.</p>
+<nav class="toc" aria-label="Contents"><p class="toc-title">Contents</p><ol>
+<li><a href="#first-principles">First principles and definitions</a></li>
+<li><a href="#methods">joins, includes, preload, and eager_load</a></li>
+<li><a href="#n-plus-one">N+1 queries</a></li>
+<li><a href="#conditions">Association conditions and loaded records</a></li>
+<li><a href="#rows-and-limits">Joined rows and collection limits</a></li>
+<li><a href="#strict-loading">strict_loading and counting</a></li>
+<li><a href="#see-also">See also</a></li>
+<li><a href="#references">References</a></li>
+</ol></nav>
+<h2 id="first-principles">First principles and definitions</h2>
+<p>A parent query selects authors. Loading an association fills each author's cached <code>books</code> collection. Selecting parents and loading their children are separate operations: an SQL join alone can select authors without filling that collection.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></p>
+<p>Lazy loading fetches an association when its records are first needed. In an N+1 pattern, one parent query is followed by a child query for each parent. A preloader groups association loading across the selected parents.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref4">4</a>]</span></p>
+<h2 id="methods">joins, includes, preload, and eager_load</h2>
+<div class="table-wrap"><table><caption>Record-loading behavior for the ordinary association above, before extra filters or joins.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>]</span></caption><thead><tr><th scope="col">Call</th><th scope="col">SQL shape</th><th scope="col">Parent selection</th><th scope="col">Loads books?</th></tr></thead><tbody>
+<tr><td><code>joins(:books)</code></td><td><code>INNER JOIN</code></td><td>Only authors with matching books; duplicate author rows are possible</td><td>No</td></tr>
+<tr><td><code>includes(:books)</code></td><td>Normally separate queries; can switch to a join</td><td>All authors without a child filter</td><td>Yes</td></tr>
+<tr><td><code>preload(:books)</code></td><td>Parent query, then separate association queries</td><td>Determined by the parent query</td><td>Yes</td></tr>
+<tr><td><code>eager_load(:books)</code></td><td><code>LEFT OUTER JOIN</code></td><td>All authors without a child filter</td><td>Yes</td></tr>
+</tbody></table></div>
+<p><code>includes</code> switches to joined loading when the relation references an included table or also joins the same included association. <code>preload</code> leaves association loading separate even when the parent query contains a join.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+<p>A simple nonempty parent set with one ordinary association normally needs one parent query and one preload query. Nested associations can need more. Joined loading can also need a preliminary query when a collection is limited.<span class="cite">[<a href="#ref4">4</a>][<a href="#ref6">6</a>]</span></p>
+<h2 id="n-plus-one">N+1 queries</h2>
+<pre>authors = Author.order(:id).limit(3).to_a
+# Assume the result contains authors 1, 2, and 3.
+authors.each do |author|
+  author.books.each { |book| puts book.title }
+end</pre>
+<pre>-- Illustrative SQL before preloading:
+SELECT authors.* FROM authors ORDER BY authors.id LIMIT 3;
+SELECT books.* FROM books WHERE books.author_id = 1;
+SELECT books.* FROM books WHERE books.author_id = 2;
+SELECT books.* FROM books WHERE books.author_id = 3;</pre>
+<p>With initially unloaded collections, this pattern requests a books query for each author. The database query cache can affect physical database round trips.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref11">11</a>]</span></p>
+<pre>authors = Author.order(:id).limit(3).preload(:books).to_a
+authors.each do |author|
+  author.books.each { |book| puts book.title }
+end</pre>
+<pre>-- Illustrative SQL after preloading:
+SELECT authors.* FROM authors ORDER BY authors.id LIMIT 3;
+SELECT books.* FROM books WHERE books.author_id IN (1, 2, 3);</pre>
+<p>The second query fills the authors' book collections. Enumerating those loaded collections reuses their records.<span class="cite">[<a href="#ref4">4</a>][<a href="#ref10">10</a>]</span></p>
+<h2 id="conditions">Association conditions and loaded records</h2>
+<pre>Author.includes(:books).where(books: { published: true })
+
+Author.includes(:books)
+      .where("books.published = ?", true)
+      .references(:books)</pre>
+<p>The hash condition supplies the table reference. A SQL-string condition needs <code>references</code> for joined loading. <code>includes</code> takes association names; <code>references</code> takes table names.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<p>Both examples select authors with published books and fill each loaded <code>books</code> collection with only the matching books. The child predicate excludes authors without a match, despite the <code>LEFT OUTER JOIN</code>.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref4">4</a>]</span></p>
+<pre>authors = Author.joins(:books)
+                .where(books: { published: true })
+                .distinct
+                .preload(:books)
+                .to_a</pre>
+<p>Here the join selects authors, <code>distinct</code> removes repeated parent rows, and a separate preload fetches all their books. The parent filter does not restrict that preload. Association scopes still apply; a scoped association loads only its scope's records.<span class="cite">[<a href="#ref2">2</a>][<a href="#ref3">3</a>][<a href="#ref8">8</a>]</span></p>
+<h2 id="rows-and-limits">Joined rows and collection limits</h2>
+<p>A collection join repeats parent columns across its matching child rows. Ordinary <code>joins</code> can return duplicate parents unless the query removes them. During eager-loaded record construction, Rails groups joined rows by parent primary key and builds the associated collections. This reduces duplicate Ruby parent objects but leaves repeated parent data in the SQL result.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref5">5</a>]</span></p>
+<pre>Author.eager_load(:books).order(:id).limit(3).to_a</pre>
+<p>In Rails 8.1.3, the normal ungrouped eager-loading path checks <code>limit</code> or <code>offset</code> against collection reflections. When required, it first selects distinct parent IDs, then loads joined records for those IDs with the row limit removed.<span class="cite">[<a href="#ref6">6</a>][<a href="#ref7">7</a>]</span></p>
+<pre>-- Illustrative two-stage shape, assuming IDs 1, 2, and 3:
+SELECT DISTINCT authors.id FROM authors
+  LEFT OUTER JOIN books ON books.author_id = authors.id
+  ORDER BY authors.id LIMIT 3;
+
+SELECT authors.id AS t0_r0, books.id AS t1_r0, ...
+  FROM authors
+  LEFT OUTER JOIN books ON books.author_id = authors.id
+  WHERE authors.id IN (1, 2, 3) ORDER BY authors.id;</pre>
+<p>This parent-ID stage prevents the SQL row limit from truncating the joined collection for the selected parents. Its SQL varies by adapter and ordering. An <code>eager_load</code> call therefore does not guarantee one SQL query; a singular association can take a different path.<span class="cite">[<a href="#ref6">6</a>][<a href="#ref7">7</a>]</span></p>
+<h2 id="strict-loading">strict_loading and counting</h2>
+<pre>author = Author.strict_loading.first
+# Assuming an author exists and books remain unloaded:
+author.books.to_a # raises ActiveRecord::StrictLoadingViolationError
+
+loaded = Author.strict_loading.preload(:books).first
+# Assuming an author exists:
+loaded.books.to_a # uses preloaded records</pre>
+<p>With the default violation action, <code>strict_loading</code> raises when an association tries to load its records lazily. Preloading that association makes its records available before access. Rails can instead log violations through <code>action_on_strict_loading_violation</code>.<span class="cite">[<a href="#ref1">1</a>][<a href="#ref8">8</a>]</span></p>
+<pre>loaded.books.size  # uses the loaded collection
+loaded.books.count # requests a SQL count calculation</pre>
+<p>Strict loading guards lazy association record loading. Blockless <code>count</code> follows a calculation path and normally requests SQL even for a preloaded collection. A query-cache hit or known-empty result can avoid a database round trip. A loaded collection's <code>size</code> uses its records.<span class="cite">[<a href="#ref9">9</a>][<a href="#ref10">10</a>][<a href="#ref11">11</a>]</span></p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="/reference/activerecord-relation/">ActiveRecord::Relation</a></li>
+<li><a href="/eli5/activerecord-relations-explained-2/">Interactive ActiveRecord::Relation explainer</a></li>
+</ul>
+<h2 id="references">References</h2><ol>
+<li id="ref1"><a href="https://guides.rubyonrails.org/v8.1/active_record_querying.html">Rails 8.1 Guides, Active Record Query Interface</a>, sections 15 and 16.</li>
+<li id="ref2"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/query_methods.rb">Rails source, tag v8.1.3, query_methods.rb</a>: joins, includes, preload, eager_load, references, and distinct.</li>
+<li id="ref3"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation.rb">Rails source, tag v8.1.3, relation.rb</a>: eager_loading? and preload_associations.</li>
+<li id="ref4"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/associations/preloader.rb">Rails source, tag v8.1.3, preloader.rb</a>.</li>
+<li id="ref5"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/associations/join_dependency.rb">Rails source, tag v8.1.3, join_dependency.rb</a>: instantiate.</li>
+<li id="ref6"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/finder_methods.rb">Rails source, tag v8.1.3, finder_methods.rb</a>: apply_join_dependency and using_limitable_reflections?.</li>
+<li id="ref7"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/connection_adapters/abstract/schema_statements.rb">Rails source, tag v8.1.3, schema_statements.rb</a>: distinct_relation_for_primary_key.</li>
+<li id="ref8"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/associations/association.rb">Rails source, tag v8.1.3, association.rb</a>: find_target and violates_strict_loading?.</li>
+<li id="ref9"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation/calculations.rb">Rails source, tag v8.1.3, calculations.rb</a>: count and calculate.</li>
+<li id="ref10"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/associations/collection_proxy.rb">Rails source, tag v8.1.3, collection_proxy.rb</a>: count and size.</li>
+<li id="ref11"><a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/connection_adapters/abstract/query_cache.rb">Rails source, tag v8.1.3, query_cache.rb</a>: select_all and cache_sql.</li>
+</ol><footer class="meta"><a href="#top">Back to top</a> · <a href="/reference/">Reference index</a></footer></main><button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+<script>
+(function () {
+  const button = document.getElementById('backToTop');
+  window.addEventListener('scroll', function () { button.classList.toggle('visible', window.scrollY > 250); }, {passive: true});
+  button.addEventListener('click', function () { window.scrollTo({top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); });
+})();
+</script></body></html>
