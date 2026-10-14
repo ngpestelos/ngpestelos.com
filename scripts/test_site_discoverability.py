@@ -221,10 +221,8 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertIn("/trees/", more)
         self.assertIn("/reference/", more)
         self.assertIn('"@type":"Person"', html)
-        self.assertRegex(
-            html,
-            r'mailto:nestor@pestelos\.net\?subject=[^"\']*homepage',
-        )
+        self.assertIn('href="mailto:nestor@pestelos.net"', html)
+        self.assertIsNone(re.search(r'<p class="next-step">.*?</p>', html, re.S))
         self.assertNotIn('id="proof"', html)
         self.assertNotIn("Track Record", html)
         self.assertEqual(html.count("91% test coverage"), 1)
@@ -233,8 +231,6 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertNotIn("book 25 minutes", html)
         self.assertIn("Software engineer since 2001. Manila, UTC+8.", html)
         self.assertIn('<a href="https://rubyonrails.org/">Ruby on Rails</a>', html)
-        next_step = re.search(r'<p class="next-step">.*?</p>', html, re.S).group(0)
-        self.assertIn("I work from Manila, UTC+8, so US teams get overnight coverage.", next_step)
         my_work = html.split('<section id="my-work">', 1)[1].split(
             '<section id="personal">', 1
         )[0]
