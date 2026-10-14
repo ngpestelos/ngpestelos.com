@@ -81,6 +81,20 @@ class MetaDescriptionParser(HTMLParser):
 
 
 class SiteDiscoverabilityTests(unittest.TestCase):
+    def test_site_has_no_gumroad_or_calendly_links(self):
+        for path in ROOT.rglob("*.html"):
+            if any(part.startswith(".") for part in path.relative_to(ROOT).parts):
+                continue
+            with self.subTest(page=str(path.relative_to(ROOT))):
+                self.assertFalse(
+                    re.search(
+                        r'href\s*=\s*["\'][^"\']*(?:gumroad|calendly)\.com',
+                        path.read_text(encoding="utf-8"),
+                        re.I,
+                    ),
+                    "removed offer or call link remains",
+                )
+
     def test_joins_association_explainer_registered(self):
         route = "/eli5/activerecord-joins-association-loading/"
         self.assertIn(f'href="{route}"', (ROOT / "eli5/index.html").read_text())
@@ -215,8 +229,8 @@ class SiteDiscoverabilityTests(unittest.TestCase):
         self.assertNotIn("Track Record", html)
         self.assertEqual(html.count("91% test coverage"), 1)
         self.assertNotIn("25 years", html)
-        self.assertEqual(html.count("gumroad.com"), 1)
-        self.assertIn("written readiness read", html)
+        self.assertNotIn("written readiness read", html)
+        self.assertNotIn("book 25 minutes", html)
         self.assertIn("Software engineer since 2001. Manila, UTC+8.", html)
         self.assertIn('<a href="https://rubyonrails.org/">Ruby on Rails</a>', html)
         next_step = re.search(r'<p class="next-step">.*?</p>', html, re.S).group(0)
