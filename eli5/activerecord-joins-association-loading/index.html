@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActiveRecord Joins and Association Loading · ELI5 · Nestor G Pestelos Jr</title>
+  <meta name="description" content="See why a SQL join can return an author without loading their books, and when includes prepares those Book objects.">
+  <meta property="og:title" content="ActiveRecord Joins and Association Loading · ELI5">
+  <meta property="og:description" content="See why a SQL join can return an author without loading their books, and when includes prepares those Book objects.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/eli5/activerecord-joins-association-loading/">
+  <link rel="canonical" href="https://ngpestelos.com/eli5/activerecord-joins-association-loading/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    main { max-width:52rem; width:100%; min-width:0; margin:auto; padding:1.5rem 1.25rem 4rem; }
+    .back { font:700 .9rem/1.5 system-ui,sans-serif; margin-bottom:1.5rem; }
+    .kicker { font:.8rem/1.5 system-ui,sans-serif; color:var(--mute); }
+    h1 { font-size:clamp(2.1rem,6vw,3.2rem); line-height:1.12; margin:.5rem 0 1rem; }
+    .lead { font-size:clamp(1.15rem,3vw,1.4rem); max-width:42ch; }
+    .example { font:.9rem/1.5 system-ui,sans-serif; color:var(--mute); margin:1rem 0; }
+    .block { border-top:1px solid var(--line); margin-top:2rem; padding-top:1.7rem; }
+    h2 { font-size:clamp(1.6rem,4vw,2.1rem); line-height:1.2; margin-bottom:.6rem; }
+    .one { font-size:clamp(1.1rem,2.7vw,1.3rem); margin-bottom:1.1rem; max-width:45ch; }
+    .figure { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1rem; font-family:system-ui,sans-serif; }
+    .flow { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:.8rem; align-items:center; }
+    .card { border:1.5px solid var(--line); border-radius:8px; padding:.85rem; min-width:0; }
+    .card strong, .card span { display:block; }
+    .label { font-size:.8rem; font-weight:700; color:var(--mute); margin-bottom:.5rem; }
+    .book { border-left:3px solid var(--op); margin-top:.5rem; padding:.3rem .65rem; }
+    .arrow { color:var(--op); font-size:1.6rem; text-align:center; }
+    .empty { color:var(--mute); font-size:.9rem; margin:.6rem 0; }
+    code, pre { font:.9em/1.6 ui-monospace,SFMono-Regular,Menlo,monospace; overflow-wrap:anywhere; }
+    pre { white-space:pre-wrap; margin:.7rem 0; }
+    .query { border-bottom:1px solid var(--line); padding-bottom:.7rem; }
+    .controls { display:flex; flex-wrap:wrap; gap:.6rem; align-items:end; margin:1rem 0; }
+    .controls label { display:block; font-size:.85rem; font-weight:700; margin-bottom:.25rem; }
+    select, button { min-height:44px; border:1px solid var(--line); border-radius:7px; background:var(--card); color:var(--ink); padding:.6rem .8rem; font:600 .9rem/1.3 system-ui,sans-serif; }
+    button { cursor:pointer; }
+    #readBooks { background:var(--op); color:var(--card); }
+    select:disabled, button:disabled { opacity:.6; cursor:default; }
+    a:focus-visible, button:focus-visible, select:focus-visible, summary:focus-visible { outline:3px solid var(--op); outline-offset:3px; }
+    .state { display:flex; flex-wrap:wrap; gap:.5rem 1.2rem; margin:.8rem 0; font-size:.9rem; }
+    .prompt, #status { font-size:.9rem; margin:.8rem 0; }
+    #status { color:var(--mute); min-height:1.5em; }
+    .more { font:.95rem/1.6 system-ui,sans-serif; margin-top:1rem; }
+    summary { color:var(--op); cursor:pointer; font-weight:600; }
+    .more p { margin:.65rem 0; }
+    .choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; }
+    footer { border-top:1px solid var(--line); margin-top:2rem; padding-top:1.5rem; font:.9rem/1.6 system-ui,sans-serif; }
+    footer p { margin-bottom:.8rem; }
+    .sources { overflow-wrap:anywhere; }
+    .to-top { font-weight:700; }
+    .back-to-top { position:fixed; right:1.2rem; bottom:1.2rem; width:2.6rem; height:2.6rem; padding:0; border-radius:50%; background:var(--card); color:var(--ink); opacity:0; visibility:hidden; transition:opacity .2s; }
+    .back-to-top.visible { opacity:1; visibility:visible; }
+    [hidden] { display:none; }
+    @media (max-width:600px) { .flow, .choices { display:block; } .arrow { margin:.35rem 0; transform:rotate(90deg); } .choices .card + .card { margin-top:.8rem; } }
+    @media (prefers-reduced-motion:reduce) { .back-to-top { transition:none; } }
+    @media print { .controls, .prompt, .back-to-top { display:none; } details { break-inside:avoid; } .figure { break-inside:avoid; } }
+  </style>
+</head>
+<body class="eli5">
+<main>
+  <nav class="back" id="top"><a href="/">Home</a> · <a href="/eli5/">ELI5</a></nav>
+  <p class="kicker">Rails 8.1.3</p>
+  <h1>ActiveRecord Joins and Association Loading</h1>
+  <p class="lead">A SQL join can find an author without loading their books into Ruby.</p>
+  <p class="example">Illustrative example: Maya, author ID 1, has two books, <em>Rails Basics</em> and <em>Ruby Notes</em>, through ordinary <code>has_many :books</code> and <code>belongs_to :author</code> associations.</p>
+
+  <section class="block" id="joining">
+    <h2>Joining returns author columns</h2>
+    <p class="one">The database matches Maya to her books, but <code>SELECT authors.*</code> returns only the columns Rails uses to create her <code>Author</code> object.</p>
+    <div class="figure">
+      <p class="prompt">Read the books twice, then switch to <code>includes</code> and try again.</p>
+      <div class="controls">
+        <div><label for="method">Load Maya with</label><select id="method" disabled><option value="joins">joins(:books).distinct</option><option value="includes">includes(:books)</option></select></div>
+        <button id="readBooks" type="button" disabled>Read book titles</button>
+        <button id="reset" type="button" disabled>Reset</button>
+      </div>
+      <pre class="query" id="rubyQuery">authors = Author.where(id: 1).joins(:books).distinct.to_a</pre>
+      <div class="flow" aria-label="Database rows and Ruby objects">
+        <div class="card">
+          <p class="label">DATABASE ROWS</p>
+          <strong>Author: Maya (id: 1)</strong>
+          <div class="book">Rails Basics <span>author_id: 1</span></div>
+          <div class="book">Ruby Notes <span>author_id: 1</span></div>
+        </div>
+        <span class="arrow" aria-hidden="true">→</span>
+        <div class="card">
+          <p class="label">RUBY OBJECTS</p>
+          <strong>Author: Maya (id: 1)</strong>
+          <p class="empty" id="emptyBooks">Book objects: not loaded</p>
+          <div id="bookObjects" hidden><div class="book">Book: Rails Basics</div><div class="book">Book: Ruby Notes</div></div>
+        </div>
+      </div>
+      <div class="state"><span>Modeled SELECTs: <strong id="queryCount">1</strong></span><span><code>maya.books.loaded?</code>: <strong id="loadedFlag">false</strong></span></div>
+      <pre id="sqlLog">SELECT DISTINCT authors.*
+FROM authors
+INNER JOIN books ON books.author_id = authors.id
+WHERE authors.id = 1;</pre>
+      <p id="status" role="status">Maya is loaded; her books association is unloaded.</p>
+      <noscript><p>JavaScript is off. The diagram shows joins before reading the books; the examples below show each later step.</p></noscript>
+    </div>
+    <details class="more"><summary>Ruby and SQL for joins</summary>
+<pre>authors = Author.where(id: 1).joins(:books).distinct.to_a
+# =&gt; [#&lt;Author id: 1, name: "Maya"&gt;]</pre>
+      <p><code>INNER JOIN</code> needs a matching book. Maya has two matches, so <code>distinct</code> prevents duplicate author results. The join alone does not populate her books association. <a href="#sources">Sources</a>.</p>
+    </details>
+  </section>
+
+  <section class="block" id="reading">
+    <h2>Reading the titles fetches the books</h2>
+    <p class="one">Iterating over Maya's unloaded books fetches their rows, creates <code>Book</code> objects, and keeps them in her association for another read.</p>
+    <div class="figure flow" aria-label="Reading an unloaded books association">
+      <div class="card"><p class="label">BEFORE ITERATION</p><code>maya.books.loaded? == false</code><p class="empty">No loaded Book objects</p></div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="card"><p class="label">AFTER ITERATION</p><code>maya.books.loaded? == true</code><div class="book">Book: Rails Basics</div><div class="book">Book: Ruby Notes</div></div>
+    </div>
+    <details class="more"><summary>CollectionProxy and the extra SELECT</summary>
+      <p><code>maya.books</code> returns a <code>CollectionProxy</code> that manages access to the association; the proxy can exist before the books are loaded. <a href="#sources">Sources</a>.</p>
+<pre>maya = authors.first
+maya.books.loaded?
+# =&gt; false
+
+maya.books.map(&amp;:title).sort
+# Additional SQL:
+# SELECT books.* FROM books WHERE books.author_id = 1
+# =&gt; ["Rails Basics", "Ruby Notes"]
+
+maya.books.loaded?
+# =&gt; true
+maya.books.first.class
+# =&gt; Book
+
+maya.books.map(&amp;:title).sort
+# Same titles; no additional SELECT</pre>
+    </details>
+  </section>
+
+  <section class="block" id="includes">
+    <h2>Includes prepares the books in advance</h2>
+    <p class="one">For this query, <code>includes(:books)</code> fetches the author and books with separate SELECTs before you read the titles.</p>
+    <div class="figure flow" aria-label="Includes loads author and book objects">
+      <div class="card"><p class="label">TWO SELECTS</p><code>SELECT authors.*</code><br><code>SELECT books.*</code></div>
+      <span class="arrow" aria-hidden="true">→</span>
+      <div class="card"><p class="label">RUBY OBJECTS READY</p><strong>Author: Maya</strong><div class="book">Book: Rails Basics</div><div class="book">Book: Ruby Notes</div></div>
+    </div>
+    <details class="more"><summary>Ruby, SQL, and the left join qualification</summary>
+<pre>authors = Author.where(id: 1).includes(:books).to_a
+# SELECT authors.* FROM authors WHERE authors.id = 1
+# SELECT books.* FROM books WHERE books.author_id IN (1)
+
+maya = authors.first
+maya.books.loaded?
+# =&gt; true
+maya.books.map(&amp;:title).sort
+# =&gt; ["Rails Basics", "Ruby Notes"]
+# No additional SELECT for this iteration</pre>
+      <p><code>includes</code> does not mean left join: conditions that reference the books table can make it use a left outer join. <a href="/reference/activerecord-eager-loading/#conditions">The reference covers those conditions</a>.</p>
+    </details>
+  </section>
+
+  <section class="block" id="everyday">
+    <h2>Choose for the screen you are building</h2>
+    <p class="one">When a screen displays book titles for many authors, <code>includes(:books)</code> batches the book loading instead of fetching each author's unloaded collection in the loop.</p>
+    <div class="figure choices" aria-label="Two everyday query choices">
+      <div class="card"><p class="label">NAMES OF AUTHORS WITH BOOKS</p><code>Author.joins(:books).distinct</code><p class="empty">The books determine which authors qualify.</p></div>
+      <div class="card"><p class="label">AUTHORS AND THEIR BOOK TITLES</p><code>Author.includes(:books)</code><p class="empty">Book objects are ready for iteration.</p></div>
+    </div>
+    <details class="more"><summary>Example limits</summary>
+      <p>This playground models one author and two books. It does not execute Ruby or SQL. The code and SQL are illustrative, not measured query logs; adapter formatting varies.</p>
+      <p>It excludes custom scopes, automatic eager loading, strict loading, query caching, and joins combined with preloading. It models iteration with <code>map</code>, not calculations such as <code>count</code>. <a href="/reference/activerecord-eager-loading/#strict-loading">Counting and strict loading</a> have different rules.</p>
+    </details>
+  </section>
+
+  <footer>
+    <p class="sources" id="sources"><strong>Sources:</strong> Rails 8.1.3 <a href="https://api.rubyonrails.org/v8.1.3/classes/ActiveRecord/QueryMethods.html#method-i-joins">joins</a>, <a href="https://api.rubyonrails.org/v8.1.3/classes/ActiveRecord/QueryMethods.html#method-i-includes">includes</a>, and <a href="https://api.rubyonrails.org/v8.1.3/classes/ActiveRecord/Associations/CollectionProxy.html">CollectionProxy</a>; tagged source for <a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/relation.rb">record creation and preloading</a> and <a href="https://raw.githubusercontent.com/rails/rails/v8.1.3/activerecord/lib/active_record/associations/collection_proxy.rb">association loading state</a>.</p>
+    <p>Longer version: <a href="/reference/activerecord-eager-loading/">ActiveRecord Eager Loading reference</a>.</p>
+    <p class="to-top"><a href="#top">Back to top</a></p>
+  </footer>
+</main>
+<button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
+<script>
+(function () {
+  "use strict";
+  const method = document.getElementById("method");
+  const read = document.getElementById("readBooks");
+  const reset = document.getElementById("reset");
+  const count = document.getElementById("queryCount");
+  const flag = document.getElementById("loadedFlag");
+  const books = document.getElementById("bookObjects");
+  const empty = document.getElementById("emptyBooks");
+  const query = document.getElementById("rubyQuery");
+  const log = document.getElementById("sqlLog");
+  const status = document.getElementById("status");
+  const joinedSQL = "SELECT DISTINCT authors.*\nFROM authors\nINNER JOIN books ON books.author_id = authors.id\nWHERE authors.id = 1;";
+  const booksSQL = "SELECT books.* FROM books WHERE books.author_id = 1;";
+  const includedSQL = "SELECT authors.* FROM authors WHERE authors.id = 1;\nSELECT books.* FROM books WHERE books.author_id IN (1);";
+  let loaded = false;
+  let selects = 1;
+  function showState() {
+    count.textContent = String(selects);
+    flag.textContent = String(loaded);
+    books.hidden = !loaded;
+    empty.hidden = loaded;
+  }
+  function loadExample() {
+    loaded = method.value === "includes";
+    selects = loaded ? 2 : 1;
+    query.textContent = "authors = Author.where(id: 1)." + (loaded ? "includes(:books)" : "joins(:books).distinct") + ".to_a";
+    log.textContent = loaded ? includedSQL : joinedSQL;
+    status.textContent = loaded ? "Maya and her books are loaded." : "Maya is loaded; her books association is unloaded.";
+    showState();
+  }
+  method.addEventListener("change", loadExample);
+  read.addEventListener("click", function () {
+    if (!loaded) {
+      loaded = true;
+      selects += 1;
+      log.textContent += "\n\n" + booksSQL;
+      status.textContent = "Read Rails Basics and Ruby Notes. One book SELECT added.";
+    } else {
+      status.textContent = "Read Rails Basics and Ruby Notes from the loaded collection. No SELECT added.";
+    }
+    showState();
+  });
+  reset.addEventListener("click", function () { method.value = "joins"; loadExample(); });
+  method.disabled = false;
+  read.disabled = false;
+  reset.disabled = false;
+  loadExample();
+  const back = document.getElementById("backToTop");
+  window.addEventListener("scroll", function () { back.classList.toggle("visible", window.scrollY > 250); }, {passive:true});
+  back.addEventListener("click", function () { window.scrollTo({top:0, behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); });
+})();
+</script>
+</body>
+</html>
