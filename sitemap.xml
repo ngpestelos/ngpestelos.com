@@ -1659,6 +1659,11 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/idempotency/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/reference/information-classification-and-handling/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
