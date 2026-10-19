@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idempotency (Software) &middot; Reference &middot; Nestor G Pestelos Jr</title>
+  <meta name="description" content="Software idempotency: HTTP methods, retry keys, atomic deduplication, and failure limits.">
+  <meta property="og:title" content="Idempotency (Software) &middot; Reference">
+  <meta property="og:description" content="Software idempotency: HTTP methods, retry keys, atomic deduplication, and failure limits.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://ngpestelos.com/reference/idempotency/">
+  <link rel="canonical" href="https://ngpestelos.com/reference/idempotency/">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260813f">
+  <link rel="icon" href="/favicon-192.png?v=20260813f" type="image/png" sizes="192x192">
+  <link rel="icon" href="/favicon-32.png?v=20260813f" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon.ico?v=20260813f" sizes="48x48 32x32 16x16">
+  <link rel="icon" href="/favicon.svg?v=20260813f" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/style.css?v=20260903e">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TLBY8P4GG9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TLBY8P4GG9');
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    body { line-height: 1.6; }
+    main { max-width: 46rem; margin: 0 auto; padding: 1.4rem 1.4rem 4rem; }
+    .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .back a { color: var(--link); text-decoration: none; }
+    .back a:hover { text-decoration: underline; }
+    .kicker { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.3rem; }
+    h1 { font-size: clamp(1.9rem, 5vw, 2.4rem); font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.4rem; margin-bottom: 1rem; }
+    .updated { font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.82rem; color: var(--mute); margin-bottom: 1.4rem; }
+    .lede { margin-bottom: 1.6rem; }
+    .lede strong:first-child { font-weight: 700; }
+    .unattributed { color: var(--mute); font-style: italic; font-size: 0.92rem; }
+    .toc { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 1rem 1.4rem; margin-bottom: 2rem; max-width: 26rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.92rem; }
+    .toc .toc-title { font-weight: 700; margin-bottom: 0.5rem; text-align: center; }
+    .toc ol { padding-left: 1.3rem; }
+    .toc ol ol { padding-left: 1.2rem; margin-top: 0.15rem; }
+    .toc li { margin: 0.2rem 0; }
+    .toc a { color: var(--link); text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+    h2 { font-size: 1.5rem; font-weight: 400; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem; margin: 2rem 0 0.9rem; }
+    h3 { font-size: 1.15rem; font-weight: 700; margin: 1.4rem 0 0.6rem; }
+    p { margin-bottom: 0.9rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.9em; background: var(--well); padding: 0.1em 0.3em; border-radius: 3px; border: 1px solid var(--line); }
+    pre { background: var(--well); border: 1px solid var(--line); border-radius: 4px; padding: 0.8rem 1rem; overflow-x: auto; margin: 0.8rem 0 1.2rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.88rem; line-height: 1.45; }
+    table { border-collapse: collapse; width: 100%; margin: 0.8rem 0 1.2rem; font-size: 0.92rem; }
+    th, td { border: 1px solid var(--line); padding: 0.4rem 0.6rem; text-align: left; vertical-align: top; }
+    th { background: var(--well); font-weight: 700; }
+    a { color: var(--link); }
+    a:visited { color: var(--link-visited); }
+    .cite { font-size: 0.75em; vertical-align: super; line-height: 0; text-decoration: none; }
+    .cite a { text-decoration: none; }
+    #see-also ul, #references ol { padding-left: 1.5rem; }
+    #see-also li, #references li { margin-bottom: 0.5rem; }
+    #references { font-size: 0.95rem; }
+    #references .backlink { margin-right: 0.3rem; }
+    footer.meta { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--line); font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.85rem; color: var(--mute); }
+    footer.meta a { color: var(--link); }
+    @media print { .back { font-family: "Segoe UI", Helvetica, Arial, sans-serif; display: none; } }
+    .back-to-top { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 2.6rem; height: 2.6rem; border-radius: 50%; background: var(--bg); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.15s ease, border-color 0.15s ease; z-index: 100; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--well); border-color: var(--link); color: var(--link); }
+    .back-to-top:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+    @media print { .back-to-top { display: none !important; } }
+  </style>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"DefinedTerm","name":"Idempotency (Software)","description":"Software idempotency: HTTP methods, retry keys, atomic deduplication, and failure limits.","url":"https://ngpestelos.com/reference/idempotency/","inDefinedTermSet":"https://ngpestelos.com/reference/"}
+  </script>
+</head>
+<body class="reference">
+  <main id="top">
+    <p class="back"><a href="/reference/">← Reference</a> · <a href="/">Nestor G Pestelos Jr</a> · <a href="#" onclick="window.print(); return false;">Print this page</a></p>
+    <p class="kicker">Software Engineering &middot; Distributed Systems</p>
+    <h1>Idempotency (Software)</h1>
+    <p class="updated">Reference entry &middot; last updated October 19, 2026</p>
+
+    <p class="lede"><strong>Idempotency</strong> is the property of an operation whose repeated application has the same intended effect as a single application. In HTTP, the definition concerns the requested effect on the server; responses may differ between attempts.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <nav class="toc" aria-label="Contents">
+      <p class="toc-title">Contents</p>
+      <ol>
+        <li><a href="#first-principles">First principles and definitions</a></li>
+        <li><a href="#http">HTTP methods</a></li>
+        <li><a href="#retry-keys">Retries and idempotency keys</a></li>
+        <li><a href="#atomicity">Atomic deduplication</a></li>
+        <li><a href="#limits">Scope and failure limits</a></li>
+        <li><a href="#see-also">See also</a></li>
+        <li><a href="#references">References</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="first-principles">First principles and definitions</h2>
+    <p>An operation can change state while remaining idempotent. HTTP distinguishes this property from <em>safety</em>: a safe method requests essentially read-only behavior. An idempotent method may request a change, provided repetition has the same intended effect.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p>The following examples are illustrative. Each assumes the same target and inputs, no intervening writer, and only the stated effect.</p>
+    <table>
+      <thead><tr><th>Operation</th><th>Repeated effect</th><th>Idempotent?</th></tr></thead>
+      <tbody>
+        <tr><td>Set an account's status to <code>active</code></td><td>Status remains <code>active</code>.</td><td>Yes</td></tr>
+        <tr><td>Increase a counter by one</td><td>Each repetition increases the counter again.</td><td>No</td></tr>
+        <tr><td>Remove a named item from a set</td><td>The item remains absent.</td><td>Yes</td></tr>
+        <tr><td>Toggle a Boolean value</td><td>Each repetition reverses the previous value.</td><td>No</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="http">HTTP methods</h2>
+    <p>RFC 9110 defines <code>PUT</code>, <code>DELETE</code>, and safe methods such as <code>GET</code> as idempotent. Logging each request or keeping revision history is permitted: the property applies to the requested effect. <code>POST</code> has no general idempotency guarantee, although a particular API can supply one.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+    <p><code>PATCH</code> is not inherently idempotent. Its specification allows idempotent uses and recommends conditional requests for patch formats that depend on a known resource version.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+    <p>Idempotent semantics allow a client to repeat a request after a connection fails before the response arrives. RFC 9110 cautions against automatically retrying a non-idempotent request without evidence that its semantics are idempotent or that the original was never applied.<span class="cite">[<a href="#ref1">1</a>]</span></p>
+
+    <h2 id="retry-keys">Retries and idempotency keys</h2>
+    <p>A timeout can leave a client uncertain whether a service created a resource. Repeating an unprotected creation request can create another resource. Amazon's Builders' Library describes using a caller-provided request identifier to distinguish retries from separate intentions. Matching parameters alone are insufficient: a caller may intend to create two identical resources.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>In an illustrative order API, a client assigns key <code>order-attempt-42</code> to one intended purchase and keeps that key for its retries. A separate purchase receives a new key, even if the basket is identical. The service's documented contract determines which requests count as duplicates.</p>
+    <p>Amazon EC2 documents that a successful request repeated with the same client token and parameters performs no further action. Changing parameters can produce <code>IdempotentParameterMismatch</code>, subject to its Region and Availability Zone rules.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+
+    <h2 id="atomicity">Atomic deduplication</h2>
+    <p>Recording a request identifier and making the associated state changes must form an atomic operation in the Builders' Library design. Otherwise, a service can record the identifier without creating the resource, or create the resource without recording the identifier.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>As an illustrative database design, a unique constraint on the caller and key can arbitrate simultaneous duplicates. The request record and order write commit in one transaction. A second request uses the committed record, or receives a defined in-progress outcome. An email or payment outside that transaction requires its own failure-handling contract; the database transaction alone does not cover it.</p>
+
+    <h2 id="limits">Scope and failure limits</h2>
+    <p>Token scope is part of the API contract. EC2 distinguishes regional and zonal idempotency; the same token can create resources in different Regions or, for zonal operations, different Availability Zones.<span class="cite">[<a href="#ref4">4</a>]</span></p>
+    <p>Late retries need a defined policy. The Builders' Library describes EC2 preserving the original request's meaning even after the created instance has been terminated.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+    <p>Stripe's API v1 documents that keys can be pruned after at least 24 hours. Reusing a pruned key starts a new request. It saves the first executed request's status and body, including a <code>500</code> response, and returns that saved result on a retry.<span class="cite">[<a href="#ref5">5</a>]</span></p>
+    <p>Idempotency alone does not establish eventual success or an end-to-end exactly-once guarantee. In the illustrative order design, deduplication covers only the stored key and protected writes. Deleting that record removes the evidence used to recognize a retry.</p>
+
+    <h2 id="see-also">See also</h2>
+    <ul>
+      <li><a href="/reference/exponential-backoff/">Exponential Backoff</a></li>
+    </ul>
+
+    <h2 id="references">References</h2>
+    <ol>
+      <li id="ref1"><span class="backlink">^</span> R. Fielding, M. Nottingham, and J. Reschke, <a href="https://www.rfc-editor.org/rfc/rfc9110.html#section-9.2.2">RFC 9110: HTTP Semantics</a>, §§9.2.1–9.2.2, June 2022.</li>
+      <li id="ref2"><span class="backlink">^</span> L. Dusseault and J. Snell, <a href="https://www.rfc-editor.org/rfc/rfc5789.html#section-2">RFC 5789: PATCH Method for HTTP</a>, §2, March 2010.</li>
+      <li id="ref3"><span class="backlink">^</span> Malcolm Featonby, <a href="https://aws.amazon.com/builders-library/making-retries-safe-with-idempotent-APIs/">Making retries safe with idempotent APIs</a>, Amazon Builders' Library.</li>
+      <li id="ref4"><span class="backlink">^</span> Amazon Web Services, <a href="https://docs.aws.amazon.com/ec2/latest/devguide/ec2-api-idempotency.html">Ensuring idempotency in Amazon EC2 API requests</a>, Amazon EC2 Developer Guide.</li>
+      <li id="ref5"><span class="backlink">^</span> Stripe, <a href="https://docs.stripe.com/api/idempotent_requests">Idempotent requests</a>, API v1 behavior.</li>
+    </ol>
+
+    <footer class="meta">
+      <p><a href="#top">Back to top</a></p>
+    </footer>
+  </main>
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script>
+    const btt = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 250) {
+        btt.classList.add('visible');
+      } else {
+        btt.classList.remove('visible');
+      }
+    }, { passive: true });
+    btt.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
