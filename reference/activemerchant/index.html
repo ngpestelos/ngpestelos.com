@@ -41,6 +41,12 @@ p,li { margin-bottom:.7rem; }
 .toc li { margin-bottom:.25rem; }
 .cite { font-size:.75em; vertical-align:super; }
 .cite a { text-decoration:none; }
+.operation-table { width:100%; border-collapse:collapse; margin:1rem 0; table-layout:fixed; }
+.operation-table caption { text-align:left; font-weight:700; margin-bottom:.5rem; }
+.operation-table th,.operation-table td { border:1px solid var(--line); padding:.6rem; text-align:left; vertical-align:top; overflow-wrap:anywhere; }
+.operation-table thead { background:var(--well); }
+.operation-table th:first-child { width:22%; }
+@media (max-width:30rem) { .operation-table { font-size:.85rem; } .operation-table th,.operation-table td { padding:.4rem; } .operation-table th:first-child { width:28%; } }
 #references ~ ol { font-size:.9rem; overflow-wrap:anywhere; }
 footer { border-top:1px solid var(--line); margin-top:2rem; }
 .back-to-top { position:fixed; bottom:1.5rem; right:1.5rem; width:2.6rem; height:2.6rem; border-radius:50%; background:var(--bg); color:var(--ink); border:1px solid var(--line); cursor:pointer; opacity:0; visibility:hidden; }
@@ -54,7 +60,8 @@ footer { border-top:1px solid var(--line); margin-top:2rem; }
 <p class="back"><a href="/reference/">&larr; Reference</a> &middot; <a href="/">Home</a> &middot; <a href="#" onclick="window.print(); return false;">Print this page</a></p>
 <p class="kicker">Finance · Payments</p>
 <h1>ActiveMerchant (Ruby Payments Library)</h1>
-<p class="updated">Reference entry &middot; last updated 20260910</p>
+<p class="updated">Reference entry &middot; last updated 20261020</p>
+<p class="updated"><a href="/reference/activemerchant-20261020/">Previous version, captured 20261020</a></p>
 <p class="lede"><strong>ActiveMerchant</strong> is an open-source Ruby payment library extracted from Shopify. It provides a common interface to supported payment gateways and can be used in Rails or standalone Ruby applications.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 <nav class="toc" aria-label="Contents"><strong>Contents</strong><ol>
 <li><a href="#first-principles">First principles: a gateway adapter</a></li>
@@ -67,7 +74,21 @@ footer { border-top:1px solid var(--line); margin-top:2rem; }
 <h2 id="first-principles">1. First principles: a gateway adapter</h2>
 <p>The library translates application calls into gateway-specific requests. A shared method name does not make all gateways support the same capabilities. The project maintains gateway-specific implementations and a supported-features table.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 <h2 id="operations">2. Payment operations</h2>
-<p>The base gateway documents operations including <code>authorize</code>, <code>capture</code>, <code>purchase</code>, <code>void</code>, and <code>refund</code>. Their arguments include amounts, payment credentials or authorization identifiers, and gateway options.<span class="cite">[<a href="#ref2">2</a>]</span></p><p>A gateway’s support for <a href="/reference/card-authorization-capture/">partial or multiple captures</a> must be checked separately.</p>
+<p>The base gateway documents <code>authorize</code>, <code>capture</code>, <code>purchase</code>, <code>void</code>, and <code>refund</code>. Their arguments include amounts, payment credentials or authorization identifiers, and gateway options.<span class="cite">[<a href="#ref2">2</a>]</span></p>
+<table class="operation-table">
+<caption>Payment operations: illustrative ₱2,000 order</caption>
+<thead><tr><th scope="col">Operation</th><th scope="col">Meaning</th><th scope="col">Example</th></tr></thead>
+<tbody>
+<tr><th scope="row"><code>authorize</code></th><td>Obtain approval and place a temporary hold.<span class="cite">[<a href="#ref3">3</a>]</span></td><td>Reserve ₱2,000 when the order is placed.</td></tr>
+<tr><th scope="row"><code>capture</code></th><td>Submit an existing authorization for collection.<span class="cite">[<a href="#ref3">3</a>, <a href="#ref5">5</a>]</span></td><td>Request collection of the reserved ₱2,000 when the order ships.</td></tr>
+<tr><th scope="row"><code>purchase</code></th><td>Authorize and capture in one operation.<span class="cite">[<a href="#ref5">5</a>]</span></td><td>Charge ₱2,000 at checkout.</td></tr>
+<tr><th scope="row"><code>void</code></th><td>Cancel an authorization or another eligible transaction before settlement.<span class="cite">[<a href="#ref4">4</a>]</span></td><td>Cancel the ₱2,000 payment before it settles, if eligible.</td></tr>
+<tr><th scope="row"><code>refund</code></th><td>Return some or all of a collected payment.<span class="cite">[<a href="#ref4">4</a>]</span></td><td>Return ₱500 for a returned item.</td></tr>
+</tbody>
+</table>
+<p>Capture requests collection; settlement and payout follow. A successful capture does not mean the money has reached the merchant’s bank account. An authorization alone may appear as a pending charge.<span class="cite">[<a href="#ref3">3</a>]</span></p>
+<p>Void and refund eligibility depends on transaction state. For example, Braintree permits voids for Authorized or Submitted for Settlement transactions; Settling or Settled transactions require a refund. A captured payment may still qualify for a void. A successful void may take time to disappear from pending charges.<span class="cite">[<a href="#ref3">3</a>, <a href="#ref4">4</a>]</span></p>
+<p>Supported operations, cancellation windows, refund eligibility, and timing depend on the gateway and payment method. A gateway’s support for <a href="/reference/card-authorization-capture/">partial or multiple captures</a> must be checked separately.<span class="cite">[<a href="#ref1">1</a>, <a href="#ref3">3</a>, <a href="#ref4">4</a>]</span></p>
 <h2 id="amounts">3. Amounts and responses</h2>
 <p>The README’s dollar example passes integer cents: <code>1000</code> represents USD 10.00. Its purchase example checks <code>response.success?</code> and reads <code>response.message</code>.<span class="cite">[<a href="#ref1">1</a>]</span></p>
 <h2 id="scope">4. Scope</h2>
@@ -77,7 +98,10 @@ footer { border-top:1px solid var(--line); margin-top:2rem; }
 <h2 id="references">6. References</h2>
 <ol>
 <li id="ref1"><a href="https://github.com/activemerchant/active_merchant">ActiveMerchant. Project README and gateway feature links.</a></li>
-<li id="ref2"><a href="https://raw.githubusercontent.com/activemerchant/active_merchant/master/lib/active_merchant/billing/gateway.rb">ActiveMerchant. Billing gateway source and interface documentation.</a></li>
+<li id="ref2"><a href="https://github.com/activemerchant/active_merchant/blob/master/lib/active_merchant/billing/gateway.rb">ActiveMerchant. Billing gateway source and interface documentation.</a></li>
+<li id="ref3"><a href="https://developer.paypal.com/braintree/docs/reference/general/statuses">Braintree. Transaction statuses.</a></li>
+<li id="ref4"><a href="https://developer.paypal.com/braintree/articles/control-panel/transactions/refunds-voids-credits/">Braintree. Refunds, Voids, and Detached Credits.</a></li>
+<li id="ref5"><a href="https://github.com/activemerchant/active_merchant/blob/master/GettingStarted.md">ActiveMerchant. Getting Started: Gateway Operations.</a></li>
 </ol>
 <footer><p><a href="#top">Back to top</a></p></footer>
 </main>
