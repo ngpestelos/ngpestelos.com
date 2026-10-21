@@ -1736,6 +1736,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://ngpestelos.com/reference/activerecord-scopes/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://ngpestelos.com/eli5/activerecord-relations-explained/</loc>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
