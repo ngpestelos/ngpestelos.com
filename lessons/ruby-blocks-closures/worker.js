@@ -10,18 +10,67 @@ self.onmessage = async ({ data }) => {
     self.__lesson_code = data.code;
     const result = vm.eval(`
       require "js"
-      require "stringio"
-      output = StringIO.new
+      class LessonOutputLimit < StandardError; end
+      class LessonOutput
+        MAX_BYTES = 16_384
+        attr_reader :string
+
+        def initialize
+          @string = +""
+        end
+
+        def write(value)
+          value = value.to_s
+          remaining = MAX_BYTES - @string.bytesize
+          if value.bytesize > remaining
+            @string << value.byteslice(0, remaining).to_s
+            raise LessonOutputLimit
+          end
+          @string << value
+          value.bytesize
+        end
+
+        def puts(*values)
+          values = [nil] if values.empty?
+          values.each do |value|
+            if value.is_a?(Array)
+              value.each { |item| puts(item) }
+            else
+              text = value.nil? ? "" : value.to_s
+              write(text)
+              write("\\n") unless text.end_with?("\\n")
+            end
+          end
+          nil
+        end
+
+        def print(*values)
+          values.each { |value| write(value) }
+          nil
+        end
+
+        def <<(value)
+          write(value)
+          self
+        end
+
+        def flush; self; end
+        def tty?; false; end
+      end
+      output = LessonOutput.new
       previous_stdout, previous_stderr = $stdout, $stderr
       begin
         $stdout = $stderr = output
         eval(JS.global[:__lesson_code].to_s, TOPLEVEL_BINDING, "lesson.rb")
+        output.string
+      rescue LessonOutputLimit
+        output.string.scrub + "\\n[Output limit reached: 16 KB.]"
       rescue Exception => error
-        output.puts "#{error.class}: #{error.message}"
+        message = error.message.to_s.byteslice(0, 1024).to_s.scrub
+        output.string.scrub + "#{error.class}: #{message}\\n"
       ensure
         $stdout, $stderr = previous_stdout, previous_stderr
       end
-      output.string
     `).toString();
     self.postMessage({ type: 'result', text: result || '(No output)' });
   } catch (error) {
