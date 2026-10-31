@@ -1,0 +1,18 @@
+main.lesson { max-width: 780px; margin: 0 auto; padding: 2rem 1.2rem 5rem; line-height: 1.6; }
+.lesson h1 { font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1.1; margin: 1rem 0; }
+.lesson h2 { margin: 3rem 0 .7rem; border-top: 1px solid var(--line); padding-top: 1.3rem; }
+.lesson h3 { margin: 2rem 0 .5rem; }
+.lesson p, .lesson ul { margin: .8rem 0; }
+.lesson .eyebrow { font-size: .85rem; text-transform: uppercase; letter-spacing: .09em; font-weight: bold; }
+.lesson .exercise { border: 1px solid var(--line); border-radius: 8px; padding: 1rem; margin: 1.2rem 0; background: var(--well); }
+.lesson textarea { display: block; width: 100%; min-height: 12rem; padding: .8rem; font: .95rem/1.5 ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; resize: vertical; }
+.lesson .actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .7rem; }
+.lesson button { padding: .55rem 1rem; cursor: pointer; font: inherit; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--bg); }
+.lesson button:disabled { opacity: .5; cursor: default; }
+.lesson button:focus-visible, .lesson textarea:focus-visible, .lesson summary:focus-visible { outline: 3px solid #4169e1; outline-offset: 3px; }
+.lesson pre { overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; padding: .8rem; background: var(--bg); border: 1px solid var(--line); border-radius: 4px; }
+.lesson .status { min-height: 1.5em; font-size: .9rem; }
+.lesson .output:empty { display: none; }
+.lesson details { margin: .7rem 0; }
+.lesson summary { cursor: pointer; font-weight: 600; }
+.lesson nav a { margin-right: 1rem; }

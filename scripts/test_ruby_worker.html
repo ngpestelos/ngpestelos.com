@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Ruby worker regression</title>
+<h1>Ruby worker regression</h1>
+<p>Runs real Ruby examples in the browser. Start a local site server, open this page, then run the checks.</p>
+<button id="run">Run checks</button>
+<pre id="results" aria-live="polite"></pre>
+<script type="module">
+const results = document.querySelector('#results');
+const runButton = document.querySelector('#run');
+const cases = [
+  ['ordinary puts and p', 'puts "hello"; p [1, 2]', value => value === 'hello\n[1, 2]\n'],
+  ['large single write', 'print "x" * 110_000', bounded],
+  ['repeated writes', 'loop { puts "abc" }', bounded],
+  ['large UTF-8 write', 'print "😀" * 20_000', bounded],
+  ['Ruby exception', 'puts "before"; raise "oops"', value => value === 'before\nRuntimeError: oops\n'],
+];
+function bounded(value) {
+  return new TextEncoder().encode(value).length <= 16_450 && value.includes('[Output limit reached: 16 KB.]');
+}
+function execute(code) {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker('/lessons/ruby-blocks-closures/worker.js', { type: 'module' });
+    const timer = setTimeout(() => { worker.terminate(); reject(new Error('timed out')); }, 30_000);
+    worker.onmessage = ({ data }) => {
+      if (data.type === 'status') return;
+      clearTimeout(timer);
+      worker.terminate();
+      if (data.type === 'result') resolve(data.text);
+      else reject(new Error(data.text));
+    };
+    worker.onerror = () => { clearTimeout(timer); worker.terminate(); reject(new Error('worker failed')); };
+    worker.postMessage({ code });
+  });
+}
+runButton.addEventListener('click', async () => {
+  runButton.disabled = true;
+  results.textContent = 'Running…\n';
+  let failures = 0;
+  for (const [name, code, check] of cases) {
+    try {
+      const value = await execute(code);
+      if (!check(value)) throw new Error(`unexpected result: ${value.slice(-100)}`);
+      results.textContent += `PASS: ${name}\n`;
+    } catch (error) {
+      failures += 1;
+      results.textContent += `FAIL: ${name}: ${error.message}\n`;
+    }
+  }
+  results.textContent += failures ? `${failures} failed` : 'All checks passed';
+  runButton.disabled = false;
+});
+</script>
+</html>
